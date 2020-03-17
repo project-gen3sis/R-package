@@ -1,4 +1,4 @@
-﻿![logo](logo.png)
+![logo](logo.png)
 
 # GENƎSIS
 
@@ -17,7 +17,8 @@ library("gen3sis")
 paste("GEN3SIS version:", packageVersion("gen3sis"))
 
 #run simulation
-run_simulation(config_file = "../config/user_defined_oskar/configs/config_1.R", input_directory = "../input/WorldCenter_4d")
+run_simulation(config_file = "../simulations/config/user_defined_oskar/configs/config_1.R", input_directory = "../simulations/landscape/WorldCenter_4d")
+
 
 #cat mood
 cat("  xD  ")
