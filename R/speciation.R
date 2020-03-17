@@ -1,0 +1,198 @@
+# Copyright (c) 2020, ETH Zurich
+
+#' get_divergence_factor gives a value or matrix indicating the divergence
+#' between geographically separated clusters/populations of a species
+#'
+#' @details this function determines the increase in deivergence between separated clusters of a species.
+#' It can either return a single value or a full cluster by cluster matrix. For every timestep two cells
+#' belong to the same cluster their divergence is reduced by 1.
+#' Therefore the divergence values should be scaled as rewuired.
+#'
+#' @param species the current species
+#' @param cluster_indices an index vector indicating the cluster every occupied cell is part of
+#' @param landscape the current landscape
+#' @param config the current config
+#'
+#' @return a single value or a matrix of divergences between all clusters occuring in clusters_indices
+#' @export
+get_divergence_factor <- function(species, cluster_indices, landscape, config){
+  stop("this function documents the user function interface only, do not use it!")
+}
+
+#' loop_speciation orchestrates the speciation of any species alive in the simualtion
+#'
+#' @param config the current config object
+#' @param data the current data object
+#' @param vars the current vars object
+#'
+#' @return an expanded species list including all newly created species
+#' @noRd
+loop_speciation <- function(config, data, vars) {
+  if(config$gen3sis$general$verbose>=3){
+    cat(paste("entering speciation module \n"))
+  }
+  for(spi in 1:vars$n_sp){ # loop over existing species
+    # get compressed genetic distance for spi
+    species <- data$all_species[[spi]]
+
+    if(!length(species[["abundance"]])) {
+      next()
+    }
+    # define occupied cells by species
+    species_presence <- names(species[["abundance"]])
+
+    ##calling RCPP function to define physical clusters
+    if ( length(species_presence)==1 ){#check if only one cell is occupied
+      clu_geo_spi_ti <- 1
+    }else{
+      distances <- config$gen3sis$dispersal$get_dispersal_values(length(species_presence), species, data$landscape, config)
+
+      permutation <- sample(1:length(species_presence), length(species_presence))
+      clu_geo_spi_ti <- Tdbscan_variable(data$distance_matrix[species_presence[permutation],species_presence[permutation],
+                                                            drop = F], distances, 1)
+      clu_geo_spi_ti <- clu_geo_spi_ti[order(permutation)]
+    }
+
+    gen_dist_spi <- decompress_divergence(species[["divergence"]])
+    # update genetic distances
+    ifactor <- config$gen3sis$speciation$get_divergence_factor(species, clu_geo_spi_ti, data[["landscape"]], config)
+
+    gen_dist_spi <- update_divergence(gen_dist_spi, clu_geo_spi_ti, ifactor = ifactor )
+
+    gen_dist_spi <- compress_divergence(gen_dist_spi)
+
+    species[["divergence"]] <- gen_dist_spi
+
+    clu_gen_spi_ti_c <- Tdbscan(gen_dist_spi$cluster_divergence, config$gen3sis$speciation$divergence_threshold, 1)
+    clu_gen_spi_ti <- clu_gen_spi_ti_c[gen_dist_spi$clusters]
+    n_new_sp <- max(clu_gen_spi_ti)-1
+
+    # update count of new species at this timestep
+    vars$n_new_sp_ti <- vars$n_new_sp_ti + n_new_sp
+
+    if ( n_new_sp > 0 ){ #if a speciation occured
+      if(config$gen3sis$general$verbose>=3){
+        cat(paste("[!]   Wellcome Strange  Thing   [!] \n"))
+        cat(paste(n_new_sp,"speciation event(s) happened \n"))
+      }
+
+      #attributing the final names of the species in a vector
+      desc_unique <- unique(clu_gen_spi_ti)[-1]+vars$n_sp+vars$n_sp_added_ti-1
+
+      #udpate phy
+      data$phy <- rbind(data$phy,data.frame("Ancestor"=rep(spi,n_new_sp),
+                                            "Descendent"=desc_unique,
+                                            "Speciation.Time"=rep(vars$ti,n_new_sp),
+                                            "Extinction.Time" = rep(vars$ti, n_new_sp),
+                                            "Speciation.Type"=rep("Genetic", n_new_sp)))
+
+      #required for proper initialiaztion of new species
+      full_gen_dist <- gen_dist_spi
+
+      gen_dist_spi$clusters <- gen_dist_spi$clusters[clu_gen_spi_ti == 1]
+      ue <- unique(gen_dist_spi$clusters)
+      gen_dist_spi$cluster_divergence <- gen_dist_spi$cluster_divergence[ue,ue, drop=F]
+      #update names
+      if (length(ue)>0) {
+        fullrange <- 1:length(ue)
+        dimnames(gen_dist_spi$cluster_divergence) <- list(fullrange, fullrange)
+        for (i in 1:length(gen_dist_spi$clusters)){
+          gen_dist_spi$clusters[i] <- fullrange[ue==gen_dist_spi$clusters[i]]
+        }
+      }
+
+      for (desci in desc_unique) {
+        #get the value of current gen_clu
+        tep_clu_gen_desci_index <- which(desc_unique==desci)+1
+        new_species <- create_species_from_existing(species,
+                                                    desci,
+                                                    names(species[["abundance"]][clu_gen_spi_ti == tep_clu_gen_desci_index]),
+                                                    config)
+        data$all_species <- append(data$all_species, list(new_species))
+
+      } # end loop over descendents
+
+      species <- limit_species_to_cells(species = species,
+                                        cells = names(species[["abundance"]][clu_gen_spi_ti == 1]))
+
+      #update number of species added
+      vars$n_sp_added_ti <- vars$n_sp_added_ti+n_new_sp
+
+      # taking the physical clusters, but removing the already speciated species from spi (i.e. the "mother species")
+      clu_geo_spi_ti <- clu_geo_spi_ti[clu_gen_spi_ti==1]
+
+    }# end of creating new species
+
+    data$all_species[[spi]] <- species
+
+  } # end loop over existing species
+  if(config$gen3sis$general$verbose>=3){
+    cat(paste("exiting speciation module \n"))
+  }
+  if(config$gen3sis$general$verbose>=3 && vars$n_sp_added_ti > 0){
+    cat(paste(vars$n_sp_added_ti,"new species created \n"))
+  }
+  return(list(config = config, data = data, vars = vars))
+}
+
+
+#' Updates a given divergence matrix
+#'
+#' @param gen_dist_spi a divergence matrix
+#' @param clu_geo_spi_ti a cluster index
+#' @param ifactor the divergence factor by which the clusters distances are to be incresed
+#'
+#' @return an updated divergence matrix
+#' @noRd
+update_divergence <- function(divergence, cluster_indices, ifactor) {
+  #udpate genetic distance
+  clusters <- unique(cluster_indices)
+  if( length(ifactor) == 1 ) {
+    # scalar ifactor
+    divergence <- divergence + ifactor
+    dfactor <- 1+ifactor
+  } else {
+    # matrix ifactor
+    divergence <- divergence + ifactor[cluster_indices, cluster_indices]
+    dfactor <- 1
+  }
+  for ( i in clusters ){
+    #in case they belong to same clusters, subtract -2 (for the default case), to that final diference is -1 given previous addition!
+    divergence[cluster_indices == i, cluster_indices == i] <-
+      divergence[cluster_indices == i, cluster_indices== i] - dfactor
+  }
+  #setting -1 to zero. Genetic differences can not be negative
+  divergence[divergence < 0] <- 0
+  ##end updating genetic distance##
+  return(divergence)
+}
+
+
+#' Updates the total number of exisitng species, to be replaced
+#'
+#' @param config the current config object
+#' @param data the current data list
+#' @param vars the current vars list
+#'
+#' @return the updated vals list
+#' @noRd
+update1.n_sp.all_geo_sp_ti <- function(config, data, vars) {
+  # update number of species
+  vars$n_sp <- vars$n_sp+vars$n_sp_added_ti
+  return(list(config = config, data = data, vars = vars))
+}
+
+
+#' Updates the total number of species alive
+#'
+#' @param config the current config object
+#' @param data the current data list
+#' @param vars the current vars list
+#'
+#' @return the updated vals list
+#' @noRd
+update2.n_sp_alive.geo_sp_ti <- function(config, data, vars) {
+  # update number of species alive
+  vars$n_sp_alive <- sum( sapply(data$all_species, function(sp){ifelse(length(sp[["abundance"]]), 1, 0) }))
+  return(list(config = config, data = data, vars = vars))
+}

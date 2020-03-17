@@ -1,0 +1,25 @@
+Package: gen3sis
+Type: Package
+Title: General Engine for Eco-Evolutionary Simulations
+Version: 0.9.0
+Authors@R: c(person("Oskar", "Hagen", email = "oskar@hagen.bio", role = c("aut", "cre"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"),
+  person("Benjamin", "Flueck", email="benjamin.flueck@alumni.ethz.ch", role = c("aut", "com"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"),
+  person("Fabian", "Fopp", email="fabian.fopp@usys.ethz.ch", role = c("aut", "ctb"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"),
+  person(c("Juliano","S."), "Cabral", email = "juliano.sarmento_cabral@uni-wuerzburg.de", role = c("aut","ctb"), comment = "Ecosystem Modeling, Center for Computational and Theoretical Biology, University of Würzburg, Würzburg, Germany"),
+  person("Florian", "Hartig", email = "florian.hartig@biologie.uni-regensburg.de", role = c("aut","ctb", "com"), comment = "Theoretical Ecology, University of Regensburg, Regensburg, Germany"), 
+  person("Mikael", "Pontarp", email = "mikael.pontarp@biol.lu.se", role = c("aut","ctb"), comment = "Department of Biology, Lund University, Lund, Sweden"),
+  person("Charles", "Novaes de Santana ", email = "charles.novaes@usys.ethz.ch", role = c("ctb"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"),
+  person(c("Thiago", "F."), "Rangel", email = "rangel.tf@gmail.com", role = c("aut","ctb"), comment = "Department of Ecology, Universidade Federal de Goiás, Goiás, Brazil"),
+  person("Loïc", "Pellissier", email = "loic.pellissier@usys.ethz.ch", role = c("aut","ths"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"))
+Maintainer: Oskar Hagen <gen3sis@usys.ethz.ch>
+Description: Gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modular implementation. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes.
+License: GPL-3 + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 3.5.0)
+Imports: Rcpp (>= 0.12.16), Matrix, methods, utils, raster, gdistance, sp, stringr, tools
+Suggests: knitr, testthat (>= 2.1.0)
+LinkingTo: Rcpp, BH
+RoxygenNote: 7.0.2
+VignetteBuilder: knitr
+SystemRequirements: C++11
