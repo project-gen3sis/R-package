@@ -2,9 +2,7 @@
 
 # 
 
-# GENƎSIS
-
-## General Engine for Eco-Evolutionary Simulations
+# GENƎSIS ## General Engine for Eco-Evolutionary Simulations
 
 This is the repository for the R-package of the Gen3sis engine.
 Gen3sis is licensed under a [GPLv3 License](httpstldrlegal.comlicensegnu-general-public-license-v3-(gpl-3)) ETHZ 2020 <doi.org/10.5905/ethz-1007-251>
