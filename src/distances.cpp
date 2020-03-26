@@ -37,8 +37,8 @@ Rcpp::NumericMatrix get_distance_matrix(const IntegerVector habitable_cells,
   int i,j;
   int n = habitable_cells.length();
   Rcpp::NumericMatrix distance_matrix(n, n);
-  //node* nodes[num_cells] = {};
-  int habitable_index[num_cells];
+  int *habitable_index = new int[num_cells];
+  
   // initialize to -1, so that index will match actual position 0 to num_cells - 1
   std::fill(habitable_index, habitable_index + num_cells, -1);
 
@@ -59,11 +59,11 @@ Rcpp::NumericMatrix get_distance_matrix(const IntegerVector habitable_cells,
   // beware "of by one" for for habitable cells to indices
   for(i = 0; i < n; i++) {
     boost::heap::fibonacci_heap<node> fib_heap;
-    boost::heap::fibonacci_heap<node>::handle_type nodes[num_cells];
+    boost::heap::fibonacci_heap<node>::handle_type *nodes = new boost::heap::fibonacci_heap<node>::handle_type[num_cells];
 
     int neighbours_found = 0;
 
-    bool visited[num_cells];
+    bool *visited = new bool[num_cells];
     std::fill(visited, visited + num_cells, false);
 
     int cell = habitable_cells[i] - 1;
@@ -95,7 +95,11 @@ Rcpp::NumericMatrix get_distance_matrix(const IntegerVector habitable_cells,
         }
       }
     }
+    delete[] nodes;
+    delete[] visited;
   }
+  delete[] habitable_index;
+  
   rownames(distance_matrix) = as<CharacterVector>(habitable_cells);
   colnames(distance_matrix) = as<CharacterVector>(habitable_cells);
   return(distance_matrix);
