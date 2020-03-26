@@ -13,7 +13,7 @@ Authors@R: c(person("Oskar", "Hagen", email = "oskar@hagen.bio", role = c("aut",
   person("Loïc", "Pellissier", email = "loic.pellissier@usys.ethz.ch", role = c("aut","ths"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"))
 Maintainer: Oskar Hagen <oskar@hagen.bio>
 Description: Gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modular implementation. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes.
-License: GPL-3
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
