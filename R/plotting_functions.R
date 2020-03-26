@@ -47,8 +47,9 @@ plot_richness <- function(species_list, landscape) {
 plot_raster_single <- function(values, landscape, title, no_data = 0) {
   img <- cbind(landscape[["coordinates"]], no_data)
   img[names(values), 3] <- values
-  plot(rasterFromXYZ(img),
-       main=paste0(title, ", t: ", landscape[["id"]]))
+  ras <- rasterFromXYZ(img)
+  ras <- extend(ras, landscape[["extent"]])
+  plot(ras, main=paste0(title, ", t: ", landscape[["id"]]))
 }
 
 
@@ -69,6 +70,7 @@ plot_raster_multiple <- function(values, landscape, no_data = 0) {
                                   colnames(values))))
   img[, 1:2] <- landscape[["coordinates"]]
   img[rownames(values), -c(1:2)] <- values
-  plot(rasterFromXYZ(img),
-       main=paste0(colnames(values), ", t: ", landscape[["id"]]))
+  ras <- rasterFromXYZ(img)
+  ras <- extend(ras, landscape[["extent"]])
+  plot(ras, main=paste0(colnames(values), ", t: ", landscape[["id"]]))
 }
