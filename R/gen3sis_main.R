@@ -217,6 +217,12 @@ run_simulation <- function(config_file = NA,
     val$vars$n_sp <- length(val$data$all_species)
 
     val <- update_loop_steps_variable(val$config, val$data, val$vars)
+    
+    #### START WIPOBSERVER ####
+    #call here the observer summary functions to update vals$observer
+    # do.call(observer_summary)
+    #### END WIPOBSERVER ####
+    
     save_val(val, save_state)
 
     if(val$vars$ti %in% val$vars$save_steps){

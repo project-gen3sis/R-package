@@ -82,6 +82,10 @@ save_summary <- function(config, data, vars){
                          eco_by_sp = data$eco_by_sp
                          #cpu_time=difftime(system_time_stop, system_time_start, units = "hours")[[1]]
                          ))
+  
+  #### START WIPOBSERVER ####
+  #add to sgen3sis all summary objects created with observer_summary
+  #### END WIPOBSERVER ####
 
   sgen3sis <- c(sgen3sis, flag=vars$flag)
   save(sgen3sis, file=file.path(config$directories$output,"sgen3sis.RData"))
