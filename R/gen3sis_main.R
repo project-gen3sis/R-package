@@ -3,9 +3,11 @@
 #' @title Gen3sis: General Engine for Eco-Evolutionary Simulations
 #' @name gen3sis
 #' @examples
+#' \dontrun{
 #' #runing a Gen3sis simulation
 #' # add(1, 1)
 #' # add(10, 1)
+#' }
 #' @docType package
 #' @useDynLib gen3sis, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
