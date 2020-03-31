@@ -2,7 +2,7 @@
 
 # 
 
-# GENƎSIS | General Engine for Eco-Evolutionary Simulations
+# General Engine for Eco-Evolutionary Simulations
 
 This is the repository for the R-package of the Gen3sis engine.
 
