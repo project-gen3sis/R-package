@@ -338,7 +338,9 @@ update.phylo<- function(config, data, vars) {
   levels(data$phy$Speciation.Type) <- c(levels(data$phy$Speciation.Type))
   # bind extinction information
   #data$phy <- cbind(data$phy[,c(1,2,3)], Extinction.Time=vars$ext, Speciation.Type=data$phy[,4])
-  data$phy[,c("Ancestor", "Descendent", "Speciation.Time")] <- as.integer(data$phy[,c("Ancestor", "Descendent", "Speciation.Time")])
+  data$phy$Ancestor <- as.integer(data$phy$Ancestor)
+  data$phy$Descendent <- as.integer(data$phy$Descendent)
+  data$phy$Speciation.Time <- as.integer(data$phy$Speciation.Time)
   # end update phy
   return(list(config = config, data = data, vars = vars))
 }
