@@ -15,8 +15,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-
+To create your own landscape, you can start from anywere.
 
 ```{r setup}
 library(gen3sis)
 ```
+
+## Create your rasters
+
+## Add environmental characteristics
+
+## Add a resistance (how connected and reachebel things are)

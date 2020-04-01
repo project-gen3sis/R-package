@@ -27,7 +27,7 @@ assign("dist", -Inf, envir = counting)
 #' @param save_state save the internal state of the simulation for restarts
 #' @param save_intermediate_results save the eco, gen, and geo info
 #' @param enable_gc enable gc in case of memory shortages
-#' @param verbose integer value. If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)
+#' @param verbose integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)
 #'
 #' @return no return value
 #'
