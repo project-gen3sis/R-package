@@ -93,7 +93,6 @@ run_simulation <- function(config_file = NA,
   val <- setup_inputs(val$config, val$data, val$vars)
   val <- setup_variables(val$config, val$data, val$vars)
   val <- setup_landscape(val$config, val$data, val$vars)
-
   val <- init_attribute_mrca_distribution(val$config, val$data, val$vars)
 
   # #---------------------------------------------------#

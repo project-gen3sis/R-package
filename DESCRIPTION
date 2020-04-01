@@ -11,13 +11,16 @@ Authors@R: c(person("Oskar", "Hagen", email = "oskar@hagen.bio", role = c("aut",
   person("Charles", "Novaes de Santana ", email = "charles.novaes@usys.ethz.ch", role = c("ctb"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"),
   person(c("Thiago", "F."), "Rangel", email = "rangel.tf@gmail.com", role = c("aut","ctb"), comment = "Department of Ecology, Universidade Federal de Goiás, Goiás, Brazil"),
   person("Loïc", "Pellissier", email = "loic.pellissier@usys.ethz.ch", role = c("aut","ths"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"))
-Description: This package contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes.
-License: GPL-3 + file LICENSE
+Description: Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes. It also provide utility functions.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
 Imports: Rcpp (>= 0.12.16), Matrix, methods, utils, raster, gdistance, sp, stringr, tools
-Suggests: knitr, testthat (>= 2.1.0)
+Suggests: 
+    knitr,
+    testthat (>= 2.1.0),
+    rmarkdown
 LinkingTo: Rcpp, BH
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr

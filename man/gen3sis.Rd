@@ -8,7 +8,9 @@
 Gen3sis: General Engine for Eco-Evolutionary Simulations
 }
 \examples{
+\dontrun{
 #runing a Gen3sis simulation
 # add(1, 1)
 # add(10, 1)
+}
 }

@@ -2,7 +2,7 @@
 
 #' Title
 #'
-#' @param landscapes list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past
+#' @param landscapes list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past.
 #' The list names are important since these are the environmental names
 #' @param cost_function function that returns a cost value between a pair of cell (neighbours) that should have the following signature:
 #' #' cost_fuinction <- function(src, src_habitable, dest, dest_habitable){
@@ -20,8 +20,9 @@
 #' @param overwrite_output TRUE or FALSE
 #' @param verbose print distance calculation progress
 #'
-#' @export
 #' @importFrom gdistance transition costDistance
+#' @export
+
 create_input <- function( landscapes,
                           cost_function,
                           directions,
@@ -32,6 +33,11 @@ create_input <- function( landscapes,
                           crs = NULL,
                           overwrite_output = F,
                           verbose = F) {
+  # # in case outpu_directory is NULL, use the same directory as the input
+  # if (is.null(output_directory)){
+  #   output_directory <- dirname(path)
+  # }
+  
   # prepare directories
   create_directories(output_directory, overwrite_output, calculate_full_distance_matrices)
 

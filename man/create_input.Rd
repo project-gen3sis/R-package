@@ -18,7 +18,7 @@ create_input(
 )
 }
 \arguments{
-\item{landscapes}{list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past
+\item{landscapes}{list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past.
 The list names are important since these are the environmental names}
 
 \item{cost_function}{function that returns a cost value between a pair of cell (neighbours) that should have the following signature:

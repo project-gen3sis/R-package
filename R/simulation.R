@@ -105,6 +105,7 @@ setup_variables <- function(config, data, vars) {
 #' @import raster
 #' @noRd
 init_attribute_mrca_distribution <- function(config, data, vars) {
+  
   all_species <- config$gen3sis$initialization$create_initial_species(data$landscape, config)
   for (i in 1:length(all_species)){
     force(i)
@@ -115,13 +116,14 @@ init_attribute_mrca_distribution <- function(config, data, vars) {
 
   grDevices::pdf(file=file.path(config$directories$output, "/StartingConditions.pdf"), width=10, height=12)
   par(mfrow=c(2,1))
+  
   plot_richness(all_species, data$landscape)
 
   grDevices::dev.off()
 
   plot_richness(all_species, data$landscape)
   #data$geo_sp_ti <- geo_sp_ti[habitable_cells_ti, ,drop=F]
-
+  
   # n_sp <- ncol(geo_sp_ti)
   n_sp <- length(data$all_species)
   vars$n_sp <- n_sp
@@ -135,6 +137,7 @@ init_attribute_mrca_distribution <- function(config, data, vars) {
     "Speciation.Type" = "ROOT"
   )
   return(list(config = config, data = data, vars = vars))
+  
 }
 
 

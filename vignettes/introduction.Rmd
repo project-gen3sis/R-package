@@ -1,0 +1,85 @@
+---
+title: "Introducing gen3sis"
+date: "`r format(Sys.time(),  '%d.%m.%Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introducing gen3sis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+Hello and wellcome! In this vignette you will be introduced to gen3sis, an engine for simulating various spatial eco-evolutionary models. We will create an virtual planet, 'biodiversify' it and examine some brand new virtual species.
+
+Thus we will: 
+
+1. **Start** gen3sis package and check if we are set with all the necessary input data.
+2. **Run** one simple example simulation
+3. **Visualize** the output
+4. **Analize** the output
+
+## 1. Start
+First of all, we need to load the gen3sis package 
+```{r setup}
+library(gen3sis)
+```
+Perfect! From now on, if you run into problems, use *>??gen3sis* for the full help documentation
+
+Let's check the version of the gen3sis package we are using
+
+```{r, eval=FALSE}
+print(paste("GEN3SIS version:", packageVersion("gen3sis")))
+
+```
+
+All gen3sis simulations need a **landscape** and a **configuration** object to refer to. The **landscape** is the environment of the virtual planet (e.g. temperature and precipitation data that changes spatialy and temporaly). The **configuration** are the rules of our virtual planet, here is were we define all the ecological and evolutionary 
+Here we will use a published small theoretical planet example[^1]. 
+
+Download the [landscape](https://github.com/project-Gen3sis/Simulations/tree/master/landscape/CaseStudy1) and the [configuration](https://github.com/project-Gen3sis/Simulations/tree/master/config/CaseStudy1) and store these in a new folder wherever you would like to run the experiment.Like this:
+
+|>MY_EXPERIMENT_FOLDER     |
+|:-------------------------|
+|&nbsp;&nbsp;&nbsp;>landscape|
+|&nbsp;&nbsp;&nbsp;>config|
+
+Now that we have the files on the proper folders, we will prepare the landscape.
+
+```{r}
+##TODO
+# create_input(landscapes = "EXPERIMENT_X/landscape/landscapes.rds", output_directory = )
+```
+
+**NOTE** that the landscape contain several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform the landscape is connected.
+
+Done? Great now you have downloaded all the needed files to run a simulation. 
+
+
+[^1]: Hagen et al. 2020 Methods paper in preparation.
+
+
+## 2. Run
+
+To launch our simulation use 
+
+```{r, eval=FALSE}
+run_simulation(config_file = "./EXPERIMENT_X/config/config", input_directory = "./EXPERIMENT_X/landscape")
+```
+
+## 3. Visualize
+
+## 4. Analize
+
+
+
+```{r}
+ format(Sys.time(),  "%d.%m.%Y")
+```
+
+```{r eval=FALSE}
+run_simulation(X,y,z)
+```
