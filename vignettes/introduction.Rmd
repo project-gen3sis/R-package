@@ -47,14 +47,8 @@ Download the [landscape](https://github.com/project-Gen3sis/Simulations/tree/mas
 |&nbsp;&nbsp;&nbsp;>landscape|
 |&nbsp;&nbsp;&nbsp;>config|
 
-Now that we have the files on the proper folders, we will prepare the landscape.
 
-```{r}
-##TODO
-# create_input(landscapes = "EXPERIMENT_X/landscape/landscapes.rds", output_directory = )
-```
-
-**NOTE** that the landscape contain several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform the landscape is connected.
+**NOTE** that the landscape contain several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform the landscape is connected. In this example you are using an already ready to run landscape. To see how to create a landscape object, see (this vigenette)[create_landscape.html]
 
 Done? Great now you have downloaded all the needed files to run a simulation. 
 
@@ -66,8 +60,9 @@ Done? Great now you have downloaded all the needed files to run a simulation.
 
 To launch our simulation use 
 
-```{r, eval=FALSE}
-run_simulation(config_file = "./EXPERIMENT_X/config/config", input_directory = "./EXPERIMENT_X/landscape")
+```{r, eval=TRUE}
+getwd()
+run_simulation(config_file = "./EXPERIMENT_X/config/config.R", input_directory = "./EXPERIMENT_X/landscape", verbouse=0)
 ```
 
 ## 3. Visualize
