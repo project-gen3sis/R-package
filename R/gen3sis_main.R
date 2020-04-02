@@ -23,7 +23,7 @@ assign("dist", -Inf, envir = counting)
 #' @param config configuration object derived from a config file
 #' @param input_directory directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
-#' @param timestep_restart restart an exisitng simulation from this timestep
+#' @param timestep_restart restart an exisitng simulation from this timestep or from the latest timestep
 #' @param save_state save the internal state of the simulation for restarts
 #' @param save_intermediate_results save the eco, gen, and geo info
 #' @param enable_gc enable gc in case of memory shortages
