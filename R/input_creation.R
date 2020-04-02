@@ -1,6 +1,6 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' Title
+#' Create an landscape input
 #'
 #' @param landscapes list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past.
 #' The list names are important since these are the environmental names
