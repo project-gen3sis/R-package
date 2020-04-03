@@ -2,7 +2,7 @@
 % Please edit documentation in R/input_creation.R
 \name{create_input}
 \alias{create_input}
-\title{Title}
+\title{Create an landscape input}
 \usage{
 create_input(
   landscapes,
@@ -46,5 +46,5 @@ where src is a vector of environmental conditions for the origin cell, src_habit
 \item{verbose}{print distance calculation progress}
 }
 \description{
-Title
+Create an landscape input
 }

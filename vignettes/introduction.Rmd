@@ -41,7 +41,7 @@ print(paste("GEN3SIS version:", packageVersion("gen3sis")))
 All gen3sis simulations need a **landscape** and a **configuration** object to refer to. The **landscape** is the environment of the virtual planet (e.g. temperature and precipitation data that changes spatialy and temporaly). The **configuration** are the rules of our virtual planet, here is were we define all the ecological and evolutionary 
 Here we will use a published small theoretical planet example[^1]. 
 
-Download the [landscape](https://github.com/project-Gen3sis/Simulations/tree/master/landscape/CaseStudy1) and the [configuration](https://github.com/project-Gen3sis/Simulations/tree/master/config/CaseStudy1) and store these in a new folder wherever you would like to run the experiment. Like this:
+Download the [landscape](https://github.com/project-Gen3sis) and the [configuration](https://github.com/project-Gen3sis) and store these in a new folder wherever you would like to run the experiment. Like this:
 
 |>MY_EXPERIMENT_FOLDER     |
 |:-------------------------|

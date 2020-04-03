@@ -25,7 +25,7 @@ run_simulation(
 
 \item{output_directory}{directory for the simulation output}
 
-\item{timestep_restart}{restart an exisitng simulation from this timestep}
+\item{timestep_restart}{restart an exisitng simulation from this timestep or from the latest timestep}
 
 \item{save_state}{save the internal state of the simulation for restarts}
 
@@ -33,7 +33,7 @@ run_simulation(
 
 \item{enable_gc}{enable gc in case of memory shortages}
 
-\item{verbose}{integer value. If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)}
+\item{verbose}{integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)}
 }
 \value{
 no return value
