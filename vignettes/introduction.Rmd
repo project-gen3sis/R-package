@@ -61,10 +61,12 @@ Done? Great now you have downloaded all the needed files to run a simulation.
 
 To launch our simulation use 
 
-```{r eval=TRUE, echo=FALSE}
+```{r eval=TRUE, echo=TRUE}
 run_simulation(config_file = "./EXPERIMENT_X/config/config.R", input_directory = "./EXPERIMENT_X/landscape", verbose=0)
 #we set verbose to 0 to avoid a large console plotting of how the simulation is developping
 ```
+
+After the simulation is finished, a plot is created at the EXPERIMENT_X folder to show the state of the initial world. We see, 1 species per cell in the 4 cell small island.
 
 Excellent. Our virtual species are waiting for us. They are automatically stored in a subfolder called output inside our EXPERIMENT_X folder named after our configuration file (i.e. config). Like this:
 

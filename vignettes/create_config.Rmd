@@ -1,0 +1,20 @@
+---
+title: "create_config"
+output: rmarkdown::html_vignette
+date: "`r format(Sys.time(),  '%d.%m.%Y')`"
+vignette: >
+  %\VignetteIndexEntry{create_config}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(gen3sis)
+```

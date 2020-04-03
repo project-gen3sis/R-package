@@ -1,0 +1,20 @@
+---
+title: "simulate_real_landscapes"
+output: rmarkdown::html_vignette
+date: "`r format(Sys.time(),  '%d.%m.%Y')`"
+vignette: >
+  %\VignetteIndexEntry{simulate_real_landscapes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(gen3sis)
+```
