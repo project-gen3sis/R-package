@@ -54,7 +54,7 @@ Download the [landscape](https://github.com/project-Gen3sis/Simulations/tree/mas
 Done? Great now you have downloaded all the needed files to run a simulation. 
 
 
-[^1]: Hagen et al. 2020 Methods paper in preparation.
+[^1]: O. Hagen, B. Flüch, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
 
 
 ## 2. Run

@@ -1,9 +1,9 @@
 ---
-title: "create_config"
+title: "Creating Configurations"
 output: rmarkdown::html_vignette
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 vignette: >
-  %\VignetteIndexEntry{create_config}
+  %\VignetteIndexEntry{Creating Configuration}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,6 +15,24 @@ knitr::opts_chunk$set(
 )
 ```
 
+This vignette will guide you trough the config input object. It can be either an R object or a R-file, that can be easly shared.
+
+Here we will:
+
+1. Create a config form scratch
+2. Modify an existing config
+
+
 ```{r setup}
 library(gen3sis)
+```
+
+## 1. Create a config from scratch
+
+```{r eval=FALSE}
+create_config("config_file")
+
+#writes out a config sckeleton
+write_config_skeleton()
+
 ```
