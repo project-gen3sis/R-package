@@ -22,13 +22,11 @@ assign("dist", -Inf, envir = counting)
 #' @param config configuration file for the simulation or configuration object derived from a config file
 #' @param input_directory directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
-#' @param timestep_restart restart an exisitng simulation from this timestep or from the latest timestep
-#' @param save_state save the internal state of the simulation for restarts
 #' @param save_intermediate_results save the eco, gen, and geo info
 #' @param enable_gc enable gc in case of memory shortages
 #' @param verbose integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)
 #'
-#' @return no return value
+#' @return a summary object containing a minimal summary on species progress (alive, speciations, extinctions) 
 #'
 #' @importFrom utils packageVersion write.table
 #' 
@@ -37,12 +35,16 @@ assign("dist", -Inf, envir = counting)
 #' @export
 run_simulation <- function(config = NA,
                           input_directory = NA,
-                          output_directory = NA,
-                          timestep_restart = NA,
-                          save_state = NA,
+                          output_directory = NA, 
+                          # timestep_restart = NA, disabled for the moment
+                          # save_state = NA, disabled for the moment as for example compiled cpp functions are not saved correctly
                           save_intermediate_results = NA,
                           enable_gc = F,
                           verbose = 1){
+  
+  #param timestep_restart restart an exisitng simulation from this timestep or from the latest timestep
+  #param save_state save the internal state of the simulation for restarts
+  
   #----------------------------------------------------#
   ####### User defined variables (config.R) ############
   #----------------------------------------------------#
@@ -101,6 +103,9 @@ run_simulation <- function(config = NA,
   # #####               Init simulation             #####
   # #---------------------------------------------------#
   val <- init_simulation(val$config, val$data, val$vars)
+  
+  val <- initialize_summary_statistics(val$data, val$vars , val$config)
+  
 
   #--------------------------------------------#
   ######## Save inital geo/gen/eco state #######
@@ -126,9 +131,9 @@ run_simulation <- function(config = NA,
   #
   #
 
-  if(!is.na(timestep_restart)){
-    val <- restore_state(val, timestep_restart)
-  }
+  # if(!is.na(timestep_restart)){
+  #  val <- restore_state(val, timestep_restart)
+  # }
 
   for(ti in val$vars$steps){ #loop over time steps
     # set to zero every new timestep!
@@ -221,18 +226,18 @@ run_simulation <- function(config = NA,
     # do.call(observer_summary)
     #### END WIPOBSERVER ####
     
-    save_val(val, save_state)
+    # save_val(val, save_state)
 
     if(val$vars$ti %in% val$vars$save_steps){
-      save_ecogengeo(val)
+      call_main_observer(val$data, val$vars, val$config)
+      # save_ecogengeo(val)
     }
+    val <- update_summary_statistics(val$data, val$vars, val$config)
+    
     if (verbose>=1){
       cat('step =', ti, ', species alive =', val$vars$n_sp_alive, ', species total =', val$vars$n_sp, '\n')  
     }
     
-
-    val$config$gen3sis$general$end_of_timestep_observer(val$data, val$vars, val$config)
-
   }# close loop steps
   #
   if(verbose>=2){
@@ -242,6 +247,12 @@ run_simulation <- function(config = NA,
   write(difftime(system_time_stop, system_time_start, units = "hours")[[1]], file=file.path(val$config$directories$output, "CPUtime_h.txt"))
   #
   #
+  
+  # observer functions
+  plot_end_of_simulation(val$data, val$vars, val$config)
+  write_runtime_statisitics(val$data, val$vars, val$config)
+  
+  
   # #------------------------------------------------------------------#
   # ######## update phylo with survival info (simulation.R) #######
   # #------------------------------------------------------------------#
@@ -260,4 +271,6 @@ run_simulation <- function(config = NA,
   write.table(val$data$phy, file = file.path(val$config$directories$output, "phy.txt"), sep="\t")
 
   write_nex(phy=val$data$phy, label="sp", output_location=val$config$directories$output)
+  
+  return(val$data$summaries)
 }

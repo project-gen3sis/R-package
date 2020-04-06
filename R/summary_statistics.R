@@ -1,6 +1,58 @@
 # Copyright (c) 2020, ETH Zurich
 
 
+#' Initialize the summary statistics, currently a matrix of species totals, speciations, and extinctions 
+#'
+#' @param data the current data object
+#' @param vars the current vars object
+#' @param config the current vconfig
+#'
+#' @return the standard val list of data, vars, config
+#' @noRd
+initialize_summary_statistics <- function(data, vars, config){
+  data[["summaries"]] <- list()
+  
+  phylo_summary <- matrix(NA, nrow = 1, ncol = 4, 
+                          dimnames = list("initial", c("total", "alive", "speciations", "extinctions")))
+  
+  phylo_summary[1, "total"] <- length(data$all_species)
+  phylo_summary[1, "alive"] <- sum(unlist(lapply(data$all_species, function(x){ifelse(length(x$abundance), 1, 0)} )))
+  phylo_summary[1, "speciations"] <- length(data$all_species)
+  phylo_summary[1, "extinctions"] <- phylo_summary[1, "total"] - phylo_summary[1, "alive"] 
+  
+  data$summaries[["phylo_summary"]] <- phylo_summary
+  
+  return(list(data = data, vars = vars, config = config))
+}
+
+
+#' Update the summary statistics, currently a matrix of species totals, speciations, and extinctions 
+#'
+#' @param data the current data object
+#' @param vars the current vars object
+#' @param config the current vconfig
+#'
+#' @return the standard val list of data, vars, config
+#' @noRd
+update_summary_statistics <- function(data, vars, config) {
+  phylo_summary <- data$summaries$phylo_summary
+  n <- nrow(phylo_summary)
+  total <- length(data$all_species)
+  alive <- sum(unlist(lapply(data$all_species, function(x){ifelse(length(x$abundance), 1, 0)} )))
+  speciations <- total - phylo_summary[n, "total"] 
+  extinctions <- speciations - alive + phylo_summary[n, "alive"]
+  
+  phylo_summary <- rbind(phylo_summary, c(total, alive, speciations, extinctions))
+  
+  rownames(phylo_summary) <- c(rownames(phylo_summary)[1:n], vars$ti)
+  
+  data$summaries$phylo_summary <- phylo_summary
+  return(list(data = data, vars = vars, config = config))
+}
+
+
+
+
 percentage_inhabited <- function(species_list, landscape) {
   richness <- get_geo_richness(species_list, landscape)
   inhabited <- sum(which(richness != 0))

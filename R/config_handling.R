@@ -44,10 +44,10 @@ prepare_directories <- function(config_file = NA,
       path <- strsplit(input_dir, "/")[[1]]
       path <- paste(path[1:(length(path)-1)], collapse="/")
       output_dir <- sub("[lL]andscape", "output", path) 
-    } else if (class(config_file)=="character"){
+    } else if (class(config_file)=="character") {
       path <- strsplit(config_file, "/")[[1]]
       path <- paste(path[1:(length(path)-1)], collapse="/")
-      output_dir <- sub("[cC]onfig", "output", path) 
+      output_dir <- sub("[cC]onfig", "output", path)
     }
   } else {
     output_dir <- output_directory
@@ -67,15 +67,15 @@ prepare_directories <- function(config_file = NA,
   dir$output <- file.path(output_dir, config_name)
   dir.create(dir$output, recursive=TRUE, showWarnings = FALSE)
   print(paste("output directory is:", dir$output))
-  
-  dir$output_species <- file.path(dir$output, "species")
-  dir.create(dir$output_species, recursive=TRUE, showWarnings = FALSE)
-  dir$output_landscapes <- file.path(dir$output, "landscapes")
-  dir.create(dir$output_landscapes, recursive=TRUE, showWarnings = FALSE)
+
+  #dir$output_species <- file.path(dir$output, "species")
+  #dir.create(dir$output_species, recursive=TRUE, showWarnings = FALSE)
+  #dir$output_landscapes <- file.path(dir$output, "landscapes")
+  #dir.create(dir$output_landscapes, recursive=TRUE, showWarnings = FALSE)
   dir$output_plots <- file.path(dir$output, "plots")
   dir.create(dir$output_plots, recursive=TRUE, showWarnings = FALSE)
-  dir$output_val <- file.path(dir$output, "val")
-  dir.create(dir$output_val, recursive=TRUE, showWarnings = FALSE)
+  #dir$output_val <- file.path(dir$output, "val")
+  #dir.create(dir$output_val, recursive=TRUE, showWarnings = FALSE)
 
   return(dir)
 }

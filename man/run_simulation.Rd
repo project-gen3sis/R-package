@@ -9,8 +9,6 @@ run_simulation(
   config = NA,
   input_directory = NA,
   output_directory = NA,
-  timestep_restart = NA,
-  save_state = NA,
   save_intermediate_results = NA,
   enable_gc = F,
   verbose = 1
@@ -25,10 +23,6 @@ run_simulation(
 
 \item{output_directory}{directory for the simulation output}
 
-\item{timestep_restart}{restart an exisitng simulation from this timestep or from the latest timestep}
-
-\item{save_state}{save the internal state of the simulation for restarts}
-
 \item{save_intermediate_results}{save the eco, gen, and geo info}
 
 \item{enable_gc}{enable gc in case of memory shortages}
@@ -36,7 +30,7 @@ run_simulation(
 \item{verbose}{integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)}
 }
 \value{
-no return value
+a summary object containing a minimal summary on species progress (alive, speciations, extinctions)
 }
 \description{
 Run a simulation
