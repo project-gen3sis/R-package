@@ -41,3 +41,7 @@ no return value
 \description{
 Run a simulation
 }
+\examples{
+1 + 1 
+# have to add help here
+}

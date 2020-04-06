@@ -32,6 +32,8 @@ assign("dist", -Inf, envir = counting)
 #' @return no return value
 #'
 #' @importFrom utils packageVersion write.table
+#' 
+#' @example inst/examples/run_simulation_help.R
 #'
 #' @export
 run_simulation <- function(config_file = NA,
