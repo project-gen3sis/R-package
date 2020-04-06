@@ -94,8 +94,8 @@ Done? Great now you have downloaded all the needed files to run a simulation.
 
 To launch our simulation use 
 
-```{r eval=FALSE, echo=TRUE}
-run_simulation(config_file = "./EXPERIMENT_X/config/config.R", input_directory = "./EXPERIMENT_X/landscape", verbose=0)
+```{r eval=TRUE, echo=TRUE}
+run_simulation(config_file = file.path(datapath,"config/config.R"), input_directory = file.path(datapath,"landscape"), verbose=1)
 #we set verbose to 0 to avoid a large console plotting of how the simulation is developping
 ```
 
@@ -112,15 +112,15 @@ Excellent. Our virtual species are waiting for us. They are automatically stored
 ## 3. Visualize
 There are a few visualization tools already included in the package, but you are free to explore and check the outputs with your favorit plotting functions and colors. For us to look at the landscape and species richness at the end of the simulation (i.e. present, aka 0Ma) first we have to load the respective species and landscape object.
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 #load landscape at 0Ma
-l0 <- readRDS("./EXPERIMENT_X/output/config/landscapes/landscape_t_0.rds")
+l0 <- readRDS(file.path(datapath, "output/config/landscapes/landscape_t_0.rds"))
 #load species at 0Ma
-sps0 <- readRDS("./EXPERIMENT_X/output/config/species/species_t_0.rds")
+sps0 <- readRDS(file.path(datapath, "output/config/species/species_t_0.rds"))
 ```
 
 We can then plot the environment
-```{r eval=FALSE, fig.width = 5.5}
+```{r eval=TRUE, fig.width = 5.5}
 #plot all environmental values in the landscapes (in our case temperature and precipitation) at the selected timeteps (here present)
 plot_landscape(l0)
 
@@ -128,7 +128,7 @@ plot_landscape(l0)
 
 And the richness
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 plot_richness(sps0, l0)
 ```
 
@@ -136,7 +136,7 @@ plot_richness(sps0, l0)
 
 Let's see how species richness correlates with bouth environmental variables at the present.
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 rich <- gen3sis:::get_geo_richness(sps0, l0) #get species richness with cell id as name
 temp <- l0$environment[,"temp"] #get temperatures values
 prec <- l0$environment[,"prec"] #get precipitation values
@@ -154,9 +154,9 @@ Gen3sis also creates a summary object at the end of the simulation storing some 
 **NOTE** You can also creat your own observer function. 
 One default observer function is the collection of the richness over time. This is stored at the sgen3sis.Rdata object at the output folder.
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 # TOADD a plot of richenss over time
-load("./EXPERIMENT_X/output/config/sgen3sis.RData")
+load(file.path(datapath"./EXPERIMENT_X/output/config/sgen3sis.RData"))
 #get total richness per time interval
 rt <- colSums(sgen3sis$geo_richness[,-c(1,2)], na.rm = T)
 #plot
@@ -166,7 +166,7 @@ plot(rt, type='l')
 
 Much is possible here, from looking at phylogenies to spatial correlation. For this intro we will keep things simple and look at the correlation between richness and environmental variables.
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 summary(lm(rich~temp+prec, data))
 ```
 The 'virtual' world is now yours! Enjoy.
