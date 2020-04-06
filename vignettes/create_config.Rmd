@@ -36,3 +36,5 @@ create_config("config_file")
 write_config_skeleton()
 
 ```
+
+The configuration object (Figure 1 B), also required by the function contains the biological parameters that describe the rules of evolution, as well as technical parameters, such as seedding. The function “write_config_skeleton (“my_config.R”) creates a skeleton config file, which can then be changed by the user. 
