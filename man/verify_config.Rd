@@ -20,5 +20,5 @@ Verifies that all required config fields are provided.
 ##TODO##
 
 # add example
-verify_config(config = NA)
+# verify_config(config = NA)
 }
