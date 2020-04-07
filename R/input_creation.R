@@ -21,6 +21,7 @@
 #' @param verbose print distance calculation progress
 #'
 #' @importFrom gdistance transition costDistance
+#' @example inst/examples/create_input_help.R
 #' @export
 
 create_input <- function( landscapes,

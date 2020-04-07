@@ -19,8 +19,8 @@ create_initial_species <- function(landscape, config){
 
 #' create_species This creates a new species
 #'
-#' @details This function is intented to be used in the create_initiual_species function you, the user,
-#' provide in the configuration of a simulation. It will create a species object representing one species
+#' @details This function is intented to be used in the create_initiual_species function at the configuration 
+#' of a simulation. It will create a species object representing one species
 #' in the simulation occupying the given list of initial cells.
 #'
 #' @param id the id for the new species, might be overriden, tbd
@@ -28,6 +28,7 @@ create_initial_species <- function(landscape, config){
 #' @param config the current config object
 #'
 #' @return returns a newly created species occupying the provided initial cells
+#' @example inst/examples/create_species_help.R
 #' @export
 create_species <- function(id, initial_cells, config) {
   num_cells <- length(initial_cells)
@@ -88,6 +89,7 @@ update_species_from_abundance <- function(species) {
 #' @param species the species to produce the full genetic distance matrix for
 #'
 #' @return the full/decompressed divergence matrix
+#' @example inst/examples/get_divergence_matrix_help.R
 #' @export
 get_divergence_matrix <- function(species) {
   return( invisible(decompress_divergence(species[["divergence"]]) ) )

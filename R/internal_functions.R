@@ -26,6 +26,7 @@ select_habitable_hab <- function(what) {
 #' @param landscape the landscape to calculate the richnness over
 #'
 #' @return a vector with the richness for every cell in the input landscape
+#' @example inst/examples/get_geo_richness_help.R
 #' @export
 get_geo_richness <- function(species_list, landscape){
   cell_names <- rownames(landscape[["coordinates"]])

@@ -4,7 +4,7 @@
 #'
 #' @param species a single species
 #' @param landscape a landscape
-#'
+#' @example inst/examples/plot_species_presence_help.R
 #' @export
 plot_species_presence <- function(species, landscape) {
   presence <- species[["abundance"]]
@@ -28,7 +28,7 @@ plot_landscape <- function(landscape) {
 #'
 #' @param species_list a list of species to use in the richness calculation
 #' @param landscape a landscape to plot the richness onto
-#'
+#' @example inst/examples/plot_richness_help.R
 #' @export
 plot_richness <- function(species_list, landscape) {
   richness <- get_geo_richness(species_list, landscape)
@@ -42,7 +42,7 @@ plot_richness <- function(species_list, landscape) {
 #' @param landscape a landscape to plot the values onto
 #' @param title a title string for resulting plot, the time will be taken and appended from the landscape id
 #' @param no_data what value should be used for missing values in values
-#'
+#' @example inst/examples/plot_raster_single_help.R
 #' @export
 plot_raster_single <- function(values, landscape, title, no_data = 0) {
   img <- cbind(landscape[["coordinates"]], no_data)

@@ -10,6 +10,7 @@
 #' @return returns a named list with the paths for the input and uoutput directories
 #'
 #' @importFrom tools file_path_sans_ext
+#' @example inst/examples/prepare_directories_help.R
 #' @export
 prepare_directories <- function(config_file = NA,
                                 input_directory = NA,
@@ -75,6 +76,7 @@ prepare_directories <- function(config_file = NA,
 #' create_config creates eiter an empty configuration oder prepopulates a configuration from a config file
 #'
 #' @param config_file NA the create an empty config or the path to a valid configuration file
+#' @example inst/examples/create_config_help.R
 #' @export
 create_config <- function(config_file = NA) {
   new_config <- create_empty_config()
@@ -151,6 +153,7 @@ populate_settings_list <- function(config_list, user_env) {
 #' @param config a config object
 #' @return Returns TRUE for a valid config, FALSE otherwise, in which case a list of
 #' missing parameters will be printed out as well
+#' @example inst/examples/verify_config_help.R
 #' @export
 verify_config <- function(config) {
   missing_settings <- list()
@@ -246,6 +249,7 @@ complete_config <- function(config) {
 #' @param overwrite overwrite existing file? defaults to FALSE
 #'
 #' @return returns a boolean indicating succes or failure
+#' @example inst/examples/write_config_skeleton_help.R
 #' @export
 write_config_skeleton <- function(file_path = "./config_skeleton.R", overwrite = FALSE) {
   if( file.exists(file_path) & !overwrite) {
