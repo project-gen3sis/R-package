@@ -14,3 +14,9 @@ plot_species_presence(species, landscape)
 \description{
 plot a species' presence on a given landscape
 }
+\examples{
+##TODO##
+
+# add example
+# plot_species_presence(species, landscape)
+}

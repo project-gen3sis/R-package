@@ -16,3 +16,9 @@ missing parameters will be printed out as well
 \description{
 Verifies that all required config fields are provided.
 }
+\examples{
+##TODO##
+
+# add example
+# verify_config(config = NA)
+}

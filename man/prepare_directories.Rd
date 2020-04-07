@@ -27,3 +27,10 @@ prepare_directories checks if the directories exist, and otherwise creates them.
 This function will be called by the simulation, but is made available if the directories should be created
 beforehand, for example to redirect the stdout to a file in the output directory.
 }
+\examples{
+##TODO##
+
+# add example
+
+# prepare_directories(...)
+}

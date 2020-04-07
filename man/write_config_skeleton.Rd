@@ -17,3 +17,9 @@ returns a boolean indicating succes or failure
 \description{
 Write out a config skeleton.
 }
+\examples{
+##TODO##
+
+# add example
+# write_config_skeleton(file_path = "./config_skeleton.R", overwrite = FALSE )
+}

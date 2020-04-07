@@ -15,3 +15,9 @@ the full/decompressed divergence matrix
 \description{
 get_divergence_matrix returns the full genetic distance matrix for a given species (cell x cell)
 }
+\examples{
+##TODO##
+
+# add example
+#get_divergence_matrix(species)
+}

@@ -18,3 +18,9 @@ plot_raster_single(values, landscape, title, no_data = 0)
 \description{
 Plot a single set of values onto a given landscape
 }
+\examples{
+##TODO##
+
+# add example
+# plot_raster_single(values, landscape, title, no_data = 0)
+}

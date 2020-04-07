@@ -12,3 +12,9 @@ create_config(config_file = NA)
 \description{
 create_config creates eiter an empty configuration oder prepopulates a configuration from a config file
 }
+\examples{
+##TODO##
+
+# add example
+# create_config(config_file = NA)
+}
