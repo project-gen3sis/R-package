@@ -20,7 +20,15 @@ returns a newly created species occupying the provided initial cells
 create_species This creates a new species
 }
 \details{
-This function is intented to be used in the create_initiual_species function you, the user,
-provide in the configuration of a simulation. It will create a species object representing one species
+This function is intented to be used in the create_initiual_species function at the configuration 
+of a simulation. It will create a species object representing one species
 in the simulation occupying the given list of initial cells.
+}
+\examples{
+##TODO##
+
+# add example
+#create_species This creates a new species
+
+# create_species(id, initial_cells, config)
 }

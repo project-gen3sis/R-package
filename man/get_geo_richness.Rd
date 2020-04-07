@@ -17,3 +17,10 @@ a vector with the richness for every cell in the input landscape
 \description{
 calculate the richness of a list of species over a given landscape
 }
+\examples{
+##TODO##
+
+# add example
+# get_geo_richness(species_list, landscape)
+
+}

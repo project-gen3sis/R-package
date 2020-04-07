@@ -14,3 +14,9 @@ plot_richness(species_list, landscape)
 \description{
 Plot the richness of the given list of species on a landscape
 }
+\examples{
+##TODO##
+
+# add example
+# plot_richness(species_list, landscape)
+}
