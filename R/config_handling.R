@@ -73,7 +73,7 @@ prepare_directories <- function(config_file = NA,
 
 
 
-#' create_config creates eiter an empty configuration oder prepopulates a configuration from a config file
+#' create_config creates either an empty configuration oder prepopulates a configuration from a config file
 #'
 #' @param config_file NA the create an empty config or the path to a valid configuration file
 #' @example inst/examples/create_config_help.R
