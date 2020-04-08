@@ -12,6 +12,7 @@
 #' @importFrom tools file_path_sans_ext
 #' @example inst/examples/prepare_directories_help.R
 #' @export
+#' 
 prepare_directories <- function(config_file = NA,
                                 input_directory = NA,
                                 output_directory = NA) {
@@ -59,15 +60,14 @@ prepare_directories <- function(config_file = NA,
 
   #output folders
   if(is.na(config_file)[1]|class(config_file)=="gen3sis_config") {
-    config_name <- "default_config"
+    config_name <- file.path("default_config", paste0(format(Sys.time(), "%Y%m%d%H%m"), "-", formatC(sample(1:9999,1), digits=4, flag="0")))
   } else {
     config_name <- tools::file_path_sans_ext(basename(config_file))
   }
-  
   dir$output <- file.path(output_dir, config_name)
-  print(paste("output directory is:", dir$output))
   dir.create(dir$output, recursive=TRUE, showWarnings = FALSE)
-
+  print(paste("output directory is:", dir$output))
+  
   dir$output_species <- file.path(dir$output, "species")
   dir.create(dir$output_species, recursive=TRUE, showWarnings = FALSE)
   dir$output_landscapes <- file.path(dir$output, "landscapes")
