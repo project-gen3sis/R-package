@@ -16,12 +16,14 @@ prepare_directories <- function(config_file = NA,
                                 input_directory = NA,
                                 output_directory = NA) {
   #no default config, config file must be given
-  if(is.na(config_file)) {
+  if(is.na(config_file)[1]) {
     stop("no config file provided!")
+  } else if (class(config_file)=="gen3sis_config"){
+    print("config found: using config object")
   } else if(!file.exists(config_file)){
     stop("config file does not exist!")
   } else {
-    print(paste("user config found:", config_file))
+    print(paste("config found:", config_file))
   }
 
   if(is.na(input_directory)) {
@@ -34,11 +36,18 @@ prepare_directories <- function(config_file = NA,
   if(!dir.exists(input_dir)){
     stop(paste("input directory does not exist!:", input_dir))
   }
+  print(paste("landscape found:", input_directory))
 
   if(is.na(output_directory)) {
-    path <- strsplit(config_file, "/")[[1]]
-    path <- paste(path[1:(length(path)-1)], collapse="/")
-    output_dir <- sub("[cC]onfig", "output", path)
+    if (class(config_file)=="gen3sis_config"){
+      path <- strsplit(input_dir, "/")[[1]]
+      path <- paste(path[1:(length(path)-1)], collapse="/")
+      output_dir <- sub("[lL]andscape", "output", path) 
+    } else if (class(config_file)=="character"){
+      path <- strsplit(config_file, "/")[[1]]
+      path <- paste(path[1:(length(path)-1)], collapse="/")
+      output_dir <- sub("[cC]onfig", "output", path) 
+    }
   } else {
     output_dir <- output_directory
   }
@@ -49,13 +58,14 @@ prepare_directories <- function(config_file = NA,
   dir$input <- input_dir
 
   #output folders
-  if(is.na(config_file)) {
+  if(is.na(config_file)[1]|class(config_file)=="gen3sis_config") {
     config_name <- "default_config"
   } else {
     config_name <- tools::file_path_sans_ext(basename(config_file))
   }
+  
   dir$output <- file.path(output_dir, config_name)
-
+  print(paste("output directory is:", dir$output))
   dir.create(dir$output, recursive=TRUE, showWarnings = FALSE)
 
   dir$output_species <- file.path(dir$output, "species")

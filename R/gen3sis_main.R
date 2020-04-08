@@ -19,8 +19,7 @@ assign("dist", -Inf, envir = counting)
 
 #' Run a simulation
 #'
-#' @param config_file configuration file for the simulation
-#' @param config configuration object derived from a config file
+#' @param config configuration file for the simulation or configuration object derived from a config file
 #' @param input_directory directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
 #' @param timestep_restart restart an exisitng simulation from this timestep or from the latest timestep
@@ -36,8 +35,7 @@ assign("dist", -Inf, envir = counting)
 #' @example inst/examples/run_simulation_help.R
 #'
 #' @export
-run_simulation <- function(config_file = NA,
-                          config = NA,
+run_simulation <- function(config = NA,
                           input_directory = NA,
                           output_directory = NA,
                           timestep_restart = NA,
@@ -56,20 +54,19 @@ run_simulation <- function(config_file = NA,
 
   system_time_start <- Sys.time() #Starting timer
 
-  directories <- prepare_directories(config_file = config_file,
+  directories <- prepare_directories(config_file = config,
                                      input_directory = input_directory,
                                      output_directory = output_directory)
 
-  if(is.na(config_file) & is.na(config)){
+  if(is.na(config)[1]){
     stop("please provide either a config file or a config object")
-  } else if (!is.na(config_file) & !is.na(config)) {
-    print("both config file and config object provided, using config object")
+  } else if (class(config)=="gen3sis_config"){
     config[["directories"]] <- directories
-  } else if (is.na(config_file)) {
+  } else if (class(config)=="character"){
+    config <- create_config(config_file = config)
     config[["directories"]] <- directories
   } else {
-    config <- create_config(config_file = config_file)
-    config[["directories"]] <- directories
+    stop("this is not a known config, please provide either a config file or a config object")
   }
   if(!verify_config(config)){
     stop("config verification failed")
