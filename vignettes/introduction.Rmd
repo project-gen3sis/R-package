@@ -61,13 +61,13 @@ Since this is a small data (252 KB), we made it already avaiable in the package.
 
  Like this:
 
-|>MY_EXPERIMENT_FOLDER     |
+|>EXPERIMENT_FOLDER     |
 |:-------------------------|
 |&nbsp;&nbsp;&nbsp;**>landscape**|
 |&nbsp;&nbsp;&nbsp;**>config**|
 
 ```{r eval=TRUE}
-datapath <- system.file(file.path("extdata", "EXPERIMENT_X"), package="gen3sis")
+datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
 ```
 
 
@@ -90,11 +90,11 @@ run_simulation(config = file.path(datapath,"config/config.R"), input_directory =
 
 ```
 
-After the simulation is finished, a plot is created at the EXPERIMENT_X folder to show the state of the initial world. We see, 1 species per cell in the 4 cell small island.
+After the simulation is finished, a plot is created at the CaseStudy1 folder to show the state of the initial world. We see, 1 species per cell in the 4 cell small island.
 
-Excellent. Our virtual species are waiting for us. They are automatically stored in a subfolder called output inside our EXPERIMENT_X folder named after our configuration file (i.e. config). Like this:
+Excellent. Our virtual species are waiting for us. They are automatically stored in a subfolder called output inside our CaseStudy1 folder named after our configuration file (i.e. config). Like this:
 
-|>MY_EXPERIMENT_FOLDER     |
+|>EXPERIMENT_FOLDER     |
 |:-------------------------|
 |&nbsp;&nbsp;&nbsp;>landscape|
 |&nbsp;&nbsp;&nbsp;>config|
