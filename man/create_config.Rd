@@ -2,7 +2,7 @@
 % Please edit documentation in R/config_handling.R
 \name{create_config}
 \alias{create_config}
-\title{create_config creates eiter an empty configuration oder prepopulates a configuration from a config file}
+\title{create_config creates either an empty configuration oder prepopulates a configuration from a config file}
 \usage{
 create_config(config_file = NA)
 }
@@ -10,7 +10,7 @@ create_config(config_file = NA)
 \item{config_file}{NA the create an empty config or the path to a valid configuration file}
 }
 \description{
-create_config creates eiter an empty configuration oder prepopulates a configuration from a config file
+create_config creates either an empty configuration oder prepopulates a configuration from a config file
 }
 \examples{
 ##TODO##

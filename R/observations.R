@@ -22,7 +22,8 @@ call_main_observer <- function(data, vars, config) {
 #'
 #' @noRd
 plot_end_of_simulation <- function(data, vars, config) {
-  # plotting of end of simulation goes here, like plotting the phylo_summary, 
+  # plotting of end of simulation goes here, like plotting the phylo_summary.
+  cat("plot_end_of_simulation to be implemented\n")
 }
 
 
@@ -35,17 +36,19 @@ plot_end_of_simulation <- function(data, vars, config) {
 #' @noRd
 write_runtime_statisitics <- function( data, vars, config) {
   # write out the runtime statistics, e.g R version, package version, runtime etc
+  cat("write_runtime_statistics to be implemented\n")
 }
 
 
-#' This function can be called within the observer function to observe (save) the full species list.
-#'
+#' This function can be called within the observer function to save the full species list.
+#' 
+#' @example inst/examples/save_species_help.R
 #' @export
-observe_species <- function() {
+save_species <- function() {
   config <- dynGet("config")
   data <- dynGet("data")
   vars <-  dynGet("vars")
-  observe_landscape()
+  save_landscape()
   dir.create(file.path(config$directories$output, "species"), showWarnings = F, recursive = T)
   species <- data$all_species
   saveRDS(object = species,
@@ -53,11 +56,12 @@ observe_species <- function() {
 }
 
 
-#' observes (saves) the current landscape, can be called independantly by the user and is called by 
+#' saves the current landscape, can be called independantly by the user and is called by 
 #' other observer functions relying on the landscape to be present
 #'
+#' @example inst/examples/save_landscape_help.R
 #' @export
-observe_landscape <- function() {
+save_landscape <- function() {
   config <- dynGet("config")
   data <- dynGet("data")
   vars <-  dynGet("vars")

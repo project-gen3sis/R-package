@@ -5,7 +5,6 @@
 \title{Run a simulation}
 \usage{
 run_simulation(
-  config_file = NA,
   config = NA,
   input_directory = NA,
   output_directory = NA,
@@ -15,9 +14,7 @@ run_simulation(
 )
 }
 \arguments{
-\item{config_file}{configuration file for the simulation}
-
-\item{config}{configuration object derived from a config file}
+\item{config}{configuration file for the simulation or configuration object derived from a config file}
 
 \item{input_directory}{directory where the all_geo_hab and distance_matrices reside}
 
@@ -40,8 +37,9 @@ Run a simulation
 library(gen3sis)
 
 #get correct path or correct input objects
-datapath <- system.file(file.path("extdata", "EXPERIMENT_X"), package="gen3sis")
+datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
 
 #run simulation
-run_simulation(config_file = file.path(datapath,"config/config.R"), input_directory = file.path(datapath,"landscape"))
+run_simulation(config = file.path(datapath,"config/config.R"), 
+                input_directory = file.path(datapath,"landscape"))
 }
