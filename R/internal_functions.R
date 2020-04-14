@@ -97,12 +97,12 @@ save_summary <- function(config, data, vars){
 #'
 #' @param phy the phylogeny up to this point
 #' @param label a lable
-#' @param output_location the file path and name to store the result
+#' @param output_file the file path and name to store the result
 #'
 #' @importFrom stringr str_replace str_extract
 #' @importFrom utils write.table
 #' @noRd
-write_nex <- function(phy, label="sp", output_location){
+write_nex <- function(phy, label="sp", output_file){
 
   #    phy <- sgen3sis$phy  phy <- duplo  phy <- simples
 
@@ -157,10 +157,9 @@ write_nex <- function(phy, label="sp", output_location){
 
     for(i in 1:(max(phy_no_root[,"Descendent"])) ){
       String<-str_replace(String,
-
                           paste(label,Ancestral[i],":",Ancestral_age[toString(Ancestral[i])], sep="") ,
-
-                          paste("(", label,Ancestral[i],":",Age[i+1],",",label,Derived[i],":",Age[i+1],"):",Ancestral_age[toString(Ancestral[i])]-Age[i+1], sep="")
+                          paste("(", label,Ancestral[i],":",Age[i+1],",",label,Derived[i],":",Age[i+1],"):",
+                                Ancestral_age[toString(Ancestral[i])]-Age[i+1], sep="")
       )
 
       Ancestral_age[toString(Ancestral[i])] <- Age[i+1]
@@ -195,10 +194,10 @@ write_nex <- function(phy, label="sp", output_location){
   } #end test if there is a tree
 
   write.table(String_final,
-
-              file.path(output_location, "phy.nex"),
-
-              quote=FALSE, row.names = F, col.names=F)
+              output_file,
+              quote=FALSE, 
+              row.names = F, 
+              col.names=F)
 
   #read phylo
   # t <- read.nexus(file.path(output_location, "phy.nex"))

@@ -2,7 +2,8 @@
 % Please edit documentation in R/ecology.R
 \name{apply_ecology}
 \alias{apply_ecology}
-\title{apply_ecology is the user provided ecology function}
+\title{apply_ecology allows the user to define the ecology of the species that takes place within each cell,
+which define species survival and species abundance.}
 \usage{
 apply_ecology(abundance, traits, local_environment, config)
 }
@@ -11,18 +12,21 @@ apply_ecology(abundance, traits, local_environment, config)
 
 \item{traits}{a named matrix containg the species traits, one row per species}
 
-\item{local_environment}{the environemntal values for the given cell}
+\item{local_environment}{the environmental values for the given cell}
 
-\item{config}{the current config}
+\item{config}{the config of the simulation}
 }
 \value{
 an abundance vector with the new abundace values for every species.
 An abundance value of 0 indicates species death, any other values survival.
 }
 \description{
-apply_ecology is the user provided ecology function
+apply_ecology allows the user to define the ecology of the species that takes place within each cell,
+which define species survival and species abundance.
 }
 \details{
-The arguments to this function are an aggregation of all species living in a single cell.
-It is then responsible to determine which of the species survives in this particular cell and which ones die.
+The arguments of the function allows to apply abiotic and biotic ecological rules to species in each 
+cell. Based on those rules, the function updates the abundance of each species in each cell. If the abundance 
+is null, the species is absent or extinct. Ecology can account for local environmental conditions, the abundance of
+species, or their traits.
 }

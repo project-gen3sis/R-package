@@ -270,7 +270,7 @@ run_simulation <- function(config = NA,
   # #------------------------------------------------------------------#
   write.table(val$data$phy, file = file.path(val$config$directories$output, "phy.txt"), sep="\t")
 
-  write_nex(phy=val$data$phy, label="sp", output_location=val$config$directories$output)
+  write_nex(phy=val$data$phy, label="species", file.path(output_location=val$config$directories$output, "phy.nex"))
   
   return(val$data$summaries)
 }

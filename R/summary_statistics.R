@@ -22,6 +22,8 @@ initialize_summary_statistics <- function(data, vars, config){
   
   data$summaries[["phylo_summary"]] <- phylo_summary
   
+  data$summaries[["occupancy"]] <- c("initial" = percentage_inhabited(data$all_species, data$landscape))
+  
   return(list(data = data, vars = vars, config = config))
 }
 
@@ -35,6 +37,7 @@ initialize_summary_statistics <- function(data, vars, config){
 #' @return the standard val list of data, vars, config
 #' @noRd
 update_summary_statistics <- function(data, vars, config) {
+  # phylo
   phylo_summary <- data$summaries$phylo_summary
   n <- nrow(phylo_summary)
   total <- length(data$all_species)
@@ -47,12 +50,37 @@ update_summary_statistics <- function(data, vars, config) {
   rownames(phylo_summary) <- c(rownames(phylo_summary)[1:n], vars$ti)
   
   data$summaries$phylo_summary <- phylo_summary
+  
+  # occupancy
+  tmp <- c(names(data$summaries$occupancy), vars$ti)
+  occupancy <- c(data$summaries$occupancy, percentage_inhabited(data$all_species, data$landscape)) 
+  names(occupancy) <- tmp
+  data$summaries$occupancy <- occupancy
+  
   return(list(data = data, vars = vars, config = config))
 }
 
 
+#' Write the runtime information to a file
+#'
+#' @param data the current data object 
+#' @param vars the current vars object
+#' @param config the current config
+#'
+#' @noRd
+write_runtime_statisitics <- function( data, vars, config) {
+  # write out the runtime statistics, e.g R version, package version, runtime etc
+  cat("write_runtime_statistics to be implemented\n")
+}
 
 
+#' calcuates the ratio of occupied cells in a given landscape
+#'
+#' @param species_list a list of species to consider 
+#' @param landscape the landscape to use
+#'
+#' @return the ratio of inhabited cells
+#' @noRd
 percentage_inhabited <- function(species_list, landscape) {
   richness <- get_geo_richness(species_list, landscape)
   inhabited <- sum(which(richness != 0))

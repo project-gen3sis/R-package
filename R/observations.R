@@ -27,16 +27,53 @@ plot_end_of_simulation <- function(data, vars, config) {
 }
 
 
-#' Write the runtime information to a file
-#'
-#' @param data the current data object 
-#' @param vars the current vars object
-#' @param config the current config
-#'
-#' @noRd
-write_runtime_statisitics <- function( data, vars, config) {
-  # write out the runtime statistics, e.g R version, package version, runtime etc
-  cat("write_runtime_statistics to be implemented\n")
+#' This function can be called within the observer function to save the current occupancy pattern
+#' 
+#' @example inst/examples/save_richness_help.R
+#' @export
+save_occupancy <- function() {
+  config <- dynGet("config")
+  data <- dynGet("data")
+  vars <-  dynGet("vars")
+  save_landscape()
+  dir.create(file.path(config$directories$output, "occupancy"), showWarnings = F, recursive = T)
+  tmp <- get_geo_richness(data$all_species, data$landscape)
+  tmp <- tmp > 0 
+  saveRDS(object = tmp,
+          file = file.path(config$directories$output, "occupancy", paste0("occupancy_t_", vars$ti, ".rds")))
+}
+
+
+#' This function can be called within the observer function to save the current richness pattern
+#' 
+#' @example inst/examples/save_richness_help.R
+#' @export
+save_richness <- function() {
+  config <- dynGet("config")
+  data <- dynGet("data")
+  vars <-  dynGet("vars")
+  save_landscape()
+  dir.create(file.path(config$directories$output, "richness"), showWarnings = F, recursive = T)
+  richness <- get_geo_richness(data$all_species, data$landscape)
+  saveRDS(object = richness,
+          file = file.path(config$directories$output, "richness", paste0("richness_t_", vars$ti, ".rds")))
+}
+
+
+#' This function can be called within the observer function to save the current phylogeny.
+#' 
+#' @examples inst/examples/save_phylogeny_help.R
+#' @export
+save_phylogeny <- function(){
+  config <- dynGet("config")
+  data <- dynGet("data")
+  vars <-  dynGet("vars")
+  
+  directory <- file.path(config$directories$output, "phylogeny")
+  dir.create(directory, showWarnings = F, recursive = T)
+  
+  file <- file.path(directory, paste0("phylogeny_t_", vars$ti, ".nex"))
+  write_nex(phy=data$phy, label="species", output_file=file)
 }
 
 
@@ -71,4 +108,46 @@ save_landscape <- function() {
     landscape <- data$landscape
     saveRDS(object = landscape, file = landscape_file)
   }
+}
+
+
+#' This function can be called within the observer function to save the species abundances.
+#' 
+#' @example inst/examples/save_abundance_help.R
+#' @export
+save_abundance <- function() {
+  save_extract("abundance")
+}
+
+
+#' This function can be called within the observer function to save the species traits.
+#' 
+#' @example inst/examples/save_traits_help.R
+#' @export
+save_traits <- function() {
+  save_extract("traits")
+}
+
+
+#' This function can be called within the observer function to save the compressed species divergence.
+#' 
+#' @example inst/examples/save_divergence_help.R
+#' @export
+save_divergence <- function() {
+  save_extract("divergence")
+}
+
+
+#' Save a named element from all species.
+#' 
+#' @noRD
+save_extract <- function(element) {
+  config <- dynGet("config")
+  data <- dynGet("data")
+  vars <-  dynGet("vars")
+  save_landscape()
+  dir.create(file.path(config$directories$output, element), showWarnings = F, recursive = T)
+  tmp <- lapply(data$all_species, function(x){return(x[[element]])})
+  saveRDS(object = tmp,
+          file = file.path(config$directories$output, element, paste0(element, "_t_", vars$ti, ".rds")))
 }

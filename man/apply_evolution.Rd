@@ -2,16 +2,17 @@
 % Please edit documentation in R/evolution.R
 \name{apply_evolution}
 \alias{apply_evolution}
-\title{apply_evolution let's the user mutate the traits of a given species}
+\title{apply_evolution allows defining the function that changes the values of traits of a given
+species at each time step and in each cell. If no operations are provided, traits are not changing.}
 \usage{
 apply_evolution(species, cluster_indices, landscape, config)
 }
 \arguments{
-\item{species}{The current species to mutate}
+\item{species}{The target species object whose traits will be changed}
 
 \item{cluster_indices}{an index vector indicating the cluster every occupied cell is part of}
 
-\item{landscape}{the current landscape}
+\item{landscape}{the current landscape which can co-determine the rate of trait changes}
 
 \item{config}{the current config}
 }
@@ -19,7 +20,8 @@ apply_evolution(species, cluster_indices, landscape, config)
 the mutated species traits matrix
 }
 \description{
-apply_evolution let's the user mutate the traits of a given species
+apply_evolution allows defining the function that changes the values of traits of a given
+species at each time step and in each cell. If no operations are provided, traits are not changing.
 }
 \details{
 This function is called for any single species alongside an index for
