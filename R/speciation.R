@@ -1,17 +1,28 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' get_divergence_factor gives a value or matrix indicating the divergence
-#' between geographically separated clusters/populations of a species
+#' get_divergence_factor allows the user to define the rate at which geographic clusters accumulate differentiation
+#' with each other.
 #'
-#' @details this function determines the increase in deivergence between separated clusters of a species.
-#' It can either return a single value or a full cluster by cluster matrix. For every timestep two cells
-#' belong to the same cluster their divergence is reduced by 1.
-#' Therefore the divergence values should be scaled as rewuired.
+#' @details this function determines the increase in divergence between separated clusters of a species. 
+#' This function should return either a value, when there is one unique cluster, or a matrix indicating 
+#' the divergence that should be accumulated between specific pairwise geographic clusters.
+#' It can either return a single value or a full cluster by cluster matrix. 
+#' 
+#' if you return one value it will be used to increment every divergence between any given distinct clusters.
+#' if you return a matrix it has to be in the form of cluster x cluster, in which case the divergence values will 
+#' be increased according to the cluster 
+#' membership of any cell pairs
 #'
-#' @param species the current species
+#' For every time step, the divergence between geographic clusters can increase by a defined numbers.
+#' Oppositely, for every time step, if cluster their divergence is reduced by 1. 
+#'
+#' The divergence values should be scaled as required optionally using landscape values. For instance,
+#' higher temperature could foster faster divergence between cluster.
+#'
+#' @param species the species of the current time step
 #' @param cluster_indices an index vector indicating the cluster every occupied cell is part of
-#' @param landscape the current landscape
-#' @param config the current config
+#' @param landscape the landscape of the current time step
+#' @param config the config of the simulation
 #'
 #' @return a single value or a matrix of divergences between all clusters occuring in clusters_indices
 #' @export
@@ -168,7 +179,7 @@ update_divergence <- function(divergence, cluster_indices, ifactor) {
 }
 
 
-#' Updates the total number of exisitng species, to be replaced
+#' Updates the total number of existing species, to be replaced
 #'
 #' @param config the current config object
 #' @param data the current data list
