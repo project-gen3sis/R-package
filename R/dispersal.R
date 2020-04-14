@@ -1,21 +1,21 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' get_dispersal_values is a user provided function that creates a number of dispersal values for a given species.
+#' get_dispersal_values allows the user to define a function that generates dispersal value(s) for a given species.
 #'
-#' @details These dispersal values are used for two different tasks. They are used to evaluate pair-wise dispersal
-#' events between colonozed and uninhabited cells. They are furthermore used during the geographical clustering of
-#' species populations when determining which cells are in range of each other and belong together.
+#' @details Dispersal values are used for two different operations. First, they are used to evaluate pairwise dispersal
+#' events between colonized and uninhabited cells. Second, they are used during the geographical clustering of
+#' species populations when determining which cells are in range of each other and belong to the same cluster
 #' Note: if the distances are randomized the cluster-formation may be asymetrical. Therefore the ordering of all
-#' clustering operations is randomized
-#' @param num_draws 'num_draws' the expected number of dispersal values
-#' @param species 'species' the current species for which the values are to be produced
+#' clustering operations is randomized.
+#' @param num_draws 'num_draws' the number of dispersal values drawn
+#' @param species 'species' the species for which the values are to be produced
 #' @param landscape 'landscape' the current landscape
 #' @param config 'config' the current config
 #'
 #' @return a numerical vector of length num_draws with dispersal values
 #' @export
 get_dispersal_values <- function(num_draws, species, landscape, config) {
-  stop("this function documents the user function interface only, do not use it!")
+  stop("this function documents the user function interface only, do not use it")
 }
 
 
