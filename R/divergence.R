@@ -1,6 +1,6 @@
 # Copyright (c) 2020, ETH Zurich
 
-# to be merged with compress divergence
+# Function to be merged with compress divergence
 compress.gen.dist <- function(gen_dist) {
   #compresses genetic distance from all locations to all locations
   #into clusters that are similar. Therefore creating a gen distance
@@ -23,7 +23,7 @@ compress.gen.dist <- function(gen_dist) {
 }
 
 
-#' compress_divergence conmpresses the divergence matrix into an index and smaller
+#' The function compress_divergence compresses the divergence matrix into an index and smaller
 #' matrix by storing only unique rows/columns
 #'
 #' @param divergence_matrix the divergence matrix to compress
@@ -40,7 +40,7 @@ compress_divergence <- function(divergence_matrix){
 
 
 
-#' decompress_divergence rebuilds the full divergence matrix from it's compressed form
+#' The function decompress_divergence rebuilds the full divergence matrix from its compressed form
 #'
 #' @param divergence the compressed form of the divergence matrix
 #'
@@ -59,7 +59,7 @@ decompress_divergence <- function(divergence) {
 }
 
 
-#' limits the given compressed divergence to a given set of cells
+#' The function limit_divergence_to_cells limits the given compressed divergence to a given set of cells
 #'
 #' @param divergence a compressed divergence matrix
 #' @param cells a list of cells to limit the divergence to
@@ -82,7 +82,7 @@ limit_divergence_to_cells <- function(divergence, cells) {
 }
 
 
-#' consolidate divergence checks and possibly merges identical divergence clusters that may arise when removing cells from a species
+#' The function consolidate_divergence checks and possibly merges identical divergence clusters that may arise when removing cells from a species
 #'
 #' @param divergence a compressed divergence matrix
 #'
