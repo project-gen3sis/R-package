@@ -3,21 +3,19 @@
 #' get_divergence_factor allows the user to define the rate at which geographic clusters accumulate differentiation
 #' with each other.
 #'
-#' @details this function determines the increase in divergence between separated clusters of a species. 
-#' This function should return either a value, when there is one unique cluster, or a matrix indicating 
-#' the divergence that should be accumulated between specific pairwise geographic clusters.
-#' It can either return a single value or a full cluster by cluster matrix. 
+#' @details this function determines the increase in divergence between separated clusters of a species. This function
+#' should return either a value, one there is an homogeneous divergence, or a matrix indicating the divergence that
+#' should be accumulated between specific pairwise geographic clusters.
 #' 
-#' if you return one value it will be used to increment every divergence between any given distinct clusters.
-#' if you return a matrix it has to be in the form of cluster x cluster, in which case the divergence values will 
-#' be increased according to the cluster 
-#' membership of any cell pairs
+#' The function can either return a single value or a full cluster by cluster matrix. If only one value is returned it will be used 
+#' to increment divergence between any given distinct cluster pairs. If a matrix is returned it has to be in the dimension of
+#' cluster x cluster, in which case the divergence values will be increased according to the cluster membership of any cell pairs
 #'
-#' For every time step, the divergence between geographic clusters can increase by a defined numbers.
-#' Oppositely, for every time step, if cluster their divergence is reduced by 1. 
-#'
-#' The divergence values should be scaled as required optionally using landscape values. For instance,
-#' higher temperature could foster faster divergence between cluster.
+#' For every time step, the divergence between geographic clusters can increase by a defined number. The divergence values can be 
+#' scaled optionally using the species or landscape information. For instance, the divergence between clusters could be higher under
+#' warmer temperature, or difference in ecological traits could promote faster divergence between clusters.
+#' 
+#' Oppositely, for every time step, if cluster are merged their divergence is reduced by 1. 
 #'
 #' @param species the species of the current time step
 #' @param cluster_indices an index vector indicating the cluster every occupied cell is part of
