@@ -1,21 +1,24 @@
 # Copyright (c) 2020, ETH Zurich
 
 
-#' apply_ecology is the user provided ecology function
+#' apply_ecology allows the user to define the ecology of the species that takes place within each cell,
+#' which define species survival and species abundance. 
 #'
-#' @details The arguments to this function are an aggregation of all species living in a single cell.
-#' It is then responsible to determine which of the species survives in this particular cell and which ones die.
+#' @details The arguments of the function allows to apply abiotic and biotic ecological rules to species in each 
+#' cell. Based on those rules, the function updates the abundance of each species in each cell. If the abundance 
+#' is null, the species is absent or extinct. Ecology can account for local environmental conditions, the abundance of
+#' species, or their traits.
 #'
 #' @param abundance a named vector of abundances with one abundance value per species
 #' @param traits a named matrix containg the species traits, one row per species
-#' @param local_environment the environemntal values for the given cell
-#' @param config the current config
+#' @param local_environment the environmental values for the given cell
+#' @param config the config of the simulation
 #'
 #' @return an abundance vector with the new abundace values for every species.
 #' An abundance value of 0 indicates species death, any other values survival.
 #' @export
 apply_ecology <- function(abundance, traits, local_environment, config) {
-  stop("this function documents the user function interface only, do not use it!")
+  stop("this function documents the user function interface only, do not use it.")
 }
 
 
@@ -24,9 +27,9 @@ apply_ecology <- function(abundance, traits, local_environment, config) {
 #'
 #' @details The ecology is applied on a per cell basis over all species occurring in each cell.
 #' Therefore this function iterates over all cells and collects the abundance and traits of any species occuring there.
-#' It then calls the user supplied apply_ecology function to this collection.
+#' It then calls the user supplied apply_ecology function to this collection and apply ecology to each cell.
 #'
-#' @param config the general config obejct
+#' @param config the general config of the simulation
 #' @param data the general data list
 #' @param vars the general variables list
 #'
@@ -66,7 +69,7 @@ loop_ecology <- function(config, data, vars) {
     }
     max_n_sp_idi <- config$gen3sis$general$max_number_of_coexisting_species
     if (length(coo_sp) > max_n_sp_idi) {
-      stop(paste0("Maximim number of species per cell (i.e. max_n_sp_idi) reached! Specificaly ",
+      stop(paste0("Maximum number of species per cell (i.e. max_n_sp_idi) reached. Specifically ",
                   length(coo_sp),"(>", max_n_sp_idi,") species @ t",vars$ti, " idi",cell ))
     }
 
