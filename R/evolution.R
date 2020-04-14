@@ -1,14 +1,14 @@
 # Copyright (c) 2020, ETH Zurich
 
 
-#' apply_evolution let's the user mutate the traits of a given species
+#' apply_evolution allow the definition of the function that changes the values of traits of a given species at each time step and in each cell.
 #'
 #' @details This function is called for any single species alongside an index for
 #' the geographical clusters within the species.
 #'
-#' @param species The current species to mutate
+#' @param species The target species whose traits will be changed
 #' @param cluster_indices an index vector indicating the cluster every occupied cell is part of
-#' @param landscape the current landscape
+#' @param landscape the current landscape which can co-determine the rate of trait changes
 #' @param config the current config
 #'
 #' @return the mutated species traits matrix
