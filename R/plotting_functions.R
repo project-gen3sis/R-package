@@ -32,22 +32,21 @@ plot_landscape <- function(landscape) {
 #'
 #' @export
 plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
+
   landscape <- landscape[[1]] # takes only the first one
-  if (is.null(start_end_times)){
+  if (is.null(start_end_times)){ # takes last and first timesteps
     start_end_times <- which(colnames(landscape)%in%colnames(landscape)[c(3,ncol(landscape))])
   }
-  
   
   times=rev(round(seq(from=start_end_times[1], to=start_end_times[2], length.out = slices+2  ),0))
   previous_par <- par(no.readonly = TRUE)
   par(mfrow=c(1,length(times)))
-  for (times_i in 1:times){
+  for (times_i in 1:length(times)){
     # times_i <- 1
     plot(rasterFromXYZ(landscape[,c(1,2,times[times_i])]), col="black", 
-         axes=F,legend=FALSE, tck = 0, main=colnames(landscape)[-c(1,2)][times[times_i]], line=-3)
+         axes=F,legend=FALSE, tck = 0, main=colnames(landscape)[times[times_i]], line=-3)
   }
   par(previous_par)
-  
 }
 
 
