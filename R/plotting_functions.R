@@ -27,17 +27,19 @@ plot_landscape <- function(landscape) {
 #' plot the outline of a given landscape over time
 #'
 #' @param landscape the input landscape to plot
-#' @param slices the amount of slices though time (minimal value is 2).
+#' @param slices the amount of slices though time between start and end (dafaul value is 2).
 #' @param stat_end_times the stating and ending times of the simulation (default is NULL, takes the oldest and most recent avaiable)
 #'
 #' @export
 plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
   landscape=readRDS("S:/ffopp/gasm/input/world_scotese/data_driven/3_input_gen3sis_1d/landscapes.rds")
-  
+  landscape <- landscape[[1]] # takes only the first one
   if (is.null(start_end_times)){
-    start_end_times <- colnames(landscape[[1]])[3,ncol(landscape[[1]])]
+    start_end_times <- colnames(landscape)[c(3,ncol(landscape))]
   }
   
+  
+  seq(1:ncol(landcas), length.out =  1    )
   
   
   plot_raster_multiple(landscape[["environment"]],
