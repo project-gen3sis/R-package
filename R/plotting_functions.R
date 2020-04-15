@@ -32,9 +32,11 @@ plot_landscape <- function(landscape) {
 #'
 #' @export
 plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
+  landscape=readRDS("S:/ffopp/gasm/input/world_scotese/data_driven/3_input_gen3sis_1d/landscapes.rds")
   
-  
-  
+  if (is.null(start_end_times)){
+    start_end_times <- colnames(landscape[[1]])[3,ncol(landscape[[1]])]
+  }
   
   
   
