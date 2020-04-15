@@ -24,6 +24,25 @@ plot_landscape <- function(landscape) {
 }
 
 
+#' plot the outline of a given landscape over time
+#'
+#' @param landscape the input landscape to plot
+#' @param slices the amount of slices though time (minimal value is 2).
+#' @param stat_end_times the stating and ending times of the simulation (default is NULL, takes the oldest and most recent avaiable)
+#'
+#' @export
+plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
+  
+  
+  
+  
+  
+  
+  plot_raster_multiple(landscape[["environment"]],
+                       landscape)
+}
+
+
 #' Plot the richness of the given list of species on a landscape
 #'
 #' @param species_list a list of species to use in the richness calculation
