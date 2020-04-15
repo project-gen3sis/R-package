@@ -1,13 +1,13 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' prepare_directories checks if the directories exist, and otherwise creates them.
+#' The function prepare_directories checks if the necessary directories exist, and otherwise creates them.
 #' This function will be called by the simulation, but is made available if the directories should be created
-#' beforehand, for example to redirect the stdout to a file in the output directory.
+#' manually beforehand, for example to redirect the stdout to a file in the output directory.
 #'
-#' @param config_file file path to config file, if NA default config will be used
-#' @param input_directory path to input directoy, if NA will be derived from config file path
-#' @param output_directory path to output directory, if NA will be derived from config file path
-#' @return returns a named list with the paths for the input and uoutput directories
+#' @param config_file path to the config file, if NA the default config will be used
+#' @param input_directory path to input directoy, if NA it will be derived from the config file path
+#' @param output_directory path to output directory, if NA it will be derived from the config file path
+#' @return returns a named list with the paths for the input and output directories
 #'
 #' @importFrom tools file_path_sans_ext
 #' @example inst/examples/prepare_directories_help.R
@@ -83,9 +83,9 @@ prepare_directories <- function(config_file = NA,
 
 
 
-#' create_config creates either an empty configuration oder prepopulates a configuration from a config file
+#' The function create_config creates either an empty configuration or a pre-filled configuration from a config file.
 #'
-#' @param config_file NA the create an empty config or the path to a valid configuration file
+#' @param config_file if NA it creates an empty config or the path to a valid configuration file
 #' @example inst/examples/create_config_help.R
 #' @export
 create_config <- function(config_file = NA) {
@@ -113,7 +113,7 @@ internal_categories <- c("general",
                          )
 
 
-#' initializes a config with the values from a provided config file.
+#' The function populate_config initializes a config with the values from a provided config file.
 #'
 #' @param config config object to fill
 #' @param config_file config file to retrieve settings from
@@ -139,7 +139,7 @@ populate_config <- function(config, config_file) {
   return(invisible(config))
 }
 
-#' helper function to take on a set of user options for the given category
+#' This function is a helper function to take on a set of user options for the given category.
 #'
 #' @param config_list a named list of settings to look for
 #' @param user_env an environment containing all the user provided config options
@@ -158,7 +158,7 @@ populate_settings_list <- function(config_list, user_env) {
 }
 
 
-#' Verifies that all required config fields are provided.
+#' This function verifies that all required config fields are provided.
 #'
 #' @param config a config object
 #' @return Returns TRUE for a valid config, FALSE otherwise, in which case a list of
@@ -194,7 +194,7 @@ verify_config <- function(config) {
 }
 
 
-#' Creates an empty config object
+#' This function creates an empty config object
 #'
 #' @details all config fields are created and set to NA if they can be omited by the user
 #' or set to NULL if they must be provided before starting a simulation
@@ -233,7 +233,7 @@ create_empty_config <- function(){
 }
 
 
-#' completes the settings of a given config
+#' This function completes the settings of a given config
 #'
 #' @details some final checks and settings before the simulations runs.
 #' currently these include setting the random seed and adding a dispersal trait if not done by the user
@@ -253,10 +253,10 @@ complete_config <- function(config) {
 }
 
 
-#' Write out a config skeleton.
+#' This function writes out a config skeleton.
 #'
 #' @param file_path file path to write the file to
-#' @param overwrite overwrite existing file? defaults to FALSE
+#' @param overwrite overwrite existing file defaults to FALSE
 #'
 #' @return returns a boolean indicating succes or failure
 #' @example inst/examples/write_config_skeleton_help.R
