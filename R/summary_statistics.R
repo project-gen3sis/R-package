@@ -61,16 +61,67 @@ update_summary_statistics <- function(data, vars, config) {
 }
 
 
+#' save_summary saves a numer of summry statistics at the end of a simulation run. Contents tbd
+#'
+#' @param config the current config object
+#' @param data the current data oject
+#' @param vars the current vars object
+#' 
+#' @importFrom utils packageVersion write.table
+#'
+#' @noRd
+save_summary <- function(config, data, vars){
+  # function that creates a summary file, mainly sgen3sis.RData at the end of the simulation
+  path <- strsplit(config$directories$input, "/")[[1]]
+  world <- path[length(path)]
+  
+  # sgen3sis <- list(parameters=list(gasm_version=config$gasm_version,
+  #                               gasm_version=config$gasm_nickname))
+  
+  sgen3sis <- list("parameters" = list())
+  
+  sgen3sis$parameters <- c(sgen3sis$parameters, config)
+  
+  sgen3sis <- c(sgen3sis, list(
+    packageVersion=paste0( "gen3sis_", packageVersion("gen3sis")),
+    turnover=data$turnover,
+    phy = data$phy,
+    geo_richness = data$geo_richness,
+    # eco_by_cell=NULL#,    #Possible fix, add: eco_by_cell=data$eco_by_sp [Oskar]
+    #eco_by_sp_tf0=data$eco_by_sp_tf0,
+    eco_by_sp = data$eco_by_sp
+    #cpu_time=difftime(system_time_stop, system_time_start, units = "hours")[[1]]
+  ))
+  
+  #### START WIPOBSERVER ####
+  #add to sgen3sis all summary objects created with observer_summary
+  #### END WIPOBSERVER ####
+  
+  sgen3sis <- c(sgen3sis, flag=vars$flag)
+  save(sgen3sis, file=file.path(config$directories$output,"sgen3sis.RData"))
+}
+
+
 #' Write the runtime information to a file
 #'
 #' @param data the current data object 
 #' @param vars the current vars object
 #' @param config the current config
+#' @param total_runtime runtime for the simulation as collected in gen3sis_main.R
 #'
 #' @noRd
-write_runtime_statisitics <- function( data, vars, config) {
+write_runtime_statisitics <- function( data, vars, config, total_runtime) {
   # write out the runtime statistics, e.g R version, package version, runtime etc
   cat("write_runtime_statistics to be implemented\n")
+  stat_file <- file(file.path(config$directories$output, "runtime_information.txt"))
+  sink(stat_file)
+  cat("runtime:", total_runtime, "hours\n")
+  cat("\n\n R Version Information:\n\n")
+  print(version)
+  cat("\n\n Session Information: \n\n")
+  print(sessionInfo())
+  sink()
+  close(stat_file)
 }
 
 

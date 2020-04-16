@@ -65,6 +65,7 @@ run_simulation <- function(config = NA,
   } else if (class(config)=="gen3sis_config"){
     config[["directories"]] <- directories
   } else if (class(config)=="character"){
+    file.copy(config, directories$output)
     config <- create_config(config_file = config)
     config[["directories"]] <- directories
   } else {
@@ -79,9 +80,6 @@ run_simulation <- function(config = NA,
               "config" = config)
 
   val$config <- complete_config(val$config)
-
-  path = file.path(directories$output, paste0( "gen3sis_", packageVersion("gen3sis")))
-  file.create(path)
 
   val$config$gen3sis$general$verbose <- verbose
 
@@ -243,27 +241,11 @@ run_simulation <- function(config = NA,
   if(verbose>=2){
     cat("Hello present! Simulation finish. All Ok \n")
   }
-  system_time_stop <- Sys.time()
-  write(difftime(system_time_stop, system_time_start, units = "hours")[[1]], file=file.path(val$config$directories$output, "CPUtime_h.txt"))
-  #
-  #
-  
-  # observer functions
-  plot_end_of_simulation(val$data, val$vars, val$config)
-  write_runtime_statisitics(val$data, val$vars, val$config)
-  
-  
+
   # #------------------------------------------------------------------#
   # ######## update phylo with survival info (simulation.R) #######
   # #------------------------------------------------------------------#
   val <- update.phylo(val$config, val$data, val$vars)
-
-
-  # #------------------------------------------------------------------#
-  # ######## save sgen3sis (internal_functions.R) #######
-  # #------------------------------------------------------------------#
-  save_summary(val$config, val$data, val$vars)
-
 
   # #------------------------------------------------------------------#
   # ######## write phylogeny (internal_functions.R) #######
@@ -272,5 +254,19 @@ run_simulation <- function(config = NA,
 
   write_nex(phy=val$data$phy, label="species", file.path(output_location=val$config$directories$output, "phy.nex"))
   
+  # #------------------------------------------------------------------#
+  # ######## save sgen3sis (internal_functions.R) #######
+  # #------------------------------------------------------------------#
+  system_time_stop <- Sys.time()
+  total_runtime <- difftime(system_time_stop, system_time_start, units = "hours")[[1]]
+  
+  plot_end_of_simulation(val$data, val$vars, val$config)
+  write_runtime_statisitics(val$data, val$vars, val$config, total_runtime)
+  
+  save_summary(val$config, val$data, val$vars)
+  
+  if(verbose >= 1){
+    cat("Simulation complete, runtime:", total_runtime, "hours\n")
+  }
   return(val$data$summaries)
 }

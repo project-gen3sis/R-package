@@ -2,7 +2,8 @@
 
 
 
-#' prepare the interal data structures to be called with the observe_xx functions and call the user provide observer
+#' prepare the internal data structures to be called with the observe_xx functions and call the user provide observer
+#' Unless a problem shows up the save_xx functions call getDyn() to get access to the internal state, no prep here.
 #'
 #' @param data the current data object 
 #' @param vars the current vars object
@@ -23,7 +24,24 @@ call_main_observer <- function(data, vars, config) {
 #' @noRd
 plot_end_of_simulation <- function(data, vars, config) {
   # plotting of end of simulation goes here, like plotting the phylo_summary.
-  cat("plot_end_of_simulation to be implemented\n")
+  grDevices::pdf(file=file.path(config$directories$output, "/EndConditions.pdf"), width=10, height=12)
+  par(mfrow=c(2,1))
+  plot_richness(data$all_species, data$landscape)
+  
+  categories <- c("total", "alive", "speciation", "extinctions")
+  colours <- c("black", "magenta", "blue", "orange")
+  matplot(data$summaries$phylo_summary[-1,], 
+          type = "b", 
+          lty = 1, 
+          pch = 1:4,
+          col = colours,
+          xlab = "timesteps",
+          ylab = "# of events",
+          main = "Species development through time")
+  
+  legend("topright", col=colours, categories, bg="white", lwd=1, pch=1:4)
+  
+  grDevices::dev.off()
 }
 
 
@@ -139,8 +157,8 @@ save_divergence <- function() {
 
 
 #' Save a named element from all species.
-#' 
-#' @noRD
+#' @param element Name of element to save, e.g. "abundance" or "traits"
+#' @noRd
 save_extract <- function(element) {
   config <- dynGet("config")
   data <- dynGet("data")
