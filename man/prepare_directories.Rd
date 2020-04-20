@@ -2,9 +2,9 @@
 % Please edit documentation in R/config_handling.R
 \name{prepare_directories}
 \alias{prepare_directories}
-\title{prepare_directories checks if the directories exist, and otherwise creates them.
+\title{The function prepare_directories checks if the necessary directories exist, and otherwise creates them.
 This function will be called by the simulation, but is made available if the directories should be created
-beforehand, for example to redirect the stdout to a file in the output directory.}
+manually beforehand, for example to redirect the stdout to a file in the output directory.}
 \usage{
 prepare_directories(
   config_file = NA,
@@ -13,19 +13,19 @@ prepare_directories(
 )
 }
 \arguments{
-\item{config_file}{file path to config file, if NA default config will be used}
+\item{config_file}{path to the config file, if NA the default config will be used}
 
-\item{input_directory}{path to input directoy, if NA will be derived from config file path}
+\item{input_directory}{path to input directoy, if NA it will be derived from the config file path}
 
-\item{output_directory}{path to output directory, if NA will be derived from config file path}
+\item{output_directory}{path to output directory, if NA it will be derived from the config file path}
 }
 \value{
-returns a named list with the paths for the input and uoutput directories
+returns a named list with the paths for the input and output directories
 }
 \description{
-prepare_directories checks if the directories exist, and otherwise creates them.
+The function prepare_directories checks if the necessary directories exist, and otherwise creates them.
 This function will be called by the simulation, but is made available if the directories should be created
-beforehand, for example to redirect the stdout to a file in the output directory.
+manually beforehand, for example to redirect the stdout to a file in the output directory.
 }
 \examples{
 ##TODO##

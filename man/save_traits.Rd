@@ -9,3 +9,6 @@ save_traits()
 \description{
 This function can be called within the observer function to save the species traits.
 }
+\examples{
+
+}

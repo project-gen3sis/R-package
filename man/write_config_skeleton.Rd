@@ -2,20 +2,20 @@
 % Please edit documentation in R/config_handling.R
 \name{write_config_skeleton}
 \alias{write_config_skeleton}
-\title{Write out a config skeleton.}
+\title{This function writes out a config skeleton.}
 \usage{
 write_config_skeleton(file_path = "./config_skeleton.R", overwrite = FALSE)
 }
 \arguments{
 \item{file_path}{file path to write the file to}
 
-\item{overwrite}{overwrite existing file? defaults to FALSE}
+\item{overwrite}{overwrite existing file defaults to FALSE}
 }
 \value{
 returns a boolean indicating succes or failure
 }
 \description{
-Write out a config skeleton.
+This function writes out a config skeleton.
 }
 \examples{
 ##TODO##

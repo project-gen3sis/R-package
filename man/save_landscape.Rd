@@ -11,3 +11,6 @@ save_landscape()
 saves the current landscape, can be called independantly by the user and is called by 
 other observer functions relying on the landscape to be present
 }
+\examples{
+
+}

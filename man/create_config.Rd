@@ -2,15 +2,15 @@
 % Please edit documentation in R/config_handling.R
 \name{create_config}
 \alias{create_config}
-\title{create_config creates either an empty configuration oder prepopulates a configuration from a config file}
+\title{The function create_config creates either an empty configuration or a pre-filled configuration from a config file.}
 \usage{
 create_config(config_file = NA)
 }
 \arguments{
-\item{config_file}{NA the create an empty config or the path to a valid configuration file}
+\item{config_file}{if NA it creates an empty config or the path to a valid configuration file}
 }
 \description{
-create_config creates either an empty configuration oder prepopulates a configuration from a config file
+The function create_config creates either an empty configuration or a pre-filled configuration from a config file.
 }
 \examples{
 ##TODO##

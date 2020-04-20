@@ -2,18 +2,22 @@
 % Please edit documentation in R/gen3sis_species.R
 \name{get_divergence_matrix}
 \alias{get_divergence_matrix}
-\title{get_divergence_matrix returns the full genetic distance matrix for a given species (cell x cell)}
+\title{The function get_divergence_matrix returns the full divergence matrix for a given species (cell x cell).}
 \usage{
 get_divergence_matrix(species)
 }
 \arguments{
-\item{species}{the species to produce the full genetic distance matrix for}
+\item{species}{the species for which the divergence matrix should be produced}
 }
 \value{
-the full/decompressed divergence matrix
+the full decompressed divergence matrix
 }
 \description{
-get_divergence_matrix returns the full genetic distance matrix for a given species (cell x cell)
+The function get_divergence_matrix returns the full divergence matrix for a given species (cell x cell).
+}
+\details{
+The functions allows to extract the full divergence matrix representing the accumulated differentiation
+between all the cells that are occupied by the species. The input is a species object for any time step.
 }
 \examples{
 ##TODO##

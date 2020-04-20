@@ -2,7 +2,7 @@
 % Please edit documentation in R/gen3sis_species.R
 \name{create_species}
 \alias{create_species}
-\title{create_species This creates a new species}
+\title{The function create_species creates a new species.}
 \usage{
 create_species(id, initial_cells, config)
 }
@@ -11,18 +11,18 @@ create_species(id, initial_cells, config)
 
 \item{initial_cells}{a list of initial cells (strings) to occupy}
 
-\item{config}{the current config object}
+\item{config}{the configuration information}
 }
 \value{
 returns a newly created species occupying the provided initial cells
 }
 \description{
-create_species This creates a new species
+The function create_species creates a new species.
 }
 \details{
-This function is intented to be used in the create_initiual_species function at the configuration 
-of a simulation. It will create a species object representing one species
-in the simulation occupying the given list of initial cells.
+This function is intented to be used in the create_ancestor_species function at the configuration 
+of a simulation. It will create a species object representing one species in the simulation occupying the 
+given list of initial cells.
 }
 \examples{
 ##TODO##
