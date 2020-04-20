@@ -1,7 +1,4 @@
-# Copyright (c) 2020, ETH Zurich
 
-# DO NOT USE ' IN THIS CONFIG
-skeleton_config <- '
 
 ########################
 ### General settings ###
@@ -57,7 +54,6 @@ create_initial_species <- function(landscape, config) {
 #################
 # The maximum range to consider when calculating the distances from local distance inputs
 max_dispersal <- Inf
-
 # returns n dispersal values
 get_dispersal_values <- function(n, species, landscape, config) {
   stop("calculate dispersal values here")
@@ -96,4 +92,4 @@ apply_ecology <- function(abundance, traits, environment, config) {
   stop("calculate species abundances and deaths here")
 }
 
-' # DO NOT REMOVE THIS ->'<-. IT IS IMPORTANT
+
