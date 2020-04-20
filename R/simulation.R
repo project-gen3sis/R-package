@@ -106,7 +106,7 @@ setup_variables <- function(config, data, vars) {
 #' @noRd
 init_attribute_mrca_distribution <- function(config, data, vars) {
   
-  all_species <- config$gen3sis$initialization$create_initial_species(data$landscape, config)
+  all_species <- config$gen3sis$initialization$create_ancestor_species(data$landscape, config)
   for (i in 1:length(all_species)){
     force(i)
     all_species[[i]][["id"]] <- as.character(i)

@@ -28,7 +28,7 @@ Thus we will:
 
 The first step for running a  simulation consists of setting up the folder structure with the required input data from which the landscape object and the distance matrices are calculated. 
 Thereafter, the funciton run_simulation, our main function, will:
-1) Read in the config and prepare the output directories, initial landscape and call “create_initial_species” from the user config to create the initial species for the simulation.
+1) Read in the config and prepare the output directories, initial landscape and call “create_ancestor_species” from the user config to create the initial species for the simulation.
 2) Start  the main loop over the time steps. For every time step it loads the appropriate landscape, removes all cells that became uninhabitable in the new time step, and calls the main steps of any iteration.
 3) At the end of every time step the simulation saves the species richness pattern, the phylogeny, if desired the species and landscape, and calls the “end_of_timestep_observer” function from the user config. In this function the user can implement  customized observer functions, for example calculating summary statistics or creating species patterns plots.
 

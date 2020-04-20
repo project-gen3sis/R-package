@@ -47,7 +47,7 @@ end_of_timestep_observer = function(data, vars, config){
 initial_abundance = 1
 
 # place speices within rectangle:
-create_initial_species <- function(landscape, config) {
+create_ancestor_species <- function(landscape, config) {
  stop("create the initial species here")
 }
 

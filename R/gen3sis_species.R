@@ -1,7 +1,7 @@
 # Copyright (c) 2020, ETH Zurich
 
 
-#' The function create_initial_species allows the user to populate the world at the beginning of a simulation.
+#' The function create_ancestor_species  allows the user to populate the world at the beginning of a simulation.
 #'
 #' @details Using this function any number of new species can be created. For every species, a number of
 #' habitable cells from the landscape are selected and call 'create_species'. In another step, the user must initialize 
@@ -12,14 +12,14 @@
 #'
 #' @return a list of species
 #' @export
-create_initial_species <- function(landscape, config){
+create_ancestor_species  <- function(landscape, config){
   stop("this function documents the user function interface only, do not use it.")
 }
 
 
 #' The function create_species creates a new species.
 #'
-#' @details This function is intented to be used in the create_initial_species function at the configuration 
+#' @details This function is intented to be used in the create_ancestor_species function at the configuration 
 #' of a simulation. It will create a species object representing one species in the simulation occupying the 
 #' given list of initial cells.
 #'

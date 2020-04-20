@@ -213,7 +213,7 @@ create_empty_config <- function(){
                                               "verbose" = FALSE
                                               ),
                             "initialization" = list( "initial_abundance" = NULL,
-                                                     "create_initial_species" = NULL
+                                                     "create_ancestor_species" = NULL
                                                      ),
                             "dispersal" = list( "max_dispersal" = Inf,
                                                 "get_dispersal_values" = NULL
