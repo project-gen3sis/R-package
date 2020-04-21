@@ -86,9 +86,8 @@ To launch our simulation use
 
 ```{r eval=TRUE, echo=TRUE}
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
-run_simulation(config = file.path(datapath, "config/config.R"), 
+run_simulation(config = file.path(datapath, "config/config_rte.R"), 
                input_directory = file.path(datapath, "landscape"),
-               save_intermediate_results = "all",
                verbose=0)
 
 ```
@@ -108,9 +107,9 @@ There are a few visualization tools already included in the package, but you are
 
 ```{r eval=TRUE}
 #load landscape at 0Ma
-l0 <- readRDS(file.path(datapath, "output/config/landscapes/landscape_t_0.rds"))
+l0 <- readRDS(file.path(datapath, "output/config_rte/landscapes/landscape_t_0.rds"))
 #load species at 0Ma
-sps0 <- readRDS(file.path(datapath, "output/config/species/species_t_0.rds"))
+sps0 <- readRDS(file.path(datapath, "output/config_rte/species/species_t_0.rds"))
 ```
 
 We can then plot the environment
@@ -150,7 +149,7 @@ One default observer function is the collection of the richness over time. This 
 
 ```{r eval=TRUE}
 # TOADD a plot of richenss over time
-load(file.path(datapath, "output/config/sgen3sis.RData"))
+load(file.path(datapath, "output/config_rte/sgen3sis.RData"))
 #get total richness per time interval
 rt <- colSums(sgen3sis$geo_richness[,-c(1,2)], na.rm = T)
 #plot

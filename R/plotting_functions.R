@@ -28,7 +28,7 @@ plot_landscape <- function(landscape) {
 #'
 #' @param landscape the input landscape to plot
 #' @param slices the amount of slices though time between start and end (dafaul value is 2).
-#' @param stat_end_times the stating and ending times of the simulation (default is NULL, takes the oldest and most recent avaiable)
+#' @param start_end_times the stating and ending times of the simulation (default is NULL, takes the oldest and most recent avaiable)
 #'
 #' @export
 plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {

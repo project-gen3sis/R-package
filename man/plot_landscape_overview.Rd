@@ -11,7 +11,7 @@ plot_landscape_overview(landscape, slices = 2, start_end_times = NULL)
 
 \item{slices}{the amount of slices though time between start and end (dafaul value is 2).}
 
-\item{stat_end_times}{the stating and ending times of the simulation (default is NULL, takes the oldest and most recent avaiable)}
+\item{start_end_times}{the stating and ending times of the simulation (default is NULL, takes the oldest and most recent avaiable)}
 }
 \description{
 plot the outline of a given landscape over time
