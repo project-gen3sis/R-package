@@ -61,7 +61,7 @@ update_summary_statistics <- function(data, vars, config) {
 }
 
 
-#' save_summary saves a numer of summry statistics at the end of a simulation run. Contents tbd
+#' Saves a numer of summry statistics at the end of a simulation run at sgen3sis. Contents tbd
 #'
 #' @param config the current config object
 #' @param data the current data oject
@@ -98,7 +98,9 @@ save_summary <- function(config, data, vars){
   #### END WIPOBSERVER ####
   
   sgen3sis <- c(sgen3sis, flag=vars$flag)
+  class(sgen3sis) <- "gen3sis_summary"
   save(sgen3sis, file=file.path(config$directories$output,"sgen3sis.RData"))
+  return(sgen3sis)
 }
 
 

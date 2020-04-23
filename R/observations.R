@@ -2,7 +2,7 @@
 
 
 
-#' prepare the internal data structures to be called with the observe_xx functions and call the user provide observer
+#' Prepare the internal data structures to be called with the observe_xx functions and call the user provide observer
 #' Unless a problem shows up the save_xx functions call getDyn() to get access to the internal state, no prep here.
 #'
 #' @param data the current data object 
