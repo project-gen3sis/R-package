@@ -61,11 +61,12 @@ update_summary_statistics <- function(data, vars, config) {
 }
 
 
-#' Saves a numer of summry statistics at the end of a simulation run at sgen3sis. Contents tbd
+#' Compiles summry statistics at the end of a simulation run
 #'
 #' @param config the current config object
 #' @param data the current data oject
 #' @param vars the current vars object
+#' @param total_runtim simulation runtime in hours
 #' 
 #' @importFrom utils packageVersion write.table
 #'

@@ -263,10 +263,10 @@ run_simulation <- function(config = NA,
   plot_end_of_simulation(val$data, val$vars, val$config)
   write_runtime_statisitics(val$data, val$vars, val$config, total_runtime)
   
-  save_summary(val$config, val$data, val$vars, total_runtime)
+  sgen3sis <- save_summary(val$config, val$data, val$vars, total_runtime)
   
   if(verbose >= 1){
     cat("Simulation runtime:", total_runtime, "hours\n")
   }
-  return(val$data$summaries)
+  return(sgen3sis)
 }
