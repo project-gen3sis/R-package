@@ -129,9 +129,9 @@ run_simulation <- function(config = NA,
   #
   #
 
-  # if(!is.na(timestep_restart)){
-  #  val <- restore_state(val, timestep_restart)
-  # }
+  if(!is.na(timestep_restart)){
+   val <- restore_state(val, timestep_restart)
+  }
 
   for(ti in val$vars$steps){ #loop over time steps
     # set to zero every new timestep!
