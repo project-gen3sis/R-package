@@ -59,7 +59,7 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 #' @noRd
 plot_summary <- function(output) {
   if (class(output)!="gen3sis_output"){
-    error("this is not  a gen3sis_output object")
+    stop("this is not  a gen3sis_output object")
   }
   # plotting of end of simulation goes here, like plotting the phylo_summary.
   grDevices::pdf(file=file.path(config$directories$output, "/EndConditions.pdf"), width=10, height=12)
