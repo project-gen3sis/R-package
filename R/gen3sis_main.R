@@ -224,7 +224,7 @@ run_simulation <- function(config = NA,
     # do.call(observer_summary)
     #### END WIPOBSERVER ####
     
-    # save_val(val, save_state)
+    save_val(val, save_state)
 
     if(val$vars$ti %in% val$vars$save_steps){
       call_main_observer(val$data, val$vars, val$config)
