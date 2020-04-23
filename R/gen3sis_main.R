@@ -239,7 +239,7 @@ run_simulation <- function(config = NA,
   }# close loop steps
   #
   if(verbose>=0 & val$vars$flag=="OK"){
-    cat("Simulation finish. All Ok \n")
+    cat("Simulation finish. All OK \n")
   }
 
   # #------------------------------------------------------------------#
