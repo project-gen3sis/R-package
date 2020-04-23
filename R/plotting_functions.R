@@ -50,6 +50,41 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 }
 
 
+#' Plot simulation default summary
+#'
+#' @param data the current data object 
+#' @param vars the current vars object
+#' @param config the current config
+#'
+#' @noRd
+plot_summary <- function(output) {
+  if (class(output)!="gen3sis_output"){
+    error("this is not  a gen3sis_output object")
+  }
+  # plotting of end of simulation goes here, like plotting the phylo_summary.
+  grDevices::pdf(file=file.path(config$directories$output, "/EndConditions.pdf"), width=10, height=12)
+  par(mfrow=c(2,1))
+  plot_richness(data$all_species, data$landscape)
+  
+  categories <- c("total", "alive", "speciation", "extinctions")
+  colours <- c("black", "magenta", "blue", "orange")
+  matplot(data$summaries$phylo_summary[-1,], 
+          type = "b", 
+          lty = 1, 
+          pch = 1:4,
+          col = colours,
+          xlab = "timesteps",
+          ylab = "# of events",
+          main = "Species development through time")
+  
+  legend("topright", col=colours, categories, bg="white", lwd=1, pch=1:4)
+  
+  grDevices::dev.off()
+}
+
+
+
+
 #' Plot the richness of the given list of species on a landscape
 #'
 #' @param species_list a list of species to use in the richness calculation
