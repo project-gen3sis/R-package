@@ -71,7 +71,7 @@ update_summary_statistics <- function(data, vars, config) {
 #' @importFrom utils packageVersion write.table
 #'
 #' @noRd
-save_summary <- function(config, data, vars, total_runtime){
+make_summary <- function(config, data, vars, total_runtime){
   # function that creates a summary file, mainly sgen3sis.RData at the end of the simulation
   path <- strsplit(config$directories$input, "/")[[1]]
   world <- path[length(path)]

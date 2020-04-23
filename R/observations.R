@@ -15,36 +15,6 @@ call_main_observer <- function(data, vars, config) {
 }
 
 
-#' Here the 1-2 page default summary plotting can take place
-#'
-#' @param data the current data object 
-#' @param vars the current vars object
-#' @param config the current config
-#'
-#' @noRd
-plot_end_of_simulation <- function(data, vars, config) {
-  # plotting of end of simulation goes here, like plotting the phylo_summary.
-  grDevices::pdf(file=file.path(config$directories$output, "/EndConditions.pdf"), width=10, height=12)
-  par(mfrow=c(2,1))
-  plot_richness(data$all_species, data$landscape)
-  
-  categories <- c("total", "alive", "speciation", "extinctions")
-  colours <- c("black", "magenta", "blue", "orange")
-  matplot(data$summaries$phylo_summary[-1,], 
-          type = "b", 
-          lty = 1, 
-          pch = 1:4,
-          col = colours,
-          xlab = "timesteps",
-          ylab = "# of events",
-          main = "Species development through time")
-  
-  legend("topright", col=colours, categories, bg="white", lwd=1, pch=1:4)
-  
-  grDevices::dev.off()
-}
-
-
 #' This function can be called within the observer function to save the current occupancy pattern
 #' 
 #' @example inst/examples/save_richness_help.R
