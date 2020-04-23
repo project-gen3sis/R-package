@@ -100,7 +100,6 @@ save_summary <- function(config, data, vars){
   sgen3sis <- c(sgen3sis, flag=vars$flag)
   class(sgen3sis) <- "gen3sis_summary"
   save(sgen3sis, file=file.path(config$directories$output,"sgen3sis.RData"))
-  return(sgen3sis)
 }
 
 
@@ -122,6 +121,8 @@ write_runtime_statisitics <- function( data, vars, config, total_runtime) {
   print(version)
   cat("\n\n Session Information: \n\n")
   print(sessionInfo())
+  cat("\n\n System: \n\n")
+  print(Sys.info()["sysname"])
   sink()
   close(stat_file)
 }
@@ -136,7 +137,7 @@ write_runtime_statisitics <- function( data, vars, config, total_runtime) {
 #' @noRd
 percentage_inhabited <- function(species_list, landscape) {
   richness <- get_geo_richness(species_list, landscape)
-  inhabited <- sum(which(richness != 0))
+  inhabited <- sum(richness != 0)
   return(inhabited / length(richness))
 }
 
