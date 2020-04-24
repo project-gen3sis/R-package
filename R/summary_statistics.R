@@ -77,16 +77,17 @@ make_summary <- function(config, data, vars, total_runtime){
   world <- path[length(path)]
   
   sgen3sis <- list("summary"= list(), "flag"=list(), "system"= list(), "parameters" = list())
+
   
   #summary
-  sgen3sis$summary <- data$summaries
+  sgen3sis$summary <- c(data$summaries, list("richness-final"=data$geo_richness[,c(1,2,ncol(data$geo_richness))]))
   
   #flag
   sgen3sis$flag <- vars$flag
   
   #system
   sgen3sis$system <- list(
-    "runtime_hours"=total_runtime,
+    "runtime-hours"=total_runtime,
     "gen3sis-version"=packageVersion("gen3sis"),
     "R-version"=version,
     "OS"=Sys.info()["sysname"],
