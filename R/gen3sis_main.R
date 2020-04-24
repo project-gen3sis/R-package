@@ -223,14 +223,14 @@ run_simulation <- function(config = NA,
     #call here the observer summary functions to update vals$observer
     # do.call(observer_summary)
     #### END WIPOBSERVER ####
-    
-    save_val(val, save_state)
 
     if(val$vars$ti %in% val$vars$save_steps){
       call_main_observer(val$data, val$vars, val$config)
       # save_ecogengeo(val)
     }
     val <- update_summary_statistics(val$data, val$vars, val$config)
+    
+    save_val(val, save_state)
     
     if (verbose>=1){
       cat('step =', ti, ', species alive =', val$vars$n_sp_alive, ', species total =', val$vars$n_sp, '\n')  

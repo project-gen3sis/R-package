@@ -15,10 +15,12 @@ save_val <- function(val, save_val = NA){
     return()
   } else if(save_val == "all"){
     val$config$seed <- .GlobalEnv$.Random.seed
+    val$data$distance_matrix <- NULL
     saveRDS(object = val, file = file.path(val$config$directories$output_val, paste0("val_t_", val$vars$ti, ".rds")))
   } else if(save_val == "last"){
     files <- list.files(val$config$directories$output_val, full.names = TRUE)
     val$config$seed <- .GlobalEnv$.Random.seed
+    val$data$distance_matrix <- NULL
     saveRDS(object = val, file = file.path(val$config$directories$output_val, paste0("val_t_", val$vars$ti, ".rds")))
     file.remove(files)
   }
