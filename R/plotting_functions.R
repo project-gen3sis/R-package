@@ -72,7 +72,7 @@ plot_summary <- function(output, sumary_legend=NULL) {
   title <- title[length(title)-1]
   #title and summary text
   if (is.null(sumary_legend)){
-    legend(-1,13, title=paste("Landscape:",title),legend=paste(
+    legend(-1,10, title=paste("Landscape:",title),legend=paste(
       paste(names(r$parameters$gen3sis$general[2]), r$parameters$gen3sis$general[2], sep=": "),
       paste(names(r$parameters$gen3sis$general[3]), r$parameters$gen3sis$general[3], sep=": "),
       paste(names(r$system)[1], round(r$system$`runtime-hours`,3), sep=": "),
