@@ -20,7 +20,7 @@ assign("dist", -Inf, envir = counting)
 #' Run a simulation
 #'
 #' @param config configuration file for the simulation or configuration object derived from a config file
-#' @param input_directory directory where the all_geo_hab and distance_matrices reside
+#' @param landscape directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
 #' @param save_intermediate_results save observer, NA saves time start and end, "all" saves all timesteps or provide the timesteps to be stored 
 #' @param enable_gc enable gc in case of memory shortages
@@ -34,7 +34,7 @@ assign("dist", -Inf, envir = counting)
 #'
 #' @export
 run_simulation <- function(config = NA,
-                          input_directory = NA,
+                          landscape = NA,
                           output_directory = NA, 
                           timestep_restart = NA,
                           save_state = NA,
@@ -57,7 +57,7 @@ run_simulation <- function(config = NA,
   system_time_start <- Sys.time() #Starting timer
 
   directories <- prepare_directories(config_file = config,
-                                     input_directory = input_directory,
+                                     input_directory = landscape,
                                      output_directory = output_directory)
 
   if(is.na(config)[1]){
