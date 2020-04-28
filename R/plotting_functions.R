@@ -77,7 +77,7 @@ plot_summary <- function(output, summary_legend=NULL) {
   title <- str_remove(title, ".>")
   title <- str_remove(title, ".")
   #title and summary text
-  if (is.null(sumary_legend)){
+  if (is.null(summary_legend)){
     legend(-1,10, title=title,legend=paste(
       paste(names(output$parameters$gen3sis$general[2]), output$parameters$gen3sis$general[2], sep=": "),
       paste(names(output$parameters$gen3sis$general[3]), output$parameters$gen3sis$general[3], sep=": "),
