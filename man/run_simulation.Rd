@@ -6,8 +6,10 @@
 \usage{
 run_simulation(
   config = NA,
-  input_directory = NA,
+  landscape = NA,
   output_directory = NA,
+  timestep_restart = NA,
+  save_state = NA,
   save_intermediate_results = NA,
   enable_gc = F,
   verbose = 1
@@ -16,11 +18,11 @@ run_simulation(
 \arguments{
 \item{config}{configuration file for the simulation or configuration object derived from a config file}
 
-\item{input_directory}{directory where the all_geo_hab and distance_matrices reside}
+\item{landscape}{directory where the all_geo_hab and distance_matrices reside}
 
 \item{output_directory}{directory for the simulation output}
 
-\item{save_intermediate_results}{save the eco, gen, and geo info}
+\item{save_intermediate_results}{save observer, NA saves time start and end, "all" saves all timesteps or provide the timesteps to be stored}
 
 \item{enable_gc}{enable gc in case of memory shortages}
 

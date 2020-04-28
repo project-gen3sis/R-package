@@ -87,7 +87,7 @@ To launch our simulation use
 ```{r eval=TRUE, echo=TRUE}
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
 run_simulation(config = file.path(datapath, "config/config_rte.R"), 
-               input_directory = file.path(datapath, "landscape"),
+               landscape = file.path(datapath, "landscape"),
                verbose=0)
 
 ```
