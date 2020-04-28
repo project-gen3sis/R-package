@@ -10,5 +10,5 @@ save_occupancy()
 This function can be called within the observer function to save the current occupancy pattern
 }
 \examples{
-
+##TODO##
 }

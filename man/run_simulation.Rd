@@ -43,5 +43,5 @@ datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
 
 #run simulation
 run_simulation(config = file.path(datapath,"config/config.R"), 
-                input_directory = file.path(datapath,"landscape"))
+                landscape = file.path(datapath,"landscape"))
 }

@@ -54,7 +54,10 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 #'
 #' @param output tsgen3sis output object resulting from a gen3sis simulation 
 #' @param sumary_legend either a satring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.
-#'
+#' @example inst/examples/plot_summary_help.R
+#' @importFrom graphics layout legend axis mtext points
+#' @importFrom grDevices rgb colorRampPalette
+#' @importFrom stringr str_split str_remove
 #' @export
 plot_summary <- function(output, sumary_legend=NULL) {
   if (class(output)!="gen3sis_output"){

@@ -10,5 +10,5 @@ save_richness()
 This function can be called within the observer function to save the current richness pattern
 }
 \examples{
-
+##TODO##
 }

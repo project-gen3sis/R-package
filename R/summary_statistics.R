@@ -68,7 +68,7 @@ update_summary_statistics <- function(data, vars, config) {
 #' @param vars the current vars object
 #' @param total_runtim simulation runtime in hours
 #' 
-#' @importFrom utils packageVersion write.table
+#' @importFrom utils packageVersion write.table sessionInfo
 #'
 #' @noRd
 make_summary <- function(config, data, vars, total_runtime){
@@ -123,6 +123,7 @@ make_summary <- function(config, data, vars, total_runtime){
 #' @param config the current config
 #' @param total_runtime runtime for the simulation as collected in gen3sis_main.R
 #'
+#' @importFrom utils sessionInfo
 #' @noRd
 write_runtime_statisitics <- function( data, vars, config, total_runtime) {
   # write out the runtime statistics, e.g R version, package version, runtime etc
