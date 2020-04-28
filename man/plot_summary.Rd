@@ -4,13 +4,19 @@
 \alias{plot_summary}
 \title{Plot simulation default summary}
 \usage{
-plot_summary(output, sumary_legend = NULL)
+plot_summary(output, summary_legend = NULL)
 }
 \arguments{
 \item{output}{tsgen3sis output object resulting from a gen3sis simulation}
 
-\item{sumary_legend}{either a satring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.}
+\item{summary_legend}{either a satring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.}
 }
 \description{
 Plot simulation default summary
+}
+\examples{
+#'\dontrun{
+#'output <- run_simulation(config, landscape)
+#'plot_summary(output)
+#'}
 }

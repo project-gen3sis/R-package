@@ -22,6 +22,8 @@ assign("dist", -Inf, envir = counting)
 #' @param config configuration file for the simulation or configuration object derived from a config file
 #' @param landscape directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
+#' @param timestep_restart = Set the start time timestep. If NA start at the beginning, If "ti" start from the last available timestep, if a number "x" start from timestep x
+#' @param save_state = Save observer functions, if "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep
 #' @param save_intermediate_results save observer, NA saves time start and end, "all" saves all timesteps or provide the timesteps to be stored 
 #' @param enable_gc enable gc in case of memory shortages
 #' @param verbose integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)
