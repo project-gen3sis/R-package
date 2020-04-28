@@ -63,26 +63,29 @@ plot_summary <- function(output, sumary_legend=NULL) {
   
   {
   layout( matrix(c(1,3,3,1,3,3,2,2,2,2,2,2),ncol=3, byrow =T)  )
-  layout.show(3)
+  #layout.show(3)
   par(mar=c(7.3,3,0,7.5), oma=c(0.3,0.8,0.3,0.8))
   
   # summary text
   plot(1, type="n", xlab="", ylab="", xlim=c(0, 10), ylim=c(0, 10),axes=FALSE,ann=FALSE)
-  title <- str_split(r$parameters$directories$input, "/")[[1]]
-  title <- title[length(title)-1]
+  title <- str_split(output$parameters$directories$input, "/")[[1]]
+  title <- paste(title, collapse = ">")
+  title <- str_remove(title, "..>")
+  title <- str_remove(title, ".>")
+  title <- str_remove(title, ".")
   #title and summary text
   if (is.null(sumary_legend)){
-    legend(-1,10, title=paste("Landscape:",title),legend=paste(
-      paste(names(r$parameters$gen3sis$general[2]), r$parameters$gen3sis$general[2], sep=": "),
-      paste(names(r$parameters$gen3sis$general[3]), r$parameters$gen3sis$general[3], sep=": "),
-      paste(names(r$system)[1], round(r$system$`runtime-hours`,3), sep=": "),
-      paste("world_habited_present", paste0(round(r$summary$occupancy[length(r$summary$occupancy)],1)*100,"%"), sep=": "),
-      paste("cumulative_richness", r$summary$phylo_summary[nrow(r$summary$phylo_summary),"total"], sep=": "),
-      paste("extinction", paste0(round(((r$summary$phylo_summary[nrow(r$summary$phylo_summary),"total"]-r$summary$phylo_summary[nrow(r$summary$phylo_summary),"alive"])/r$summary$phylo_summary[nrow(r$summary$phylo_summary),"total"])*100,0),"%"), sep=": "),
+    legend(-1,10, title=title,legend=paste(
+      paste(names(output$parameters$gen3sis$general[2]), output$parameters$gen3sis$general[2], sep=": "),
+      paste(names(output$parameters$gen3sis$general[3]), output$parameters$gen3sis$general[3], sep=": "),
+      paste(names(output$system)[1], round(output$system$`runtime-hours`,3), sep=": "),
+      paste("world_habited_present", paste0(round(output$summary$occupancy[length(output$summary$occupancy)],1)*100,"%"), sep=": "),
+      paste("cumulative_richness", output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"], sep=": "),
+      paste("extinction", paste0(round(((output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"]-output$summary$phylo_summary[nrow(output$summary$phylo_summary),"alive"])/output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"])*100,0),"%"), sep=": "),
       sep="\n"),
       bty="n")
   } else {
-    legend(-1.5,13, title=paste("Landscape:",title), legend=summary_legend,
+    legend(-1.5,13, title=title, legend=summary_legend,
         bty="n")
   }
 
@@ -112,7 +115,8 @@ plot_summary <- function(output, sumary_legend=NULL) {
   col_vec <- colorRampPalette(c( "snow2", "yellow", "orange" ,"red", "darkred", "chocolate4")  )(max(output$summary$`richness-final`[,3], na.rm=T))
   
   image(rasterFromXYZ(output$summary$`richness-final`), col=col_vec, bty = "n", xlab = "", ylab = "")
-  title("Species richness map at final step", line=-1)
+  #title("Species richness map at final step", line=-1)
+  mtext(4, text="Species richness at final step", line=1)
   plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=T, add=T,col=col_vec)
   }
 }
