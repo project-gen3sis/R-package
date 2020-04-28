@@ -116,7 +116,7 @@ plot_summary <- function(output, sumary_legend=NULL) {
   
   image(rasterFromXYZ(output$summary$`richness-final`), col=col_vec, bty = "n", xlab = "", ylab = "")
   #title("Species richness map at final step", line=-1)
-  mtext(4, text="Species richness at final step", line=1, cex=1.1)
+  mtext(4, text="Species richness at final step", line=1, cex=1.2)
   plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=T, add=T,col=col_vec)
   }
 }
