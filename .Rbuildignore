@@ -19,10 +19,10 @@
 ^[.]tests
 .examples_i386/
 .examples_x64/
-^[.]gen3sis-Ex_i386.Rout
-^[.]gen3sis-Ex_x64.Rout
-^[.]tests_i386
-^[.]tests_x64
+^gen3sis-Ex_i386\\.Rout$
+^gen3sis-Ex_x64\\.Rout$
+^tests_i386$
+^tests_x64$
 #----------------------------
 # Vignettes
 #----------------------------

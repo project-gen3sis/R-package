@@ -5,5 +5,5 @@ library(gen3sis)
 datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
 
 #run simulation
-run_simulation(config = file.path(datapath,"config/config.R"), 
+r <- run_simulation(config = file.path(datapath,"config/config_rte.R"), 
                 landscape = file.path(datapath,"landscape"))

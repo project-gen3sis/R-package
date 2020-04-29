@@ -50,7 +50,7 @@ save_richness <- function() {
 
 #' This function can be called within the observer function to save the current phylogeny.
 #' 
-#' @examples inst/examples/save_phylogeny_help.R
+#' @example inst/examples/save_phylogeny_help.R
 #' @export
 save_phylogeny <- function(){
   config <- dynGet("config")

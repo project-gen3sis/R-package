@@ -114,7 +114,7 @@ init_attribute_mrca_distribution <- function(config, data, vars) {
 
   data$all_species <- all_species
 
-  grDevices::pdf(file=file.path(config$directories$output, "/StartingConditions.pdf"), width=10, height=12)
+  grDevices::pdf(file=file.path(config$directories$output, "StartingConditions.pdf"), width=10, height=12)
   par(mfrow=c(2,1))
   
   plot_richness(all_species, data$landscape)
