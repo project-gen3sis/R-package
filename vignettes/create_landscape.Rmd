@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-To create your own landscape, you can start from anywere. For this exercise we will recreate the simple island landscape that we used in the introduction.
+To create your own landscape, you can start from anywere. For this exercise we will recreate the simple island landscape that we used in the introduction vignette and in the main text of the package manuscript as case study 1.
 
 ```{r setup}
 library(gen3sis)
@@ -28,37 +28,51 @@ library(raster)
 library(landscapetools)
 library(NLMR)
 
+#Set the work directory of your choice in which you will save the landscape files
 setwd(getwd())
 
-##Experiment 1: Island dynamics with area and heterogeneity dynamics
-#Spatial dimensions:
+## Case study 1: Biodiversity dynamics and trait evolution on dynamic oceanic islands
+##This study case includes two experiments, both of which are build to follow the General Dynamic Model of Island Biogeography (Whittaker et al. 2008 Journal of Biogeography), but which differ in the details of depicted environmental and landscape dynamics (see main text for further details)
+##In the first experiment, the island dynamics entails both area and habitat heterogeneity dynamics
+##In the second experiment, the island dynamics entails only area dynamics
+##Below, we create the landscape files for each of these experiments in separate for a easier readibility:
+
+
+##Experiment 1: Island dynamics with area and habitat heterogeneity dynamics
+#Defining spatial extents in two dimensions (number of grid cells):
 Ncol<-31
 Nrow<-31
-#Temporal extent:
+#Defining temporal extent (number of time steps):
 Ntimesteps<-140
-#Creating an array:
+#Creating two 3D arrays to save variable values (2 spatial dimensions and 1 temporal dimension) for landscape input file
+#and two matrices for later calculation of distance matrices input files
+#each pair of array and matrix for an environmental variable (e.g. temperature and precipitation):
+#Temperature :
 My_Dynamic_Landscape<-array(NA,dim=c(Nrow,Ncol,Ntimesteps))
 My_Dynamic_Landscape_dataframe<-matrix(NA,nrow=Nrow*Ncol, ncol=length(c(Ncol,Nrow))+Ntimesteps)
+#Precipitation:
 My_Dynamic_Landscape2<-array(NA,dim=c(Nrow,Ncol,Ntimesteps))
 My_Dynamic_Landscape_dataframe2<-matrix(NA,nrow=Nrow*Ncol, ncol=length(c(Ncol,Nrow))+Ntimesteps)
+#Creating a vector for the names to be used to name input files (one per time step) 
 stringtimestepsnames<-vector(mode="character",length=Ntimesteps)
-#My_Dynamic_Landscape[,1:2,] <- 20   #Error in file_path_sans_ext(basename(config_file)) : could not find function "file_path_sans_ext"
-#My_Dynamic_Landscape2[,1:2,] <- 500
 
-#Looping over the time steps and creating a landmass dynamics, 
-#while saving temperature values on it:
-for (timestep in 1:Ntimesteps){
+
+#Looping over the time steps and spatial dimentions,
+#generating the area and heterogeneity dynamics over time,
+#generating the environmental values to be saved in the landscape arrays:
+
+for (timestep in 1:Ntimesteps){ #temporal loop
   counting<-1
-  stringtimestepsnames[timestep]<-paste("X",timestep,"", sep="")
-  for (y in 1:Nrow){
-    for (x in 1:Ncol){
-      if((timestep<=10)||(timestep>120 && timestep<=140)){
-        if((y>=15 && y<=16)&&(x>=15 && x<=16)) {
-          My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) 
-          My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,500,50) 
+  stringtimestepsnames[timestep]<-paste("X",timestep,"", sep="") #name of the current timestep
+  for (y in 1:Nrow){  #spatial dimension 1 loop
+    for (x in 1:Ncol){  #spatial dimension 2 loop
+      if((timestep<=10)||(timestep>120 && timestep<=140)){ #time steps with only four (2x2) suitable grid cells
+        if((y>=15 && y<=16)&&(x>=15 && x<=16)) {  #suitable grid cells
+          My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) #temperature: environmental white noise in space and time of 20 C average +- 0.5 C standard deviation
+          My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,500,50) #precipitation: environmental white noise in space and time of 500 mm/year average +- 50 mm/year standard deviation
         }
       }
-      if((timestep>10 && timestep<=20)||(timestep>100 && timestep<=120)){
+      if((timestep>10 && timestep<=20)||(timestep>100 && timestep<=120)){ #time steps with nine (3x3) suitable grid cells with concentric decreasing pattern in temperature (e.g. central mountain) and a one-direction gradient in precipitation (e.g. lee-luv effects)
         if((y>=15 && y<=17)&&(x>=15 && x<=17)) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) 
         if(y==16 && x==16) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,19,0.5) 
         
@@ -66,7 +80,7 @@ for (timestep in 1:Ntimesteps){
         if((y==16)&&(x>=15 && x<=17)) My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,600,50) 
         if((y==17)&&(x>=15 && x<=17)) My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,700,50)   
       }
-      if((timestep>20 && timestep<=30)||(timestep>80 && timestep<=100)){
+      if((timestep>20 && timestep<=30)||(timestep>80 && timestep<=100)){ #time steps with 25 (5x5) suitable grid cells with concentric decreasing pattern in temperature (e.g. central mountain) and a one-direction gradient in precipitation (e.g. lee-luv effects)
         if((y>=14 && y<=18)&&(x>=14 && x<=18)) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) 
         if((y>=15 && y<=17)&&(x>=15 && x<=17)) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,19,0.5) 
         if(y==16 && x==16) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,18,0.5) 
@@ -77,7 +91,7 @@ for (timestep in 1:Ntimesteps){
         if((y==17)&&(x>=14 && x<=18)) My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,800,50) 
         if((y==18)&&(x>=14 && x<=18)) My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,900,50)         
       }
-      if((timestep>30 && timestep<=40)||(timestep>60 && timestep<=80)){
+      if((timestep>30 && timestep<=40)||(timestep>60 && timestep<=80)){ #time steps with 49 (7x7) suitable grid cells with concentric decreasing pattern in temperature (e.g. central mountain) and a one-direction gradient in precipitation (e.g. lee-luv effects)
         if((y>=13 && y<=19)&&(x>=13 && x<=19)) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) 
         if((y>=14 && y<=18)&&(x>=14 && x<=18)) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,19,0.5) 
         if((y>=15 && y<=17)&&(x>=15 && x<=17)) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,18,0.5) 
@@ -91,7 +105,7 @@ for (timestep in 1:Ntimesteps){
         if((y==18)&&(x>=13 && x<=19)) My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,1000,50)  
         if((y==19)&&(x>=13 && x<=19)) My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,1100,50)           
       }
-      if(timestep>40 && timestep<=60){
+      if(timestep>40 && timestep<=60){#time steps with 81 (9x9) suitable grid cells with concentric decreasing pattern in temperature (e.g. central mountain) and a one-direction gradient in precipitation (e.g. lee-luv effects)
         if((y>=12 && y<=20)&&(x>=12 && x<=20)) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) 
         if((y>=13 && y<=19)&&(x>=13 && x<=19)) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,19,0.5) 
         if((y>=14 && y<=18)&&(x>=14 && x<=18)) My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,18,0.5) 
@@ -108,7 +122,7 @@ for (timestep in 1:Ntimesteps){
         if((y==19)&&(x>=12 && x<=20)) My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,1200,50)  
         if((y==20)&&(x>=12 && x<=20)) My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,1300,50)  
       }
-
+      #Saving the environmental variables in a table format for distance matrices
       if(timestep==1){
         My_Dynamic_Landscape_dataframe[counting,1]<-x
         My_Dynamic_Landscape_dataframe[counting,2]<-y
@@ -120,47 +134,51 @@ for (timestep in 1:Ntimesteps){
       counting<-counting+1
     }
   }
+  #subsetting only the suitable grid cells from the matrix:
   My_Dynamic_Landscape_dataframe_suitable<-My_Dynamic_Landscape_dataframe[which(My_Dynamic_Landscape_dataframe[,2+timestep]>0),]
+  #calculating distance matrices
   if(is.null(dim(My_Dynamic_Landscape_dataframe_suitable))) dist_matrx<-as.matrix(dist(My_Dynamic_Landscape_dataframe_suitable[1:2], method = "euclidean"))
   else dist_matrx<-as.matrix(dist(My_Dynamic_Landscape_dataframe_suitable[,1:2], method = "euclidean"))
-  ##saving the dist_matrix into .rds format to be used as input
-  saveRDS(dist_matrx, paste(getwd(),"/input/my_experiment/distance_matrices/geo_dist_m_ti_t_",(Ntimesteps - timestep),".rds", sep=""))
-  
-  #Sys.sleep(0.4)
-  #image(My_Dynamic_Landscape[,,timestep])
+  ##saving the distance matrix into .rds format to be used as input per time step
+  saveRDS(dist_matrx, paste(getwd(),"/input/my_experiment/distance_matrices/distances_full_",(Ntimesteps - timestep),".rds", sep=""))
+
 }
-
-which(!is.na(My_Dynamic_Landscape_dataframe[,timestep]))
-
+#Data frame for temperature:
 My_Dynamic_Landscape_dataframe<-as.data.frame(My_Dynamic_Landscape_dataframe)
 colnames(My_Dynamic_Landscape_dataframe)<- c("x","y",stringtimestepsnames)
+#Data frame for precipitation:
 My_Dynamic_Landscape_dataframe2<-as.data.frame(My_Dynamic_Landscape_dataframe2)
 colnames(My_Dynamic_Landscape_dataframe2)<- c("x","y",stringtimestepsnames)
-is.data.frame(My_Dynamic_Landscape_dataframe)
-is.list(My_Dynamic_Landscape_dataframe)
+
+#binding both data frames in a list object:
 all_geo_hab <- list("temp" = My_Dynamic_Landscape_dataframe,"prec"=My_Dynamic_Landscape_dataframe2) #This is important, otherwise the objects in the list won't have a name
+
 ##saving the list of data frames into .rds format to be used as input
-saveRDS(all_geo_hab, paste(getwd(),"/input/my_experiment/all_geo_hab.rds", sep=""))
+saveRDS(all_geo_hab, paste(getwd(),"/input/my_experiment/landscapes.rds", sep=""))
 
 
 
 ##Experiment 2: Island dynamics with only area dynamics
-#Spatial dimensions:
+#Defining spatial extents in two dimensions (number of grid cells):
 Ncol<-31
 Nrow<-31
-#Temporal extent:
+#Defining temporal extent (number of time steps):
 Ntimesteps<-140
-#Creating an array:
+#Creating two 3D arrays to save variable values (2 spatial dimensions and 1 temporal dimension) for landscape input file
+#and two matrices for later calculation of distance matrices input files
+#each pair of array and matrix for an environmental variable (e.g. temperature and precipitation):
+#Temperature :
 My_Dynamic_Landscape<-array(NA,dim=c(Nrow,Ncol,Ntimesteps))
 My_Dynamic_Landscape_dataframe<-matrix(NA,nrow=Nrow*Ncol, ncol=length(c(Ncol,Nrow))+Ntimesteps)
+#Precipitation:
 My_Dynamic_Landscape2<-array(NA,dim=c(Nrow,Ncol,Ntimesteps))
 My_Dynamic_Landscape_dataframe2<-matrix(NA,nrow=Nrow*Ncol, ncol=length(c(Ncol,Nrow))+Ntimesteps)
+#Creating a vector for the names to be used to name input files (one per time step) 
 stringtimestepsnames<-vector(mode="character",length=Ntimesteps)
-#My_Dynamic_Landscape[,1:2,] <- 20   #Error in file_path_sans_ext(basename(config_file)) : could not find function "file_path_sans_ext"
-#My_Dynamic_Landscape2[,1:2,] <- 500
 
-#Looping over the time steps and creating a landmass dynamics, 
-#while saving temperature values on it:
+#Looping over the time steps and spatial dimentions,
+#generating the area and heterogeneity dynamics over time,
+#generating the environmental values to be saved in the landscape arrays:
 for (timestep in 1:Ntimesteps){
   counting<-1
   stringtimestepsnames[timestep]<-paste("X",timestep,"", sep="")
@@ -207,27 +225,30 @@ for (timestep in 1:Ntimesteps){
       counting<-counting+1
     }
   }
+  #subsetting only the suitable grid cells from the matrix:
   My_Dynamic_Landscape_dataframe_suitable<-My_Dynamic_Landscape_dataframe[which(My_Dynamic_Landscape_dataframe[,2+timestep]>0),]
+  #calculating distance matrices
   if(is.null(dim(My_Dynamic_Landscape_dataframe_suitable))) dist_matrx<-as.matrix(dist(My_Dynamic_Landscape_dataframe_suitable[1:2], method = "euclidean"))
   else dist_matrx<-as.matrix(dist(My_Dynamic_Landscape_dataframe_suitable[,1:2], method = "euclidean"))
-  ##saving the dist_matrix into .rds format to be used as input
-  saveRDS(dist_matrx, paste(getwd(),"/input/my_experiment_2/distance_matrices/geo_dist_m_ti_t_",(Ntimesteps - timestep),".rds", sep=""))
-  
-  #Sys.sleep(0.4)
-  #image(My_Dynamic_Landscape[,,timestep])
+  ##saving the distance matrix into .rds format to be used as input per time step
+  saveRDS(dist_matrx, paste(getwd(),"/input/my_experiment_2/distance_matrices/distances_full_",(Ntimesteps - timestep),".rds", sep=""))
+
 }
 
-which(!is.na(My_Dynamic_Landscape_dataframe[,timestep]))
 
+#Data frame for temperature:
 My_Dynamic_Landscape_dataframe<-as.data.frame(My_Dynamic_Landscape_dataframe)
 colnames(My_Dynamic_Landscape_dataframe)<- c("x","y",stringtimestepsnames)
+#Data frame for precipitation:
 My_Dynamic_Landscape_dataframe2<-as.data.frame(My_Dynamic_Landscape_dataframe2)
 colnames(My_Dynamic_Landscape_dataframe2)<- c("x","y",stringtimestepsnames)
-is.data.frame(My_Dynamic_Landscape_dataframe)
-is.list(My_Dynamic_Landscape_dataframe)
+
+#binding both data frames in a list object:
 all_geo_hab <- list("temp" = My_Dynamic_Landscape_dataframe,"prec"=My_Dynamic_Landscape_dataframe2) #This is important, otherwise the objects in the list won't have a name
+
 ##saving the list of data frames into .rds format to be used as input
-saveRDS(all_geo_hab, paste(getwd(),"/input/my_experiment_2/all_geo_hab.rds", sep=""))
+saveRDS(all_geo_hab, paste(getwd(),"/input/my_experiment_2/landscapes.rds", sep=""))
+
 
 ```
 ## Add environmental characteristics
