@@ -139,3 +139,12 @@ save_extract <- function(element) {
   saveRDS(object = tmp,
           file = file.path(config$directories$output, element, paste0(element, "_t_", vars$ti, ".rds")))
 }
+
+#' This function can be called within the observer function to save the compressed species divergence.
+#' 
+#' @param plot_function is the desired plot function., e.g. plot_richness, plot_species, plot_landscape
+#' @example inst/examples/observer_plot_help.R
+#' @export
+observer_plot <- function(plot_function=NULL, ...){
+  
+}
