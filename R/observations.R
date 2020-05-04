@@ -146,5 +146,10 @@ save_extract <- function(element) {
 #' @example inst/examples/observer_plot_help.R
 #' @export
 observer_plot <- function(plot_function=NULL, ...){
-  
+  config <- dynGet("config")
+  data <- dynGet("data")
+  vars <-  dynGet("vars")
+  richness <- get_geo_richness(data$all_species, data$landscape)
+  landscape <- data$landscape
+  call(plot_function)
 }
