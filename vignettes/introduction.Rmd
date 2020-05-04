@@ -86,7 +86,7 @@ To launch our simulation use
 
 ```{r eval=TRUE, echo=TRUE}
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
-run_simulation(config = file.path(datapath, "config/config_rte.R"), 
+sim <- run_simulation(config = file.path(datapath, "config/config_rte.R"), 
                landscape = file.path(datapath, "landscape"),
                verbose=0)
 
@@ -103,6 +103,18 @@ Excellent. Our virtual species are waiting for us. They are automatically stored
 |&nbsp;&nbsp;&nbsp;**>output**|
 
 ## 3. Visualize
+
+Gen3sis also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that look t the world as it develops.
+**NOTE** You can also creat your own observer function. 
+
+One default observer function is the collection of the richness over time. This was stored as 'sim'.
+We can quickly visualize some main results  using the plot_summary function
+
+```{r eval=TRUE}
+plot_summary(sim)
+```
+
+
 There are a few visualization tools already included in the package, but you are free to explore and check the outputs with your favorit plotting functions and colors. For us to look at the landscape and species richness at the end of the simulation (i.e. present, aka 0Ma) first we have to load the respective species and landscape object.
 
 ```{r eval=TRUE}
@@ -112,14 +124,14 @@ l0 <- readRDS(file.path(datapath, "output/config_rte/landscapes/landscape_t_0.rd
 sps0 <- readRDS(file.path(datapath, "output/config_rte/species/species_t_0.rds"))
 ```
 
-We can then plot the environment
+We can then plot the environmental conditions
 ```{r eval=TRUE, fig.width = 5.5}
 #plot all environmental values in the landscapes (in our case temperature and precipitation) at the selected timeteps (here present)
 plot_landscape(l0)
 
 ```
 
-And the richness
+And only richness, without the plot_summary function
 
 ```{r eval=TRUE}
 plot_richness(sps0, l0)
@@ -143,18 +155,6 @@ plot(data$rich, data$prec  )
 
 ```
 
-Gen3sis also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that look t the world as it develops.
-**NOTE** You can also creat your own observer function. 
-One default observer function is the collection of the richness over time. This is stored at the sgen3sis.Rdata object at the output folder.
-
-```{r eval=TRUE}
-# TOADD a plot of richenss over time
-load(file.path(datapath, "output/config_rte/sgen3sis.RData"))
-#get total richness per time interval
-rt <- colSums(sgen3sis$geo_richness[,-c(1,2)], na.rm = T)
-#plot
-plot(rt, type='l')
-```
 
 
 Much is possible here, from looking at phylogenies to spatial correlation. For this intro we will keep things simple and look at the correlation between richness and environmental variables.
