@@ -14,6 +14,8 @@ Package authorship according to: http://epub.wu.ac.at/3269/1/Report114.pdf
 
 ### How to run one simple simulation
 
+
+```{r}
 library("gen3sis")
 
 #print package version
@@ -25,4 +27,6 @@ run_simulation(config = "../simulations/config/user_defined_oskar/configs/config
 
 #cat mood
 cat("  xD  ")
+```
+
 
