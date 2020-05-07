@@ -38,6 +38,7 @@ evolve <- function(species, landscape, distance_matrix, config){
     return(species)
   }
   species_presence <- names(species[["abundance"]])
+
   distances <- config$gen3sis$dispersal$get_dispersal_values(length(species_presence), species, landscape, config)
 
   permutation <- sample(1:length(species_presence), length(species_presence))
