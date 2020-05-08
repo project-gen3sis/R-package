@@ -23,7 +23,7 @@ assign("dist", -Inf, envir = counting)
 #' @param landscape directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
 #' @param timestep_restart = Set the start time timestep. If NA start at the beginning, If "ti" start from the last available timestep, if a number "x" start from timestep x
-#' @param save_state = Save observer functions, if "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep
+#' @param save_state = Save the internal state of the simulation for restarts, if "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep
 #' @param call_observer call observer functions if any, NA calls at the start and end times, "all" call all timesteps or provide the timesteps to be stored 
 #' @param enable_gc enable gc in case of memory shortages
 #' @param verbose integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)
@@ -50,11 +50,6 @@ run_simulation <- function(config = NA,
   #----------------------------------------------------#
   ####### User defined variables (config.R) ############
   #----------------------------------------------------#
-  #assign(x = "enable_gc", value = enable_gc, envir = globalenv())
-  #assign(x = "gasm_version", value = "1.1", envir = globalenv())
-  #gasm_version = "1.1"
-  #assign(x = "gasm_nickname", value = "Quintessence", envir = globalenv())
-  #gasm_nickname = "Quintessence"
 
   system_time_start <- Sys.time() #Starting timer
 
@@ -108,11 +103,10 @@ run_simulation <- function(config = NA,
   
 
   #--------------------------------------------#
-  ######## Save inital geo/gen/eco state #######
+  ######## Call observer to plot or save #######
   #--------------------------------------------#
-  #save.ecogengeo(val)
 
-  ### save eco gen and geo
+  ### call observer
   if (is.na(call_observer)){
     save_steps <- c(val$config$gen3sis$general$start_time,val$config$gen3sis$general$end_time)
   } else if (call_observer=="all"){
@@ -130,7 +124,6 @@ run_simulation <- function(config = NA,
   #
   #
   #
-
   if(!is.na(timestep_restart)){
    val <- restore_state(val, timestep_restart)
   }
@@ -179,7 +172,7 @@ run_simulation <- function(config = NA,
 
 
     #    #---------------------------------------------#
-    #    ######## loop dispersal (simulation.R) #######
+    #    ######## loop dispersal                 #######
     #    #---------------------------------------------#
     if(verbose>=2){
       cat("dispersal \n")
@@ -188,14 +181,14 @@ run_simulation <- function(config = NA,
 
 
     #     #----------------------------------------------------------#
-    #     ######## loop mutation (simulation.R) #######
+    #     ######## loop evolution                              #######
     #     #----------------------------------------------------------#
     if(verbose>=2){
       cat("evolution \n")
     }
     val <- loop_evolution(val$config, val$data, val$vars)
     #     #--------------------------------------------------------#
-    #     ######## loop Eco Equilibria Module (simulation.R) #######
+    #     ######## loop ecology                              #######
     #     #--------------------------------------------------------#
     if(verbose>=2){
       cat("ecology \n")
@@ -220,16 +213,13 @@ run_simulation <- function(config = NA,
     val$vars$n_sp <- length(val$data$all_species)
 
     val <- update_loop_steps_variable(val$config, val$data, val$vars)
-    
-    #### START WIPOBSERVER ####
-    #call here the observer summary functions to update vals$observer
-    # do.call(observer_summary)
-    #### END WIPOBSERVER ####
+
 
     if(val$vars$ti %in% val$vars$save_steps){
       call_main_observer(val$data, val$vars, val$config)
       # save_ecogengeo(val)
     }
+    
     val <- update_summary_statistics(val$data, val$vars, val$config)
     
     save_val(val, save_state)
@@ -257,7 +247,7 @@ run_simulation <- function(config = NA,
   write_nex(phy=val$data$phy, label="species", file.path(output_location=val$config$directories$output, "phy.nex"))
   
   # #------------------------------------------------------------------#
-  # ######## save sgen3sis (internal_functions.R) #######
+  # ######## prepare and save summaries   (internal_functions.R) #######
   # #------------------------------------------------------------------#
   system_time_stop <- Sys.time()
   total_runtime <- difftime(system_time_stop, system_time_start, units = "hours")[[1]]
