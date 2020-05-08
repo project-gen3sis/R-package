@@ -216,7 +216,7 @@ run_simulation <- function(config = NA,
     #   ########     update loop steps variable (simulation.R)      #######
     #   ######## !!! check with end of timestep variable update !!! #######
     #   #-----------------------------------------------------------------#
-    val$vars$n_sp_alive <- sum( sapply(val$data$all_species, function(sp){ifelse(length(sp[["abundance"]]), 1, 0) }))
+    val$vars$n_sp_alive <- sum(sapply(val$data$all_species, function(sp){ifelse(length(sp[["abundance"]]), 1, 0) }))
     val$vars$n_sp <- length(val$data$all_species)
 
     val <- update_loop_steps_variable(val$config, val$data, val$vars)
