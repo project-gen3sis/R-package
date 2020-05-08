@@ -24,7 +24,7 @@ assign("dist", -Inf, envir = counting)
 #' @param output_directory directory for the simulation output
 #' @param timestep_restart = Set the start time timestep. If NA start at the beginning, If "ti" start from the last available timestep, if a number "x" start from timestep x
 #' @param save_state = Save observer functions, if "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep
-#' @param save_intermediate_results save observer, NA saves time start and end, "all" saves all timesteps or provide the timesteps to be stored 
+#' @param call_observer call observer functions if any, NA calls at the start and end times, "all" call all timesteps or provide the timesteps to be stored 
 #' @param enable_gc enable gc in case of memory shortages
 #' @param verbose integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)
 #'
@@ -40,7 +40,7 @@ run_simulation <- function(config = NA,
                           output_directory = NA, 
                           timestep_restart = NA,
                           save_state = NA,
-                          save_intermediate_results = NA,
+                          call_observer = NA,
                           enable_gc = F,
                           verbose = 1){
   
@@ -113,12 +113,12 @@ run_simulation <- function(config = NA,
   #save.ecogengeo(val)
 
   ### save eco gen and geo
-  if (is.na(save_intermediate_results)){
+  if (is.na(call_observer)){
     save_steps <- c(val$config$gen3sis$general$start_time,val$config$gen3sis$general$end_time)
-  } else if (save_intermediate_results=="all"){
+  } else if (call_observer=="all"){
     save_steps <- val$config$gen3sis$general$start_time:val$config$gen3sis$general$end_time
   } else {
-    steps <- as.integer(save_intermediate_results) + 2
+    steps <- as.integer(call_observer) + 2
     save_steps <- ceiling(seq(val$config$gen3sis$general$start_time,
                               val$config$gen3sis$general$end_time,
                               length.out = steps))
