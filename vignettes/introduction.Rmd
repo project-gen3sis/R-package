@@ -11,28 +11,36 @@ vignette: >
 ```{r include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", 
+  tidy=T,
+  fig.align='center',
+  tidy.opts = list(width.cutoff=100),
+  results='hold'
 )
 ```
-Hello and wellcome! In this vignette you will be introduced to gen3sis, an engine for simulating various spatial eco-evolutionary models. We will create an virtual planet, 'biodiversify' it and examine some brand new virtual species.
+Hello and welcome! In this vignette you will be introduced to gen3sis, an engine for simulating various spatial eco-evolutionary models. We will create a virtual planet, 'biodiversify' it and examine some brand new virtual species.
 
 Thus we will: 
 
 1. **Start** gen3sis package and check if we are set with all the necessary input data.
 2. **Run** one simple example simulation
 3. **Visualize** the output
-4. **Analize** the output
+4. **Analyze** the output
 
 
 ----
 
-The first step for running a  simulation consists of setting up the folder structure with the required input data from which the landscape object and the distance matrices are calculated. 
-Thereafter, the funciton run_simulation, our main function, will:
-1) Read in the config and prepare the output directories, initial landscape and call “create_ancestor_species” from the user config to create the initial species for the simulation.
-2) Start  the main loop over the time steps. For every time step it loads the appropriate landscape, removes all cells that became uninhabitable in the new time step, and calls the main steps of any iteration.
-3) At the end of every time step the simulation saves the species richness pattern, the phylogeny, if desired the species and landscape, and calls the “end_of_timestep_observer” function from the user config. In this function the user can implement  customized observer functions, for example calculating summary statistics or creating species patterns plots.
+The first step for running a simulation consists of setting up the folder structure with the required input data from which the landscape object and the distance matrices are calculated. 
+Thereafter, the function run_simulation, our main function, will:
 
-Additionally to the main functions, the package provides several convenience functions to generate input data,configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. The model is implemented in a mix of R and C++ code, and wrapped into an R package. All high-level functions that the user may use to interact with are written in R, and are documented via the standard R / Roxygen help files for R packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. 
+1) Read in the config and prepare the output directories, initial landscape and call “create_ancestor_species” from the user config to create the initial species for the simulation.
+
+2) Start the main loop over the time steps. For every time step it loads the appropriate landscape, removes all cells that became uninhabitable in the new time step, and calls the main steps of any iteration.
+
+3) At the end of every time step the simulation saves the species richness pattern, the phylogeny, if desired the species and landscape, and calls the “end_of_timestep_observer” function from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
+
+
+Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. The model is implemented in a mix of R and C++ code, and wrapped into an R package. All high-level functions that the user may use to interact with are written in R, and are documented via the standard R / Roxygen help files for R packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. 
 
 ----
 
@@ -54,10 +62,10 @@ print(paste("GEN3SIS version:", packageVersion("gen3sis")))
 
 
 
-All gen3sis simulations need a **landscape** and a **configuration** object to refer to. The **landscape** is the environment of the virtual planet (e.g. temperature and precipitation data that changes spatialy and temporaly). The **configuration** are the rules of our virtual planet, here is were we define all the ecological and evolutionary 
+All gen3sis simulations need a **landscape** and a **configuration** object to refer to. The **landscape** is the environment of the virtual planet (e.g. temperature and precipitation data that changes spatially and temporally). The **configuration** are the rules of our virtual planet, here is were we define all the ecological and evolutionary equations and parameters.
 Here we will use a published small theoretical planet example[^1]. 
 
-Since this is a small data (252 KB), we made it already avaiable in the package. Get the path to the data inside the package. This data can also be downloaded the [landscape](https://github.com/project-Gen3sis) and the [configuration](https://github.com/project-Gen3sis) and store  in a prefered place wherever you would like to run the experiment.
+Since this is a small data (252 KB) which is already available in the package. Get the path to the data inside the package. This [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data can also be downloaded manually and stored locally for running the experiment.
 
  Like this:
 
@@ -72,9 +80,9 @@ datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
 
 
 
-**NOTE** that the landscape contain several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform the landscape is connected. In this example you are using an already ready to run landscape. To see how to create a landscape object, see (this vigenette)[create_landscape.html]
+**NOTE** that the landscape contains several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform the landscape is connected. In this example you are using an already ready to run landscape. To see how to create a landscape object, see (this vignette)[create_landscape.html]
 
-Done? Great now you have downloaded all the needed files to run a simulation. 
+You should now have downloaded all the necessary files to run a simulation. 
 
 
 [^1]: O. Hagen, B. Flüch, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
@@ -82,7 +90,7 @@ Done? Great now you have downloaded all the needed files to run a simulation.
 
 ## 2. Run
 
-To launch our simulation use 
+To launch a simulation you need to call the run_simulation function.
 
 ```{r eval=TRUE, echo=TRUE}
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
@@ -92,9 +100,9 @@ sim <- run_simulation(config = file.path(datapath, "config/config_rte.R"),
 
 ```
 
-After the simulation is finished, a plot is created at the CaseStudy1 folder to show the state of the initial world. We see, 1 species per cell in the 4 cell small island.
+After the simulation is finished, a plot is created inside the CaseStudy1 folder to show the state of the initial world. As you can see it contains 1 species per cell in the 4 cell small island.
 
-Excellent. Our virtual species are waiting for us. They are automatically stored in a subfolder called output inside our CaseStudy1 folder named after our configuration file (i.e. config). Like this:
+Excellent. Our virtual species are waiting for us. They are automatically stored in a sub folder called **output** inside our CaseStudy1 folder and inside another folder named after our configuration file (i.e. config). It should look like this:
 
 |>EXPERIMENT_FOLDER     |
 |:-------------------------|
@@ -104,18 +112,19 @@ Excellent. Our virtual species are waiting for us. They are automatically stored
 
 ## 3. Visualize
 
-Gen3sis also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that look t the world as it develops.
-**NOTE** You can also creat your own observer function. 
+Gen3sis also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that document the changes of the world.
+**NOTE** You can also create your own observer function. 
 
 One default observer function is the collection of the richness over time. This was stored as 'sim'.
 We can quickly visualize some main results  using the plot_summary function
 
-```{r eval=TRUE}
+
+```{r eval=TRUE, fig.width=7, fig.height=7}
 plot_summary(sim)
 ```
 
 
-There are a few visualization tools already included in the package, but you are free to explore and check the outputs with your favorit plotting functions and colors. For us to look at the landscape and species richness at the end of the simulation (i.e. present, aka 0Ma) first we have to load the respective species and landscape object.
+There are a few visualization tools already included in the package, but you are free to explore and check the outputs with your favorite plotting functions and colors. For us to look at the landscape and species richness at the end of the simulation (i.e. present, aka 0Ma) first we have to load the respective species and landscape object.
 
 ```{r eval=TRUE}
 #load landscape at 0Ma
@@ -125,7 +134,7 @@ sps0 <- readRDS(file.path(datapath, "output/config_rte/species/species_t_0.rds")
 ```
 
 We can then plot the environmental conditions
-```{r eval=TRUE, fig.width = 5.5}
+```{r eval=TRUE, fig.width = 5.5, fig.align='center'}
 #plot all environmental values in the landscapes (in our case temperature and precipitation) at the selected timeteps (here present)
 plot_landscape(l0)
 
@@ -137,9 +146,9 @@ And only richness, without the plot_summary function
 plot_richness(sps0, l0)
 ```
 
-## 4. Analize
+## 4. Analyze
 
-Let's see how species richness correlates with bouth environmental variables at the present.
+Let's see how species richness correlates with both environmental variables at the present.
 
 ```{r eval=TRUE}
 rich <- gen3sis:::get_geo_richness(sps0, l0) #get species richness with cell id as name
@@ -148,10 +157,15 @@ prec <- l0$environment[,"prec"] #get precipitation values
 # create a table and order by richness
 data <- data.frame(rich, temp, prec)[order(rich),]
 data
+
+par(mfrow=c(1,2))
 #plot richness against temperature
-plot(data$rich, data$temp  )
+plot(data$temp, data$rich, xlab='temperature', ylab='richness', pch=21)
 #plot richness against precipitation
-plot(data$rich, data$prec  )
+plot(data$temp, data$rich, xlab='temperature', ylab='richness', pch=21)
+
+#plot(data$rich, data$temp, xlab='richness', ylab='temperature', pch=21)
+#plot(data$rich, data$prec  )
 
 ```
 
