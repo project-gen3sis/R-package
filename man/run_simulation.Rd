@@ -10,7 +10,7 @@ run_simulation(
   output_directory = NA,
   timestep_restart = NA,
   save_state = NA,
-  save_intermediate_results = NA,
+  call_observer = NA,
   enable_gc = F,
   verbose = 1
 )
@@ -24,9 +24,9 @@ run_simulation(
 
 \item{timestep_restart}{= Set the start time timestep. If NA start at the beginning, If "ti" start from the last available timestep, if a number "x" start from timestep x}
 
-\item{save_state}{= Save observer functions, if "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep}
+\item{save_state}{= Save the internal state of the simulation for restarts, if "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep}
 
-\item{save_intermediate_results}{save observer, NA saves time start and end, "all" saves all timesteps or provide the timesteps to be stored}
+\item{call_observer}{call observer functions if any, NA calls at the start and end times, "all" call all timesteps or provide the timesteps to be stored}
 
 \item{enable_gc}{enable gc in case of memory shortages}
 
