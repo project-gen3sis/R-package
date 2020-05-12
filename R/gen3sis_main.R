@@ -28,7 +28,7 @@ assign("dist", -Inf, envir = counting)
 #' @param enable_gc enable gc in case of memory shortages
 #' @param verbose integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)
 #'
-#' @return a summary object containing a minimal summary on species progress (alive, speciations, extinctions) 
+#' @return a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) and some usefull simulation data
 #'
 #' @importFrom utils packageVersion write.table
 #' 
