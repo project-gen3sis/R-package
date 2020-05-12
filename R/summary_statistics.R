@@ -72,12 +72,11 @@ update_summary_statistics <- function(data, vars, config) {
 #'
 #' @noRd
 make_summary <- function(config, data, vars, total_runtime){
-  # function that creates a summary file, mainly sgen3sis.RData at the end of the simulation
+  # create output summary file at the end of the simulation
   path <- strsplit(config$directories$input, "/")[[1]]
   world <- path[length(path)]
   
   sgen3sis <- list("summary"= list(), "flag"=list(), "system"= list(), "parameters" = list())
-
   
   #summary
   sgen3sis$summary <- c(data$summaries, list("richness-final"=data$geo_richness[,c(1,2,ncol(data$geo_richness))]))
@@ -97,21 +96,8 @@ make_summary <- function(config, data, vars, total_runtime){
   # parameters
   sgen3sis$parameters <- config
   
-  # sgen3sis <- c(sgen3sis, list(
-  #   packageVersion=paste0( "gen3sis_", packageVersion("gen3sis")),
-  #   turnover=data$turnover,
-  #   phy = data$phy,
-  #   geo_richness = data$geo_richness,
-  #   # eco_by_cell=NULL#,    #Possible fix, add: eco_by_cell=data$eco_by_sp [Oskar]
-  #   #eco_by_sp_tf0=data$eco_by_sp_tf0,
-  #   eco_by_sp = data$eco_by_sp
-  #   #cpu_time=difftime(system_time_stop, system_time_start, units = "hours")[[1]]
-  # ))
-  
-  
-  
+  # prepare output
   class(sgen3sis) <- "gen3sis_output"
-  # save(sgen3sis, file=file.path(config$directories$output,"sgen3sis.RData"))
   return(sgen3sis)
 }
 
