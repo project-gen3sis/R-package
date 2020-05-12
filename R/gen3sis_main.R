@@ -99,7 +99,7 @@ run_simulation <- function(config = NA,
   # #---------------------------------------------------#
   val <- init_simulation(val$config, val$data, val$vars)
   
-  val <- initialize_summary_statistics(val$data, val$vars , val$config)
+  val <- init_summary_statistics(val$data, val$vars , val$config)
   
 
   #--------------------------------------------#

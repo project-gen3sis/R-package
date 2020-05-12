@@ -9,7 +9,7 @@
 #'
 #' @return the standard val list of data, vars, config
 #' @noRd
-initialize_summary_statistics <- function(data, vars, config){
+init_summary_statistics <- function(data, vars, config){
   data[["summaries"]] <- list()
   
   phylo_summary <- matrix(NA, nrow = 1, ncol = 4, 
