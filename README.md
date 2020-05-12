@@ -13,7 +13,7 @@ Package authorship according to: http://epub.wu.ac.at/3269/1/Report114.pdf
 
 ### How to install gen3sis
 
-Gen3sis is on CRAN. So, to install the latest CRAN release, just run
+Gen3sis is on CRAN. So, to install the latest CRAN release, just run in R
 
 ```{r}
 install.packages("gen3sis")
