@@ -140,7 +140,7 @@ run_simulation <- function(config = NA,
     #
     if( val$vars$n_sp_alive >= val$config$gen3sis$general$max_number_of_species ) {
       val$vars$flag <- "max_number_species"
-      print("breaking loop due to too large number of species")
+      print("max number of species reached, breaking loop")
       break
     }
     #
@@ -178,7 +178,10 @@ run_simulation <- function(config = NA,
       cat("dispersal \n")
     }
     val <- loop_dispersal(val$config, val$data, val$vars)
-
+    if( val$vars$flag == "max_number_coexisting_species") {
+      print("max number of co-occuring species reached, breaking loop")
+      break
+    }
 
     #     #----------------------------------------------------------#
     #     ######## loop evolution                              #######
