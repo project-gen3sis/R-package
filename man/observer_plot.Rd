@@ -4,7 +4,7 @@
 \alias{observer_plot}
 \title{This function can be called within the observer function to save the compressed species divergence.}
 \usage{
-observer_plot(plot_function = NULL, ...)
+observer_plot(plot_function = NULL)
 }
 \arguments{
 \item{plot_function}{is the desired plot function., e.g. plot_richness, plot_species, plot_landscape}
@@ -13,5 +13,5 @@ observer_plot(plot_function = NULL, ...)
 This function can be called within the observer function to save the compressed species divergence.
 }
 \examples{
-
+# TODO - add example
 }
