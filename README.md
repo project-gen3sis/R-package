@@ -1,6 +1,5 @@
 ![logo](logo.png)
 
-# 
 
 # General Engine for Eco-Evolutionary Simulations
 
