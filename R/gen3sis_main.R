@@ -84,12 +84,12 @@ run_simulation <- function(config = NA,
   #val$config$gen3sis$nickname <- "Quintessence"
 
   # #---------------------------------------------------------#
-  # ######## ATTRIBUTE MRCA DISTRIBUTION (simulation.R) #######
+  # ###### ATTRIBUTE ANCESTOR DISTRIBUTION (simulation.R) #####
   # #---------------------------------------------------------#
   val <- setup_inputs(val$config, val$data, val$vars)
   val <- setup_variables(val$config, val$data, val$vars)
   val <- setup_landscape(val$config, val$data, val$vars)
-  val <- init_attribute_mrca_distribution(val$config, val$data, val$vars)
+  val <- init_attribute_ancestor_distribution(val$config, val$data, val$vars)
 
   # #---------------------------------------------------#
   # #####               SIMULATION START            #####

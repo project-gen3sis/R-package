@@ -92,7 +92,7 @@ setup_variables <- function(config, data, vars) {
 }
 
 
-#' init_attribute_mrca_distribution calls the creation for the initial species and prepares some furhter data storage
+#' init_attribute_ancestor_distribution calls the creation for the initial species and prepares some furhter data storage
 #'
 #' @param config the current config
 #' @param data the current data
@@ -104,7 +104,7 @@ setup_variables <- function(config, data, vars) {
 #' @importFrom graphics par
 #' @import raster
 #' @noRd
-init_attribute_mrca_distribution <- function(config, data, vars) {
+init_attribute_ancestor_distribution <- function(config, data, vars) {
   
   all_species <- config$gen3sis$initialization$create_ancestor_species(data$landscape, config)
   for (i in 1:length(all_species)){
