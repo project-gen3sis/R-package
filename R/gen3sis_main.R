@@ -200,12 +200,9 @@ run_simulation <- function(config = NA,
     # #     #------------------------------------------------------------------#
     # #     ######## end of timestep loop variable update (simulation.R) #######
     # #     #------------------------------------------------------------------#
-    # val <- update1.n_sp.all_geo_sp_ti(val$config, val$data, val$vars)
-    # val <- update2.n_sp_alive.geo_sp_ti(val$config, val$data, val$vars)
     if(verbose>=2){
       cat("end of loop updates \n")
     }
-
     #
     #
     #   #-----------------------------------------------------------------#
@@ -220,7 +217,6 @@ run_simulation <- function(config = NA,
 
     if(val$vars$ti %in% val$vars$save_steps){
       call_main_observer(val$data, val$vars, val$config)
-      # save_ecogengeo(val)
     }
     
     val <- update_summary_statistics(val$data, val$vars, val$config)
