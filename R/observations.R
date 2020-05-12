@@ -145,7 +145,7 @@ save_extract <- function(element) {
 #' @param plot_function is the desired plot function., e.g. plot_richness, plot_species, plot_landscape
 #' @example inst/examples/observer_plot_help.R
 #' @export
-observer_plot <- function(plot_function=NULL, ...){
+observer_plot <- function(plot_function=NULL){
   config <- dynGet("config")
   data <- dynGet("data")
   vars <-  dynGet("vars")
