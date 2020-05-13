@@ -22,13 +22,13 @@ assign("dist", -Inf, envir = counting)
 #' @param config configuration file for the simulation or configuration object derived from a config file
 #' @param landscape directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
-#' @param timestep_restart = Set the start time timestep. If NA start at the beginning, If "ti" start from the last available timestep, if a number "x" start from timestep x
-#' @param save_state = Save the internal state of the simulation for restarts, if "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep
-#' @param call_observer call observer functions if any, NA calls at the start and end times, "all" call all timesteps or provide the timesteps to be stored 
+#' @param timestep_restart = set the start time timestep. If NA start at the beginning, If "ti" start from the last available timestep, if a number "x" start from timestep x
+#' @param save_state = save the internal state of the simulation for restarts. If "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep
+#' @param call_observer call observer functions if any, NA calls at the start and end times, "all" call all timesteps, You can also provide the timesteps for the observer funciton to be called 
 #' @param enable_gc enable gc in case of memory shortages
 #' @param verbose integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)
 #'
-#' @return a summary object containing a minimal summary on species progress (alive, speciations, extinctions) 
+#' @return a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) and some usefull simulation data
 #'
 #' @importFrom utils packageVersion write.table
 #' 
@@ -40,7 +40,7 @@ run_simulation <- function(config = NA,
                           output_directory = NA, 
                           timestep_restart = NA,
                           save_state = NA,
-                          call_observer = NA,
+                          call_observer = "all",
                           enable_gc = F,
                           verbose = 1){
   
@@ -84,12 +84,12 @@ run_simulation <- function(config = NA,
   #val$config$gen3sis$nickname <- "Quintessence"
 
   # #---------------------------------------------------------#
-  # ######## ATTRIBUTE MRCA DISTRIBUTION (simulation.R) #######
+  # ###### ATTRIBUTE ANCESTOR DISTRIBUTION (simulation.R) #####
   # #---------------------------------------------------------#
   val <- setup_inputs(val$config, val$data, val$vars)
   val <- setup_variables(val$config, val$data, val$vars)
   val <- setup_landscape(val$config, val$data, val$vars)
-  val <- init_attribute_mrca_distribution(val$config, val$data, val$vars)
+  val <- init_attribute_ancestor_distribution(val$config, val$data, val$vars)
 
   # #---------------------------------------------------#
   # #####               SIMULATION START            #####
@@ -99,7 +99,7 @@ run_simulation <- function(config = NA,
   # #---------------------------------------------------#
   val <- init_simulation(val$config, val$data, val$vars)
   
-  val <- initialize_summary_statistics(val$data, val$vars , val$config)
+  val <- init_summary_statistics(val$data, val$vars , val$config)
   
 
   #--------------------------------------------#
@@ -140,7 +140,7 @@ run_simulation <- function(config = NA,
     #
     if( val$vars$n_sp_alive >= val$config$gen3sis$general$max_number_of_species ) {
       val$vars$flag <- "max_number_species"
-      print("breaking loop due to too large number of species")
+      print("max number of species reached, breaking loop")
       break
     }
     #
@@ -178,7 +178,10 @@ run_simulation <- function(config = NA,
       cat("dispersal \n")
     }
     val <- loop_dispersal(val$config, val$data, val$vars)
-
+    if( val$vars$flag == "max_number_coexisting_species") {
+      print("max number of co-occuring species reached, breaking loop")
+      break
+    }
 
     #     #----------------------------------------------------------#
     #     ######## loop evolution                              #######
@@ -197,12 +200,9 @@ run_simulation <- function(config = NA,
     # #     #------------------------------------------------------------------#
     # #     ######## end of timestep loop variable update (simulation.R) #######
     # #     #------------------------------------------------------------------#
-    # val <- update1.n_sp.all_geo_sp_ti(val$config, val$data, val$vars)
-    # val <- update2.n_sp_alive.geo_sp_ti(val$config, val$data, val$vars)
     if(verbose>=2){
       cat("end of loop updates \n")
     }
-
     #
     #
     #   #-----------------------------------------------------------------#
@@ -217,7 +217,6 @@ run_simulation <- function(config = NA,
 
     if(val$vars$ti %in% val$vars$save_steps){
       call_main_observer(val$data, val$vars, val$config)
-      # save_ecogengeo(val)
     }
     
     val <- update_summary_statistics(val$data, val$vars, val$config)

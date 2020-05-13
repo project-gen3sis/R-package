@@ -69,8 +69,9 @@ loop_ecology <- function(config, data, vars) {
     }
     max_n_sp_idi <- config$gen3sis$general$max_number_of_coexisting_species
     if (length(coo_sp) > max_n_sp_idi) {
-      stop(paste0("Maximum number of species per cell (i.e. max_n_sp_idi) reached. Specifically ",
-                  length(coo_sp),"(>", max_n_sp_idi,") species @ t",vars$ti, " idi",cell ))
+      vars$flag <- "max_number_coexisting_species"
+      paste0("Maximum number of species per cell (i.e. max_n_sp_idi) reached. Specifically ",
+                  length(coo_sp),"(>", max_n_sp_idi,") species @ t",vars$ti, " idi",cell )
     }
 
     rownames(traits) <- coo_sp
