@@ -21,17 +21,27 @@ install.packages("gen3sis")
 
 ### How to run one simple simulation
 
+Load and run a simulation with the desired config and landscapes. Exemple data is provided with the package
 ```{r}
 library("gen3sis")
+sim <- run_simulation(config = "config_xD.R", input_directory = "./simulations/World")
 
-#print package version
-paste("GEN3SIS version:", packageVersion("gen3sis"))
+```
+A summary statistics is stored at 'sim' more data can be save using the oberver function
 
-#run simulation
-run_simulation(config = "config_xD.R", input_directory = "./simulations/World")
+### How to visualize a simulation
 
-#cat mood
-cat("  xD  ")
+Plot the summary statistics of a simulation
+
+```{r}
+plot_summary(sim)
 ```
 
+### Check package version
 
+Make sure you have the latest gen3sis version
+
+```{r}
+#print package version
+paste("GEN3SIS version:", packageVersion("gen3sis"))
+```
