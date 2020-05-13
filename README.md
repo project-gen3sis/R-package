@@ -25,7 +25,6 @@ Load and run a simulation with the desired config and landscapes. Exemple data i
 ```{r}
 library("gen3sis")
 sim <- run_simulation(config = "config_xD.R", input_directory = "./simulations/World")
-
 ```
 A summary statistics is stored at 'sim' more data can be save using the oberver function
 
@@ -45,3 +44,5 @@ Make sure you have the latest gen3sis version
 #print package version
 paste("GEN3SIS version:", packageVersion("gen3sis"))
 ```
+
+Package mantined by Oskar Hagen (oskar@hagen.bio)
