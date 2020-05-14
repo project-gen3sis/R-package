@@ -18,6 +18,7 @@ Gen3sis is on CRAN. So, to install the latest CRAN release, just run in R
 ```{r}
 install.packages("gen3sis")
 ```
+[![Build Status](https://travis-ci.com/project-Gen3sis/R-package.svg?branch=master)](https://travis-ci.com/project-Gen3sis/R-package)
 
 ### How to run one simple simulation
 
