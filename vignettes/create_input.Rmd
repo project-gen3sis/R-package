@@ -27,6 +27,7 @@ In this step, the user needs to create the data frames containing the spatiotemp
 The code to generate such dynamic landscape is below:
 
 ```{r eval=TRUE}
+library(raster)
 #Set the work directory of your choice in which you will save the landscape files
 setwd(getwd())
 #Defining spatial extents in two dimensions (number of grid cells):
@@ -104,18 +105,27 @@ colnames(Dynamic_Landscape_Temperature_dataframe)<- c("x","y",stringtimestepsnam
 #Transforming the matrix to data frame, for precipitation:
 Dynamic_Landscape_Precipitation_dataframe<-as.data.frame(Dynamic_Landscape_Precipitation_dataframe)
 colnames(Dynamic_Landscape_Precipitation_dataframe)<- c("x","y",stringtimestepsnames)
+#Transforming the temperature array into a list of rasters
+temp <-lapply(seq(dim(Dynamic_Landscape_Temperature)[3]), function(x){raster(Dynamic_Landscape_Temperature[ , , x], xmn = 0., xmx = 31., ymn = 0., ymx = 31.)})
+#Transforming the precipitation array into a list of rasters
+prec <-lapply(seq(dim(Dynamic_Landscape_Precipitation)[3]),function(x){raster(Dynamic_Landscape_Precipitation[ , , x], xmn = 0., xmx = 31., ymn = 0., ymx = 31.)})
 ```
 ## Creating a list with the environmental data frames
 It is important to add the name of the environmental variable you want to use in the list, which will be used when specifying the config file. Here we name "temp" the data frame for temperature and "prec" for the data frame for precipitation
 ```{r eval=TRUE}
-Landscapes_list <- list("temp" = Dynamic_Landscape_Temperature_dataframe,"prec"=Dynamic_Landscape_Precipitation_dataframe) 
+#Landscapes_list <- list("temp" = Dynamic_Landscape_Temperature_dataframe,"prec"=Dynamic_Landscape_Precipitation_dataframe) 
+Landscapes_list <- list("temp" = temp,"prec"=prec) 
 ```
 ## Defining a cost function 
 The second argument we need to define is a cost function. This function should define how connected and reachabel grid cells are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water grid cells should increase the cost of dispersal. The costs have to bedefined in meters because the coordinate system is in meters for real landscapes (automatically corrected to km in later on by the create_input() function). However, in our example all grid cells are suitable and contiguous and the distance unit is automatically in grid cell as we do not provide a coordinate system. Hence, we can define a simple cost function in which the dispersal is not penalized: 
 
 ```{r eval=TRUE}
-my_cost_function <- function(){
-    return(1)
+my_cost_function <- function(x, h_x, y, h_y){
+  if(all(h_x, h_y)){
+    return(0.01) #scaling to 1/100 to get to the 1 eucledean distance
+  } else {
+    return(0.01) #scaling to 1/100 to get to the 1 eucledean distance
+  }
 }
 ```
 
@@ -131,7 +141,7 @@ The real geographic coordinate system can be provided which allows for the globa
 
 The model uses serialized R files (.rds) format for all inputs. The functions for processing the input data in the required format are available in the package. Once the data is processed, the simulation can be started with the function run_simulation().
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 create_input(landscapes = Landscapes_list,
              cost_function = my_cost_function,
              output_directory = "../My_experiment_Input",# a directory name to save the files in
