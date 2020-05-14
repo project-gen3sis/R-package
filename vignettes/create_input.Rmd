@@ -15,14 +15,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette aims at showing how to use the function create_input(). The function create_input() creates input objects necessary to run gen3sis: 1) a rds file containing a landscape list of raster stacks for environmental variables; 2) a series os rds files, one for each timestep, including distance matrices between grid cells. To create these files, the function requires as arguments: A) a list of data frames, with each data frame containing the spatio-temporal distribution of an environmental variable; B) a cost function defining how dispersal between particular types of cells is penalized (to be used for the calculation of the distance matrices); C) A predefined directory where the created files will be saved to file. Further arguments can be modified from the default values depending on user preferences. Below, we go step by step to generate the R objects required by the function create_input(). For this exercise, we will use the simple island landscape that we used in the introduction vignette and in the main text of the package manuscript as case study 1. This example is important, because the user will define each required object him/herself.
+This vignette aims at showing how to use the function create_input(). The function create_input() creates input objects necessary to run gen3sis: 1) a rds file containing a landscape list of raster stacks for environmental variables; 2) a series os rds files, one for each timestep, including distance matrices between grid cells. To create these files, the function requires as arguments: A) a named list of rasters, with each raster containing the spatio-temporal distribution of an environmental variable; B) a cost function defining how dispersal between particular types of cells is penalized (to be used for the calculation of the distance matrices). Further arguments can be modified from the default values depending on user preferences. Below, we go step by step to generate the R objects required by the function create_input(). For this exercise, we will use the simple island landscape that we used in the introduction vignette and in the main text of the package manuscript as case study 1. This example is important, because the user will define each required object him/herself.
 The first step is to load the package library:
 
 ```{r setup}
 library(gen3sis)
 ```
 
-## Creating the environmental data frame
+## Creating the environmental data frames
 In this step, the user needs to create the data frames containing the spatiotemporal distribution of the environmental variables of interest. For our example, we need to create a dynamic island landscape that starts with few grid cells, grows in number of grid cells as mimicking volcanic activity, then shrinks in number of cells in a slower pace as mimicking erosion. Within this dynamic landscape, we define the value of the environmental variables in each cell. We define temperature in Celcius and Precipitation in mm per year. In this experiment, we assume that the island just increases in size, with not environmental gradient emerging. However, we do want to add some temporal dynamics in the environment. For this we add a Gaussian environmental white noise by choosing a mean and a standard deviation for each parameter. From these mean and standard deviation parameters, we draw a random number for each environmental variable for every cell and for every timestep.
 The code to generate such dynamic landscape is below:
 
@@ -47,8 +47,8 @@ Dynamic_Landscape_Precipitation_dataframe<-matrix(NA,nrow=Nrow*Ncol, ncol=length
 stringtimestepsnames<-vector(mode="character",length=Ntimesteps)
 
 #Looping over the time steps and spatial dimentions,
-#generating the area and heterogeneity dynamics over time,
-#generating the environmental values to be saved in the landscape arrays:
+#generating the area dynamics over time,
+#generating the environmental values with spatiotemporal white noise to be saved in the landscape arrays:
 for (timestep in 1:Ntimesteps){ # temporal loop
   counting<-1
   stringtimestepsnames[timestep]<-paste(timestep," Ma", sep="")
@@ -84,75 +84,59 @@ for (timestep in 1:Ntimesteps){ # temporal loop
           Dynamic_Landscape_Precipitation[x,y,timestep] <- rnorm(1,500,50)  
         }
       }
-      #Saving the environmental variables in a table format for distance matrices
+      #Saving the environmental variables in a matrix like a table to create data frames below the loop
       if(timestep==1){
         Dynamic_Landscape_Temperature_dataframe[counting,1]<-x
         Dynamic_Landscape_Temperature_dataframe[counting,2]<-y
         Dynamic_Landscape_Precipitation_dataframe[counting,1]<-x
         Dynamic_Landscape_Precipitation_dataframe[counting,2]<-y
       }
-      Dynamic_Landscape_Temperature_dataframe[counting,2+timestep]<-My_Dynamic_Landscape[x,y,timestep]
-      Dynamic_Landscape_Precipitation_dataframe[counting,2+timestep]<-My_Dynamic_Landscape2[x,y,timestep]
+      Dynamic_Landscape_Temperature_dataframe[counting,2+timestep]<-Dynamic_Landscape_Temperature[x,y,timestep]
+      Dynamic_Landscape_Precipitation_dataframe[counting,2+timestep]<-Dynamic_Landscape_Precipitation[x,y,timestep]
       counting<-counting+1
     }
   }
 }
 
-
-#Data frame for temperature:
+#Transforming the matrix to data frame, for temperature:
 Dynamic_Landscape_Temperature_dataframe<-as.data.frame(Dynamic_Landscape_Temperature_dataframe)
 colnames(Dynamic_Landscape_Temperature_dataframe)<- c("x","y",stringtimestepsnames)
-#Data frame for precipitation:
+#Transforming the matrix to data frame, for precipitation:
 Dynamic_Landscape_Precipitation_dataframe<-as.data.frame(Dynamic_Landscape_Precipitation_dataframe)
 colnames(Dynamic_Landscape_Precipitation_dataframe)<- c("x","y",stringtimestepsnames)
-
-
 ```
-## creating a list with the environmental dataframes
+## Creating a list with the environmental data frames
 It is important to add the name of the environmental variable you want to use in the list, which will be used when specifying the config file. Here we name "temp" the data frame for temperature and "prec" for the data frame for precipitation
-```{r eval=True}
+```{r eval=TRUE}
 Landscapes_list <- list("temp" = Dynamic_Landscape_Temperature_dataframe,"prec"=Dynamic_Landscape_Precipitation_dataframe) 
-
 ```
-## Defining a cost function (how connected and reachabel grid cells are)
+## Defining a cost function 
+The second argument we need to define is a cost function. This function should define how connected and reachabel grid cells are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water grid cells should increase the cost of dispersal. The costs have to bedefined in meters because the coordinate system is in meters for real landscapes (automatically corrected to km in later on by the create_input() function). However, in our example all grid cells are suitable and contiguous and the distance unit is automatically in grid cell as we do not provide a coordinate system. Hence, we can define a simple cost function in which the dispersal is not penalized: 
 
-```{r eval=FALSE}
-dir <- getwd()
-setwd("../input/IntegrationTests_scaled_4d_restructured/")
-all_geo_hab <- readRDS("all_geo_hab.rds")
-dir.create("temp_raster")
-
-temp <- all_geo_hab$temp
-rasters <- list()
-for(i in 3:303){ #per zeitschritt
-  ras <- rasterFromXYZ(temp[, c(1,2,i)])
-  rasters[[304-i]] <- ras
-}
-timesteps <- rev(colnames(temp)[-c(1,2)])  #names der Zeitschritten
-
-landscapes <- list(temp = rasters)
-
-cost_function <- function(x, h_x, y, h_y){
-  if(all(h_x, h_y)){
+```{r eval=TRUE}
+my_cost_function <- function(){
     return(1)
-  } else {
-    return(2)
-  }
 }
-
-
-
 ```
-## create input 
 
-The distance matrix for each time step between either: (i) full distance, containing all habitable cells in the landscape (faster computing speed, larger storage required), or (ii) local distance, containing a list of distance matrices of each cell with its 16 neighbors (slower computing speed, smaller storage required). Local distances matrix are built at each timestep with equal dimension to the full distances during a simulation run.The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in kilometers (km). In the case of hypothetical landscapes, geographic distance is measured in units of grid cells.The model uses serialized R files (rds) format for all inputs. The functions for processing the input data in the required format are available in the package. The package offers two options to create distance matrices: one can either compute a (i) full distance matrix at each time step, or compute a (ii) local distance matrix of all cells containing the distances between neighbouring cells. The former option will lead to faster simulations, while the latter uses less storage space. Once the data is processed, the simulation can be started with the function ‘run_simulation’.’ 
+## Further useful arguments
+Besides the landscape list, the cost function and the experiment folder, we can define further arguments: directions, timesteps and calculate_full_distance_matrices. 
+The argument 'directions' requires an interger providing the amound of directions used to calculate distances. It can take 4, 8, 16 as values to consider the four, eigth or 16 neiboring grid cells. This is the same homonimous argument used by the function transition in the gdistance package (gdistance::transition). 
+The argument 'timesteps' requires a vector of strings of mode character and is used to name the files and to name the timesteps in the .rds landscape object created by the create_input() function. It is not necessary to define this argument, but it helps readibility when manipulating the object. 
+The argument 'calculate_full_distance_matrices' defines whether the create_input() function will create one large distance matrix for all suitable grid cells (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring cells specified in 'directions' around each suitable grid cell (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
+
+The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in kilometers (km). In the case of hypothetical landscapes, as in our example, geographic distance is measured in units of grid cells.
+
+## Create input files 
+
+The model uses serialized R files (.rds) format for all inputs. The functions for processing the input data in the required format are available in the package. Once the data is processed, the simulation can be started with the function run_simulation().
 
 ```{r eval=FALSE}
-create_input(landscapes = landscapes,
-             cost_function = cost_function,
-             directions = 8,#p o gdistance calculat distancias, 16 better for more complex landscape shapes  # o mesmo argumento usado na funcao transition no package gdistance  gdistance::transition
-             output_directory = "../IntegrationTests_4d_new_layout",# an existing directory to put all
-             timesteps = as.character(timesteps), #just to name the files, e.g. paste(0:140, "Ma") inside the landscape
-             calculate_full_distance_matrices = T  #for all cells (full) or just neigbors (local[less space in the disc, but cost more time, because the full is recalculated everytime step])
+create_input(landscapes = Landscapes_list,
+             cost_function = my_cost_function,
+             output_directory = "../My_experiment_Input",# a directory name to save the files in
+             directions = 8, # all surrounding grid cells from a focus cell
+             timesteps = as.character(stringtimestepsnames), # just to name the files
+             calculate_full_distance_matrices = TRUE  # full distance matrix
 )
 ```
