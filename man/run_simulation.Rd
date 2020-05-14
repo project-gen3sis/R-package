@@ -10,7 +10,7 @@ run_simulation(
   output_directory = NA,
   timestep_restart = NA,
   save_state = NA,
-  call_observer = NA,
+  call_observer = "all",
   enable_gc = F,
   verbose = 1
 )
@@ -22,18 +22,18 @@ run_simulation(
 
 \item{output_directory}{directory for the simulation output}
 
-\item{timestep_restart}{= Set the start time timestep. If NA start at the beginning, If "ti" start from the last available timestep, if a number "x" start from timestep x}
+\item{timestep_restart}{= set the start time timestep. If NA start at the beginning, If "ti" start from the last available timestep, if a number "x" start from timestep x}
 
-\item{save_state}{= Save the internal state of the simulation for restarts, if "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep}
+\item{save_state}{= save the internal state of the simulation for restarts. If "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep}
 
-\item{call_observer}{call observer functions if any, NA calls at the start and end times, "all" call all timesteps or provide the timesteps to be stored}
+\item{call_observer}{call observer functions if any, NA calls at the start and end times, "all" call all timesteps, You can also provide the timesteps for the observer funciton to be called}
 
 \item{enable_gc}{enable gc in case of memory shortages}
 
 \item{verbose}{integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)}
 }
 \value{
-a summary object containing a minimal summary on species progress (alive, speciations, extinctions)
+a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) and some usefull simulation data
 }
 \description{
 Run a simulation
