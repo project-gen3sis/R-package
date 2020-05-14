@@ -13,11 +13,21 @@ Package authorship according to: http://epub.wu.ac.at/3269/1/Report114.pdf
 
 ### How to install gen3sis
 
-Gen3sis is on CRAN. So, to install the latest CRAN release, just run in R
+Gen3sis will be soon on CRAN. As soon as this is done, you can install the latest CRAN release via
 
 ```{r}
 install.packages("gen3sis")
 ```
+
+Until then, you can install the latest development release from GitHub via 
+
+```{r}
+devtools::install_github(repo = "project-Gen3sis/R-package/", 
+  dependencies = T, build_vignettes = T)
+```
+Below the status of the automatic Travis CI tests on the master branch
+
+[![Build Status](https://travis-ci.com/project-Gen3sis/R-package.svg?branch=master)](https://travis-ci.com/project-Gen3sis/R-package)
 
 ### How to run one simple simulation
 

@@ -1,3 +1,6 @@
+# skip_on_cran()
+# skip_on_travis()
+
 test_that("distance matrix creation works", {
   num_cells <- 10
   ras <- raster(nrows = num_cells, ncols = num_cells, vals = 1+runif(num_cells*num_cells))
