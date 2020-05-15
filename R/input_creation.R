@@ -148,7 +148,7 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
 
   # the reference raster is used to get all local relations, filling it with the cell ids can be used for debugging
   # -> important in case of asymmetrical distances
-  ref_raster <- raster(ext = ext, resolution = rs, vals = 1:prod(dim(landscape_stack)[1:2]))
+  ref_raster <- raster(ext = ext, resolution = rs, crs = crs(landscape_stack), vals = 1:prod(dim(landscape_stack)[1:2]))
   transition_index <- gdistance::transition(ref_raster,
                                             transitionFunction = function(x){x[1]},
                                             directions = directions,
