@@ -52,7 +52,7 @@ stringtimestepsnames<-vector(mode="character",length=Ntimesteps)
 #generating the environmental values with spatiotemporal white noise to be saved in the landscape arrays:
 for (timestep in 1:Ntimesteps){ # temporal loop
   counting<-1
-  stringtimestepsnames[timestep]<-paste(timestep," Ma", sep="")
+  stringtimestepsnames[timestep]<-paste("X",timestep,"Ma", sep="")
   for (y in 1:Nrow){ #loop over the first spatial dimension
     for (x in 1:Ncol){ #loop over the second spatial dimension
       if((timestep<=10)||(timestep>120 && timestep<=140)){#time steps with only four (2x2) suitable grid cells
@@ -106,10 +106,26 @@ colnames(Dynamic_Landscape_Temperature_dataframe)<- c("x","y",stringtimestepsnam
 Dynamic_Landscape_Precipitation_dataframe<-as.data.frame(Dynamic_Landscape_Precipitation_dataframe)
 colnames(Dynamic_Landscape_Precipitation_dataframe)<- c("x","y",stringtimestepsnames)
 #Transforming the temperature array into a list of rasters
-temp <-lapply(seq(dim(Dynamic_Landscape_Temperature)[3]), function(x){raster(Dynamic_Landscape_Temperature[ , , x], xmn = 0., xmx = 31., ymn = 0., ymx = 31.)})
+temp <-lapply(seq(dim(Dynamic_Landscape_Temperature)[3]), function(x){raster(Dynamic_Landscape_Temperature[ , , x], xmn = 0.5, xmx = 31.5, ymn = 0.5, ymx = 31.5)}) #,varname=paste("X",x,"Ma",sep="")
+temp[[1]]
+lapply(seq(temp), function(x){names(temp[[x]])<-paste("X",x,"Ma",sep="")})
+temp[[1]]
+
+names(temp[[1]])<-paste("X",x,"Ma",sep="")
+#stringtimestepsnames
 #Transforming the precipitation array into a list of rasters
-prec <-lapply(seq(dim(Dynamic_Landscape_Precipitation)[3]),function(x){raster(Dynamic_Landscape_Precipitation[ , , x], xmn = 0., xmx = 31., ymn = 0., ymx = 31.)})
+prec <-lapply(seq(dim(Dynamic_Landscape_Precipitation)[3]),function(x){raster(Dynamic_Landscape_Precipitation[ , , x], xmn = 0.5, xmx = 31.5, ymn = 0.5, ymx = 31.5)})
+names(prec)<-stringtimestepsnames
 ```
+## Looking into the created rasters
+Now we can have a look on how the raster object looks like in the first time step:
+```{r eval=TRUE}
+temp[[1]]
+image(temp[[1]], title="Temperature (C)")
+prec[[1]]
+image(prec[[1]], title="Precipitation (mm/year)")
+```
+
 ## Creating a list with the environmental data frames
 It is important to add the name of the environmental variable you want to use in the list, which will be used when specifying the config file. Here we name "temp" the data frame for temperature and "prec" for the data frame for precipitation
 ```{r eval=TRUE}
@@ -122,9 +138,9 @@ The second argument we need to define is a cost function. This function should d
 ```{r eval=TRUE}
 my_cost_function <- function(x, h_x, y, h_y){
   if(all(h_x, h_y)){
-    return(0.01) #scaling to 1/100 to get to the 1 eucledean distance
+    return(1) #scaling to 1/100 to get to the 1 eucledean distance
   } else {
-    return(0.01) #scaling to 1/100 to get to the 1 eucledean distance
+    return(1) #scaling to 1/100 to get to the 1 eucledean distance
   }
 }
 ```
