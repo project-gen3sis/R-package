@@ -105,25 +105,27 @@ colnames(Dynamic_Landscape_Temperature_dataframe)<- c("x","y",stringtimestepsnam
 #Transforming the matrix to data frame, for precipitation:
 Dynamic_Landscape_Precipitation_dataframe<-as.data.frame(Dynamic_Landscape_Precipitation_dataframe)
 colnames(Dynamic_Landscape_Precipitation_dataframe)<- c("x","y",stringtimestepsnames)
+
 #Transforming the temperature array into a list of rasters
 temp <-lapply(seq(dim(Dynamic_Landscape_Temperature)[3]), function(x){raster(Dynamic_Landscape_Temperature[ , , x], xmn = 0.5, xmx = 31.5, ymn = 0.5, ymx = 31.5)}) #,varname=paste("X",x,"Ma",sep="")
-temp[[1]]
-lapply(seq(temp), function(x){names(temp[[x]])<-paste("X",x,"Ma",sep="")})
-temp[[1]]
 
-names(temp[[1]])<-paste("X",x,"Ma",sep="")
-#stringtimestepsnames
 #Transforming the precipitation array into a list of rasters
 prec <-lapply(seq(dim(Dynamic_Landscape_Precipitation)[3]),function(x){raster(Dynamic_Landscape_Precipitation[ , , x], xmn = 0.5, xmx = 31.5, ymn = 0.5, ymx = 31.5)})
-names(prec)<-stringtimestepsnames
+
+#naming the layers (timesteps)
+for(timestep in 1: length(stringtimestepsnames)){
+  names(temp[[timestep]])<-stringtimestepsnames[timestep]
+  names(prec[[timestep]])<-stringtimestepsnames[timestep]
+}
+
 ```
 ## Looking into the created rasters
 Now we can have a look on how the raster object looks like in the first time step:
 ```{r eval=TRUE}
 temp[[1]]
-image(temp[[1]], title="Temperature (C)")
+image(temp[[1]], main="Temperature (C)")
 prec[[1]]
-image(prec[[1]], title="Precipitation (mm/year)")
+image(prec[[1]], main="Precipitation (mm/year)")
 ```
 
 ## Creating a list with the environmental data frames
@@ -138,9 +140,9 @@ The second argument we need to define is a cost function. This function should d
 ```{r eval=TRUE}
 my_cost_function <- function(x, h_x, y, h_y){
   if(all(h_x, h_y)){
-    return(1) #scaling to 1/100 to get to the 1 eucledean distance
+    return(1*(1/1000)) #scaling to 1/100 to get to the 1 eucledean distance
   } else {
-    return(1) #scaling to 1/100 to get to the 1 eucledean distance
+    return(1*(1/1000)) #scaling to 1/100 to get to the 1 eucledean distance
   }
 }
 ```
