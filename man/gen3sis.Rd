@@ -3,6 +3,7 @@
 \docType{package}
 \name{gen3sis}
 \alias{gen3sis}
+\alias{gen3sis-package}
 \title{Gen3sis: General Engine for Eco-Evolutionary Simulations}
 \description{
 Gen3sis: General Engine for Eco-Evolutionary Simulations

@@ -4,16 +4,9 @@
 \alias{run_simulation}
 \title{Run a simulation}
 \usage{
-run_simulation(
-  config = NA,
-  landscape = NA,
-  output_directory = NA,
-  timestep_restart = NA,
-  save_state = NA,
-  call_observer = "all",
-  enable_gc = F,
-  verbose = 1
-)
+run_simulation(config = NA, landscape = NA, output_directory = NA,
+  timestep_restart = NA, save_state = NA, call_observer = "all",
+  enable_gc = F, verbose = 1)
 }
 \arguments{
 \item{config}{configuration file for the simulation or configuration object derived from a config file}

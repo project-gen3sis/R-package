@@ -4,18 +4,10 @@
 \alias{create_input}
 \title{Create an landscape input}
 \usage{
-create_input(
-  landscapes,
-  cost_function,
-  directions,
-  output_directory,
-  timesteps = NULL,
-  habitability_masks = NULL,
-  calculate_full_distance_matrices = F,
-  crs = NULL,
-  overwrite_output = F,
-  verbose = F
-)
+create_input(landscapes, cost_function, directions, output_directory,
+  timesteps = NULL, habitability_masks = NULL,
+  calculate_full_distance_matrices = F, crs = NULL,
+  overwrite_output = F, verbose = F)
 }
 \arguments{
 \item{landscapes}{list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past.
