@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette aims at showing how to use the function create_input(). The function create_input() creates input objects necessary to run gen3sis: 1) a rds file containing a landscape list of raster stacks for environmental variables; 2) a series os rds files, one for each timestep, including distance matrices between grid cells. To create these files, the function requires as arguments: A) a named list of rasters, with each raster containing the spatio-temporal distribution of an environmental variable; B) a cost function defining how dispersal between particular types of cells is penalized (to be used for the calculation of the distance matrices). Further arguments can be modified from the default values depending on user preferences. Below, we go step by step to generate the R objects required by the function create_input(). For this exercise, we will use the simple island landscape that we used in the introduction vignette and in the main text of the package manuscript as case study 1. This example is important, because the user will define each required object him/herself.
+This vignette aims at showing how to use the function create_input(). The function create_input() creates input objects necessary to run gen3sis: 1) a rds file containing a landscape list of raster stacks for environmental variables; 2) a series os rds files, one for each timestep, including distance matrices between grid cells. To create these files, the function requires as arguments: A) a named list of rasters, with each raster containing the spatio-temporal distribution of an environmental variable; B) a cost function defining how dispersal between particular types of cells is penalized (to be used for the calculation of the distance matrices); C) a directory name so the function creates a named directory to save the input files in. Further arguments can be modified from the default values depending on user preferences. Below, we go step by step to generate the R objects required by the function create_input(). For this exercise, we will use the simple island landscape that we used in the introduction vignette and in the main text of the package manuscript as case study 1. This example is important, because the user will define each required object him/herself.
 The first step is to load the package library:
 
 ```{r setup}
@@ -123,9 +123,23 @@ for(timestep in 1: length(stringtimestepsnames)){
 Now we can have a look on how the raster object looks like in the first time step:
 ```{r eval=TRUE}
 temp[[1]]
-image(temp[[1]], main="Temperature (C)")
+image(temp[[1]],main="Temperature (C)", xlab="x coordinate",ylab=" y coordinate", col=terrain.colors(6), las=1,xlim=c(10,25),ylim=c(10,22), bty="l")
+legend(20, 24,legend=c(19,19.5,20,20.5,21,21.5),fill = terrain.colors(6), xpd = NA, bty="n")
 prec[[1]]
-image(prec[[1]], main="Precipitation (mm/year)")
+image(prec[[1]], main="Precipitation (mm/year)", xlab="x coordinate",ylab=" y coordinate", col=terrain.colors(6), las=1,xlim=c(10,25),ylim=c(10,22), bty="l")
+legend(20, 24,legend=c(400,450,500,550,600,650),fill = terrain.colors(6), xpd = NA, bty="n")
+
+```
+
+
+Now the raster objects one time step in which the island has its maximum size:
+```{r eval=TRUE}
+temp[[50]]
+image(temp[[50]],main="Temperature (C)", xlab="x coordinate",ylab=" y coordinate", col=terrain.colors(6), las=1,xlim=c(10,25),ylim=c(10,22), bty="l")
+legend(21.5, 25.5,legend=c(18.5,19,19.5,20,20.5,21,21.5),fill = terrain.colors(7), xpd = NA, bty="n")
+prec[[50]]
+image(prec[[50]], main="Precipitation (mm/year)", xlab="x coordinate",ylab=" y coordinate", col=terrain.colors(6), las=1,xlim=c(10,25),ylim=c(10,22), bty="l")
+legend(21.5, 25.5,legend=c(350,400,450,500,550,600,650),fill = terrain.colors(7), xpd = NA, bty="n")
 ```
 
 ## Creating a list with the environmental data frames
@@ -135,14 +149,15 @@ It is important to add the name of the environmental variable you want to use in
 Landscapes_list <- list("temp" = temp,"prec"=prec) 
 ```
 ## Defining a cost function 
-The second argument we need to define is a cost function. This function should define how connected and reachabel grid cells are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water grid cells should increase the cost of dispersal. The costs have to bedefined in meters because the coordinate system is in meters for real landscapes (automatically corrected to km in later on by the create_input() function). However, in our example all grid cells are suitable and contiguous and the distance unit is automatically in grid cell as we do not provide a coordinate system. Hence, we can define a simple cost function in which the dispersal is not penalized: 
+The second argument we need to define is a cost function. This function should define how connected and reachabel grid cells are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water grid cells should increase the cost of dispersal. However, in our example all grid cells are suitable and contiguous and the distance unit is automatically in grid cell as we do not provide a coordinate system. Hence, we can define a simple cost function in which the dispersal is not penalized (i.e. equals to 1, in meters). 
+For real landscapes, the distance unit is in kilometers (km). Because of this create_input() scales from meters given in the cost function to kilometers by multiplying the cost by a factor of 1/1000. This only works if a coordinate system is set for the input rasters. In the case of hypothetical landscapes, as in our example, geographic distance is measured in units of grid cells. Hence, we need to add a correction factor of 1/1000 already in the cost function so the distance matrices are in grid cell unit.  
 
 ```{r eval=TRUE}
 my_cost_function <- function(x, h_x, y, h_y){
   if(all(h_x, h_y)){
-    return(1*(1/1000)) #scaling to 1/100 to get to the 1 eucledean distance
+    return(1*(1/1000)) #scaling to 1/1000 to have distance matrix in grid cell units 
   } else {
-    return(1*(1/1000)) #scaling to 1/100 to get to the 1 eucledean distance
+    return(1*(1/1000)) #scaling to 1/1000 to have distance matrix in grid cell units 
   }
 }
 ```
@@ -153,16 +168,14 @@ The argument 'directions' requires an interger providing the amound of direction
 The argument 'timesteps' requires a vector of strings of mode character and is used to name the files and to name the timesteps in the .rds landscape object created by the create_input() function. It is not necessary to define this argument, but it helps readibility when manipulating the object. 
 The argument 'calculate_full_distance_matrices' defines whether the create_input() function will create one large distance matrix for all suitable grid cells (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring cells specified in 'directions' around each suitable grid cell (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
 
-The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in kilometers (km). In the case of hypothetical landscapes, as in our example, geographic distance is measured in units of grid cells.
-
 ## Create input files 
 
-The model uses serialized R files (.rds) format for all inputs. The functions for processing the input data in the required format are available in the package. Once the data is processed, the simulation can be started with the function run_simulation().
+The model uses serialized R files (.rds) format for all inputs. The functions for processing the input data in the required format are available in the package. Once the data is processed, the simulation can be started with the function run_simulation(). The real geographic coordinate system can be provided which allows for the global spherical distance correction (not used here). 
 
 ```{r eval=TRUE}
 create_input(landscapes = Landscapes_list,
              cost_function = my_cost_function,
-             output_directory = "../My_experiment_Input",# a directory name to save the files in
+             output_directory = "../My_experiment_Input",# creates a named directory with files
              directions = 8, # all surrounding grid cells from a focus cell
              timesteps = as.character(stringtimestepsnames), # just to name the files
              calculate_full_distance_matrices = TRUE  # full distance matrix
