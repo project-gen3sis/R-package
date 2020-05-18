@@ -120,7 +120,7 @@ test_that("get_local_distances works", {
   distance_local <- get_local_distances(landscape_stack, habitable_mask, cost_function, directions, crs)
 
   tr <- transition(r1, function(x){1/x[1]}, 8, symm = F)
-  co <- geoCorrection(tr, "c", multpl = T) * 1000
+  co <- geoCorrection(tr, "c", multpl = T)
 
   # the gdistance transition is in transition[src, dest] format
   # for efficiency reasons the local distances are in distnace_local[dest, src] format
