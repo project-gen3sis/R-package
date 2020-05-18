@@ -9,7 +9,7 @@ test_that("distance matrix creation works", {
   # reference solution from gdistance
   # cost function is 1/src as gdistance works with conductance and not cost/resistance values
   tr <- transition(ras, function(x){1/x[1]}, 8, symm = F)
-  co <- geoCorrection(tr, "c", multpl = T) * 1000
+  co <- geoCorrection(tr, "c", multpl = T)
   gdist_m <- costDistance(tr*co, coords, coords)
 
   # create dist matrix from neighbours
