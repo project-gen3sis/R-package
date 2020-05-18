@@ -9,6 +9,9 @@ create_config(config_file = NA)
 \arguments{
 \item{config_file}{if NA it creates an empty config or the path to a valid configuration file}
 }
+\value{
+list of configs, similar generated from reading a config_file.R
+}
 \description{
 The function create_config creates either an empty configuration or a pre-filled configuration from a config file.
 }

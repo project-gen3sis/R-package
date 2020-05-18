@@ -86,6 +86,7 @@ prepare_directories <- function(config_file = NA,
 #' The function create_config creates either an empty configuration or a pre-filled configuration from a config file.
 #'
 #' @param config_file if NA it creates an empty config or the path to a valid configuration file
+#' @return list of configs, similar generated from reading a config_file.R
 #' @example inst/examples/create_config_help.R
 #' @export
 create_config <- function(config_file = NA) {
