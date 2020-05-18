@@ -72,6 +72,7 @@ loop_ecology <- function(config, data, vars) {
       vars$flag <- "max_number_coexisting_species"
       paste0("Maximum number of species per cell (i.e. max_n_sp_idi) reached. Specifically ",
                   length(coo_sp),"(>", max_n_sp_idi,") species @ t",vars$ti, " idi",cell )
+      return(list(config = config, data = data, vars = vars))
     }
 
     rownames(traits) <- coo_sp

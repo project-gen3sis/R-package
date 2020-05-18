@@ -178,10 +178,7 @@ run_simulation <- function(config = NA,
       cat("dispersal \n")
     }
     val <- loop_dispersal(val$config, val$data, val$vars)
-    if( val$vars$flag == "max_number_coexisting_species") {
-      print("max number of co-occuring species reached, breaking loop")
-      break
-    }
+
 
     #     #----------------------------------------------------------#
     #     ######## loop evolution                              #######
@@ -190,6 +187,7 @@ run_simulation <- function(config = NA,
       cat("evolution \n")
     }
     val <- loop_evolution(val$config, val$data, val$vars)
+    
     #     #--------------------------------------------------------#
     #     ######## loop ecology                              #######
     #     #--------------------------------------------------------#
@@ -197,9 +195,16 @@ run_simulation <- function(config = NA,
       cat("ecology \n")
     }
     val <- loop_ecology(val$config, val$data, val$vars)
+    if( val$vars$flag == "max_number_coexisting_species") {
+      print("max number of co-occuring species reached, breaking loop")
+      break
+    }
+    
+    
     # #     #------------------------------------------------------------------#
     # #     ######## end of timestep loop variable update (simulation.R) #######
     # #     #------------------------------------------------------------------#
+    
     if(verbose>=2){
       cat("end of loop updates \n")
     }
