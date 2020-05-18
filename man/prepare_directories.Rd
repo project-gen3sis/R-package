@@ -6,8 +6,11 @@
 This function will be called by the simulation, but is made available if the directories should be created
 manually beforehand, for example to redirect the stdout to a file in the output directory.}
 \usage{
-prepare_directories(config_file = NA, input_directory = NA,
-  output_directory = NA)
+prepare_directories(
+  config_file = NA,
+  input_directory = NA,
+  output_directory = NA
+)
 }
 \arguments{
 \item{config_file}{path to the config file, if NA the default config will be used}

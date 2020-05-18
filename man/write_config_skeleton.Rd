@@ -4,8 +4,7 @@
 \alias{write_config_skeleton}
 \title{This function writes out a config skeleton.}
 \usage{
-write_config_skeleton(file_path = "./config_skeleton.R",
-  overwrite = FALSE)
+write_config_skeleton(file_path = "./config_skeleton.R", overwrite = FALSE)
 }
 \arguments{
 \item{file_path}{file path to write the file to}

@@ -4,9 +4,16 @@
 \alias{run_simulation}
 \title{Run a simulation}
 \usage{
-run_simulation(config = NA, landscape = NA, output_directory = NA,
-  timestep_restart = NA, save_state = NA, call_observer = "all",
-  enable_gc = F, verbose = 1)
+run_simulation(
+  config = NA,
+  landscape = NA,
+  output_directory = NA,
+  timestep_restart = NA,
+  save_state = NA,
+  call_observer = "all",
+  enable_gc = F,
+  verbose = 1
+)
 }
 \arguments{
 \item{config}{configuration file for the simulation or configuration object derived from a config file}
@@ -39,6 +46,8 @@ library(gen3sis)
 datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
 
 #run simulation
+#' \dontrun{
 r <- run_simulation(config = file.path(datapath,"config/config_rte.R"), 
                 landscape = file.path(datapath,"landscape"))
+}
 }
