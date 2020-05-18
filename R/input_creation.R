@@ -156,7 +156,7 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
 
   # calculate the correction for distortions and keep separate to apply after the users cost function
   correction <- gdistance::geoCorrection(transition_index, type = "c", multpl = T)
-  correction@transitionMatrix@x <- (1/1000) / correction@transitionMatrix@x
+  correction@transitionMatrix@x <- 1 / correction@transitionMatrix@x
 
   transition_matrix <- as(transition_index@transitionMatrix, "dgCMatrix")
   transition_cells <- summary(transition_matrix)
