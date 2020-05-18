@@ -119,7 +119,7 @@ internal_categories <- c("general",
 #' @param config config object to fill
 #' @param config_file config file to retrieve settings from
 #'
-#' @return
+#' @return empty list as in a config object
 #' @noRd
 populate_config <- function(config, config_file) {
   user_config_env <- new.env()
