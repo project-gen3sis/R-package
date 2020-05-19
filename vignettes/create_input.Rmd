@@ -149,24 +149,27 @@ It is important to add the name of the environmental variable you want to use in
 Landscapes_list <- list("temp" = temp,"prec"=prec) 
 ```
 ## Defining a cost function 
-The second argument we need to define is a cost function. This function should define how connected and reachabel grid cells are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water grid cells should increase the cost of dispersal. However, in our example all grid cells are suitable and contiguous and the distance unit is automatically in grid cell as we do not provide a coordinate system. Hence, we can define a simple cost function in which the dispersal is not penalized (i.e. equals to 1, in meters). 
-For real landscapes, the distance unit is in kilometers (km). Because of this create_input() scales from meters given in the cost function to kilometers by multiplying the cost by a factor of 1/1000. This only works if a coordinate system is set for the input rasters. In the case of hypothetical landscapes, as in our example, geographic distance is measured in units of grid cells. Hence, we need to add a correction factor of 1/1000 already in the cost function so the distance matrices are in grid cell unit.  
+The second argument we need to define is a cost function. This function should define how connected and reachabel grid cells are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water grid cells should increase the cost of dispersal. However, in our example all grid cells are suitable and contiguous and the distance unit is automatically in grid cell as we do not provide a coordinate system. Hence, we can define a simple cost function in which the dispersal is not penalized (i.e. equals to 1, in grid cells). For real landscapes, the distance unit is in meters. In the case of hypothetical landscapes, as in our example, geographic distance is measured in units of grid cells.  
 
 ```{r eval=TRUE}
 my_cost_function <- function(x, h_x, y, h_y){
-  if(all(h_x, h_y)){
-    return(1*(1/1000)) #scaling to 1/1000 to have distance matrix in grid cell units 
+  if(all(h_x, h_y)){ #e.g. x and y being the source cell and h_x and h_y being the sink cell during dispersal
+    return(1) #no extra cost
   } else {
-    return(1*(1/1000)) #scaling to 1/1000 to have distance matrix in grid cell units 
+    return(1) #no extra cost (to increase cost this number should increase - i.e. 2 for water grid cells)
   }
 }
 ```
 
 ## Further useful arguments
+
 Besides the landscape list, the cost function and the experiment folder, we can define further arguments: directions, timesteps and calculate_full_distance_matrices. 
+
 The argument 'directions' requires an interger providing the amound of directions used to calculate distances. It can take 4, 8, 16 as values to consider the four, eigth or 16 neiboring grid cells. This is the same homonimous argument used by the function transition in the gdistance package (gdistance::transition). 
-The argument 'timesteps' requires a vector of strings of mode character and is used to name the files and to name the timesteps in the .rds landscape object created by the create_input() function. It is not necessary to define this argument, but it helps readibility when manipulating the object. 
-The argument 'calculate_full_distance_matrices' defines whether the create_input() function will create one large distance matrix for all suitable grid cells (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring cells specified in 'directions' around each suitable grid cell (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
+
+The argument 'timesteps' requires a vector of strings of mode character and is used to name the files and to name the timesteps in the .rds landscape object created by the create_input() function. It is not necessary to define this argument, but it helps readability when manipulating the object. 
+
+The argument 'calculate_full_distance_matrices' defines whether the create_input() function will create one large distance matrix for all suitable grid cells (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring cells specified in 'directions' around each suitable grid cell (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges from the fact that a full distance matrix is reconstructed by concatenating local distances matrices each time step during a simulation run. 
 
 ## Create input files 
 
