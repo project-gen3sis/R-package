@@ -120,7 +120,7 @@ plot_summary <- function(output, summary_legend=NULL) {
   image(rasterFromXYZ(output$summary$`richness-final`), col=col_vec, bty = "n", xlab = "", ylab = "")
   #title("Species richness map at final step", line=-1)
   mtext(4, text="Species richness at final step", line=1, cex=1.2)
-  plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=T, add=T,col=col_vec)
+  raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=T, add=T,col=col_vec)
   }
 }
 
@@ -152,7 +152,7 @@ plot_raster_single <- function(values, landscape, title, no_data = 0) {
   img[names(values), 3] <- values
   ras <- rasterFromXYZ(img)
   ras <- extend(ras, landscape[["extent"]])
-  plot(ras, main=paste0(title, ", t: ", landscape[["id"]]))
+  raster::plot(ras, main=paste0(title, ", t: ", landscape[["id"]]))
 }
 
 
@@ -175,5 +175,5 @@ plot_raster_multiple <- function(values, landscape, no_data = 0) {
   img[rownames(values), -c(1:2)] <- values
   ras <- rasterFromXYZ(img)
   ras <- extend(ras, landscape[["extent"]])
-  plot(ras, main=paste0(colnames(values), ", t: ", landscape[["id"]]))
+  raster::plot(ras, main=paste0(colnames(values), ", t: ", landscape[["id"]]))
 }
