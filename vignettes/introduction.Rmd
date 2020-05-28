@@ -47,7 +47,7 @@ Additionally to the main functions, the package provides several convenience fun
 
 ## 1. Start
 First of all, we need to load the gen3sis package 
-```{r setup}
+```{r setup, message=F}
 library(gen3sis)
 ```
 
@@ -131,7 +131,7 @@ plot_summary(sim)
 There are a few visualization tools already included in the package, but you are free to explore and check the outputs with your favorite plotting functions and colors. To look at the landscape and species richness at the end of the simulation (i.e. present, aka 0Ma), we first have to load the respective species and landscape object.
 
 
-```{r eval=TRUE, fig.width=5, fig.height=5}
+```{r eval=TRUE, fig.width=5, fig.height=5, message=F}
 library(raster)
 richness_t0 <- rasterFromXYZ(sim$summary$`richness-final`)
 plot(richness_t0, main='richness t0')
@@ -139,50 +139,83 @@ plot(richness_t0, main='richness t0')
 
 ## 4. Analyze
 
-Let's see how species richness correlates with both environmental variables at the present.
+Now that we have run the simulation and have had a quick look at the output, we want to do some analysis based on the species richness pattern that emerged in the end of the simulation. To do so, we first load the landscape and combine it with the simulated species richness.
 
 ```{r eval=TRUE, fig.width=8, fig.height=5, fig.retina=2}
 landscapes <- readRDS(file.path(datapath, "landscape", "landscapes.rds")) #get the input landscape
 landscape_t0 <- as.data.frame(cbind(landscapes$temp[, 1:2], temp=landscapes$temp[, 3], prec=landscapes$prec[,3], area=landscapes$area[,3])) #get landscape at last timestep
 landscape_t0 <- cbind(landscape_t0, rich=sim$summary$`richness-final`[,3]) #add richness to the dataframe
 landscape_t0 <- na.omit(landscape_t0)
-
-# create a table and order by richness
-#landscape_t0 <- landscape_t0[order(landscape_t0$rich),]
-
-par(mfrow=c(1,3))
-#plot richness against temperature
-plot(landscape_t0$temp, landscape_t0$rich, xlab='temperature', ylab='richness', pch=16, col=rgb(0,0,0,0.5))
-#plot richness against precipitation
-plot(landscape_t0$prec, landscape_t0$rich, xlab='precipitation', ylab='richness', pch=16, col=rgb(0,0,0,0.5))
-#plot richness against area
-plot(landscape_t0$area, landscape_t0$rich, xlab='area', ylab='richness', pch=16, col=rgb(0,0,0,0.5))
-
 ```
 
 
 
-Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and look at the correlation between richness and environmental variables.
+Let's start with some analysis. Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and look at the correlation between richness and environmental variables at the present time step. For this we will fit three univariate models, where each explains the correlation of species richness and one of the environmental factors.
 
 
-```{r eval=TRUE, fig.width=8, fig.height=7, fig.retina=2}
+```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2}
 glm.uni <- glm(rich ~ poly(temp, 2), data=landscape_t0, family=poisson)
+cor(landscape_t0$temp, landscape_t0$rich)
 
 #Plot the response curve
 par(mfrow=c(1,1))
 data_plot <- data.frame(cbind(landscape_t0$temp, predict(glm.uni,type = "response")))
 sort1 <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
-plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab="Species richness", frame.plot=F, type="l")
+plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab="Species richness", frame.plot=F, type="l", col='blue', lwd=2)
 #Plot the presences in red and absences in blue
 points(landscape_t0$temp, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'black'), legend=c('obersvations', 'model fit'), pch=c(16, NA), lty=c(NA, 1))
-
+legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c('obersvations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
 ```
 
+As you can see, there is only a weak linear correlation of `r round(cor(landscape_t0$temp, landscape_t0$rich),4)` temperature and simulated species richness. By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, meaning that species richness is expected to be highest at intermediate temperature levels.
+
+Analog we can also look at the association of precipitation and species richness.
+
+
+```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2}
+glm.uni <- glm(rich ~ poly(prec, 2), data=landscape_t0, family=poisson)
+cor(landscape_t0$prec, landscape_t0$rich)
+
+#Plot the response curve
+par(mfrow=c(1,1))
+data_plot <- data.frame(cbind(landscape_t0$prec, predict(glm.uni,type = "response")))
+sort1 <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
+data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
+plot(data_plot[,1],data_plot[,2], xlab="Precipitation", ylab="Species richness", frame.plot=F, type="l", col='blue', lwd=2)
+#Plot the presences in red and absences in blue
+points(landscape_t0$prec, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
+legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c('obersvations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
+```
+
+
+Dry regions seem to harbour a higher number of species, as shown in the plot above and indicated by the negative correlation of `r round(cor(landscape_t0$prec, landscape_t0$rich), 4)` between precipitation and species richness.
+
+Next, we can also look on the influence of area on the species richness.
+
+```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2}
+glm.uni <- glm(rich ~ poly(area, 2), data=landscape_t0, family=poisson)
+cor(landscape_t0$area, landscape_t0$rich)
+
+#Plot the response curve
+par(mfrow=c(1,1))
+data_plot <- data.frame(cbind(landscape_t0$area, predict(glm.uni,type = "response")))
+sort1 <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
+data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
+plot(data_plot[,1],data_plot[,2], xlab="Area", ylab="Species richness", frame.plot=F, type="l", col='blue', lwd=2)
+#Plot the presences in red and absences in blue
+points(landscape_t0$area, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
+legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c('obersvations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
+```
+
+
+Interestingly, larger cells are strongly correlated with a higher species richness (r$^2$=)`r round(cor(landscape_t0$area, landscape_t0$rich),4)`. Similar as with temperature, species richness seems to be highest in cells with an intermediate area.
+
+
+Finally we want to consider the three predictors together and therefore fit a multivariate model for explaining species richness.
 
 ```{r eval=TRUE}
 richness_model <- glm(rich ~ poly(temp, 2) + poly(prec, 2) + poly(area, 2), family='quasipoisson', data=landscape_t0)
 summary(richness_model)
 ```
-The 'virtual' world is now yours! Enjoy.
+It's important to consider that we have now only been analysing the species richness at one time step, namely the last one. The emerged patterns can however not only be explained by the environmental conditions of that time but also depend on historical conditions. It's now up to you to explore the "virtual" world more extensively. Enjoy!
