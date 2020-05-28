@@ -65,7 +65,7 @@ print(paste("GEN3SIS version:", packageVersion("gen3sis")))
 All gen3sis simulations need a **landscape** and a **configuration** object to refer to. The **landscape** is the environment of the virtual planet (e.g. temperature and precipitation data that changes spatially and temporally). The **configuration** are the rules of our virtual planet, here is were we define all the ecological and evolutionary equations and parameters.
 Here we will use a published small theoretical planet example[^1]. 
 
-Since this is a small data (252 KB) which is already available in the package. Get the path to the data inside the package. This [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data can also be downloaded manually and stored locally for running the experiment.
+Since this is a small data (252 KB) which is already available in the package, you can just get the path to the data inside the package. This [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data can also be downloaded manually and stored locally for running the experiment.
 
  Like this:
 
@@ -75,32 +75,36 @@ Since this is a small data (252 KB) which is already available in the package. G
 |&nbsp;&nbsp;&nbsp;**>config**|
 
 ```{r eval=TRUE}
-datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
+datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
 ```
 
 
 
-**NOTE** that the landscape contains several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform the landscape is connected. In this example you are using an already ready to run landscape. To see how to create a landscape object, see (this vignette)[create_landscape.html]
+**NOTE** that the landscape contains several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform how the landscape (or more precisely that habitable cells) is connected. In this example you are using an already ready-to-run landscape. To see how to create a landscape object, see (this vignette)[create_landscape.html]
 
 You should now have downloaded all the necessary files to run a simulation. 
 
 
-[^1]: O. Hagen, B. Flüch, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
+[^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
 
 
 ## 2. Run
 
 To launch a simulation you need to call the run_simulation function.
 
-```{r eval=TRUE, echo=TRUE}
+```{r eval=F, echo=TRUE}
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
-sim <- run_simulation(config = file.path(datapath, "config/config_rte.R"), 
+sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
                landscape = file.path(datapath, "landscape"),
+               save_intermediate_results = "all",
                verbose=0)
-
 ```
 
-After the simulation is finished, a plot is created inside the CaseStudy1 folder to show the state of the initial world. As you can see it contains 1 species per cell in the 4 cell small island.
+```{r eval=T, echo=F}
+sim <- readRDS(file.path(datapath, "output/config_worldcenter/summary_sim.rds"))
+```
+
+After the simulation is finished, a plot is created inside the CaseStudy1 folder to show the state of the initial world. As you can see it contains 1 species per cell in the 20*40 cell sample world.
 
 Excellent. Our virtual species are waiting for us. They are automatically stored in a sub folder called **output** inside our CaseStudy1 folder and inside another folder named after our configuration file (i.e. config). It should look like this:
 
@@ -112,11 +116,11 @@ Excellent. Our virtual species are waiting for us. They are automatically stored
 
 ## 3. Visualize
 
-Gen3sis also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that document the changes of the world.
+Gen3sis also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that document the changes of the world over time.
 **NOTE** You can also create your own observer function. 
 
 One default observer function is the collection of the richness over time. This was stored as 'sim'.
-We can quickly visualize some main results  using the plot_summary function
+We can quickly visualize some main results using the plot_summary function.
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=7}
@@ -124,56 +128,61 @@ plot_summary(sim)
 ```
 
 
-There are a few visualization tools already included in the package, but you are free to explore and check the outputs with your favorite plotting functions and colors. For us to look at the landscape and species richness at the end of the simulation (i.e. present, aka 0Ma) first we have to load the respective species and landscape object.
+There are a few visualization tools already included in the package, but you are free to explore and check the outputs with your favorite plotting functions and colors. To look at the landscape and species richness at the end of the simulation (i.e. present, aka 0Ma), we first have to load the respective species and landscape object.
 
-```{r eval=TRUE}
-#load landscape at 0Ma
-l0 <- readRDS(file.path(datapath, "output/config_rte/landscapes/landscape_t_0.rds"))
-#load species at 0Ma
-sps0 <- readRDS(file.path(datapath, "output/config_rte/species/species_t_0.rds"))
-```
 
-We can then plot the environmental conditions
-```{r eval=TRUE, fig.width = 5.5, fig.align='center'}
-#plot all environmental values in the landscapes (in our case temperature and precipitation) at the selected timeteps (here present)
-plot_landscape(l0)
-
-```
-
-And only richness, without the plot_summary function
-
-```{r eval=TRUE}
-plot_richness(sps0, l0)
+```{r eval=TRUE, fig.width=5, fig.height=5}
+library(raster)
+richness_t0 <- rasterFromXYZ(sim$summary$`richness-final`)
+plot(richness_t0, main='richness t0')
 ```
 
 ## 4. Analyze
 
 Let's see how species richness correlates with both environmental variables at the present.
 
-```{r eval=TRUE}
-rich <- gen3sis:::get_geo_richness(sps0, l0) #get species richness with cell id as name
-temp <- l0$environment[,"temp"] #get temperatures values
-prec <- l0$environment[,"prec"] #get precipitation values
+```{r eval=TRUE, fig.width=8, fig.height=5, fig.retina=2}
+landscapes <- readRDS(file.path(datapath, "landscape", "landscapes.rds")) #get the input landscape
+landscape_t0 <- as.data.frame(cbind(landscapes$temp[, 1:2], temp=landscapes$temp[, 3], prec=landscapes$prec[,3], area=landscapes$area[,3])) #get landscape at last timestep
+landscape_t0 <- cbind(landscape_t0, rich=sim$summary$`richness-final`[,3]) #add richness to the dataframe
+landscape_t0 <- na.omit(landscape_t0)
+
 # create a table and order by richness
-data <- data.frame(rich, temp, prec)[order(rich),]
-data
+#landscape_t0 <- landscape_t0[order(landscape_t0$rich),]
 
-par(mfrow=c(1,2))
+par(mfrow=c(1,3))
 #plot richness against temperature
-plot(data$temp, data$rich, xlab='temperature', ylab='richness', pch=21)
+plot(landscape_t0$temp, landscape_t0$rich, xlab='temperature', ylab='richness', pch=16, col=rgb(0,0,0,0.5))
 #plot richness against precipitation
-plot(data$temp, data$rich, xlab='temperature', ylab='richness', pch=21)
-
-#plot(data$rich, data$temp, xlab='richness', ylab='temperature', pch=21)
-#plot(data$rich, data$prec  )
+plot(landscape_t0$prec, landscape_t0$rich, xlab='precipitation', ylab='richness', pch=16, col=rgb(0,0,0,0.5))
+#plot richness against area
+plot(landscape_t0$area, landscape_t0$rich, xlab='area', ylab='richness', pch=16, col=rgb(0,0,0,0.5))
 
 ```
 
 
 
-Much is possible here, from looking at phylogenies to spatial correlation. For this intro we will keep things simple and look at the correlation between richness and environmental variables.
+Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and look at the correlation between richness and environmental variables.
+
+
+```{r eval=TRUE, fig.width=8, fig.height=7, fig.retina=2}
+glm.uni <- glm(rich ~ poly(temp, 2), data=landscape_t0, family=poisson)
+
+#Plot the response curve
+par(mfrow=c(1,1))
+data_plot <- data.frame(cbind(landscape_t0$temp, predict(glm.uni,type = "response")))
+sort1 <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
+data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
+plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab="Species richness", frame.plot=F, type="l")
+#Plot the presences in red and absences in blue
+points(landscape_t0$temp, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
+legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'black'), legend=c('obersvations', 'model fit'), pch=c(16, NA), lty=c(NA, 1))
+
+```
+
 
 ```{r eval=TRUE}
-summary(lm(rich~temp+prec, data))
+richness_model <- glm(rich ~ poly(temp, 2) + poly(prec, 2) + poly(area, 2), family='quasipoisson', data=landscape_t0)
+summary(richness_model)
 ```
 The 'virtual' world is now yours! Enjoy.
