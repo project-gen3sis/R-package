@@ -62,13 +62,13 @@ If you want to learn how you can create a virtual dynamic landscape from scratch
 
 ## Creating a list with the environmental data frames
 It is important to add the name of the environmental variable you want to use in the list, which will be used when specifying the config file. Here we name "temp" the data frame for temperature and "prec" for the data frame for precipitation
-```{r eval=TRUE}
+```{r eval=FALSE}
 landscapes_list <- list("temp" = dynamic_landscape_temperature_dataframe, "prec" = dynamic_landscape_precipitation_dataframe, "area" = dynamic_landscape_area_dataframe) 
 ```
 ## Defining a cost function 
 The second argument we need to define is a cost function. This function should define how connected and reachabel grid cells are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water grid cells should increase the cost of dispersal. The costs have to bedefined in meters because the coordinate system is in meters for real landscapes (automatically corrected to km in later on by the create_input() function). However, in our example all grid cells are suitable and contiguous and the distance unit is automatically in grid cell as we do not provide a coordinate system. Hence, we can define a simple cost function in which the dispersal is not penalized: 
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 my_cost_function <- function(){
     return(1)
 }
