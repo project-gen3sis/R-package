@@ -53,31 +53,42 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 #' Plot simulation default summary
 #'
 #' @param output tsgen3sis output object resulting from a gen3sis simulation 
+#' @param summary_title summary plot title as character. If NULL, title computed from input name.
 #' @param summary_legend either a satring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.
 #' @example inst/examples/plot_summary_help.R
 #' @importFrom graphics layout legend axis mtext points
 #' @importFrom grDevices rgb colorRampPalette
 #' @importFrom stringr str_split str_remove
 #' @export
-plot_summary <- function(output, summary_legend=NULL) {
+plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   if (class(output)!="gen3sis_output"){
     stop("this is not  a gen3sis_output object")
   }
-  
+  #define color scale
+  col_vec <- colorRampPalette(c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
+                                "#6DCD59FF", "#B4DE2CFF", "#FDE725FF", "#FFA500",   "#FF2900",   "#C40000",   "#8B0000", "#8B0000")
+  )(max(output$summary$`richness-final`[,3], na.rm=T))
   {
-  layout( matrix(c(1,3,3,1,3,3,2,2,2,2,2,2),ncol=3, byrow =T)  )
+  layout( matrix(c(1,3,3,
+                   1,3,3,
+                   1,3,3,
+                   2,2,2,
+                   2,2,2),ncol=3, byrow =T)  )
   #layout.show(3)
-  par(mar=c(7.3,3,0,7.5), oma=c(0.3,0.8,0.3,0.8))
+  par(mar=c(4,3,3,7), oma=c(0.1,0.8,0.3,0.8))
   
   # summary text
   plot(1, type="n", xlab="", ylab="", xlim=c(0, 10), ylim=c(0, 10), axes=FALSE, ann=FALSE)
-  #plot(1)
-  title <- str_split(output$parameters$directories$input, "/")[[1]]
-  title <- paste(title, collapse = ">")
-  title <- str_remove(title, "..>")
-  title <- str_remove(title, ".>")
-  title <- str_remove(title, ".")
-  #title and summary text
+  #summary title
+  if (is.null(summary_title)){
+    summary_title <- str_split(output$parameters$directories$input, "/")[[1]]
+    summary_title <- paste(summary_title, collapse = ">")
+    summary_title <- str_remove(summary_title, "..>")
+    summary_title <- str_remove(summary_title, ".>")
+    summary_title <- str_remove(summary_title, ".")
+    summary_title <- paste0("[",summary_title,"]")
+  }
+  #summary text
   if (is.null(summary_legend)){
     summary_legend=paste(
       paste(names(output$parameters$gen3sis$general[2]), output$parameters$gen3sis$general[2], sep=": "),
@@ -88,12 +99,11 @@ plot_summary <- function(output, summary_legend=NULL) {
       paste("extinction", paste0(round(((output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"]-output$summary$phylo_summary[nrow(output$summary$phylo_summary),"alive"])/output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"])*100,0),"%"), sep=": "),
       sep="\n")
   }
-    par(xpd=TRUE)
-    legend("topleft", inset=c(-0.3,-0.3), title=paste0("[",title,"]"), legend=summary_legend,
-        bty="n")
+  #plot summary legend
+  par(xpd=TRUE)
+  legend("topleft", inset=c(-0.3,-0.3), title=summary_title, legend=summary_legend, bty="n")
 
-  
-  # time behaviour
+  #plot  time behaviour
   d <- output$summary$phylo_summary[-1,-1]
   plot( d[,"alive"],  xlab="", ylab="", type='l', col="black", lwd=4, frame.plot = FALSE, xaxt='n', yaxt='n')
   axis(4,line=-1, cex=1, cex.axis=1, col="black")
@@ -113,17 +123,9 @@ plot_summary <- function(output, summary_legend=NULL) {
   axis(1)
   mtext(side=1, text="Time steps", line=2.5, cex=1.1)
   
-  
   # richness map
-  col_vec <- colorRampPalette(c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
-                                "#6DCD59FF", "#B4DE2CFF", "#FDE725FF", "#FFA500",   "#FF2900",   "#C40000",   "#8B0000", "#8B0000")
-                              )(max(output$summary$`richness-final`[,3], na.rm=T))
-    
-  
-  # raster::plot(rasterFromXYZ(output$summary$`richness-final`), col=col_vec, bty = "n", xlab = "", ylab = "")
   image(rasterFromXYZ(output$summary$`richness-final`), col=col_vec, bty = "n", xlab = "", ylab = "")
-  #title("Species richness map at final step", line=-1)
-  mtext(4, text="Final species richness", line=1, cex=1.2)
+  mtext(4, text="Final richness", line=1, cex=1.2)
   raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=T, add=T,col=col_vec)
   }
 }
@@ -156,8 +158,10 @@ plot_raster_single <- function(values, landscape, title, no_data = 0) {
   img[names(values), 3] <- values
   ras <- rasterFromXYZ(img)
   ras <- extend(ras, landscape[["extent"]])
-  col_vec <- colorRampPalette(c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
-                                "#6DCD59FF", "#B4DE2CFF", "#FDE725FF", "#FFA500",   "#FF2900",   "#C40000",   "#8B0000", "#8B0000")
+  #define color scale
+  col_vec <- colorRampPalette(
+    c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
+      "#6DCD59FF", "#B4DE2CFF", "#FDE725FF", "#FFA500",   "#FF2900",   "#C40000",   "#8B0000", "#8B0000")
   )(max(ras@data@values, na.rm=T))
   raster::plot(ras, main=paste0(title, ", t: ", landscape[["id"]]), col=col_vec)
 }
