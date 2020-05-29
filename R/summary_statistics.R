@@ -67,6 +67,7 @@ update_summary_statistics <- function(data, vars, config) {
 #' @param data the current data oject
 #' @param vars the current vars object
 #' @param total_runtim simulation runtime in hours
+#' @param save_file boolean if sgen3sis.rds should be saved
 #' 
 #' @importFrom utils packageVersion write.table sessionInfo
 #'
@@ -98,9 +99,12 @@ make_summary <- function(config, data, vars, total_runtime, save_file=TRUE){
   
   # prepare output
   class(sgen3sis) <- "gen3sis_output"
+  
+  # save file
   if (save_file) {
     saveRDS(sgen3sis,file.path(config$directories$output, "sgen3sis.rds"))
   }
+  
   return(sgen3sis)
 }
 
