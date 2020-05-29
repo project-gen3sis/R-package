@@ -2,6 +2,7 @@
 
 #' @title Gen3sis: General Engine for Eco-Evolutionary Simulations
 #' @name gen3sis
+#' @description main gen3sis
 #' @examples
 #' \dontrun{
 #' #runing a Gen3sis simulation

@@ -104,7 +104,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   d <- output$summary$phylo_summary[-1,-1]
   plot( d[,"alive"],  xlab="", ylab="", type='l', col="black", lwd=4, frame.plot = FALSE, xaxt='n', yaxt='n')
   axis(4,line=-1, cex=1, cex.axis=1, col="black")
-  mtext(side = 4, text = "Species richness", col = "black", line = 2, cex=1.1)
+  mtext(side = 4, text = "Richness", col = "black", line = 2, cex=1.1)
   par(new=TRUE)
   plot( d[,"speciations"],  pch=3, col=rgb(0,0,1, 0.5), xlab="", ylab="", type='b',frame.plot = FALSE, xaxt='n', yaxt='n', ylim=range(d[,c("speciations", "extinctions")]))
   points(d[,"extinctions"], pch=4, col=rgb(1,0,0, 0.5), type="b")
