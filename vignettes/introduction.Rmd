@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>", 
   tidy=T,
   fig.align='center',
-  tidy.opts = list(width.cutoff=100),
+  tidy.opts = list(width.cutoff=80),
   results='hold'
 )
 ```
@@ -123,19 +123,12 @@ One default observer function is the collection of the richness over time. This 
 We can quickly visualize some main results using the plot_summary function.
 
 
-```{r eval=TRUE, fig.width=7, fig.height=7}
+```{r eval=TRUE, fig.width=7, fig.height=5.5}
 plot_summary(sim)
 ```
 
 
-There are a few visualization tools already included in the package, but you are free to explore and check the outputs with your favorite plotting functions and colors. To look at the landscape and species richness at the end of the simulation (i.e. present, aka 0Ma), we first have to load the respective species and landscape object.
-
-
-```{r eval=TRUE, fig.width=5, fig.height=5, message=F}
-library(raster)
-richness_t0 <- rasterFromXYZ(sim$summary$`richness-final`)
-plot(richness_t0, main='richness t0')
-```
+There are a few visualization tools already included in the package, but you are free to explore and check the outputs with your favorite plotting functions and colors.
 
 ## 4. Analyze
 
@@ -153,19 +146,21 @@ landscape_t0 <- na.omit(landscape_t0)
 Let's start with some analysis. Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and look at the correlation between richness and environmental variables at the present time step. For this we will fit three univariate models, where each explains the correlation of species richness and one of the environmental factors.
 
 
-```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2}
+```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F}
 glm.uni <- glm(rich ~ poly(temp, 2), data=landscape_t0, family=poisson)
 cor(landscape_t0$temp, landscape_t0$rich)
+
 
 #Plot the response curve
 par(mfrow=c(1,1))
 data_plot <- data.frame(cbind(landscape_t0$temp, predict(glm.uni,type = "response")))
 sort1 <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
-plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab="Species richness", frame.plot=F, type="l", col='blue', lwd=2)
-#Plot the presences in red and absences in blue
+plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab="Species richness", frame.plot=F, type="l", col='red', lwd=2)
 points(landscape_t0$temp, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c('obersvations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
+legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c('observations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
+library('ecospat')
+legend(15,17, legend=paste('D^2 =', round(ecospat.adj.D2.glm(glm.uni),2)), bty='n')
 ```
 
 As you can see, there is only a weak linear correlation of `r round(cor(landscape_t0$temp, landscape_t0$rich),4)` temperature and simulated species richness. By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, meaning that species richness is expected to be highest at intermediate temperature levels.
@@ -183,9 +178,9 @@ data_plot <- data.frame(cbind(landscape_t0$prec, predict(glm.uni,type = "respons
 sort1 <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
 plot(data_plot[,1],data_plot[,2], xlab="Precipitation", ylab="Species richness", frame.plot=F, type="l", col='blue', lwd=2)
-#Plot the presences in red and absences in blue
 points(landscape_t0$prec, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c('obersvations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
+legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c('observations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
+legend(0.3,20, legend=paste('D^2 =', round(ecospat.adj.D2.glm(glm.uni),2)), bty='n')
 ```
 
 
@@ -202,10 +197,10 @@ par(mfrow=c(1,1))
 data_plot <- data.frame(cbind(landscape_t0$area, predict(glm.uni,type = "response")))
 sort1 <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
-plot(data_plot[,1],data_plot[,2], xlab="Area", ylab="Species richness", frame.plot=F, type="l", col='blue', lwd=2)
-#Plot the presences in red and absences in blue
+plot(data_plot[,1],data_plot[,2], xlab="Area", ylab="Species richness", frame.plot=F, type="l", col='brown', lwd=2)
 points(landscape_t0$area, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c('obersvations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
+legend(150000, 22, col=c(rgb(0.5,0.5,0.5,0.4), 'brown'), legend=c('observations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
+legend(170000, 20, legend=paste('D^2 =', round(ecospat.adj.D2.glm(glm.uni),2)), bty='n')
 ```
 
 
@@ -216,6 +211,6 @@ Finally we want to consider the three predictors together and therefore fit a mu
 
 ```{r eval=TRUE}
 richness_model <- glm(rich ~ poly(temp, 2) + poly(prec, 2) + poly(area, 2), family='quasipoisson', data=landscape_t0)
-summary(richness_model)
+summary(richness_model)$coefficients
 ```
 It's important to consider that we have now only been analysing the species richness at one time step, namely the last one. The emerged patterns can however not only be explained by the environmental conditions of that time but also depend on historical conditions. It's now up to you to explore the "virtual" world more extensively. Enjoy!
