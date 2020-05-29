@@ -123,7 +123,7 @@ One default observer function is the collection of the richness over time. This 
 We can quickly visualize some main results using the plot_summary function.
 
 
-```{r eval=TRUE, fig.width=7, fig.height=7}
+```{r eval=TRUE, fig.width=7, fig.height=5.5}
 plot_summary(sim)
 ```
 
