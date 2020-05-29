@@ -17,8 +17,9 @@ NULL
 counting <- new.env(parent = emptyenv())
 assign("dist", -Inf, envir = counting)
 
-#' Run a simulation
-#'
+#' run a simulation
+#' 
+#' @details run a simulation with defined landscape and config objects
 #' @param config configuration file for the simulation or configuration object derived from a config file
 #' @param landscape directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
