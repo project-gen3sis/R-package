@@ -154,12 +154,12 @@ cor(landscape_t0$temp, landscape_t0$rich)
 #Plot the response curve
 par(mfrow=c(1,1))
 data_plot <- data.frame(cbind(landscape_t0$temp, predict(glm.uni,type = "response")))
-sort1 <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
-data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
+sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
+data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
+n <- paste0('observations (n = ', length(landscape_t0$rich), ')')
 plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab="Species richness", frame.plot=F, type="l", col='red', lwd=2)
 points(landscape_t0$temp, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c('observations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
-legend(15,17, legend=paste('n =', length(landscape_t0$rich)), bty='n')
+legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
 As you can see, there is only a weak linear correlation of `r round(cor(landscape_t0$temp, landscape_t0$rich),4)` temperature and simulated species richness. By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, meaning that species richness is expected to be highest at intermediate temperature levels.
@@ -174,12 +174,11 @@ cor(landscape_t0$prec, landscape_t0$rich)
 #Plot the response curve
 par(mfrow=c(1,1))
 data_plot <- data.frame(cbind(landscape_t0$prec, predict(glm.uni,type = "response")))
-sort1 <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
-data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
+sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
+data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
 plot(data_plot[,1],data_plot[,2], xlab="Precipitation", ylab="Species richness", frame.plot=F, type="l", col='blue', lwd=2)
 points(landscape_t0$prec, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c('observations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
-legend(0.3,20, legend=paste('n =', length(landscape_t0$rich)), bty='n')
+legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
 
@@ -194,12 +193,11 @@ cor(landscape_t0$area, landscape_t0$rich)
 #Plot the response curve
 par(mfrow=c(1,1))
 data_plot <- data.frame(cbind(landscape_t0$area, predict(glm.uni,type = "response")))
-sort1 <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
-data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
+sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
+data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
 plot(data_plot[,1],data_plot[,2], xlab="Area", ylab="Species richness", frame.plot=F, type="l", col='black', lwd=2)
 points(landscape_t0$area, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend(150000, 22, col=c(rgb(0.5,0.5,0.5,0.4), 'black'), legend=c('observations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
-legend(170000, 20, legend=paste('n =', length(landscape_t0$rich)), bty='n')
+legend(150000, 22, col=c(rgb(0.5,0.5,0.5,0.4), 'black'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
 
