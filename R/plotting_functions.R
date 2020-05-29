@@ -157,7 +157,7 @@ plot_raster_single <- function(values, landscape, title, no_data = 0) {
   ras <- extend(ras, landscape[["extent"]])
   col_vec <- colorRampPalette(c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
                                 "#6DCD59FF", "#B4DE2CFF", "#FDE725FF", "#FFA500",   "#FF2900",   "#C40000",   "#8B0000", "#8B0000")
-  )(max(output$summary$`richness-final`[,3], na.rm=T))
+  )(max(ras@data@values, na.rm=T))
   raster::plot(ras, main=paste0(title, ", t: ", landscape[["id"]]), col=col_vec)
 }
 
