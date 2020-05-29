@@ -43,7 +43,7 @@ library(gen3sis)
 ## Creating the environmental data frames
 In this step, the user needs to create the data frames containing the spatiotemporal distribution of the environmental variables of interest. Here, we will use the temperature, precipitation and area rasters of the 4d sample world that has been used in the introduction vignette. We first create a dataframe for each of the environmental variables. This dataframe contains the x- and y- coordinates of our world and each column represents one of the 300 time steps.
 
-```{r eval=TRUE, message=F}
+```{r eval=FALSE, message=F}
 library(raster)
 temperature_brick <- brick('inst/extdata/InputRasters/WorldCenter/temp_rasters.tif') #WIP
 dynamic_landscape_temperature_dataframe <- as.data.frame(temperature_brick, xy=T)
