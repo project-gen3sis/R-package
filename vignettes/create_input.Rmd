@@ -56,7 +56,8 @@ dynamic_landscape_area_dataframe <- as.data.frame(area_brick, xy=T)
 
 ```
 
-If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the [create_landscape](file:vignettes/introduction.html) vignette. 
+
+If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the LINK vignette. 
 
 
 ## Creating a list with the environmental data frames
