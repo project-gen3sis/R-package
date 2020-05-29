@@ -71,7 +71,7 @@ update_summary_statistics <- function(data, vars, config) {
 #' @importFrom utils packageVersion write.table sessionInfo
 #'
 #' @noRd
-make_summary <- function(config, data, vars, total_runtime){
+make_summary <- function(config, data, vars, total_runtime, save_file=TRUE){
   # create output summary file at the end of the simulation
   path <- strsplit(config$directories$input, "/")[[1]]
   world <- path[length(path)]
@@ -98,6 +98,9 @@ make_summary <- function(config, data, vars, total_runtime){
   
   # prepare output
   class(sgen3sis) <- "gen3sis_output"
+  if (save_file) {
+    saveRDS(sgen3sis,file.path(config$directories$output, "sgen3sis.rds"))
+  }
   return(sgen3sis)
 }
 

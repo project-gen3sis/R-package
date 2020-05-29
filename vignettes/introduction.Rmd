@@ -159,7 +159,7 @@ data_plot <- data.frame(cbind(sort1[,1],sort1[,2]))
 plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab="Species richness", frame.plot=F, type="l", col='red', lwd=2)
 points(landscape_t0$temp, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
 legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c('observations', 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2))
-library('ecospat')
+require('ecospat')
 legend(15,17, legend=paste('D^2 =', round(ecospat.adj.D2.glm(glm.uni),2)), bty='n')
 ```
 

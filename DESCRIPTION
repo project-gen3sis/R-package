@@ -24,6 +24,6 @@ Suggests:
 LinkingTo: Rcpp, BH
 URL: https://github.com/project-Gen3sis/R-package
 BugReports: https://github.com/project-Gen3sis/R-package/issues
-RoxygenNote: 7.0.2.9000
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 SystemRequirements: C++11
