@@ -71,6 +71,7 @@ plot_summary <- function(output, summary_legend=NULL) {
   
   # summary text
   plot(1, type="n", xlab="", ylab="", xlim=c(0, 10), ylim=c(0, 10), axes=FALSE, ann=FALSE)
+  #plot(1)
   title <- str_split(output$parameters$directories$input, "/")[[1]]
   title <- paste(title, collapse = ">")
   title <- str_remove(title, "..>")
@@ -78,19 +79,18 @@ plot_summary <- function(output, summary_legend=NULL) {
   title <- str_remove(title, ".")
   #title and summary text
   if (is.null(summary_legend)){
-    legend(-1,10, title=title,legend=paste(
+    summary_legend=paste(
       paste(names(output$parameters$gen3sis$general[2]), output$parameters$gen3sis$general[2], sep=": "),
       paste(names(output$parameters$gen3sis$general[3]), output$parameters$gen3sis$general[3], sep=": "),
       paste(names(output$system)[1], round(output$system$`runtime-hours`,3), sep=": "),
       paste("world_habited_present", paste0(round(output$summary$occupancy[length(output$summary$occupancy)],1)*100,"%"), sep=": "),
       paste("cumulative_richness", output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"], sep=": "),
       paste("extinction", paste0(round(((output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"]-output$summary$phylo_summary[nrow(output$summary$phylo_summary),"alive"])/output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"])*100,0),"%"), sep=": "),
-      sep="\n"),
-      bty="n")
-  } else {
-    legend(-1.5,13, title=title, legend=summary_legend,
-        bty="n")
+      sep="\n")
   }
+    par(xpd=TRUE)
+    legend("topleft", inset=c(-0.3,-0.3), title=paste0("[",title,"]"), legend=summary_legend,
+        bty="n")
 
   
   # time behaviour
@@ -120,9 +120,10 @@ plot_summary <- function(output, summary_legend=NULL) {
                               )(max(output$summary$`richness-final`[,3], na.rm=T))
     
   
+  # raster::plot(rasterFromXYZ(output$summary$`richness-final`), col=col_vec, bty = "n", xlab = "", ylab = "")
   image(rasterFromXYZ(output$summary$`richness-final`), col=col_vec, bty = "n", xlab = "", ylab = "")
   #title("Species richness map at final step", line=-1)
-  mtext(4, text="Species richness at final step", line=1, cex=1.2)
+  mtext(4, text="Final species richness", line=1, cex=1.2)
   raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=T, add=T,col=col_vec)
   }
 }
