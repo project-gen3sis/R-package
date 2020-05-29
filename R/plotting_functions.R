@@ -68,6 +68,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   col_vec <- colorRampPalette(c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
                                 "#6DCD59FF", "#B4DE2CFF", "#FDE725FF", "#FFA500",   "#FF2900",   "#C40000",   "#8B0000", "#8B0000")
   )(max(output$summary$`richness-final`[,3], na.rm=T))
+  
   {
   layout( matrix(c(1,3,3,
                    1,3,3,
@@ -124,7 +125,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   mtext(side=1, text="Time steps", line=2.5, cex=1.1)
   
   # richness map
-  image(rasterFromXYZ(output$summary$`richness-final`), col=col_vec, bty = "n", xlab = "", ylab = "")
+  image(rasterFromXYZ(output$summary$`richness-final`), col=col_vec, bty = "o", xlab = "", ylab = "", las=1)
   mtext(4, text="Final richness", line=1, cex=1.2)
   raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=T, add=T,col=col_vec)
   }
