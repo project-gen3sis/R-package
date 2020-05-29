@@ -70,7 +70,7 @@ plot_summary <- function(output, summary_legend=NULL) {
   par(mar=c(7.3,3,0,7.5), oma=c(0.3,0.8,0.3,0.8))
   
   # summary text
-  plot(1, type="n", xlab="", ylab="", xlim=c(0, 10), ylim=c(0, 10),axes=FALSE,ann=FALSE)
+  plot(1, type="n", xlab="", ylab="", xlim=c(0, 10), ylim=c(0, 10), axes=FALSE, ann=FALSE)
   title <- str_split(output$parameters$directories$input, "/")[[1]]
   title <- paste(title, collapse = ">")
   title <- str_remove(title, "..>")
@@ -115,7 +115,10 @@ plot_summary <- function(output, summary_legend=NULL) {
   
   
   # richness map
-  col_vec <- colorRampPalette(c( "snow2", "yellow", "orange" ,"red", "darkred", "chocolate4")  )(max(output$summary$`richness-final`[,3], na.rm=T))
+  col_vec <- colorRampPalette(c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
+                                "#6DCD59FF", "#B4DE2CFF", "#FDE725FF", "#FFA500",   "#FF2900",   "#C40000",   "#8B0000", "#8B0000")
+                              )(max(output$summary$`richness-final`[,3], na.rm=T))
+    
   
   image(rasterFromXYZ(output$summary$`richness-final`), col=col_vec, bty = "n", xlab = "", ylab = "")
   #title("Species richness map at final step", line=-1)
