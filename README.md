@@ -3,17 +3,17 @@
 
 # General Engine for Eco-Evolutionary Simulations
 
-This is the repository for the R-package of the Gen3sis engine.
+This is the repository for the R-package of the gen3sis engine.
 
-Gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modular implementation. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes.
+gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modular implementation. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes.
 
-Gen3sis is licensed under a [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html) ETHZ 2020 <doi.org/10.5905/ethz-1007-251>
+gen3sis is licensed under a [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html) ETHZ 2020 <doi.org/10.5905/ethz-1007-251>
 
 Package authorship according to: http://epub.wu.ac.at/3269/1/Report114.pdf
 
 ### How to install gen3sis
 
-Gen3sis will be soon on CRAN. As soon as this is done, you can install the latest CRAN release via
+gen3sis will be soon on CRAN. As soon as this is done, you can install the latest CRAN release via
 
 ```{r}
 install.packages("gen3sis")
@@ -22,12 +22,12 @@ install.packages("gen3sis")
 Until then, you can install the latest development release from GitHub via 
 
 ```{r}
-devtools::install_github(repo = "project-Gen3sis/R-package/", 
+devtools::install_github(repo = "project-gen3sis/R-package/", 
   dependencies = T, build_vignettes = T)
 ```
 Below the status of the automatic Travis CI tests on the master branch
 
-[![Build Status](https://travis-ci.com/project-Gen3sis/R-package.svg?branch=master)](https://travis-ci.com/project-Gen3sis/R-package)
+[![Build Status](https://travis-ci.com/project-gen3sis/R-package.svg?branch=master)](https://travis-ci.com/project-gen3sis/R-package)
 
 ### How to run one simple simulation
 
@@ -52,7 +52,7 @@ Make sure you have the latest gen3sis version
 
 ```{r}
 #print package version
-paste("GEN3SIS version:", packageVersion("gen3sis"))
+paste("gen3sis version:", packageVersion("gen3sis"))
 ```
 
 Package mantined by Oskar Hagen (oskar@hagen.bio)
