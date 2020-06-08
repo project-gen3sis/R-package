@@ -198,7 +198,7 @@ run_simulation <- function(config = NA,
     }
     val <- loop_ecology(val$config, val$data, val$vars)
     if( val$vars$flag == "max_number_coexisting_species") {
-      print("max number of co-occuring species reached, breaking loop")
+      print("max number of coexisting species reached, breaking loop")
       break
     }
     
