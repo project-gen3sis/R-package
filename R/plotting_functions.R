@@ -186,7 +186,8 @@ plot_raster_multiple <- function(values, landscape, no_data = 0) {
 
 
 #' define gen3sis richness color scale
-#' @return return a colorRampPalette with gen3sis richness collors
+#' @param n corresponds to the \link[grDevices]{colorRampPalette} parameter 
+#' @return returns a \link[grDevices]{colorRampPalette} function with the gen3sis richness colours
 #' @export
 color_richness <- colorRampPalette(
   c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",

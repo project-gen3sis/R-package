@@ -6,8 +6,11 @@
 \usage{
 color_richness(n)
 }
+\arguments{
+\item{n}{corresponds to the \link[grDevices]{colorRampPalette} parameter}
+}
 \value{
-return a colorRampPalette with gen3sis richness collors
+returns a \link[grDevices]{colorRampPalette} function with the gen3sis richness colours
 }
 \description{
 define gen3sis richness color scale
