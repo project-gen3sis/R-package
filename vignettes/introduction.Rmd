@@ -118,6 +118,7 @@ The **landscape** is the environment of the virtual planet (e.g. temperature and
    dev.off()
    
    
+   
    # PRECIPITATION
    png('../inst/extdata/InputRasters/WorldCenter/landscape_prec.png', width=2500, height=800, pointsize=32)
    par(mar=c(1,2,3,1), oma=c(0,0,3,0))
