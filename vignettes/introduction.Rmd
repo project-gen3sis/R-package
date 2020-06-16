@@ -9,6 +9,7 @@ vignette: >
 ---
 
 ```{r include = FALSE}
+  library(knitr)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
@@ -18,35 +19,28 @@ knitr::opts_chunk$set(
   results='hold'
 )
 ```
-Hello and welcome! In this vignette you will be introduced to gen3sis, an engine for simulating various spatial eco-evolutionary models. We will create a virtual planet, 'biodiversify' it and examine some brand new virtual species.
+Hello and welcome! In this vignette you will be introduced to *gen3sis*, an engine for simulating various spatial eco-evolutionary models. We will create a virtual planet, 'biodiversify' it and examine some brand new virtual species.
 
 Thus we will: 
 
-1. **Start** gen3sis package and check if we are set with all the necessary input data.
-2. **Run** one simple example simulation
-3. **Visualize** the output
-4. **Analyze** the output
+[1. **Start**](#start) *gen3sis* package and check if we are set with all the necessary input data.
+
+[2. **Run**](#run) one simple example simulation
+
+[3. **Visualize**](#visualize) the output
+
+[4. **Analyze**](#analyze) the output
 
 
-----
+
+
 
 The first step for running a simulation consists of setting up the folder structure with the required input data from which the landscape object and the distance matrices are calculated. 
-Thereafter, the function run_simulation, our main function, will:
-
-1) Read in the config and prepare the output directories, initial landscape and call “create_ancestor_species” from the user config to create the initial species for the simulation.
-
-2) Start the main loop over the time steps. For every time step it loads the appropriate landscape, removes all cells that became uninhabitable in the new time step, and calls the main steps of any iteration.
-
-3) At the end of every time step the simulation saves the species richness pattern, the phylogeny, if desired the species and landscape, and calls the “end_of_timestep_observer” function from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
 
 
-Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. The model is implemented in a mix of R and C++ code, and wrapped into an R package. All high-level functions that the user may use to interact with are written in R, and are documented via the standard R / Roxygen help files for R packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. 
 
-----
-
-
-## 1. Start
-First of all, we need to load the gen3sis package 
+## 1. Start {#start}
+First of all, we need to load the *gen3sis* package 
 ```{r setup, message=F}
 library(gen3sis)
 ```
@@ -54,15 +48,16 @@ library(gen3sis)
 
 Perfect! From now on, if you run into problems, use *>??gen3sis* for the full help documentation
 
-Let's check the version of the gen3sis package we are using
+Let's check the version of the *gen3sis* package we are using
 
 ```{r eval=TRUE}
-print(paste("GEN3SIS version:", packageVersion("gen3sis")))
+print(paste("gen3sis version:", packageVersion("gen3sis")))
 ```
 
 
 
-All gen3sis simulations need a **landscape** and a **configuration** object to refer to. The **landscape** is the environment of the virtual planet (e.g. temperature and precipitation data that changes spatially and temporally). The **configuration** are the rules of our virtual planet, here is were we define all the ecological and evolutionary equations and parameters.
+All *gen3sis* simulations need a **landscape** and a **configuration** object to refer to. 
+
 Here we will use a published small theoretical planet example[^1]. 
 
 Since this is a small data (252 KB) which is already available in the package, you can just get the path to the data inside the package. This [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data can also be downloaded manually and stored locally for running the experiment.
@@ -79,8 +74,126 @@ datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
 ```
 
 
+### Landscape
+The **landscape** is the environment of the virtual planet (e.g. temperature and precipitation data that changes spatially and temporally). 
 
 **NOTE** that the landscape contains several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform how the landscape (or more precisely that habitable cells) is connected. In this example you are using an already ready-to-run landscape. To see how to create a landscape object, see (this vignette)[create_landscape.html]
+
+
+
+
+```{r eval=TRUE, fig.width=7, fig.height=5.5, message=F, echo=F, warning=F, results='hide'}
+   library(raster)
+   temp_stack <- stack('../inst/extdata/InputRasters/WorldCenter/temp_rasters.tif')
+   prec_stack <- stack('../inst/extdata/InputRasters/WorldCenter/prec_rasters.tif')
+   area_stack <- stack('../inst/extdata/InputRasters/WorldCenter/area_rasters.tif')
+   
+   
+   ####   PLOTS
+   
+   # TEMPERATURE
+   png('../inst/extdata/InputRasters/WorldCenter/landscape_temp.png', width=2500, height=800, pointsize=32)
+   par(mar=c(1,2,3,1), oma=c(0,0,3,0))
+   #layout(matrix(c(1,1,1,4,5,5,5,8,9,9,9,12,
+   #                2,2,2,4,6,6,6,8,10,10,10,12,
+   #                3,3,3,4,7,7,7,8,11,11,11,12), ncol=3))
+   layout(matrix(c(1,1,1,1,4,
+                   2,2,2,2,4,
+                   3,3,3,3,4), ncol=3))
+   maxtemp <- 30
+   mintemp <- 0
+   temp_breaks <- seq(mintemp, maxtemp, by=1)
+   temp_colors <- rev(heat.colors(length(temp_breaks)-1))
+   image(temp_stack[[1]], col=temp_colors, breaks=temp_breaks, axes=T, box=T, legend=F, main='150 Ma')
+   image(temp_stack[[round(nlayers(temp_stack)/2)]], col=temp_colors, breaks=temp_breaks, axes=T, box=T, legend=F, main='125 Ma')
+   title(main=expression('Temperature [\u00B0C]'), line=1, outer=T, cex.main=2)
+   image(temp_stack[[nlayers(temp_stack)]], col=temp_colors, breaks=temp_breaks, axes=T, box=T, main='100 Ma')
+   
+   plot.new()
+   legend_df <- as.data.frame(cbind(seq(0, length(temp_breaks)-1, length.out=(length(temp_breaks))), rep(0.25, (length(temp_breaks))), temp_breaks))
+   legend_image <- rasterFromXYZ(legend_df, res=0.01)
+   plot(legend_image, legend.only=T, col=temp_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
+     axis.args=list(at=seq(mintemp, maxtemp, 5),labels=seq(mintemp, maxtemp, 5)))
+   
+   dev.off()
+   
+   
+   # PRECIPITATION
+   png('../inst/extdata/InputRasters/WorldCenter/landscape_prec.png', width=2500, height=800, pointsize=32)
+   par(mar=c(1,2,3,1), oma=c(0,0,3,0))
+   #layout(matrix(c(1,1,1,4,5,5,5,8,9,9,9,12,
+   #                2,2,2,4,6,6,6,8,10,10,10,12,
+   #                3,3,3,4,7,7,7,8,11,11,11,12), ncol=3))
+   layout(matrix(c(1,1,1,1,4,
+                   2,2,2,2,4,
+                   3,3,3,3,4), ncol=3))
+   maxprec <- 1
+   minprec <- 0
+   prec_breaks <- seq(minprec, maxprec, by=0.01)
+   prec_colors <- colorRampPalette(blues9[-(1:2)])(length(prec_breaks)-1)
+   image(prec_stack[[1]], col=prec_colors, breaks=prec_breaks, axes=T, box=T, legend=F, main='150 Ma')
+   image(prec_stack[[round(nlayers(prec_stack)/2)]], col=prec_colors, breaks=prec_breaks, axes=T, box=T, legend=F, main='125 Ma')
+   title(main=expression('Precipitation'), line=1, outer=T, cex.main=2)
+   image(prec_stack[[nlayers(prec_stack)]], col=prec_colors, breaks=prec_breaks, axes=T, box=T, main='100 Ma')
+   
+   plot.new()
+   legend_df <- as.data.frame(cbind(seq(0, length(prec_breaks)-1, length.out=(length(prec_breaks))), rep(0.25, (length(prec_breaks))), prec_breaks))
+   legend_image <- rasterFromXYZ(legend_df, res=0.01)
+   plot(legend_image, legend.only=T, col=prec_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
+     axis.args=list(at=seq(minprec, maxprec, 0.2),labels=seq(minprec, maxprec, 0.2)))
+   
+   dev.off()
+   
+   
+   
+   # area
+   png('../inst/extdata/InputRasters/WorldCenter/landscape_area.png', width=2500, height=800, pointsize=32)
+   par(mar=c(1,2,3,1), oma=c(0,0,3,0))
+   #layout(matrix(c(1,1,1,4,5,5,5,8,9,9,9,12,
+   #                2,2,2,4,6,6,6,8,10,10,10,12,
+   #                3,3,3,4,7,7,7,8,11,11,11,12), ncol=3))
+   layout(matrix(c(1,1,1,1,4,
+                   2,2,2,2,4,
+                   3,3,3,3,4), ncol=3))
+   maxarea <- 197000
+   minarea <- 151000
+   area_breaks <- seq(minarea, maxarea, by=1000)
+   area_colors <- rev(gray(seq(0.05, 0.9, length.out=length(area_breaks)-1)))
+   image(area_stack[[1]], col=area_colors, breaks=area_breaks, axes=T, box=T, legend=F, main='150 Ma')
+   image(area_stack[[round(nlayers(area_stack)/2)]], col=area_colors, breaks=area_breaks, axes=T, box=T, legend=F, main='125 Ma')
+  # title(main=paste0('Area [km', expression(^2), ']'), line=1, outer=T, cex.main=1.8)
+   #par(font=2, cex.main=2)
+  title(main=expression('Area [' ~km^2~ ']'), line=1, outer=T, cex.main=2)
+   image(area_stack[[nlayers(area_stack)]], col=area_colors, breaks=area_breaks, axes=T, box=T, main='100 Ma')
+   
+   plot.new()
+   legend_df <- as.data.frame(cbind(seq(0, length(area_breaks)-1, length.out=(length(area_breaks))), rep(0.25, (length(area_breaks))), area_breaks))
+   legend_image <- rasterFromXYZ(legend_df, res=0.01)
+   plot(legend_image, legend.only=T, col=area_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
+     axis.args=list(at=seq(minarea, maxarea, 7500),labels=seq(minarea, maxarea, 7500)))
+   
+   dev.off()
+```
+
+
+
+
+<!--
+![This figure shows temperature (top), precipitation (middle) and cell size (bottom) of the input landscape of the sample world in the beginning of the simulation (150Ma), in the middle (125Ma) and in the end of the simulation (100Ma).](../inst/extdata/InputRasters/WorldCenter/landscape_area.png){width=105%}
+-->
+
+```{r  out.width = "100%", fig.cap='This figure shows temperature (top), precipitation (middle) and cell size (bottom) of the input landscape of the sample world in the beginning of the simulation (150Ma), in the middle (125Ma) and in the end of the simulation (100Ma).', echo=F}
+include_graphics('../inst/extdata/InputRasters/WorldCenter/landscape_combined.png') 
+```
+
+### Configuration
+The **configuration** are the rules of our virtual planet, here is where we define all the ecological and evolutionary equations and parameters.
+
+The configuration object includes information on the model initialization, the observer function and the biological functions, namey speciation, dispersal, evolution, and ecology. The possibility of the user to customize these functions confers the flexibility of *gen3sis*. The initialization function creates the ancestor species at the start of the simulation. Users can define  the number of species, their distribution within the landscape and their trait values. The observer function allows recording any abiotic or biotic information of the virtual world as it changes by defining the outputs that are saved at specified time steps. The configuration further allows to define the speciation function, the  dispersal function, the evolution function and the ecological function, which are defined in the section on core processes below. Altogether, those six functions are specified in the configuration object and interact with a set of core objects defined in the simulation engine. The configuration object further lists the ecological traits considered in the simulation, sets a random seed allowing simulation reproducibility, start and end times of the simulation, as well as simulation aborting rules including the limits for a total or local number of species.
+
+
+
+
 
 You should now have downloaded all the necessary files to run a simulation. 
 
@@ -88,7 +201,23 @@ You should now have downloaded all the necessary files to run a simulation.
 [^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
 
 
-## 2. Run
+## 2. Run {#run}
+
+
+----
+
+Now that we have set up the general folder structure and loaded the input data and configuration file, we can run our main function. The run_simulation function will:
+
+1) Read in the config and prepare the output directories, initial landscape and call “create_ancestor_species” from the user config to create the initial species for the simulation.
+
+2) Start the main loop over the time steps. For every time step it loads the appropriate landscape, removes all cells that became uninhabitable in the new time step, and calls the main steps of any iteration.
+
+3) At the end of every time step the simulation saves the species richness pattern, the phylogeny, if desired the species and landscape, and calls the “end_of_timestep_observer” function from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
+
+
+Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. The model is implemented in a mix of R and C++ code, and wrapped into an R package. All high-level functions that the user may use to interact with are written in R, and are documented via the standard R / Roxygen help files for R packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. 
+
+----
 
 To launch a simulation you need to call the run_simulation function.
 
@@ -96,8 +225,12 @@ To launch a simulation you need to call the run_simulation function.
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
 sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
                landscape = file.path(datapath, "landscape"),
-               save_intermediate_results = "all",
+               call_observer = "all",
                verbose=0)
+```
+
+```{r eval=T, echo=F}
+species <- readRDS(file.path(datapath, "output/config_worldcenter/sgen3sis.rds"))
 ```
 
 ```{r eval=T, echo=F}
@@ -114,9 +247,9 @@ Excellent. Our virtual species are waiting for us. They are automatically stored
 |&nbsp;&nbsp;&nbsp;>config|
 |&nbsp;&nbsp;&nbsp;**>output**|
 
-## 3. Visualize
+## 3. Visualize {#visualize}
 
-Gen3sis also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that document the changes of the world over time.
+*Gen3sis* also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that document the changes of the world over time.
 **NOTE** You can also create your own observer function. 
 
 One default observer function is the collection of the richness over time. This was stored as 'sim'.
@@ -130,7 +263,7 @@ plot_summary(sim)
 
 There are a few visualization tools already included in the package, but you are free to explore and check the outputs with your favorite plotting functions and colors.
 
-## 4. Analyze
+## 4. Analyze {#analyze}
 
 Now that we have run the simulation and have had a quick look at the output, we want to do some analysis based on the species richness pattern that emerged in the end of the simulation. To do so, we first load the landscape and combine it with the simulated species richness.
 
