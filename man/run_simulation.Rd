@@ -2,7 +2,7 @@
 % Please edit documentation in R/gen3sis_main.R
 \name{run_simulation}
 \alias{run_simulation}
-\title{Run a simulation}
+\title{run a simulation}
 \usage{
 run_simulation(
   config = NA,
@@ -36,7 +36,10 @@ run_simulation(
 a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) and some usefull simulation data
 }
 \description{
-Run a simulation
+run a simulation
+}
+\details{
+run a simulation with defined landscape and config objects
 }
 \examples{
 ## running a simple simulation

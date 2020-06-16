@@ -4,6 +4,9 @@
 \name{gen3sis}
 \alias{gen3sis}
 \title{Gen3sis: General Engine for Eco-Evolutionary Simulations}
+\description{
+main gen3sis
+}
 \examples{
 \dontrun{
 #runing a Gen3sis simulation

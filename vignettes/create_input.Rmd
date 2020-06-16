@@ -43,7 +43,7 @@ library(gen3sis)
 ## Creating the environmental data frames
 In this step, the user needs to create the data frames containing the spatiotemporal distribution of the environmental variables of interest. Here, we will use the temperature, precipitation and area rasters of the 4d sample world that has been used in the introduction vignette. We first create a dataframe for each of the environmental variables. This dataframe contains the x- and y- coordinates of our world and each column represents one of the 300 time steps.
 
-```{r eval=TRUE, message=F}
+```{r eval=FALSE, message=F}
 library(raster)
 temperature_brick <- brick('inst/extdata/InputRasters/WorldCenter/temp_rasters.tif') #WIP
 dynamic_landscape_temperature_dataframe <- as.data.frame(temperature_brick, xy=T)
@@ -56,18 +56,19 @@ dynamic_landscape_area_dataframe <- as.data.frame(area_brick, xy=T)
 
 ```
 
-If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the [create_landscape](file:vignettes/introduction.html) vignette. 
+
+If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the LINK vignette. 
 
 
 ## Creating a list with the environmental data frames
 It is important to add the name of the environmental variable you want to use in the list, which will be used when specifying the config file. Here we name "temp" the data frame for temperature and "prec" for the data frame for precipitation
-```{r eval=TRUE}
+```{r eval=FALSE}
 landscapes_list <- list("temp" = dynamic_landscape_temperature_dataframe, "prec" = dynamic_landscape_precipitation_dataframe, "area" = dynamic_landscape_area_dataframe) 
 ```
 ## Defining a cost function 
 The second argument we need to define is a cost function. This function should define how connected and reachabel grid cells are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water grid cells should increase the cost of dispersal. The costs have to bedefined in meters because the coordinate system is in meters for real landscapes (automatically corrected to km in later on by the create_input() function). However, in our example all grid cells are suitable and contiguous and the distance unit is automatically in grid cell as we do not provide a coordinate system. Hence, we can define a simple cost function in which the dispersal is not penalized: 
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 my_cost_function <- function(){
     return(1)
 }

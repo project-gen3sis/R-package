@@ -2,6 +2,7 @@
 
 #' @title Gen3sis: General Engine for Eco-Evolutionary Simulations
 #' @name gen3sis
+#' @description main gen3sis
 #' @examples
 #' \dontrun{
 #' #runing a Gen3sis simulation
@@ -17,8 +18,9 @@ NULL
 counting <- new.env(parent = emptyenv())
 assign("dist", -Inf, envir = counting)
 
-#' Run a simulation
-#'
+#' run a simulation
+#' 
+#' @details run a simulation with defined landscape and config objects
 #' @param config configuration file for the simulation or configuration object derived from a config file
 #' @param landscape directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
@@ -196,7 +198,7 @@ run_simulation <- function(config = NA,
     }
     val <- loop_ecology(val$config, val$data, val$vars)
     if( val$vars$flag == "max_number_coexisting_species") {
-      print("max number of co-occuring species reached, breaking loop")
+      print("max number of coexisting species reached, breaking loop")
       break
     }
     

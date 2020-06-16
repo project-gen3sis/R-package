@@ -13,8 +13,6 @@
 #' @param directions 4, 8, 16 oder adjacency matrix (see gdistance package)
 #' @param output_directory path for storing the gen3sis ready landscape 
 #' @param timesteps vector of names for every tiumestep to represent the timestep at gen3sis ready landscape. if NULL, timsteps are sequentialy numbered from 0 (present)
-#' @param habitability_masks either (1) a list of files or rasters starting from the present indicating the habitability of cell at that timestep.
-#' #' or (2) NULL, every cell with at least one NA as environmentalvalue(s) will be considered inhabitable 
 #' @param calculate_full_distance_matrices TRUE or FALSE. If TRUE calculates the entire distance matrix for every timestep and between all habitable cells (faster CPU time, higher storage required). If FALSE, only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)
 #' @param crs the coordinate reference system in crs format (see rater::crs)
 #' @param overwrite_output TRUE or FALSE
@@ -29,7 +27,6 @@ create_input <- function( landscapes,
                           directions,
                           output_directory,
                           timesteps = NULL,
-                          habitability_masks = NULL,
                           calculate_full_distance_matrices = F,
                           crs = NULL,
                           overwrite_output = F,
@@ -38,6 +35,13 @@ create_input <- function( landscapes,
   # if (is.null(output_directory)){
   #   output_directory <- dirname(path)
   # }
+  
+  # habitability masks removed for now.. assumin NA's from input data as non-habitable (applies if only one env. variable has NA in the cell)!
+  habitability_masks = NULL
+  # @param habitability_masks either (1) a list of files or rasters starting from the present indicating the habitability of cell at that timestep.
+  # #' or (2) NULL, every cell with at least one NA as environmentalvalue(s) will be considered inhabitable 
+  
+  
   
   # prepare directories
   create_directories(output_directory, overwrite_output, calculate_full_distance_matrices)

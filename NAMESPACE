@@ -2,6 +2,7 @@
 
 export(apply_ecology)
 export(apply_evolution)
+export(color_richness)
 export(create_ancestor_species)
 export(create_config)
 export(create_input)

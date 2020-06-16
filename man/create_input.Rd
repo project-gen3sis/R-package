@@ -10,7 +10,6 @@ create_input(
   directions,
   output_directory,
   timesteps = NULL,
-  habitability_masks = NULL,
   calculate_full_distance_matrices = F,
   crs = NULL,
   overwrite_output = F,
@@ -33,9 +32,6 @@ where src is a vector of environmental conditions for the origin cell, src_habit
 \item{output_directory}{path for storing the gen3sis ready landscape}
 
 \item{timesteps}{vector of names for every tiumestep to represent the timestep at gen3sis ready landscape. if NULL, timsteps are sequentialy numbered from 0 (present)}
-
-\item{habitability_masks}{either (1) a list of files or rasters starting from the present indicating the habitability of cell at that timestep.
-#' or (2) NULL, every cell with at least one NA as environmentalvalue(s) will be considered inhabitable}
 
 \item{calculate_full_distance_matrices}{TRUE or FALSE. If TRUE calculates the entire distance matrix for every timestep and between all habitable cells (faster CPU time, higher storage required). If FALSE, only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)}
 
