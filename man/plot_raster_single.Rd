@@ -4,7 +4,7 @@
 \alias{plot_raster_single}
 \title{Plot a single set of values onto a given landscape}
 \usage{
-plot_raster_single(values, landscape, title, no_data = 0)
+plot_raster_single(values, landscape, title, no_data = 0, col)
 }
 \arguments{
 \item{values}{a named list of values, the names must correspond to cells in the landscape}
@@ -14,6 +14,8 @@ plot_raster_single(values, landscape, title, no_data = 0)
 \item{title}{a title string for resulting plot, the time will be taken and appended from the landscape id}
 
 \item{no_data}{what value should be used for missing values in values}
+
+\item{col}{corresponds to the \link{raster::plot} col plot parameter}
 }
 \description{
 Plot a single set of values onto a given landscape

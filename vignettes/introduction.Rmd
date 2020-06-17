@@ -82,7 +82,7 @@ The **landscape** is the environment of the virtual planet (e.g. temperature and
 
 
 
-```{r eval=TRUE, fig.width=7, fig.height=5.5, message=F, echo=F, warning=F, results='hide'}
+```{r eval=FALSE, fig.width=7, fig.height=5.5, message=F, echo=F, warning=F, results='hide'}
    library(raster)
    temp_stack <- stack('../inst/extdata/InputRasters/WorldCenter/temp_rasters.tif')
    prec_stack <- stack('../inst/extdata/InputRasters/WorldCenter/prec_rasters.tif')
@@ -182,6 +182,7 @@ The **landscape** is the environment of the virtual planet (e.g. temperature and
 <!--
 ![This figure shows temperature (top), precipitation (middle) and cell size (bottom) of the input landscape of the sample world in the beginning of the simulation (150Ma), in the middle (125Ma) and in the end of the simulation (100Ma).](../inst/extdata/InputRasters/WorldCenter/landscape_area.png){width=105%}
 -->
+
 
 ```{r  out.width = "100%", fig.cap='This figure shows temperature (top), precipitation (middle) and cell size (bottom) of the input landscape of the sample world in the beginning of the simulation (150Ma), in the middle (125Ma) and in the end of the simulation (100Ma).', echo=F}
 include_graphics('../inst/extdata/InputRasters/WorldCenter/landscape_combined.png') 
