@@ -217,7 +217,7 @@ sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"
 sim <- readRDS(file.path(datapath, "output/config_worldcenter/summary_sim.rds"))
 ```
 
-After the simulation is finished, a plot is created inside the CaseStudy1 folder to show the state of the initial world. As you can see it contains 1 species per cell in the 20*40 cell sample world.
+After the simulation is finished, a plot is created inside the CaseStudy1 folder to show the state of the initial world. As you can see it contains 1 species per site in the 20*40 grid cell sample world.
 
 Excellent. Our virtual species are waiting for us. They are automatically stored in a sub folder called **output** inside our CaseStudy1 folder and inside another folder named after our configuration file (i.e. config). It should look like this:
 
