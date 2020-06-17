@@ -82,99 +82,85 @@ The **landscape** is the environment of the virtual planet (e.g. temperature and
 
 
 
-```{r eval=F, fig.width=7, fig.height=5.5, message=F, echo=F, warning=F, results='hide'}
-   library(raster)
-   temp_stack <- stack('../inst/extdata/InputRasters/WorldCenter/temp_rasters.tif')
-   prec_stack <- stack('../inst/extdata/InputRasters/WorldCenter/prec_rasters.tif')
-   area_stack <- stack('../inst/extdata/InputRasters/WorldCenter/area_rasters.tif')
+```{r eval=T, fig.width=7, fig.height=3.5, message=T, echo=F, warning=T, results='hide'}
+library(raster)
+landscapes <- readRDS(file.path(datapath, "landscape/landscapes.rds"))
+
+
+temp_300 <- rasterFromXYZ(landscapes$temp[, c(1,2,303)])
+temp_150 <- rasterFromXYZ(landscapes$temp[, c(1,2,153)])
+temp_0 <- rasterFromXYZ(landscapes$temp[, c(1,2,3)])   
+
+# TEMPERATURE
+par(mar=c(1,2,3,1), oma=c(0,0,3,0))
+layout(matrix(c(1,1,1,1,4,
+                2,2,2,2,4,
+                3,3,3,3,4), ncol=3))
+maxtemp <- 30
+mintemp <- 0
+temp_breaks <- seq(mintemp, maxtemp, by=1)
+temp_colors <- rev(heat.colors(length(temp_breaks)-1))
+image(temp_300, col=temp_colors, breaks=temp_breaks, main='150 Ma')
+image(temp_150, col=temp_colors, breaks=temp_breaks, main='125 Ma')
+title(main=expression('Temperature [\u00B0C]'), line=1, outer=T, cex.main=2)
+image(temp_0, col=temp_colors, breaks=temp_breaks, main='100 Ma')
+
+plot.new()
+legend_df <- as.data.frame(cbind(seq(0, length(temp_breaks)-1, length.out=(length(temp_breaks))), rep(0.25, (length(temp_breaks))), temp_breaks))
+legend_image <- rasterFromXYZ(legend_df, res=0.01)
+plot(legend_image, legend.only=T, col=temp_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
+   axis.args=list(at=seq(mintemp, maxtemp, 5),labels=seq(mintemp, maxtemp, 5)))
+
+
+# ARIDITY
+arid_300 <- rasterFromXYZ(landscapes$prec[, c(1,2,303)])
+arid_150 <- rasterFromXYZ(landscapes$prec[, c(1,2,153)])
+arid_0 <- rasterFromXYZ(landscapes$prec[, c(1,2,3)])   
+
+par(mar=c(1,2,3,1), oma=c(0,0,3,0))
+layout(matrix(c(1,1,1,1,4,
+                2,2,2,2,4,
+                3,3,3,3,4), ncol=3))
+maxarid <- 1
+minarid <- 0
+arid_breaks <- seq(minarid, maxarid, by=0.01)
+arid_colors <- colorRampPalette(blues9[-(1:2)])(length(arid_breaks)-1)
+image(arid_300, col=arid_colors, breaks=arid_breaks, main='150 Ma')
+image(arid_150, col=arid_colors, breaks=arid_breaks, main='125 Ma')
+title(main=expression('Aridity [index]'), line=1, outer=T, cex.main=2)
+image(arid_0, col=arid_colors, breaks=arid_breaks, main='100 Ma')
+
+plot.new()
+legend_df <- as.data.frame(cbind(seq(0, length(arid_breaks)-1, length.out=(length(arid_breaks))), rep(0.25, (length(arid_breaks))), arid_breaks))
+legend_image <- rasterFromXYZ(legend_df, res=0.01)
+plot(legend_image, legend.only=T, col=arid_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
+axis.args=list(at=seq(minarid, maxarid, 0.2),labels=seq(minarid, maxarid, 0.2)))
+
+# AREA
+area_300 <- rasterFromXYZ(landscapes$area[, c(1,2,303)])
+area_150 <- rasterFromXYZ(landscapes$area[, c(1,2,153)])
+area_0 <- rasterFromXYZ(landscapes$area[, c(1,2,3)])   
+
+par(mar=c(1,2,3,1), oma=c(0,0,3,0))
+layout(matrix(c(1,1,1,1,4,
+                2,2,2,2,4,
+                3,3,3,3,4), ncol=3))
+maxarea <- 197000
+minarea <- 151000
+area_breaks <- seq(minarea, maxarea, by=1000)
+area_colors <- rev(gray(seq(0.05, 0.9, length.out=length(area_breaks)-1)))
+image(area_300, col=area_colors, breaks=area_breaks, main='150 Ma')
+image(area_150, col=area_colors, breaks=area_breaks, main='125 Ma')
+title(main=expression('Area [' ~km^2~ ']'), line=1, outer=T, cex.main=2)
+image(area_0, col=area_colors, breaks=area_breaks, main='100 Ma')
+ 
+plot.new()
+legend_df <- as.data.frame(cbind(seq(0, length(area_breaks)-1, length.out=(length(area_breaks))), rep(0.25, (length(area_breaks))), area_breaks))
+legend_image <- rasterFromXYZ(legend_df, res=0.01)
+plot(legend_image, legend.only=T, col=area_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
+axis.args=list(at=seq(minarea, maxarea, 7500),labels=seq(minarea, maxarea, 7500)))
+``` 
    
-   
-   ####   PLOTS
-   
-   # TEMPERATURE
-   png('../inst/extdata/InputRasters/WorldCenter/landscape_temp.png', width=2500, height=800, pointsize=32)
-   par(mar=c(1,2,3,1), oma=c(0,0,3,0))
-   #layout(matrix(c(1,1,1,4,5,5,5,8,9,9,9,12,
-   #                2,2,2,4,6,6,6,8,10,10,10,12,
-   #                3,3,3,4,7,7,7,8,11,11,11,12), ncol=3))
-   layout(matrix(c(1,1,1,1,4,
-                   2,2,2,2,4,
-                   3,3,3,3,4), ncol=3))
-   maxtemp <- 30
-   mintemp <- 0
-   temp_breaks <- seq(mintemp, maxtemp, by=1)
-   temp_colors <- rev(heat.colors(length(temp_breaks)-1))
-   image(temp_stack[[1]], col=temp_colors, breaks=temp_breaks, axes=T, box=T, legend=F, main='150 Ma')
-   image(temp_stack[[round(nlayers(temp_stack)/2)]], col=temp_colors, breaks=temp_breaks, axes=T, box=T, legend=F, main='125 Ma')
-   title(main=expression('Temperature [\u00B0C]'), line=1, outer=T, cex.main=2)
-   image(temp_stack[[nlayers(temp_stack)]], col=temp_colors, breaks=temp_breaks, axes=T, box=T, main='100 Ma')
-   
-   plot.new()
-   legend_df <- as.data.frame(cbind(seq(0, length(temp_breaks)-1, length.out=(length(temp_breaks))), rep(0.25, (length(temp_breaks))), temp_breaks))
-   legend_image <- rasterFromXYZ(legend_df, res=0.01)
-   plot(legend_image, legend.only=T, col=temp_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
-     axis.args=list(at=seq(mintemp, maxtemp, 5),labels=seq(mintemp, maxtemp, 5)))
-   
-   dev.off()
-   
-   
-   
-   # PRECIPITATION
-   png('../inst/extdata/InputRasters/WorldCenter/landscape_prec.png', width=2500, height=800, pointsize=32)
-   par(mar=c(1,2,3,1), oma=c(0,0,3,0))
-   #layout(matrix(c(1,1,1,4,5,5,5,8,9,9,9,12,
-   #                2,2,2,4,6,6,6,8,10,10,10,12,
-   #                3,3,3,4,7,7,7,8,11,11,11,12), ncol=3))
-   layout(matrix(c(1,1,1,1,4,
-                   2,2,2,2,4,
-                   3,3,3,3,4), ncol=3))
-   maxprec <- 1
-   minprec <- 0
-   prec_breaks <- seq(minprec, maxprec, by=0.01)
-   prec_colors <- colorRampPalette(blues9[-(1:2)])(length(prec_breaks)-1)
-   image(prec_stack[[1]], col=prec_colors, breaks=prec_breaks, axes=T, box=T, legend=F, main='150 Ma')
-   image(prec_stack[[round(nlayers(prec_stack)/2)]], col=prec_colors, breaks=prec_breaks, axes=T, box=T, legend=F, main='125 Ma')
-   title(main=expression('Aridity [index]'), line=1, outer=T, cex.main=2)
-   image(prec_stack[[nlayers(prec_stack)]], col=prec_colors, breaks=prec_breaks, axes=T, box=T, main='100 Ma')
-   
-   plot.new()
-   legend_df <- as.data.frame(cbind(seq(0, length(prec_breaks)-1, length.out=(length(prec_breaks))), rep(0.25, (length(prec_breaks))), prec_breaks))
-   legend_image <- rasterFromXYZ(legend_df, res=0.01)
-   plot(legend_image, legend.only=T, col=prec_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
-     axis.args=list(at=seq(minprec, maxprec, 0.2),labels=seq(minprec, maxprec, 0.2)))
-   
-   dev.off()
-   
-   
-   
-   # area
-   png('../inst/extdata/InputRasters/WorldCenter/landscape_area.png', width=2500, height=800, pointsize=32)
-   par(mar=c(1,2,3,1), oma=c(0,0,3,0))
-   #layout(matrix(c(1,1,1,4,5,5,5,8,9,9,9,12,
-   #                2,2,2,4,6,6,6,8,10,10,10,12,
-   #                3,3,3,4,7,7,7,8,11,11,11,12), ncol=3))
-   layout(matrix(c(1,1,1,1,4,
-                   2,2,2,2,4,
-                   3,3,3,3,4), ncol=3))
-   maxarea <- 197000
-   minarea <- 151000
-   area_breaks <- seq(minarea, maxarea, by=1000)
-   area_colors <- rev(gray(seq(0.05, 0.9, length.out=length(area_breaks)-1)))
-   image(area_stack[[1]], col=area_colors, breaks=area_breaks, axes=T, box=T, legend=F, main='150 Ma')
-   image(area_stack[[round(nlayers(area_stack)/2)]], col=area_colors, breaks=area_breaks, axes=T, box=T, legend=F, main='125 Ma')
-  # title(main=paste0('Area [km', expression(^2), ']'), line=1, outer=T, cex.main=1.8)
-   #par(font=2, cex.main=2)
-  title(main=expression('Area [' ~km^2~ ']'), line=1, outer=T, cex.main=2)
-   image(area_stack[[nlayers(area_stack)]], col=area_colors, breaks=area_breaks, axes=T, box=T, main='100 Ma')
-   
-   plot.new()
-   legend_df <- as.data.frame(cbind(seq(0, length(area_breaks)-1, length.out=(length(area_breaks))), rep(0.25, (length(area_breaks))), area_breaks))
-   legend_image <- rasterFromXYZ(legend_df, res=0.01)
-   plot(legend_image, legend.only=T, col=area_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
-     axis.args=list(at=seq(minarea, maxarea, 7500),labels=seq(minarea, maxarea, 7500)))
-   
-   dev.off()
-```
 
 
 
@@ -183,9 +169,6 @@ The **landscape** is the environment of the virtual planet (e.g. temperature and
 ![This figure shows temperature (top), aridity (middle) and cell size (bottom) of the input landscape of the sample world in the beginning of the simulation (150Ma), in the middle (125Ma) and in the end of the simulation (100Ma).](../inst/extdata/InputRasters/WorldCenter/landscape_area.png){width=105%}
 -->
 
-```{r  out.width = "100%", fig.cap='This figure shows temperature (top), aridity (middle) and cell size (bottom) of the input landscape of the sample world in the beginning of the simulation (150Ma), in the middle (125Ma) and in the end of the simulation (100Ma).', echo=F}
-include_graphics('../inst/extdata/InputRasters/WorldCenter/landscape_combined.png') 
-```
 
 ### Configuration
 The **configuration** are the rules of our virtual planet, here is where we define all the ecological and evolutionary equations and parameters.
@@ -226,7 +209,7 @@ To launch a simulation you need to call the run_simulation function.
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
 sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
                landscape = file.path(datapath, "landscape"),
-               call_observer = "all",
+               call_observer = c(300, 150, 0),
                verbose=0)
 ```
 
@@ -255,10 +238,8 @@ par(mfrow=c(1,3))
 for(i in timesteps){
   landscape_i <- readRDS(file.path(datapath, paste0('output/config_worldcenter/landscapes/landscape_t_', i ,'.rds')))
   species_i <- readRDS(file.path(datapath, paste0('output/config_worldcenter/species/species_t_', i ,'.rds')))
-  plot_richness(species_i, landscape_i) #col=color_richness(length(species_i))
+  plot_richness(species_i, landscape_i)
 }
-
-#WIP: wait for updated code (with colour agrument) from Oskar
 ```
 
 
