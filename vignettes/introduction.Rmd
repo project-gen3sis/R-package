@@ -75,7 +75,7 @@ datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
 
 
 ### Landscape
-The **landscape** is the environment of the virtual planet (e.g. temperature and precipitation data that changes spatially and temporally). 
+The **landscape** is the environment of the virtual planet (e.g. temperature and aridity data that changes spatially and temporally). 
 
 **NOTE** that the landscape contains several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform how the landscape (or more precisely that habitable cells) is connected. In this example you are using an already ready-to-run landscape. To see how to create a landscape object, see (this vignette)[create_landscape.html]
 
@@ -134,7 +134,7 @@ The **landscape** is the environment of the virtual planet (e.g. temperature and
    prec_colors <- colorRampPalette(blues9[-(1:2)])(length(prec_breaks)-1)
    image(prec_stack[[1]], col=prec_colors, breaks=prec_breaks, axes=T, box=T, legend=F, main='150 Ma')
    image(prec_stack[[round(nlayers(prec_stack)/2)]], col=prec_colors, breaks=prec_breaks, axes=T, box=T, legend=F, main='125 Ma')
-   title(main=expression('Precipitation'), line=1, outer=T, cex.main=2)
+   title(main=expression('Aridity [index]'), line=1, outer=T, cex.main=2)
    image(prec_stack[[nlayers(prec_stack)]], col=prec_colors, breaks=prec_breaks, axes=T, box=T, main='100 Ma')
    
    plot.new()
@@ -180,10 +180,10 @@ The **landscape** is the environment of the virtual planet (e.g. temperature and
 
 
 <!--
-![This figure shows temperature (top), precipitation (middle) and cell size (bottom) of the input landscape of the sample world in the beginning of the simulation (150Ma), in the middle (125Ma) and in the end of the simulation (100Ma).](../inst/extdata/InputRasters/WorldCenter/landscape_area.png){width=105%}
+![This figure shows temperature (top), aridity (middle) and cell size (bottom) of the input landscape of the sample world in the beginning of the simulation (150Ma), in the middle (125Ma) and in the end of the simulation (100Ma).](../inst/extdata/InputRasters/WorldCenter/landscape_area.png){width=105%}
 -->
 
-```{r  out.width = "100%", fig.cap='This figure shows temperature (top), precipitation (middle) and cell size (bottom) of the input landscape of the sample world in the beginning of the simulation (150Ma), in the middle (125Ma) and in the end of the simulation (100Ma).', echo=F}
+```{r  out.width = "100%", fig.cap='This figure shows temperature (top), aridity (middle) and cell size (bottom) of the input landscape of the sample world in the beginning of the simulation (150Ma), in the middle (125Ma) and in the end of the simulation (100Ma).', echo=F}
 include_graphics('../inst/extdata/InputRasters/WorldCenter/landscape_combined.png') 
 ```
 
@@ -230,9 +230,6 @@ sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"
                verbose=0)
 ```
 
-```{r eval=T, echo=F}
-species <- readRDS(file.path(datapath, "output/config_worldcenter/sgen3sis.rds"))
-```
 
 ```{r eval=T, echo=F}
 sim <- readRDS(file.path(datapath, "output/config_worldcenter/summary_sim.rds"))
@@ -249,6 +246,21 @@ Excellent. Our virtual species are waiting for us. They are automatically stored
 |&nbsp;&nbsp;&nbsp;**>output**|
 
 ## 3. Visualize {#visualize}
+
+After having run the simulation we can load and plot the species at different time steps. Here, we will load them at the timesteps 300, 150 and 0 which correspond to 150, 125 and 100 million years ago, respectively.
+
+```{r eval=T, echo=T, fig.width=7, fig.height=5}
+timesteps <- c(300, 150, 0)
+par(mfrow=c(1,3))
+for(i in timesteps){
+  landscape_i <- readRDS(file.path(datapath, paste0('output/config_worldcenter/landscapes/landscape_t_', i ,'.rds')))
+  species_i <- readRDS(file.path(datapath, paste0('output/config_worldcenter/species/species_t_', i ,'.rds')))
+  plot_richness(species_i, landscape_i, col=color_richness(length(species_i)))
+}
+
+WIP: wait for updated code (with colour agrument) from Oskar
+```
+
 
 *Gen3sis* also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that document the changes of the world over time.
 **NOTE** You can also create your own observer function. 
@@ -298,7 +310,7 @@ legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c
 
 As you can see, there is only a weak linear correlation of `r round(cor(landscape_t0$temp, landscape_t0$rich),4)` temperature and simulated species richness. By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, meaning that species richness is expected to be highest at intermediate temperature levels.
 
-Analog we can also look at the association of precipitation and species richness.
+Analog we can also look at the association of aridity and species richness.
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2}
@@ -310,13 +322,13 @@ par(mfrow=c(1,1))
 data_plot <- data.frame(cbind(landscape_t0$prec, predict(glm.uni,type = "response")))
 sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
-plot(data_plot[,1],data_plot[,2], xlab="Precipitation", ylab="Species richness", frame.plot=F, type="l", col='blue', lwd=2)
+plot(data_plot[,1],data_plot[,2], xlab="Aridity", ylab="Species richness", frame.plot=F, type="l", col='blue', lwd=2)
 points(landscape_t0$prec, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
 legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
 
-Dry regions seem to harbour a higher number of species, as shown in the plot above and indicated by the negative correlation of `r round(cor(landscape_t0$prec, landscape_t0$rich), 4)` between precipitation and species richness.
+Dry regions seem to harbour a higher number of species, as shown in the plot above and indicated by the negative correlation of `r round(cor(landscape_t0$prec, landscape_t0$rich), 4)` between aridity and species richness.
 
 Next, we can also look on the influence of area on the species richness.
 
