@@ -209,7 +209,7 @@ To launch a simulation you need to call the run_simulation function.
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
 sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
                landscape = file.path(datapath, "landscape"),
-               call_observer = c(300, 150, 0),
+               call_observer = 1,
                verbose=0)
 ```
 
