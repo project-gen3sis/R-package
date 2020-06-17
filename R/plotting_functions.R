@@ -141,7 +141,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
 plot_richness <- function(species_list, landscape) {
   richness <- get_geo_richness(species_list, landscape)
   rc <- color_richness(max(richness, na.rm=T))
-  plot_raster_single(richness, landscape, "richness")
+  plot_raster_single(richness, landscape, "richness", col=rc)
 }
 
 
@@ -151,14 +151,15 @@ plot_richness <- function(species_list, landscape) {
 #' @param landscape a landscape to plot the values onto
 #' @param title a title string for resulting plot, the time will be taken and appended from the landscape id
 #' @param no_data what value should be used for missing values in values
+#' @param col corresponds to the \link{raster::plot} col plot parameter 
 #' @example inst/examples/plot_raster_single_help.R
 #' @export
-plot_raster_single <- function(values, landscape, title, no_data = 0) {
+plot_raster_single <- function(values, landscape, title, no_data = 0, col) {
   img <- cbind(landscape[["coordinates"]], no_data)
   img[names(values), 3] <- values
   ras <- rasterFromXYZ(img)
   ras <- extend(ras, landscape[["extent"]])
-  raster::plot(ras, main=paste0(title, ", t: ", landscape[["id"]]))
+  raster::plot(ras, main=paste0(title, ", t: ", landscape[["id"]]), col=col)
 }
 
 
