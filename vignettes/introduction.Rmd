@@ -80,7 +80,7 @@ The **landscape** is the environment of the virtual planet (e.g. temperature and
 **NOTE** that the landscape contains several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform how the landscape (or more precisely that habitable cells) is connected. In this example you are using an already ready-to-run landscape. To see how to create a landscape object, see (this vignette)[create_landscape.html]
 
 
-
+This is how our landscape looks like at 150, 125 and 100Ma, below are the plots of temperature, aridity and area information.
 
 ```{r eval=T, fig.width=7, fig.height=3.5, message=T, echo=F, warning=T, results='hide'}
 library(raster)
@@ -110,7 +110,6 @@ legend_df <- as.data.frame(cbind(seq(0, length(temp_breaks)-1, length.out=(lengt
 legend_image <- rasterFromXYZ(legend_df, res=0.01)
 plot(legend_image, legend.only=T, col=temp_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
    axis.args=list(at=seq(mintemp, maxtemp, 5),labels=seq(mintemp, maxtemp, 5)))
-
 
 # ARIDITY
 arid_300 <- rasterFromXYZ(landscapes$prec[, c(1,2,303)])
