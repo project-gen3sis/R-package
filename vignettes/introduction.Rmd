@@ -93,9 +93,9 @@ temp_0 <- rasterFromXYZ(landscapes$temp[, c(1,2,3)])
 
 # TEMPERATURE
 par(mar=c(1,2,3,1), oma=c(0,0,3,0))
-layout(matrix(c(1,1,1,1,4,
-                2,2,2,2,4,
-                3,3,3,3,4), ncol=3))
+layout(matrix(c(1,1,1,4,
+                2,2,2,4,
+                3,3,3,4), ncol=3))
 maxtemp <- 30
 mintemp <- 0
 temp_breaks <- seq(mintemp, maxtemp, by=1)
@@ -117,9 +117,9 @@ arid_150 <- rasterFromXYZ(landscapes$prec[, c(1,2,153)])
 arid_0 <- rasterFromXYZ(landscapes$prec[, c(1,2,3)])   
 
 par(mar=c(1,2,3,1), oma=c(0,0,3,0))
-layout(matrix(c(1,1,1,1,4,
-                2,2,2,2,4,
-                3,3,3,3,4), ncol=3))
+layout(matrix(c(1,1,1,4,
+                2,2,2,4,
+                3,3,3,4), ncol=3))
 maxarid <- 1
 minarid <- 0
 arid_breaks <- seq(minarid, maxarid, by=0.01)
@@ -141,9 +141,9 @@ area_150 <- rasterFromXYZ(landscapes$area[, c(1,2,153)])
 area_0 <- rasterFromXYZ(landscapes$area[, c(1,2,3)])   
 
 par(mar=c(1,2,3,1), oma=c(0,0,3,0))
-layout(matrix(c(1,1,1,1,4,
-                2,2,2,2,4,
-                3,3,3,3,4), ncol=3))
+layout(matrix(c(1,1,1,4,
+                2,2,2,4,
+                3,3,3,4), ncol=3))
 maxarea <- 197000
 minarea <- 151000
 area_breaks <- seq(minarea, maxarea, by=1000)
@@ -229,7 +229,7 @@ Excellent. Our virtual species are waiting for us. They are automatically stored
 
 ## 3. Visualize {#visualize}
 
-After having run the simulation we can load and plot the species richness at different time steps. Here, we will load them at the timesteps 300, 150 and 0. Since we have six time steps within this time frame, this corresponds to which correspond to 150, 125 and 100 Ma, respectively.
+After having run the simulation we can load and plot the species richness at different time steps. Here, we will load them at the timesteps 300, 150 and 0. Since we have six time steps within this time frame, this corresponds to 150, 125 and 100 Ma, respectively.
 
 ```{r eval=T, echo=T, fig.width=7, fig.height=2}
 timesteps <- c(300, 150, 0)
