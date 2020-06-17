@@ -152,7 +152,7 @@ plot_richness <- function(species_list, landscape) {
 #' @param landscape a landscape to plot the values onto
 #' @param title a title string for resulting plot, the time will be taken and appended from the landscape id
 #' @param no_data what value should be used for missing values in values
-#' @param col corresponds to the \link{raster::plot} col plot parameter 
+#' @param col corresponds to the \link{raster} col plot parameter 
 #' @example inst/examples/plot_raster_single_help.R
 #' @export
 plot_raster_single <- function(values, landscape, title, no_data = 0, col) {
