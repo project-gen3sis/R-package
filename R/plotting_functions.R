@@ -117,7 +117,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
          lty = c(1, NA, NA),
          lwd=c(4,NA,NA),
          bty = "n")
-  axis_lab <- seq(from=1, to=nrow(d), length.out = (nrow(d)/20))
+  axis_lab <- seq(from=1, to=nrow(d), length.out = max((nrow(d)/20),2))
   axis(1, at=rev(as.numeric(rownames(d)))[axis_lab], labels = rownames(d)[axis_lab])
   mtext(side=1, text="Time steps", line=2.5, cex=1.1)
   
