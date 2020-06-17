@@ -82,7 +82,7 @@ The **landscape** is the environment of the virtual planet (e.g. temperature and
 
 This is how our landscape looks like at 150, 125 and 100Ma, below are the plots of temperature, aridity and area information.
 
-```{r eval=T, fig.width=7, fig.height=3.5, message=T, echo=F, warning=T, results='hide'}
+```{r eval=T, fig.width=7, fig.height=3.5, message=F, echo=F, warning=T, results='hide'}
 library(raster)
 landscapes <- readRDS(file.path(datapath, "landscape/landscapes.rds"))
 
