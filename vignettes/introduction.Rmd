@@ -230,10 +230,10 @@ Excellent. Our virtual species are waiting for us. They are automatically stored
 
 ## 3. Visualize {#visualize}
 
-After having run the simulation we can load and plot the species at different time steps. Here, we will load them at the timesteps 300, 150 and 0 which correspond to 150, 125 and 100 million years ago, respectively.
+After having run the simulation we can load and plot the species at different time steps. Here, we will load them at the timesteps 300, 150 and 0 which correspond to 150, 125 and 100 Ma, respectively.
 
 ```{r eval=T, echo=T, fig.width=7, fig.height=5}
-timesteps <- c(300, 150, 0)
+timesteps <- c(300, 150, 0) #since we have 6 steps between each million year and our landscape ends at 100Ma
 par(mfrow=c(1,3))
 for(i in timesteps){
   landscape_i <- readRDS(file.path(datapath, paste0('output/config_worldcenter/landscapes/landscape_t_', i ,'.rds')))
