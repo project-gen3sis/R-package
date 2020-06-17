@@ -255,10 +255,10 @@ par(mfrow=c(1,3))
 for(i in timesteps){
   landscape_i <- readRDS(file.path(datapath, paste0('output/config_worldcenter/landscapes/landscape_t_', i ,'.rds')))
   species_i <- readRDS(file.path(datapath, paste0('output/config_worldcenter/species/species_t_', i ,'.rds')))
-  plot_richness(species_i, landscape_i, col=color_richness(length(species_i)))
+  plot_richness(species_i, landscape_i)
 }
 
-WIP: wait for updated code (with colour agrument) from Oskar
+#WIP: wait for updated code (with colour agrument) from Oskar
 ```
 
 
