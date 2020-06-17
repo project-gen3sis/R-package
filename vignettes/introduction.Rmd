@@ -82,7 +82,7 @@ The **landscape** is the environment of the virtual planet (e.g. temperature and
 
 
 
-```{r eval=TRUE, fig.width=7, fig.height=5.5, message=F, echo=F, warning=F, results='hide'}
+```{r eval=F, fig.width=7, fig.height=5.5, message=F, echo=F, warning=F, results='hide'}
    library(raster)
    temp_stack <- stack('../inst/extdata/InputRasters/WorldCenter/temp_rasters.tif')
    prec_stack <- stack('../inst/extdata/InputRasters/WorldCenter/prec_rasters.tif')
