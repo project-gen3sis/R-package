@@ -15,46 +15,56 @@ knitr::opts_chunk$set(
 )
 ```
 
-To create your own landscape, you can start from anywere. For this exercise we will recreate the simple island landscape that we used in the introduction vignette and in the main text of the package manuscript as case study 1.
+To create your own landscape, you can start from anywere. For this exercise we will create a simple island landscape that we used in the main text of the package manuscript as case study 1.
 
-```{r setup}
-library(gen3sis)
-```
+
+
 
 ## Create your rasters
 
-```{r eval=FALSE}
+The case study one explores biodiversity dynamics and trait evolution on dynamic oceanic islands. It follows the general dynamic model of island biogeography (Whittaker et al. 2008 Journal of Biogeography), but the island dynamics entails only area dynamics.
+
+First, we set up our R session and set the working directory where we will save the landscape files.
+```{r setup, message=F}
+library(gen3sis)
 library(raster)
 library(landscapetools)
 library(NLMR)
 
-#Set the work directory of your choice in which you will save the landscape files
 setwd(getwd())
+```
 
-## Case study 1: Biodiversity dynamics and trait evolution on dynamic oceanic islands
-##This study case follow the General Dynamic Model of Island Biogeography (Whittaker et al. 2008 Journal of Biogeography), but the island dynamics entails only area dynamics
-##Below, we create the landscape files for the experiment:
 
-#Defining spatial extents in two dimensions (number of grid cells):
+We will now create the landscape files for the experiment. First, we will define the spatial extent of our landscape, i.e. the number of grid cells. In our case, this will be 31 by 31 cells. Next we specify that our landscape should evolve over 140 time steps.
+
+
+```{r eval=FALSE}
 Ncol<-31
 Nrow<-31
-#Defining temporal extent (number of time steps):
+
 Ntimesteps<-140
-#Creating two 3D arrays to save variable values (2 spatial dimensions and 1 temporal dimension) for landscape input file
-#and two matrices for later calculation of distance matrices input files
-#each pair of array and matrix for an environmental variable (e.g. temperature and precipitation):
-#Temperature :
+```
+
+The next step will be to create two empty 3 dimensional arrays (2 spatial dimensions and 1 temporal dimension). In here, we will save the environmental variable values for the landscape file. Additionally we create two matrices (again, one for each environmental variable) which will later serve for the calculation of the distance matrices input files. 
+
+```{r eval=FALSE}
+#Create the temperature array and matrix:
 My_Dynamic_Landscape<-array(NA,dim=c(Nrow,Ncol,Ntimesteps))
 My_Dynamic_Landscape_dataframe<-matrix(NA,nrow=Nrow*Ncol, ncol=length(c(Ncol,Nrow))+Ntimesteps)
-#Precipitation:
+
+#Create the precipitation array and matrix:
 My_Dynamic_Landscape2<-array(NA,dim=c(Nrow,Ncol,Ntimesteps))
 My_Dynamic_Landscape_dataframe2<-matrix(NA,nrow=Nrow*Ncol, ncol=length(c(Ncol,Nrow))+Ntimesteps)
+
 #Creating a vector for the names to be used to name input files (one per time step) 
 stringtimestepsnames<-vector(mode="character",length=Ntimesteps)
+```
 
-#Looping over the time steps and spatial dimentions,
-#generating the area and heterogeneity dynamics over time,
-#generating the environmental values to be saved in the landscape arrays:
+Now that our template arrays and matrices are prepared, we can start to fill them with environmental values. We will use three nested loops to do so. The first loop iterates over the 140 time steps, while the two inner ones iterate over all spatial cells. We thus create the enironmental values which will be saved in the corresponding landscape arrays and therefore generate a heterogenous and temporally dynamic landscape.
+
+For both temperature and precipitation we create a uniform distribution of the values over space and then add environmental white noise to introduce spatial and temporal heterogenity. For the temperature layer this will be an average of 20° with a standard deviation of 0.5°, where as for precipitation we settle for an average value of 500 mm/year with a standard deviation of 50 mm/year.
+
+```{r eval=FALSE}
 for (timestep in 1:Ntimesteps){ # temporal loop
   counting<-1
   stringtimestepsnames[timestep]<-paste("X",timestep,"", sep="")
@@ -62,8 +72,8 @@ for (timestep in 1:Ntimesteps){ # temporal loop
     for (x in 1:Ncol){ #loop over the second spatial dimension
       if((timestep<=10)||(timestep>120 && timestep<=140)){#time steps with only four (2x2) suitable grid cells
         if((y>=15 && y<=16)&&(x>=15 && x<=16)) {  #suitable grid cells
-          My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) #temperature: environmental white noise in space and time of 20 C average +- 0.5 C standard deviation
-          My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,500,50) #precipitation: environmental white noise in space and time of 500 mm/year average +- 50 mm/year standard deviation
+          My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) #temperature
+          My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,500,50) #precipitation
         }
       }
       if((timestep>10 && timestep<=20)||(timestep>100 && timestep<=120)){#time steps with nine (3x3) suitable grid cells
