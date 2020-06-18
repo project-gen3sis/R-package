@@ -25,13 +25,8 @@ To create your own landscape, you can start from anywere. For this exercise we w
 The case study one explores biodiversity dynamics and trait evolution on dynamic oceanic islands. It follows the general dynamic model of island biogeography (Whittaker et al. 2008 Journal of Biogeography), but the island dynamics entails only area dynamics.
 
 First, we set up our R session and set the working directory where we will save the landscape files.
-```{r setup, message=F, eval=F}
+```{r setup}
 library(gen3sis)
-library(raster)
-library(landscapetools)
-library(NLMR)
-
-setwd(getwd())
 ```
 
 
@@ -39,6 +34,13 @@ We will now create the landscape files for the experiment. First, we will define
 
 
 ```{r eval=FALSE}
+library(raster)
+library(landscapetools)
+library(NLMR)
+
+setwd(getwd())
+
+
 Ncol<-31
 Nrow<-31
 
