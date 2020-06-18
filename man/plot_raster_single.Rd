@@ -15,7 +15,7 @@ plot_raster_single(values, landscape, title, no_data = 0, col)
 
 \item{no_data}{what value should be used for missing values in values}
 
-\item{col}{corresponds to the \link{raster::plot} col plot parameter}
+\item{col}{corresponds to the \link{raster} col plot parameter}
 }
 \description{
 Plot a single set of values onto a given landscape

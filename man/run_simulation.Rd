@@ -26,7 +26,7 @@ run_simulation(
 
 \item{save_state}{= save the internal state of the simulation for restarts. If "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep}
 
-\item{call_observer}{call observer functions if any, NA calls at the start and end times, "all" call all timesteps, You can also provide the timesteps for the observer funciton to be called}
+\item{call_observer}{call observer functions if any, NA calls at the start and end times, "all" call all timesteps, You can also provide the number of timesteps equaly spaced between start and end steps, that the observer function is called}
 
 \item{enable_gc}{enable gc in case of memory shortages}
 
