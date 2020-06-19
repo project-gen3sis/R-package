@@ -130,6 +130,7 @@ The create_input() function of the *gen3sis* package takes temperature and preci
 
 
 ```{r eval=FALSE}
+library(raster)
 landscapes_list <- list()
 for (timestep in 1:Ntimesteps){ 
   temp_raster <- rasterFromXYZ(temp_dataframe[, c(1,2, timestep+2)])
