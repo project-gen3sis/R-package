@@ -31,7 +31,7 @@ Thus we will:
 
 [4. **Analyze**](#analyze) the output
 
-
+<br>
 
 
 
@@ -46,7 +46,7 @@ library(gen3sis)
 ```
 
 
-Perfect! From now on, if you run into problems, use *>??gen3sis* for the full help documentation
+Perfect! From now on, if you run into problems, refer to <spam style="background-color:#F5F5F5"> ??gen3sis </spam> the for the full help documentation.
 
 Let's check the version of the *gen3sis* package we are using
 
@@ -56,12 +56,9 @@ print(paste("gen3sis version:", packageVersion("gen3sis")))
 
 
 
-All *gen3sis* simulations need a **landscape** and a **configuration** object to refer to. 
+All *gen3sis* simulations need a **landscape** and a **configuration** object to refer to. Here we will use a published small theoretical planet example[^1]. Cropped at the Earth center, with a timespam between 150-100Ma and aggregated to a 4&deg; resolution. 
 
-Here we will use a published small theoretical planet example[^1]. Cropped at the Earth center, with a timespam between 150-100Ma and aggregated to a 4&deg; resolution. 
-Since this is a small data (252 KB) it is available with the package, you can just get the path to the data inside the package. 
-
-Get path to data in the package:
+Since this is a small data (252 KB) it is available with the package, you can just get the path to the data inside the package. Get path to data in the package:
 
 ```{r eval=TRUE}
 datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
