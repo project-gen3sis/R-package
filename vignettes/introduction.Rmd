@@ -172,7 +172,7 @@ axis.args=list(at=seq(minarea, maxarea, 7500),labels=seq(minarea, maxarea, 7500)
 ### Configuration
 The **configuration** are the rules of our virtual planet, here is where we define all the ecological and evolutionary equations and parameters.
 
-The configuration object includes information on the model initialization, the observer function and the biological functions, namey speciation, dispersal, evolution, and ecology. The possibility of the user to customize these functions confers the flexibility of *gen3sis*. The initialization function creates the ancestor species at the start of the simulation. Users can define  the number of species, their distribution within the landscape and their trait values. The observer function allows recording any abiotic or biotic information of the virtual world as it changes by defining the outputs that are saved at specified time steps. The configuration further allows to define the speciation function, the  dispersal function, the evolution function and the ecological function, which are defined in the section on core processes below. Altogether, those six functions are specified in the configuration object and interact with a set of core objects defined in the simulation engine. The configuration object further lists the ecological traits considered in the simulation, sets a random seed allowing simulation reproducibility, start and end times of the simulation, as well as simulation aborting rules including the limits for a total or local number of species.
+The configuration object includes information on the model initialization, the observer function and the biological functions, namey speciation, dispersal, evolution, and ecology. The possibility of the user to customize these functions confers the flexibility of *gen3sis*. The initialization function creates the ancestor species at the start of the simulation. Users can define  the number of species, their distribution within the landscape and their trait values. The observer function allows recording any abiotic or biotic information of the virtual world as it changes by defining the outputs that are saved at specified time-steps. The configuration further allows to define the speciation function, the  dispersal function, the evolution function and the ecological function, which are defined in the section on core processes below. Altogether, those six functions are specified in the configuration object and interact with a set of core objects defined in the simulation engine. The configuration object further lists the ecological traits considered in the simulation, sets a random seed allowing simulation reproducibility, start and end times of the simulation, as well as simulation aborting rules including the limits for a total or local number of species.
 
 
 
@@ -192,16 +192,16 @@ Now that we have set up the general folder structure and loaded the input data a
 
 1) Read in the config and prepare the output directories, initial landscape and call *create_ancestor_species* from the user config to create the initial species for the simulation.
 
-2) Start the main loop over the time steps. For every time step it loads the appropriate landscape, removes all cells that became uninhabitable in the new time step, and calls the main steps of any iteration.
+2) Start the main loop over the time-steps. For every time-step it loads the appropriate landscape, removes all cells that became uninhabitable in the new time-step, and calls the main steps of any iteration.
 
-3) At the end of every time step, if desired, the simulation saves the species, landscapes, species richness patterns, etc... by calling the *end_of_timestep_observer* from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
+3) At the end of every time-step, if desired, the simulation saves the species, landscapes, species richness patterns, etc... by calling the *end_of_timestep_observer* from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
 
 4) When the simulation reaches the end a phylogeny, runtime_information, the world starting conditions and the used config are saved. The function will return an summary object, here we will save it as *sim*.
 
 Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. 
 
 
-To launch a simulation you need to call the run_simulation function. We only store one intermediate step between the starting and end time steps by setting "call_observer=1", this means one time-step equally distributed between the starting and ending timestep. Like so we will have a look at our virtual world at 150, 125 and 100 Ma. 
+To launch a simulation you need to call the *run_simulation* function. We only store one intermediate step between the starting and end time-steps by setting "call_observer=1", this means one time-step equally distributed between the starting and ending time-steps. Like so we will have a look at our virtual world at 150, 125 and 100 Ma. 
 
 ```{r eval=F, echo=TRUE}
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
@@ -228,7 +228,7 @@ Excellent. Our virtual species are waiting for us. They are automatically stored
 
 ## 3. Visualize {#visualize}
 
-After having run the simulation we can load and plot the species richness at different time steps. Here, we will load them at the timesteps 300, 150 and 0. Since we have six time steps within this time frame, this corresponds to 150, 125 and 100 Ma, respectively.
+After having run the simulation we can load and plot the species richness at different time-steps. Here, we will load them at the time-steps 300, 150 and 0. Since we have six time-steps within this time frame, this corresponds to 150, 125 and 100 Ma, respectively.
 
 ```{r eval=T, echo=T, fig.width=7, fig.height=2}
 timesteps <- c(300, 150, 0)
@@ -261,14 +261,14 @@ Now that we have run the simulation and have had a quick look at the output, we 
 
 ```{r eval=TRUE, fig.width=8, fig.height=5, fig.retina=2}
 landscapes <- readRDS(file.path(datapath, "landscape", "landscapes.rds")) #get the input landscape
-landscape_t0 <- as.data.frame(cbind(landscapes$temp[, 1:2], temp=landscapes$temp[, 3], prec=landscapes$prec[,3], area=landscapes$area[,3])) #get landscape at last timestep
+landscape_t0 <- as.data.frame(cbind(landscapes$temp[, 1:2], temp=landscapes$temp[, 3], prec=landscapes$prec[,3], area=landscapes$area[,3])) #get landscape at last time-step
 landscape_t0 <- cbind(landscape_t0, rich=sim$summary$`richness-final`[,3]) #add richness to the dataframe
 landscape_t0 <- na.omit(landscape_t0)
 ```
 
 
 
-Let's start with some analysis. Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and look at the correlation between richness and environmental variables at the present (i.e. final time step). For this we will fit three univariate models, where each explains the correlation of species richness and one of the environmental factors.
+Let's start with some analysis. Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and look at the correlation between richness and environmental variables at the present (i.e. final time-step). For this we will fit three univariate models, where each explains the correlation of species richness and one of the environmental factors.
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
@@ -332,6 +332,6 @@ Finally we want to consider the three predictors together and therefore fit a mu
 richness_model <- glm(rich ~ poly(temp, 2) + poly(prec, 2) + poly(area, 2), family='quasipoisson', data=landscape_t0)
 summary(richness_model)$coefficients
 ```
-It's important to consider that we have now only been analysing the species richness at one time step, namely the last one. The emerged patterns can not only be explained by the environmental conditions of that time but also depend on historical conditions. 
+It's important to consider that we have now only been analysing the species richness at one time-step, namely the last one. The emerged patterns can not only be explained by the environmental conditions of that time but also depend on historical conditions. 
 
 It's now up to you to explore the "virtual" world. Enjoy!
