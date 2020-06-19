@@ -26,7 +26,7 @@ To create your own landscape, you can start from anywere. For this exercise we w
 
 In this example we want to explores biodiversity dynamics and trait evolution on dynamic oceanic islands. It follows the general dynamic model of island biogeography (Whittaker et al. 2008 Journal of Biogeography), the island we create entails the number of sites and environmental dynamics.
 
-First, we will define the spatial extent of our landscape, i.e. the number of sites. In our case, this will be 31 by 31 sites laid in a grid cells. Next, we define the temporal dimension i.e. our landscape evolves in 140 time steps.
+First, we will define the spatial extent of our landscape, i.e. the number of sites. In our case, this will be 31 by 31 sites laid in a grid cells. Next, we define the temporal dimension i.e. our landscape evolves in 140 time steps (later we interpret 1 time-step = 1 Myr ).
 
 ```{r eval=FALSE}
 Ncol<-31
@@ -34,7 +34,7 @@ Nrow<-31
 Ntimesteps<-140
 ```
 
-The next step will be to create two empty 3 dimensional arrays (2 spatial dimensions and 1 temporal dimension). In here, we will save the environmental variable values for the landscape file. Additionally we create two matrices (again, one for each environmental variable) which will later serve for the calculation of the distance matrices input files. 
+The next step will be to create two arrays, one for each environmental variable. These two initially  empty arrays are 3 dimensional (2 spatial and 1 temporal dimension). Later we will save the environmental variable values for the landscape file.
 
 ```{r eval=FALSE}
 #Create the temperature array and matrix:
@@ -52,9 +52,9 @@ stringtimestepsnames<-vector(mode="character",length=Ntimesteps)
 
 
 ## Add environmental characteristics
-Now that our template arrays and matrices are prepared, we can start to fill them with environmental values. We will use three nested loops to do so. The first loop iterates over the 140 time steps, while the two inner ones iterate over all spatial cells. We thus create the enironmental values which will be saved in the corresponding landscape arrays and therefore generate a heterogenous and temporally dynamic landscape.
+Now that our template arrays and matrices are prepared, we can start to fill them with environmental values. We will use three nested loops to do so. The first loop iterates over the 140 time steps, while the two inner ones iterate over all spatial cells. To do so, we must create the enironmental values which will be saved in the corresponding landscape arrays and therefore generate a heterogenous and temporally dynamic landscape.
 
-Here we consider a conceptual island whose number of sites and heterogeneity vary over time, as shown in animation A1. The island is initiated with four sites (at 140 Ma), but the island surface progressively increases to its maximum of 81 sites (at 90 Ma) and then shrinks back to four sites at the present time (due to erosion). For each time step we will create a temperature and precipitation layer following a normal distribution.
+Our conceptual island has it's number of sites and environemtnal values changing over time, as shown in animation A1. The island is initiated with four sites (at 140 Ma), but the island surface progressively increases to its maximum of 81 sites (at 90 Ma) and then shrinks back to four sites at the present time (due to erosion) at double the speed of orogeny. For each time step a temperature and precipitation layer are created following a normal distribution.
 
 
 
@@ -63,9 +63,9 @@ knitr::include_graphics("../inst/extdata/CaseStudy1/landscape/case_study_landsca
 ```
 
 
-For both temperature and precipitation we create a uniform distribution of the values over space and then add environmental white noise to introduce spatial and temporal heterogenity. For the temperature layer this will be an average of 20°C with a standard deviation of 0.5°C, where as for precipitation we settle for an average value of 500 mm/year with a standard deviation of 50 mm/year.
+For both temperature and precipitation uniform distribution of values over space is created. We then add environmental white noise to introduce spatial and temporal heterogenity. For the temperature layer this will be an average of 20°C with a standard deviation of 0.5°C, where as for precipitation we settle for an average value of 500 mm/year with a standard deviation of 50 mm/year.
 
-We however only want to assign these environmental values to the sites where we have land mass, according to the animation above. Within the loops we therefore check if we are indeed on a land-based site at the current time, and if so, we will assign a temperature and precipitation value to this site. 
+Note that we only have to assign these environmental values to the sites where we have land mass (see animation above). Within the loops we therefore check if, at the current time, we are indeed on a terrestrial site. If so, we assign a temperature and precipitation value. 
 
 
 Finally, we create one dataframe to store the temperature values for all time steps and a second dataframe for the precipitation values. These dataframes contain all possible x- and y-coordinates of our sample world as the first two columns. After the temperature and precipitation values have been created for one specific time step, we store these values within a new column in these new dataframes.
@@ -126,7 +126,7 @@ for (timestep in 1:Ntimesteps){ # temporal loop
 ```
 
 
-The create_input() function of the *gen3sis* package takes temperature and precipitation values as a list raster layers or raster layer filenames. Based on the dataframes we just created, we can now create temperature and precipitation rasters for each time step. We then store them in a named list and save them to the hard drive.
+The create_input() function of the *gen3sis* package takes temperature and precipitation values as a list raster layers or raster layer filenames. Based on the dataframes we just created, we can now create temperature and precipitation rasters for each time step. We then store them in a named list and save to the hard drive.
 
 
 ```{r eval=FALSE}
@@ -145,7 +145,7 @@ saveRDS(landscapes_list, "input/my_experiment/landscapes.rds")
 
 
 ## Add a cost function
-The connection cost between sites is defined as the distance between these sites, modified by an optional cost function. This user defined cost function can give a penalty (or benefit) for crossing certain cells. For this virtual landscape, we will not add a cost function. If you want to learn how to implement one, please refer to the [create_input_landscape.html](create_input_landscape vignette).
+The connection cost between sites is defined as the distance between these sites modified by an optional cost function. This user defined cost function can give a penalty (or benefit) for crossing certain cells and will be stored as a distance matrix. For this virtual landscape, we will not add a cost function, meaning that the connection costs are only the distance between the sites inside our grid cells. If you want to learn how to make a cost function, refer to the [create_input_landscape.html](create_input_landscape vignette).
 
 
 
