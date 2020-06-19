@@ -9,7 +9,12 @@
 plot_species_presence <- function(species, landscape) {
   presence <- species[["abundance"]]
   presence[] <- 1
-  plot_raster_single(presence, landscape, paste("Species", species[["id"]]))
+  conditional_plot(paste0("species_presence_", species$id),
+                   landscape,
+                   plot_raster_single,
+                   presence,
+                   landscape,
+                   paste("Species", species[["id"]]))
 }
 
 
@@ -19,8 +24,11 @@ plot_species_presence <- function(species, landscape) {
 #'
 #' @export
 plot_landscape <- function(landscape) {
-  plot_raster_multiple(landscape[["environment"]],
-                       landscape)
+  conditional_plot(title = "landscape",
+                   landscape = landscape,
+                   plot_fun = plot_raster_multiple,
+                   landscape[["environment"]],
+                   landscape)
 }
 
 
@@ -142,7 +150,38 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
 plot_richness <- function(species_list, landscape) {
   richness <- get_geo_richness(species_list, landscape)
   rc <- color_richness(max(richness, na.rm=T))
-  plot_raster_single(richness, landscape, "richness", col=rc)
+  conditional_plot("richness",
+                   landscape,
+                   plot_raster_single,
+                   richness,
+                   landscape,
+                   "richness",
+                   col=rc)
+}
+
+
+#' save plots if called from within a simulation run, display as well if run interactively
+#'
+#' @param title folder and file name
+#' @param landscape current landscape
+#' @param plot_fun ploting function to use (single or multiple rasters for now)
+#' @param ... arguments for plot_fun
+#' @noRd
+conditional_plot <- function(title, landscape, plot_fun, ...){
+  fun_calls <- sys.calls()
+  if (any(sapply(fun_calls, FUN = function(x){"call_main_observer" == x[[1]]}))){
+    # run during simulation save plot to file
+    config <- dynGet("config")
+    plot_folder <- file.path(config$directories$output, "plots", title)
+    dir.create(plot_folder, showWarnings = F, recursive = T)
+    file_name <- file.path(plot_folder, paste0(title, "_t_", landscape$id, ".png"))
+    png(file_name)
+    plot_fun(...)
+    dev.off()
+  }
+  if (interactive()) {
+    plot_fun(...)
+  }
 }
 
 
