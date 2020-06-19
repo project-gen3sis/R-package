@@ -60,7 +60,7 @@ All *gen3sis* simulations need a **landscape** and a **configuration** object to
 
 Here we will use a published small theoretical planet example[^1]. 
 
-Since this is a small data (252 KB) which is already available in the package, you can just get the path to the data inside the package. This [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data can also be downloaded manually and stored locally for running the experiment.
+Since this is a small data (252 KB) it is available with the package, you can just get the path to the data inside the package. This [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data can also be downloaded manually and stored locally for running the experiment.
 
  Like this:
 
@@ -195,14 +195,15 @@ Now that we have set up the general folder structure and loaded the input data a
 
 2) Start the main loop over the time steps. For every time step it loads the appropriate landscape, removes all cells that became uninhabitable in the new time step, and calls the main steps of any iteration.
 
-3) At the end of every time step the simulation saves the species richness pattern, the phylogeny, if desired the species and landscape, and calls the “end_of_timestep_observer” function from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
+3) At the end of every time step, if desired, the simulation saves the species, landscapes, species richness patterns, etc... by calling the “end_of_timestep_observer” function from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
 
+4) When the simulation reaches the end a phylogeny, runtime_information, the world starting conditions and the used config are saved. The function will return an summary object, here we will save it as "sim".
 
 Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. The model is implemented in a mix of R and C++ code, and wrapped into an R package. All high-level functions that the user may use to interact with are written in R, and are documented via the standard R / Roxygen help files for R packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. 
 
 ----
 
-To launch a simulation you need to call the run_simulation function.
+To launch a simulation you need to call the run_simulation function. We only store one intermediate step between the starting and end time steps by setting "call_observer=1", this means one time-step equally distributed between the starting and ending timestep. 
 
 ```{r eval=F, echo=TRUE}
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
@@ -336,4 +337,4 @@ Finally we want to consider the three predictors together and therefore fit a mu
 richness_model <- glm(rich ~ poly(temp, 2) + poly(prec, 2) + poly(area, 2), family='quasipoisson', data=landscape_t0)
 summary(richness_model)$coefficients
 ```
-It's important to consider that we have now only been analysing the species richness at one time step, namely the last one. The emerged patterns can however not only be explained by the environmental conditions of that time but also depend on historical conditions. It's now up to you to explore the "virtual" world more extensively. Enjoy!
+It's important to consider that we have now only been analysing the species richness at one time step, namely the last one. The emerged patterns can however not only be explained by the environmental conditions of that time but also depend on historical conditions. It's now up to you to explore the "virtual" world. Enjoy!
