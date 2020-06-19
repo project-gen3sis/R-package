@@ -136,7 +136,7 @@ for (timestep in 1:Ntimesteps){
   prec_raster <- rasterFromXYZ(prec_dataframe[, c(1,2, timestep+2)])
   
   landscapes_list$temp <- c(landscapes_list$temp, temp_raster)
-  landscapes_list$prec <- c(landscapes_list$temp, prec_raster)
+  landscapes_list$prec <- c(landscapes_list$prec, prec_raster)
 }
 
 ##saving the list of rasters into .rds format to be used as input
