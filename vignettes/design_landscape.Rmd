@@ -1,9 +1,9 @@
 ---
-title: "Creating Landscapes in gen3sis"
+title: "Designing Landscapes in gen3sis"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Creating dynamic Landscapes}
+  %\VignetteIndexEntry{Designing Landscapes}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
