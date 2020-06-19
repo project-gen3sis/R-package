@@ -59,16 +59,22 @@ print(paste("gen3sis version:", packageVersion("gen3sis")))
 All *gen3sis* simulations need a **landscape** and a **configuration** object to refer to. 
 
 Here we will use a published small theoretical planet example[^1]. Cropped at the Earth center, with a timespam between 150-100Ma and aggregated to a 4&deg; resolution. 
-Since this is a small data (252 KB) it is available with the package, you can just get the path to the data inside the package. This [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data can also be downloaded manually and stored locally for running the experiment. Like this:
+Since this is a small data (252 KB) it is available with the package, you can just get the path to the data inside the package. 
+
+Get path to data in the package:
+
+```{r eval=TRUE}
+datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
+```
+
+The full [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data[^1] can also be downloaded manually and stored locally for running the experiment. An experiment folder should look like this:
 
 |>EXPERIMENT_FOLDER     |
 |:-------------------------|
 |&nbsp;&nbsp;&nbsp;**>landscape**|
 |&nbsp;&nbsp;&nbsp;**>config**|
 
-```{r eval=TRUE}
-datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
-```
+
 
 
 ### Landscape
