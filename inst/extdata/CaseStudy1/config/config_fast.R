@@ -52,7 +52,7 @@ create_ancestor_species <- function(landscape, config) {
    suitablecells<- c(449, 450, 480, 481)
   for(cellID in 1: length(suitablecells)){ 
     cell <- as.character(suitablecells[cellID])
-    new_species <- create_species(NA, as.character(cell), config)  # use this function to create species, one can provide directly the initial cells
+    new_species <- create_species(as.character(cell), config)  # use this function to create species, one can provide directly the initial cells
     new_species$traits[ , "dispersal"] <- 1
     new_species$traits[ , "temp"] <-  rnorm(1,20,0.5) 
     new_species$traits[ , "prec"] <- rnorm(1,500,50) 
