@@ -4,11 +4,9 @@
 \alias{create_species}
 \title{The function create_species creates a new species.}
 \usage{
-create_species(id, initial_cells, config)
+create_species(initial_cells, config)
 }
 \arguments{
-\item{id}{the id for the new species, might be overriden, tbd}
-
 \item{initial_cells}{a list of initial cells (strings) to occupy}
 
 \item{config}{the configuration information}
@@ -30,5 +28,5 @@ given list of initial cells.
 # add example
 #create_species This creates a new species
 
-# create_species(id, initial_cells, config)
+# create_species(initial_cells, config)
 }

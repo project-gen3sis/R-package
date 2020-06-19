@@ -55,7 +55,7 @@ create_ancestor_species <- function(landscape, config) {
     co[, "y"] >= range[3] &
     co[, "y"] <= range[4]
   initial_cells <- rownames(co)[selection]
-  new_species <- create_species(NA, initial_cells, config)
+  new_species <- create_species(initial_cells, config)
   #set local adaptation to max optimal temp equals local temp
   new_species$traits[ , "temp"] <- landscape$environment[,"temp"]
   new_species$traits[ , "dispersal"] <- 1

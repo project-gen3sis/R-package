@@ -23,18 +23,17 @@ create_ancestor_species  <- function(landscape, config){
 #' of a simulation. It will create a species object representing one species in the simulation occupying the 
 #' given list of initial cells.
 #'
-#' @param id the id for the new species, might be overriden, tbd
 #' @param initial_cells a list of initial cells (strings) to occupy
 #' @param config the configuration information
 #'
 #' @return returns a newly created species occupying the provided initial cells
 #' @example inst/examples/create_species_help.R
 #' @export
-create_species <- function(id, initial_cells, config) {
+create_species <- function(initial_cells, config) {
   num_cells <- length(initial_cells)
   traits <- unique(c(config$gen3sis$general$trait_names, "dispersal"))
   species <- list()
-  species[["id"]] <- as.character(id)
+  species[["id"]] <- as.character(-1)
   species[["abundance"]] <- rep(config$gen3sis$initialization$initial_abundance, times = num_cells)
   names(species[["abundance"]]) <- initial_cells
   species[["traits"]] <- matrix(NA,
@@ -63,7 +62,8 @@ create_species <- function(id, initial_cells, config) {
 #' @return returns a new species, the parent_species is not altered, and will need to be modified in another step
 #' @noRd
 create_species_from_existing <- function(parent_species, new_id, new_cells, config) {
-  new_species <- create_species(new_id, new_cells, config)
+  new_species <- create_species(new_cells, config)
+  new_species[["id"]] <- new_id
   new_species[["abundance"]] <- parent_species[["abundance"]][new_cells]
   new_species[["traits"]] <- parent_species[["traits"]][new_cells, , drop = F]
   gen_dist <- limit_divergence_to_cells(parent_species[["divergence"]], new_cells)
