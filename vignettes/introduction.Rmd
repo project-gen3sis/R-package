@@ -64,7 +64,7 @@ Since this is a small data (252 KB) it is available with the package, you can ju
 datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
 ```
 
-The full [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data[^1] can also be downloaded manually and stored locally for running the experiment. An experiment folder should look like this:
+The full [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data can also be downloaded manually and stored locally for running the experiment. An experiment folder should look like this:
 
 |>EXPERIMENT_FOLDER     |
 |:-------------------------|
@@ -198,8 +198,7 @@ Now that we have set up the general folder structure and loaded the input data a
 
 4) When the simulation reaches the end a phylogeny, runtime_information, the world starting conditions and the used config are saved. The function will return an summary object, here we will save it as "sim".
 
-Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. The model is implemented in a mix of R and C++ code, and wrapped into an R package. All high-level functions that the user may use to interact with are written in R, and are documented via the standard R / Roxygen help files for R packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. 
-
+Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. 
 
 
 To launch a simulation you need to call the run_simulation function. We only store one intermediate step between the starting and end time steps by setting "call_observer=1", this means one time-step equally distributed between the starting and ending timestep. Like so we will have a look at our virtual world at 150, 125 and 100 Ma. 
