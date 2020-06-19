@@ -166,6 +166,9 @@ plot_richness <- function(species_list, landscape) {
 #' @param landscape current landscape
 #' @param plot_fun ploting function to use (single or multiple rasters for now)
 #' @param ... arguments for plot_fun
+#'
+#' @importFrom grDevices png
+#' @importFrom methods is
 #' @noRd
 conditional_plot <- function(title, landscape, plot_fun, ...){
   fun_calls <- sys.calls()
@@ -179,9 +182,7 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
     plot_fun(...)
     dev.off()
   }
-  if (interactive()) {
-    plot_fun(...)
-  }
+  plot_fun(...)
 }
 
 
