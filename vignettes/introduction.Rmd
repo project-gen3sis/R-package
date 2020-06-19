@@ -178,7 +178,7 @@ The configuration object includes information on the model initialization, the o
 
 
 
-You should now have downloaded all the necessary files to run a simulation. 
+You should now have all the necessary files to run a simulation. 
 
 
 [^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
@@ -187,7 +187,6 @@ You should now have downloaded all the necessary files to run a simulation.
 ## 2. Run {#run}
 
 
-----
 
 Now that we have set up the general folder structure and loaded the input data and configuration file, we can run our main function. The run_simulation function will:
 
@@ -201,9 +200,9 @@ Now that we have set up the general folder structure and loaded the input data a
 
 Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. The model is implemented in a mix of R and C++ code, and wrapped into an R package. All high-level functions that the user may use to interact with are written in R, and are documented via the standard R / Roxygen help files for R packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. 
 
-----
 
-To launch a simulation you need to call the run_simulation function. We only store one intermediate step between the starting and end time steps by setting "call_observer=1", this means one time-step equally distributed between the starting and ending timestep. 
+
+To launch a simulation you need to call the run_simulation function. We only store one intermediate step between the starting and end time steps by setting "call_observer=1", this means one time-step equally distributed between the starting and ending timestep. Like so we will have a look at our virtual world at 150, 125 and 100 Ma. 
 
 ```{r eval=F, echo=TRUE}
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developping
@@ -325,7 +324,7 @@ legend(150000, 22, col=c(rgb(0.5,0.5,0.5,0.4), 'black'), legend=c(n, 'model fit'
 ```
 
 
-Larger cells are strongly correlated with a higher species richness (r$^2$=)`r round(cor(landscape_t0$area, landscape_t0$rich),4)`. Similar as with temperature, species richness seems to be highest in cells with an intermediate area. However, these are only simple correlations, and there are many things happening in the background, dictated by our model implemented in gen3sis. 
+Larger cells are strongly correlated with a higher species richness (r$^2$=)`r round(cor(landscape_t0$area, landscape_t0$rich),4)`. Similar as with temperature, species richness seems to be highest in cells with an intermediate area. However, these are only simple correlations, and there are many things happening in the background, dictated by our model implemented in *gen3sis*. 
 
 
 Finally we want to consider the three predictors together and therefore fit a multivariate model for explaining species richness.
