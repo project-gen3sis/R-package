@@ -188,15 +188,15 @@ You should now have all the necessary files to run a simulation.
 
 
 
-Now that we have set up the general folder structure and loaded the input data and configuration file, we can run our main function. The run_simulation function will:
+Now that we have set up the general folder structure and loaded the input data and configuration file, we can run our main function. The *run_simulation* function will:
 
-1) Read in the config and prepare the output directories, initial landscape and call “create_ancestor_species” from the user config to create the initial species for the simulation.
+1) Read in the config and prepare the output directories, initial landscape and call *create_ancestor_species* from the user config to create the initial species for the simulation.
 
 2) Start the main loop over the time steps. For every time step it loads the appropriate landscape, removes all cells that became uninhabitable in the new time step, and calls the main steps of any iteration.
 
-3) At the end of every time step, if desired, the simulation saves the species, landscapes, species richness patterns, etc... by calling the “end_of_timestep_observer” function from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
+3) At the end of every time step, if desired, the simulation saves the species, landscapes, species richness patterns, etc... by calling the *end_of_timestep_observer* from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
 
-4) When the simulation reaches the end a phylogeny, runtime_information, the world starting conditions and the used config are saved. The function will return an summary object, here we will save it as "sim".
+4) When the simulation reaches the end a phylogeny, runtime_information, the world starting conditions and the used config are saved. The function will return an summary object, here we will save it as *sim*.
 
 Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. 
 
@@ -244,8 +244,8 @@ for(i in timesteps){
 *Gen3sis* also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that document the changes of the world over time.
 **NOTE** You can also create your own observer function. 
 
-One default observer function is the collection of the richness over time. This was stored as 'sim'.
-We can quickly visualize some main results using the plot_summary function.
+One default observer function is the collection of the richness over time. This was stored as *sim*.
+We can quickly visualize some main results using the *plot_summary function*.
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=5.5}
