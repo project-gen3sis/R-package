@@ -11,7 +11,11 @@ vignette: >
 ```{r include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width=7,
+  tidy=T,
+  fig.align='center',
+  tidy.opts = list(width.cutoff=80)
 )
 ```
 
@@ -20,27 +24,26 @@ To create your own landscape, you can start from anywere. For this exercise we w
 
 
 
-## Create your rasters
+## Create your landscape grid
 
 The case study one explores biodiversity dynamics and trait evolution on dynamic oceanic islands. It follows the general dynamic model of island biogeography (Whittaker et al. 2008 Journal of Biogeography), but the island dynamics entails only area dynamics.
 
 First, we set up our R session and set the working directory where we will save the landscape files.
-```{r setup}
+```{r setup, eval=F}
 library(gen3sis)
-```
 
-
-We will now create the landscape files for the experiment. First, we will define the spatial extent of our landscape, i.e. the number of grid cells. In our case, this will be 31 by 31 cells. Next we specify that our landscape should evolve over 140 time steps.
-
-
-```{r eval=FALSE}
 library(raster)
 library(landscapetools)
 library(NLMR)
 
 setwd(getwd())
+```
 
 
+We will now create the landscape files for the experiment. First, we will define the spatial extent of our landscape, i.e. the number of sites. In our case, this will be 31 by 31 cells. Next we specify that our landscape should evolve over 140 time steps.
+
+
+```{r eval=FALSE}
 Ncol<-31
 Nrow<-31
 
@@ -62,9 +65,25 @@ My_Dynamic_Landscape_dataframe2<-matrix(NA,nrow=Nrow*Ncol, ncol=length(c(Ncol,Nr
 stringtimestepsnames<-vector(mode="character",length=Ntimesteps)
 ```
 
+
+
+## Add environmental characteristics
 Now that our template arrays and matrices are prepared, we can start to fill them with environmental values. We will use three nested loops to do so. The first loop iterates over the 140 time steps, while the two inner ones iterate over all spatial cells. We thus create the enironmental values which will be saved in the corresponding landscape arrays and therefore generate a heterogenous and temporally dynamic landscape.
 
+Here we consider a conceptual island whose number of sites and heterogeneity vary over time, as shown in animation A1. The island is initiated with four sites (at 140 Ma), but the island surface progressively increases to its maximum of 81 sites (at 90 Ma) and then shrinks back to four sites at the present time (due to erosion). 
+
+
+```{r tidy=T, out.width='100%', echo=F, fig.cap='A1: Animation of the conceptual island that we will create as an input landscape for gen3sis.', fig.margin=T}
+knitr::include_graphics("../inst/extdata/CaseStudy1/landscape/case_study_landscape.gif")
+```
+
+\newline
+
 For both temperature and precipitation we create a uniform distribution of the values over space and then add environmental white noise to introduce spatial and temporal heterogenity. For the temperature layer this will be an average of 20° with a standard deviation of 0.5°, where as for precipitation we settle for an average value of 500 mm/year with a standard deviation of 50 mm/year.
+
+We however only want to assign these environmental values to the sites where we have land mass, according to the animation above. Within the loops we therefore check if we are indeed on a land-based site at the current time, and if so, we will assign a temperature and precipitation value to this site. 
+
+At the end of each time step we will calculate the distance from each habitable site to all others and store the results in form of a matrix. We will then save the distance matrix for each time step on our hard drive. 
 
 ```{r eval=FALSE}
 for (timestep in 1:Ntimesteps){ # temporal loop
@@ -72,31 +91,31 @@ for (timestep in 1:Ntimesteps){ # temporal loop
   stringtimestepsnames[timestep]<-paste("X",timestep,"", sep="")
   for (y in 1:Nrow){ #loop over the first spatial dimension
     for (x in 1:Ncol){ #loop over the second spatial dimension
-      if((timestep<=10)||(timestep>120 && timestep<=140)){#time steps with only four (2x2) suitable grid cells
-        if((y>=15 && y<=16)&&(x>=15 && x<=16)) {  #suitable grid cells
+      if((timestep<=10)||(timestep>120 && timestep<=140)){#time steps with only four (2x2) suitable sites
+        if((y>=15 && y<=16)&&(x>=15 && x<=16)) {  #suitable sites
           My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) #temperature
           My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,500,50) #precipitation
         }
       }
-      if((timestep>10 && timestep<=20)||(timestep>100 && timestep<=120)){#time steps with nine (3x3) suitable grid cells
+      if((timestep>10 && timestep<=20)||(timestep>100 && timestep<=120)){#time steps with nine (3x3) suitable sites
         if((y>=15 && y<=17)&&(x>=15 && x<=17)) {
           My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) 
           My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,500,50)
         }
       }
-      if((timestep>20 && timestep<=30)||(timestep>80 && timestep<=100)){#time steps with 25 (5x5) suitable grid cells
+      if((timestep>20 && timestep<=30)||(timestep>80 && timestep<=100)){#time steps with 25 (5x5) suitable sites
         if((y>=14 && y<=18)&&(x>=14 && x<=18)) {
           My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5) 
           My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,500,50) 
         }
       }
-      if((timestep>30 && timestep<=40)||(timestep>60 && timestep<=80)){#time steps with 49 (7x7) suitable grid cells
+      if((timestep>30 && timestep<=40)||(timestep>60 && timestep<=80)){#time steps with 49 (7x7) suitable sites
         if((y>=13 && y<=19)&&(x>=13 && x<=19)) {
           My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5)
           My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,500,50)
         }
       }
-      if(timestep>40 && timestep<=60){#time steps with 81 (9x9) suitable grid cells
+      if(timestep>40 && timestep<=60){#time steps with 81 (9x9) suitable sites
         if((y>=12 && y<=20)&&(x>=12 && x<=20)) {
           My_Dynamic_Landscape[x,y,timestep] <- rnorm(1,20,0.5)
           My_Dynamic_Landscape2[x,y,timestep] <- rnorm(1,500,50)  
@@ -114,7 +133,7 @@ for (timestep in 1:Ntimesteps){ # temporal loop
       counting<-counting+1
     }
   }
-  #subsetting only the suitable grid cells from the matrix:
+  #subsetting only the suitable sites from the matrix:
   My_Dynamic_Landscape_dataframe_suitable<-My_Dynamic_Landscape_dataframe[which(My_Dynamic_Landscape_dataframe[,2+timestep]>0),]
   #calculating distance matrices
   if(is.null(dim(My_Dynamic_Landscape_dataframe_suitable))) dist_matrx<-as.matrix(dist(My_Dynamic_Landscape_dataframe_suitable[1:2], method = "euclidean"))
@@ -123,8 +142,18 @@ for (timestep in 1:Ntimesteps){ # temporal loop
   saveRDS(dist_matrx, paste(getwd(),"/input/my_experiment/distance_matrices/distances_full_",(Ntimesteps - timestep),".rds", sep=""))
 
 }
+```
 
 
+We can now create a new dataframe that contains 
+
+a) all possible coordinates of our sample world and, 
+
+b) the temperature values (or precipitation) for each time step in a different column.
+
+Finally, we store both the temperature and precipitation dataframe in a named list and save them to the hard drive.
+
+```{r eval=FALSE}
 #Data frame for temperature:
 My_Dynamic_Landscape_dataframe<-as.data.frame(My_Dynamic_Landscape_dataframe)
 colnames(My_Dynamic_Landscape_dataframe)<- c("x","y",stringtimestepsnames)
@@ -133,15 +162,19 @@ My_Dynamic_Landscape_dataframe2<-as.data.frame(My_Dynamic_Landscape_dataframe2)
 colnames(My_Dynamic_Landscape_dataframe2)<- c("x","y",stringtimestepsnames)
 
 #binding both data frames in a list object:
-all_geo_hab <- list("temp" = My_Dynamic_Landscape_dataframe,"prec"=My_Dynamic_Landscape_dataframe2) #This is important, otherwise the objects in the list won't have a name
+all_geo_hab <- list("temp" = My_Dynamic_Landscape_dataframe,"prec"=My_Dynamic_Landscape_dataframe2)
 
 ##saving the list of data frames into .rds format to be used as input
 saveRDS(all_geo_hab, paste(getwd(),"/input/my_experiment/landscapes.rds", sep=""))
-
-
 ```
-## Add environmental characteristics
 
-## Add a resistance (how connected and reachebel things are)
 
-The distance matrix for each time step between either: (i) full distance, containing all habitable cells in the landscape (faster computing speed, larger storage required), or (ii) local distance, containing a list of distance matrices of each cell with its 16 neighbors (slower computing speed, smaller storage required). Local distances matrix are built at each timestep with equal dimension to the full distances during a simulation run.The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in kilometers (km). In the case of hypothetical landscapes, geographic distance is measured in units of grid cells.The model uses serialized R files (rds) format for all inputs. The functions for processing the input data in the required format are available in the package. The package offers two options to create distance matrices: one can either compute a (i) full distance matrix at each time step, or compute a (ii) local distance matrix of all cells containing the distances between neighbouring cells. The former option will lead to faster simulations, while the latter uses less storage space. Once the data is processed, the simulation can be started with the function ‘run_simulation’.’ 
+## Add a cost function
+The connectivity between sites is defined as the distance between these sites, modified by an optional cost function. This user defined cost function can give a penalty (or benefit) for crossing certain cells. For this virtual landscape, we will not add a cost function. If you want to learn how to implement one, please refer to the [create_input.html](create_input Vignette).
+
+
+
+<!--
+The distance matrix for each time step between either: (i) full distance, containing all habitable cells in the landscape (faster computing speed, larger storage required), or (ii) local distance, containing a list of distance matrices of each cell with its 16 neighbors (slower computing speed, smaller storage required). Local distances matrix are built at each timestep with equal dimension to the full distances during a simulation run.The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). In the case of hypothetical landscapes, geographic distance is measured in units of sites. The model uses serialized R files (rds) format for all inputs. The functions for processing the input data in the required format are available in the package. The package offers two options to create distance matrices: one can either compute a (i) full distance matrix at each time step, or compute a (ii) local distance matrix of all cells containing the distances between neighbouring cells. The former option will lead to faster simulations, while the latter uses less storage space. Once the data is processed, the simulation can be started with the function ‘run_simulation’.’ 
+
+-->
