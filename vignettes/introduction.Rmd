@@ -75,7 +75,7 @@ The full [landscape](https://github.com/project-Gen3sis) and [configuration](htt
 
 
 ### Landscape
-The **landscape** is the environment of the virtual planet (e.g. temperature and aridity data that changes spatially and temporally). 
+The **landscape** is the environment of the virtual planet (e.g. temperature and aridity data that might be spatially and temporally dynamic). 
 
 **NOTE** that the landscape contains several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform how the landscape (or more precisely that habitable cells) is connected. In this example you are using an already ready-to-run landscape. To see how to create a landscape object, see [design_landscape.html](this vignette).
 
