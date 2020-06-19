@@ -58,7 +58,7 @@ print(paste("gen3sis version:", packageVersion("gen3sis")))
 
 All *gen3sis* simulations need a **landscape** and a **configuration** object to refer to. 
 
-Here we will use a published small theoretical planet example[^1]. 
+Here we will use a published small theoretical planet example[^1], cropped at the Earth center, with a timespam between 150-100Ma and aggregated to a 4&deg; resolution;. 
 
 Since this is a small data (252 KB) it is available with the package, you can just get the path to the data inside the package. This [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data can also be downloaded manually and stored locally for running the experiment.
 
@@ -293,7 +293,7 @@ As you can see, there is only a weak linear correlation of `r round(cor(landscap
 Analog we can also look at the association of aridity and species richness.
 
 
-```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2}
+```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, results='hide', echo=F}
 glm.uni <- glm(rich ~ poly(prec, 2), data=landscape_t0, family=poisson)
 cor(landscape_t0$prec, landscape_t0$rich)
 
@@ -311,7 +311,7 @@ Dry regions seem to negatively impact the number of species, as shown in the plo
 
 Next, we look at the relationship between area and species richness.
 
-```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2}
+```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, results='hide', echo=F}
 glm.uni <- glm(rich ~ poly(area, 2), data=landscape_t0, family=poisson)
 cor(landscape_t0$area, landscape_t0$rich)
 
@@ -325,7 +325,7 @@ legend(150000, 22, col=c(rgb(0.5,0.5,0.5,0.4), 'black'), legend=c(n, 'model fit'
 ```
 
 
-Interestingly, larger cells are strongly correlated with a higher species richness (r$^2$=)`r round(cor(landscape_t0$area, landscape_t0$rich),4)`. Similar as with temperature, species richness seems to be highest in cells with an intermediate area.
+Larger cells are strongly correlated with a higher species richness (r$^2$=)`r round(cor(landscape_t0$area, landscape_t0$rich),4)`. Similar as with temperature, species richness seems to be highest in cells with an intermediate area. However, these are only simple correlations, and there are many things happening in the background, dictated by our model implemented in gen3sis. 
 
 
 Finally we want to consider the three predictors together and therefore fit a multivariate model for explaining species richness.
@@ -334,4 +334,6 @@ Finally we want to consider the three predictors together and therefore fit a mu
 richness_model <- glm(rich ~ poly(temp, 2) + poly(prec, 2) + poly(area, 2), family='quasipoisson', data=landscape_t0)
 summary(richness_model)$coefficients
 ```
-It's important to consider that we have now only been analysing the species richness at one time step, namely the last one. The emerged patterns can however not only be explained by the environmental conditions of that time but also depend on historical conditions. It's now up to you to explore the "virtual" world. Enjoy!
+It's important to consider that we have now only been analysing the species richness at one time step, namely the last one. The emerged patterns can not only be explained by the environmental conditions of that time but also depend on historical conditions. 
+
+It's now up to you to explore the "virtual" world. Enjoy!
