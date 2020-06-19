@@ -169,7 +169,7 @@ plot_richness <- function(species_list, landscape) {
 #' @noRd
 conditional_plot <- function(title, landscape, plot_fun, ...){
   fun_calls <- sys.calls()
-  if (any(sapply(fun_calls, FUN = function(x){"call_main_observer" == x[[1]]}))){
+  if (any(sapply(fun_calls, FUN = function(x){ is(x[[1]], "name") && "call_main_observer" == x[[1]]}))){
     # run during simulation save plot to file
     config <- dynGet("config")
     plot_folder <- file.path(config$directories$output, "plots", title)
