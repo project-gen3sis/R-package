@@ -68,7 +68,7 @@ For both temperature and precipitation uniform distribution of values over space
 Note that we only have to assign these environmental values to the sites where we have land mass (see animation above). Within the loops we therefore check if, at the current time, we are indeed on a terrestrial site. If so, we assign a temperature and precipitation value. 
 
 
-Finally, we create one dataframe to store the temperature values for all time steps and a second dataframe for the precipitation values. These dataframes contain all possible x- and y-coordinates of our sample world as the first two columns. After the temperature and precipitation values have been created for one specific time step, we store these values within a new column in these new dataframes.
+Finally, we create one dataframe to store the temperature values for all time steps and a second dataframe for the precipitation values. These dataframes contain all possible x- and y-coordinates of our sample world as the first two columns. After the temperature and precipitation values have been created for one specific time step, we store these values within a new column for each time step in these new dataframes.
 
 <!--
 At the end of each time step we will calculate the distance from each habitable site to all others and store the results in form of a matrix. We will then save the distance matrix for each time step on our hard drive. 

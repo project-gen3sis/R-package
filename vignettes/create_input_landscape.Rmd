@@ -51,7 +51,7 @@ area_brick <- brick('inst/extdata/InputRasters/WorldCenter/area_rasters.tif') #W
 ```
 
 
-If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the [create_landscape.html](create_landscape vignette).
+If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the [design_landscape.html](design_landscape vignette).
 
 
 ## Creating a list with the environmental data frames
@@ -92,7 +92,7 @@ The argument 'timesteps' requires a vector of strings of mode character and is u
 
 The argument 'calculate_full_distance_matrices' defines whether the create_input() function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring cells specified in 'directions' around each suitable grid cell (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
 
-The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [create_landscape.html](create_landscape vignette), geographic distance would be measured in units of grid cells (sites).
+The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [design_landscape.html](design_landscape vignette), geographic distance would be measured in units of grid cells (sites).
 
 ## Create input files 
 
