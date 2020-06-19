@@ -270,26 +270,25 @@ landscape_t0 <- na.omit(landscape_t0)
 
 
 
-Let's start with some analysis. Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and look at the correlation between richness and environmental variables at the present time step. For this we will fit three univariate models, where each explains the correlation of species richness and one of the environmental factors.
+Let's start with some analysis. Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and look at the correlation between richness and environmental variables at the present (i.e. final time step). For this we will fit three univariate models, where each explains the correlation of species richness and one of the environmental factors.
 
 
-```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F}
+```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
+# Fit a generalized linear model
 glm.uni <- glm(rich ~ poly(temp, 2), data=landscape_t0, family=poisson)
 cor(landscape_t0$temp, landscape_t0$rich)
 
-
 #Plot the response curve
-par(mfrow=c(1,1))
 data_plot <- data.frame(cbind(landscape_t0$temp, predict(glm.uni,type = "response")))
 sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
 n <- paste0('observations (n = ', length(landscape_t0$rich), ')')
-plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab="Species richness", frame.plot=F, type="l", col='red', lwd=2)
+plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab=expression(paste(alpha," richness")), frame.plot=F, type="l", col='red', lwd=2)
 points(landscape_t0$temp, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
 legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
-As you can see, there is only a weak linear correlation of `r round(cor(landscape_t0$temp, landscape_t0$rich),4)` temperature and simulated species richness. By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, meaning that species richness is expected to be highest at intermediate temperature levels.
+As you can see, there is only a weak linear correlation of `r round(cor(landscape_t0$temp, landscape_t0$rich),4)` of temperature and simulated species richness. By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, indicating that species richness is expected to be highest at intermediate temperature levels. But the points are very spread around.
 
 Analog we can also look at the association of aridity and species richness.
 
@@ -299,30 +298,28 @@ glm.uni <- glm(rich ~ poly(prec, 2), data=landscape_t0, family=poisson)
 cor(landscape_t0$prec, landscape_t0$rich)
 
 #Plot the response curve
-par(mfrow=c(1,1))
 data_plot <- data.frame(cbind(landscape_t0$prec, predict(glm.uni,type = "response")))
 sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
-plot(data_plot[,1],data_plot[,2], xlab="Aridity", ylab="Species richness", frame.plot=F, type="l", col='blue', lwd=2)
+plot(data_plot[,1],data_plot[,2], xlab="Aridity", ylab=expression(paste(alpha," richness")), frame.plot=F, type="l", col='blue', lwd=2)
 points(landscape_t0$prec, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
 legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
 
-Dry regions seem to harbour a higher number of species, as shown in the plot above and indicated by the negative correlation of `r round(cor(landscape_t0$prec, landscape_t0$rich), 4)` between aridity and species richness.
+Dry regions seem to negatively impact the number of species, as shown in the plot above and indicated by the negative correlation of `r round(cor(landscape_t0$prec, landscape_t0$rich), 4)` between aridity and species richness.
 
-Next, we can also look on the influence of area on the species richness.
+Next, we look at the relationship between area and species richness.
 
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2}
 glm.uni <- glm(rich ~ poly(area, 2), data=landscape_t0, family=poisson)
 cor(landscape_t0$area, landscape_t0$rich)
 
 #Plot the response curve
-par(mfrow=c(1,1))
 data_plot <- data.frame(cbind(landscape_t0$area, predict(glm.uni,type = "response")))
 sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
-plot(data_plot[,1],data_plot[,2], xlab="Area", ylab="Species richness", frame.plot=F, type="l", col='black', lwd=2)
+plot(data_plot[,1],data_plot[,2], xlab="Area", ylab=expression(paste(alpha," richness")), frame.plot=F, type="l", col='black', lwd=2)
 points(landscape_t0$area, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
 legend(150000, 22, col=c(rgb(0.5,0.5,0.5,0.4), 'black'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
