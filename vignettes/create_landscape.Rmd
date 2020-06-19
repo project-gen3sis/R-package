@@ -26,7 +26,7 @@ To create your own landscape, you can start from anywere. For this exercise we w
 
 In this example we want to explores biodiversity dynamics and trait evolution on dynamic oceanic islands. It follows the general dynamic model of island biogeography (Whittaker et al. 2008 Journal of Biogeography), the island we create entails the number of sites and environmental dynamics.
 
-We will now create the landscape files for the experiment. First, we will define the spatial extent of our landscape, i.e. the number of sites. In our case, this will be 31 by 31 cells. Next we specify that our landscape should evolve over 140 time steps.
+First, we will define the spatial extent of our landscape, i.e. the number of sites. In our case, this will be 31 by 31 sites laid in a grid cells. Next, we define the temporal dimension i.e. our landscape evolves in 140 time steps.
 
 ```{r eval=FALSE}
 Ncol<-31
