@@ -35,7 +35,7 @@ assign("dist", -Inf, envir = counting)
 #' @importFrom utils packageVersion write.table
 #' 
 #' @example inst/examples/run_simulation_help.R
-#'
+#' @seealso \code{\link{plot_summary}} \code{\link{create_config}} \code{\link{create_input_landscape}}
 #' @export
 run_simulation <- function(config = NA,
                           landscape = NA,

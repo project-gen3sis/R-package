@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette aims at showing how to use the function create_input() that creates input landscape objects necessary to run gen3sis: 
+This vignette aims at showing how to use the function create_input_landscape() that creates input landscape objects necessary to run gen3sis: 
 
 1) a rds file containing a landscape list of raster stacks for environmental variables; 
 
@@ -70,15 +70,15 @@ for(i in 1:nlayers(temperature_brick)){
 
 
 ## Defining a cost function 
-The second argument we need to define is a cost function. This function should define how connected and reachable sites are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water sites should increase the cost of dispersal. The costs have to be defined in meters because the coordinate system is in meters for real landscapes (automatically corrected to km in later on by the create_input() function). Hence, we can define a simple cost function in which the dispersal is not penalized: 
+The second argument we need to define is a cost function. This function should define how connected and reachable sites are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water sites should increase the cost of dispersal. The costs have to be defined in meters because the coordinate system is in meters for real landscapes (automatically corrected to km in later on by the create_input_landscape() function). Hence, we can define a simple cost function in which the dispersal is not penalized: 
 
 ```{r eval=FALSE}
 my_cost_function <- function(){
-    return(1)
-  #zwei beispiele?
-  #evt. plot mit einem kostenbeispiel --> Afrika - Südamerika
+  return(1)
 }
 ```
+
+XXXXX Add here two examples, from africa to South America XXXXX
 
 
 Whether a specific site can be reached or not depends on the properties of the population or species.
@@ -90,7 +90,7 @@ The argument 'directions' requires an integer providing the amount of directions
 
 The argument 'timesteps' requires a vector of strings of mode character and is used to name the files and to name the timesteps in the .rds landscape object created by the create_input() function. It is not necessary to define this argument, but it helps readibility when manipulating the object. 
 
-The argument 'calculate_full_distance_matrices' defines whether the create_input() function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring cells specified in 'directions' around each suitable grid cell (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
+The argument 'calculate_full_distance_matrices' defines whether the create_input_landscape() function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring cells specified in 'directions' around each suitable grid cell (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
 
 The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [design_landscape.html](design_landscape vignette), geographic distance would be measured in units of grid cells (sites).
 
@@ -99,7 +99,7 @@ The real geographic coordinate system can be provided which allows for the globa
 The model uses serialized R files (.rds) format for all inputs. The functions for processing the input data in the required format are available in the package. Once the data is processed, the simulation can be started with the function run_simulation().
 
 ```{r eval=FALSE}
-create_input(landscapes = landscapes_list,
+create_input_landscape(landscapes = landscapes_list,
              cost_function = my_cost_function,
              output_directory = "../My_experiment_Input",# a directory name to save the files in
              directions = 8, # all surrounding sites from a focus cell

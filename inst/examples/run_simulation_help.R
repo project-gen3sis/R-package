@@ -1,11 +1,11 @@
 ## running a simple simulation
 library(gen3sis)
 
-#get correct path or correct input objects
+#get path or correct input objects
 datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
 
-#run simulation
+#run simulation and store summary to sim
 \dontrun{
-r <- run_simulation(config = file.path(datapath,"config/config_rte.R"), 
+sim <- run_simulation(config = file.path(datapath,"config/config_fast.R"), 
                 landscape = file.path(datapath,"landscape"))
 }

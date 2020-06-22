@@ -1,7 +1,7 @@
 ##TODO##
 
 # add example
-# create_input(
+# create_input_landscape(
 #   landscapes,
 #   cost_function,
 #   directions,

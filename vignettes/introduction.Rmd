@@ -46,7 +46,7 @@ library(gen3sis)
 ```
 
 
-Perfect! From now on, if you run into problems, refer to <spam style="background-color:#F5F5F5"> ??gen3sis </spam> the for the full help documentation.
+Perfect! From now on, if you run into problems, refer to gen3sis the for the full help documentation.
 
 Let's check the version of the *gen3sis* package we are using
 
@@ -213,7 +213,7 @@ sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"
 
 
 ```{r eval=T, echo=F}
-sim <- readRDS(file.path(datapath, "output/config_worldcenter/summary_sim.rds"))
+sim <- readRDS(file.path(datapath, "output/config_worldcenter/sgen3sis.rds"))
 ```
 
 After the simulation is finished, a plot is created inside the CaseStudy1 folder to show the state of the initial world. As you can see it contains 1 species per site in the 20*40 grid cell sample world.

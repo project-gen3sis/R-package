@@ -45,12 +45,15 @@ run a simulation with defined landscape and config objects
 ## running a simple simulation
 library(gen3sis)
 
-#get correct path or correct input objects
+#get path or correct input objects
 datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
 
-#run simulation
+#run simulation and store summary to sim
 \dontrun{
-r <- run_simulation(config = file.path(datapath,"config/config_rte.R"), 
+sim <- run_simulation(config = file.path(datapath,"config/config_fast.R"), 
                 landscape = file.path(datapath,"landscape"))
 }
+}
+\seealso{
+\code{\link{plot_summary}} \code{\link{create_config}} \code{\link{create_input_landscape}}
 }

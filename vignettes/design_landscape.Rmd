@@ -126,7 +126,7 @@ for (timestep in 1:Ntimesteps){ # temporal loop
 ```
 
 
-The create_input() function of the *gen3sis* package takes temperature and precipitation values as a list raster layers or raster layer filenames. Based on the dataframes we just created, we can now create temperature and precipitation rasters for each time step. We then store them in a named list and save to the hard drive.
+The create_input_landscape() function of the *gen3sis* package takes temperature and precipitation values as a list raster layers or raster layer filenames. Based on the dataframes we just created, we can now create temperature and precipitation rasters for each time step. We then store them in a named list and save to the hard drive.
 
 
 ```{r eval=FALSE}
