@@ -65,7 +65,7 @@ test_that("no user config provided, using default config" , {
   local_mock(dir.create = function(new_dir, ...) { } )
   empty_config <- "data/config/tests_config_handling_0d/tests_run/config_empty.R"
   dirs <- evaluate_promise(prepare_directories(config_file = empty_config))
-  expect_known_output(create_config(empty_config, dirs$result),
+  expect_known_output(create_input_config(empty_config, dirs$result),
                       file = "data/output/reference_test_empty_config.txt",
                       update = update_reference)
 })
@@ -75,7 +75,7 @@ test_that("partial user config provided" , {
   local_mock(dir.create = function(new_dir, ...) { } )
   empty_config <- "data/config/tests_config_handling_0d/tests_run/config_partial.R"
   dirs <- evaluate_promise(prepare_directories(config_file = empty_config))
-  expect_known_output(create_config(empty_config, dirs$result),
+  expect_known_output(create_input_config(empty_config, dirs$result),
                       file = "data/output/reference_test_partial_config.txt",
                       update = update_reference)
 })
@@ -85,7 +85,7 @@ test_that("full user config provided" , {
   local_mock(dir.create = function(new_dir, ...) { } )
   empty_config <- "data/config/tests_config_handling_0d/tests_run/config_complete.R"
   dirs <- evaluate_promise(prepare_directories(config_file = empty_config))
-  expect_known_output(create_config(empty_config, dirs$result),
+  expect_known_output(create_input_config(empty_config, dirs$result),
                       file = "data/output/reference_test_complete_config.txt",
                       update = update_reference)
 })
@@ -95,7 +95,7 @@ test_that("user config provided with extra values" , {
   local_mock(dir.create = function(new_dir, ...) { } )
   empty_config <- "data/config/tests_config_handling_0d/tests_run/config_additional_user_values.R"
   dirs <- evaluate_promise(prepare_directories(config_file = empty_config))
-  expect_known_output(create_config(empty_config, dirs$result),
+  expect_known_output(create_input_config(empty_config, dirs$result),
                       file = "data/output/reference_test_additional_user_values.txt",
                       update = update_reference)
 })

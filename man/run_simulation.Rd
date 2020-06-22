@@ -55,5 +55,5 @@ sim <- run_simulation(config = file.path(datapath,"config/config_fast.R"),
 }
 }
 \seealso{
-\code{\link{plot_summary}} \code{\link{create_config}} \code{\link{create_input_landscape}}
+\code{\link{plot_summary}} \code{\link{create_input_config}} \code{\link{create_input_landscape}}
 }

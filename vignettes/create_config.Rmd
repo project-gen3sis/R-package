@@ -30,7 +30,7 @@ library(gen3sis)
 ## 1. Create a config from scratch
 
 ```{r eval=FALSE}
-create_config("config_file")
+create_input_config("config_file")
 
 #writes out a config sckeleton
 write_config_skeleton()

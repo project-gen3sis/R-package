@@ -35,7 +35,7 @@ assign("dist", -Inf, envir = counting)
 #' @importFrom utils packageVersion write.table
 #' 
 #' @example inst/examples/run_simulation_help.R
-#' @seealso \code{\link{plot_summary}} \code{\link{create_config}} \code{\link{create_input_landscape}}
+#' @seealso \code{\link{plot_summary}} \code{\link{create_input_config}} \code{\link{create_input_landscape}}
 #' @export
 run_simulation <- function(config = NA,
                           landscape = NA,
@@ -65,7 +65,7 @@ run_simulation <- function(config = NA,
     config[["directories"]] <- directories
   } else if (class(config)=="character"){
     file.copy(config, directories$output)
-    config <- create_config(config_file = config)
+    config <- create_input_config(config_file = config)
     config[["directories"]] <- directories
   } else {
     stop("this is not a known config, please provide either a config file or a config object")
