@@ -18,9 +18,9 @@ NULL
 counting <- new.env(parent = emptyenv())
 assign("dist", -Inf, envir = counting)
 
-#' run a simulation
+#' run a simulation in gen3sis and return a summary object. 
 #' 
-#' @details run a simulation with defined landscape and config objects
+#' @details run a simulation with defined landscape and config objects. Possibly plot and save specified outputs as defined in the end_of_timestep_observer function inside the config object
 #' @param config configuration file for the simulation or configuration object derived from a config file
 #' @param landscape directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
@@ -35,7 +35,7 @@ assign("dist", -Inf, envir = counting)
 #' @importFrom utils packageVersion write.table
 #' 
 #' @example inst/examples/run_simulation_help.R
-#' @seealso \code{\link{plot_summary}} \code{\link{create_input_config}} \code{\link{create_input_landscape}}
+#' @seealso \code{\link{plot_summary}}   \code{\link{create_input_config}}   \code{\link{create_input_landscape}}  \code{\link{end_of_timestep_observer}}
 #' @export
 run_simulation <- function(config = NA,
                           landscape = NA,
@@ -45,9 +45,6 @@ run_simulation <- function(config = NA,
                           call_observer = "all",
                           enable_gc = F,
                           verbose = 1){
-  
-  #param timestep_restart restart an exisitng simulation from this timestep or from the latest timestep
-  #param save_state save the internal state of the simulation for restarts
   
   #----------------------------------------------------#
   ####### User defined variables (config.R) ############
