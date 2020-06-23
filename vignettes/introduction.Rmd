@@ -19,17 +19,17 @@ knitr::opts_chunk$set(
   results='hold'
 )
 ```
-Hello and welcome! In this vignette you will be introduced to *gen3sis*, an engine for simulating various spatial eco-evolutionary models. We will create a virtual planet, 'biodiversify' it and examine some brand new virtual species.
+In this vignette you will be introduced to *gen3sis*, an engine for simulating various spatial eco-evolutionary models. We will create a virtual planet, 'biodiversify' it and examine some brand new virtual species.
 
-Thus we will: 
+In particular, in this vignette, we will run through the following steps: 
 
 [1. **Start**](#start) *gen3sis* package and check if we are set with all the necessary input data.
 
 [2. **Run**](#run) one simple example simulation
 
-[3. **Visualize**](#visualize) the output
+[3. **Visualize**](#visualize) the outputs
 
-[4. **Analyze**](#analyze) the output
+[4. **Analyze**](#analyze) the outputs
 
 <br>
 
@@ -40,13 +40,13 @@ The first step for running a simulation consists of setting up the folder struct
 
 
 ## 1. Start {#start}
-First of all, we need to load the *gen3sis* package 
+First of all, we need to load the *gen3sis* package. 
 ```{r setup, message=F}
 library(gen3sis)
 ```
 
 
-Perfect! From now on, if you run into problems, refer to gen3sis the for the full help documentation.
+From now on, if you run into problems, refer to gen3sis the for the full help documentation.
 
 Let's check the version of the *gen3sis* package we are using
 
@@ -56,15 +56,15 @@ print(paste("gen3sis version:", packageVersion("gen3sis")))
 
 
 
-All *gen3sis* simulations need a **landscape** and a **configuration** object to refer to. Here we will use a published small theoretical planet example[^1]. Cropped at the Earth center, with a timespam between 150-100Ma and aggregated to a 4&deg; resolution. 
+All *gen3sis* simulations need a **landscape** object which define the abiotic environment over which the simulation will take place and a **configuration** object which defines the mechanisms of speciation, dispersal, trait evolution and ecological interactions. Here we will use a published example[^1]. We cropped at the Earth center, with a timespam between 150-100Ma and aggregated to a 4&deg; resolution to make the simulations fast and the data small (252 KB). 
 
-Since this is a small data (252 KB) it is available with the package, you can just get the path to the data inside the package. Get path to data in the package:
+All the data we will use (i.e. the **landscape** and the **configuration** object) is available with the package, you can just get the path to the data inside the package. To access this dataset, you first need to define the path to the data contained inside the package.
 
 ```{r eval=TRUE}
 datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
 ```
 
-The full [landscape](https://github.com/project-Gen3sis) and [configuration](https://github.com/project-Gen3sis) data can also be downloaded manually and stored locally for running the experiment. An experiment folder should look like this:
+The full [landscape](https://github.com/project-Gen3sis) can be downloaded and stored locally for running the experiment. An experiment folder should look like this:
 
 |>EXPERIMENT_FOLDER     |
 |:-------------------------|
@@ -75,9 +75,9 @@ The full [landscape](https://github.com/project-Gen3sis) and [configuration](htt
 
 
 ### Landscape
-The **landscape** is the environment of the virtual planet (e.g. temperature and aridity data that might be spatially and temporally dynamic). 
+The **landscape** is the virtual environment (e.g. temperature and aridity data that might be spatially and temporally dynamic). 
 
-**NOTE** that the landscape contains several files. The .rds file has the landscape changing over time and the distances folder stores some data to inform how the landscape (or more precisely that habitable cells) is connected. In this example you are using an already ready-to-run landscape. To see how to create a landscape object, see [design_landscape.html](this vignette).
+**NOTE** that the landscape contains several files. The .rds file contains the landscape changing over time and the distances folder stores some data to inform how the landscape is connected. In this example you are using an already ready-to-run landscape. To see how to create a landscape object, see [design_landscape.html](this vignette).
 
 
 This is how our landscape looks like at 150, 125 and 100Ma, below are the plots of temperature, aridity and area information.
@@ -188,7 +188,7 @@ You should now have all the necessary files to run a simulation.
 
 
 
-Now that we have set up the general folder structure and loaded the input data and configuration file, we can run our main function. The *run_simulation* function will:
+Now that we have set up the general folder structure and loaded the input data and configuration file, we can run a simulation using the *run_simulation* function. This function will:
 
 1) Read in the config and prepare the output directories, initial landscape and call *create_ancestor_species* from the user config to create the initial species for the simulation.
 
@@ -196,7 +196,7 @@ Now that we have set up the general folder structure and loaded the input data a
 
 3) At the end of every time-step, if desired, the simulation saves the species, landscapes, species richness patterns, etc... by calling the *end_of_timestep_observer* from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
 
-4) When the simulation reaches the end a phylogeny, runtime_information, the world starting conditions and the used config are saved. The function will return an summary object, here we will save it as *sim*.
+4) When the simulation reaches the end, a phylogeny, runtime_information, the world starting conditions and the used config are saved at the output folder, which is not specified is deduced from the landscape location. The function will return an summary object, here we will save it as *sim*.
 
 Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. 
 
@@ -216,9 +216,7 @@ sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"
 sim <- readRDS(file.path(datapath, "output/config_worldcenter/sgen3sis.rds"))
 ```
 
-After the simulation is finished, a plot is created inside the CaseStudy1 folder to show the state of the initial world. As you can see it contains 1 species per site in the 20*40 grid cell sample world.
-
-Excellent. Our virtual species are waiting for us. They are automatically stored in a sub folder called **output** inside our CaseStudy1 folder and inside another folder named after our configuration file (i.e. config). It should look like this:
+After the simulation is finished, a plot is created inside the WorldCenter folder to show the state of the initial world. They are automatically stored in a sub folder called **output** inside our WorldCenter folder and inside another folder named after our configuration file (i.e. config). It should look like this:
 
 |>EXPERIMENT_FOLDER     |
 |:-------------------------|
@@ -257,7 +255,8 @@ There are a few visualization tools already included in the package, but you are
 
 ## 4. Analyze {#analyze}
 
-Now that we have run the simulation and have had a quick look at the output, we want to do some analysis based on the species richness pattern that emerged in the end of the simulation. To do so, we first load the landscape and combine it with the simulated species richness.
+Now that we have run the simulation we are ready to perform some analysis to investigate whether the model behaves as expected. Because we set a limit to the total abundances lower in colder and in more arid environments, we expect that the number of species that can co-exist also decreases in those environment. 
+We will perform a few statistical analyses to investigate those patterns based on the species richness pattern that emerged at the end of the simulation. To do so, we first load the landscape and combine it with the simulated species richness.
 
 ```{r eval=TRUE, fig.width=8, fig.height=5, fig.retina=2}
 landscapes <- readRDS(file.path(datapath, "landscape", "landscapes.rds")) #get the input landscape
@@ -268,7 +267,7 @@ landscape_t0 <- na.omit(landscape_t0)
 
 
 
-Let's start with some analysis. Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and look at the correlation between richness and environmental variables at the present (i.e. final time-step). For this we will fit three univariate models, where each explains the correlation of species richness and one of the environmental factors.
+Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and investigate the relationship between richness and environmental variables at the at the final time step of the simulation. For this we will fit two univariate models, where each explains the relationship between species richness and one of the environmental variables.
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
