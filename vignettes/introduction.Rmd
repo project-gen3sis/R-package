@@ -273,7 +273,6 @@ For this we first fit a generalized linear model between richness and temperatur
 ```{r eval=TRUE, echo=TRUE}
 glm.uni <- glm(rich ~ poly(temp, 2), data=landscape_t0, family=poisson)
 cor(landscape_t0$temp, landscape_t0$rich)
-
 ```
 
 Second we plot the response curve.
@@ -282,31 +281,36 @@ Second we plot the response curve.
 data_plot <- data.frame(cbind(landscape_t0$temp, predict(glm.uni,type = "response")))
 # sort data for plotting and ommit NA's
 data_plot <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
-# data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
+# get the number of observations
 n <- paste0('observations (n = ', length(landscape_t0$rich), ')')
-plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab=expression(paste(alpha," richness")), frame.plot=F, type="l", col='red', lwd=2)
+# plot model curve
+plot(data_plot[,1],data_plot[,2], xlab="Temperature [\u00B0C]", ylab=expression(paste(alpha," richness")), frame.plot=F, type="l", col='red', lwd=2)
+# add observed points
 points(landscape_t0$temp, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
+# add legend
 legend(5,0.52, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
+
 By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, indicating that species richness highest at intermediate temperature levels. First the higher richness found above 10° is consistent with the ecological rule that we imposed. At higher temperature, we have a higher energy and capacity facilitating coexist. This is consistent with our model expectations. Moreover, we can observe a large spread of the points at high temperature. This is likely because high temperature regions frequently have high aridity. This is why we need to also explore aridity.
 
-
-```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
-lm <- glm(prec ~ temp, data=landscape_t0)
+For this we first fit a linear model between temperature and aridity and then plot aridity~temperature, similarly to how it was done before.
+```{r eval=TRUE, echo=TRUE}
+linear_model <- lm(prec ~ temp, data=landscape_t0)
 cor(landscape_t0$prec, landscape_t0$temp)
+```
 
+```{r eval=TRUE,echo=FALSE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
 #Plot the response curve
-data_plot <- data.frame(cbind(landscape_t0$temp, predict(lm, type = "response")))
-sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
-data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
+data_plot <- data.frame(cbind(landscape_t0$temp, predict(linear_model, type = "response")))
+data_plot <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 n <- paste0('observations (n = ', length(landscape_t0$temp), ')')
 plot(data_plot[,1],data_plot[,2], xlab="Temperature [\u00B0C]", ylab="Aridity [index]", frame.plot=F, type="l", col='black', lwd=2)
 points( landscape_t0$temp,landscape_t0$prec, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
 legend("topleft", col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
-Indeed aridity is correlated with temperature. Thus let'sinvestigate the association of aridity and species richness.
+Indeed aridity is correlated with temperature. Thus let's investigate the association of aridity and species richness.
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, results='hide', echo=F}
@@ -323,7 +327,7 @@ legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c(n, 'model fit'), pch=
 ```
 
 
-Dry regions seem to negatively impact the number of species, as shown in the plot above and indicated by the negative correlation of `r round(cor(landscape_t0$prec, landscape_t0$rich), 4)` between aridity and species richness.
+The number of species is negatively related to aridity. The explained deviance of this relationship is D^2=`r (glm.uni$null.deviance - glm.uni$deviance) / glm.uni$null.deviance`. This relationship emerge because we set a lower carrying capacity in cells with higher level of aridity. Hence, the models behaves as expected from the configuration function.
 
 Next, we look at the relationship between area and species richness.
 
