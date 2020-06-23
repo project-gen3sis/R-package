@@ -307,7 +307,7 @@ data_plot <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 n <- paste0('observations (n = ', length(landscape_t0$temp), ')')
 plot(data_plot[,1],data_plot[,2], xlab="Temperature [\u00B0C]", ylab="Aridity [index]", frame.plot=F, type="l", col='black', lwd=2)
 points( landscape_t0$temp,landscape_t0$prec, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend("topleft", col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
+legend("topleft", col=c(rgb(0.5,0.5,0.5,0.4), 'black'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
 Indeed aridity is correlated with temperature. Thus let's investigate the association of aridity and species richness by fitting a generalized linear model between richness and aridity
