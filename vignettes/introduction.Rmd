@@ -282,12 +282,29 @@ data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
 n <- paste0('observations (n = ', length(landscape_t0$rich), ')')
 plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab=expression(paste(alpha," richness")), frame.plot=F, type="l", col='red', lwd=2)
 points(landscape_t0$temp, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
+legend(5,0.52, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
-As you can see, there is only a weak linear correlation of `r round(cor(landscape_t0$temp, landscape_t0$rich),4)` of temperature and simulated species richness. By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, indicating that species richness is expected to be highest at intermediate temperature levels. But the points are very spread around.
+By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, indicating that species richness highest at intermediate temperature levels. First the higher richness found above 10° is consistent with the ecological rule that we imposed. At higher temperature, we have a higher energy and capacity facilitating coexist. This is consistent with our model expectations. Moreover, we can observe a large spread of the points at high temperature. This is likely because high temperature regions frequently have high aridity. This is why we need to also explore aridity.
 
-Analog we can also look at the association of aridity and species richness.
+
+```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
+#do linear model between temperature and aridity
+lm <- glm(prec ~ temp, data=landscape_t0)
+cor(landscape_t0$prec, landscape_t0$temp)
+
+#Plot the response curve
+data_plot <- data.frame(cbind(landscape_t0$temp, predict(lm, type = "response")))
+sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
+data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
+n <- paste0('observations (n = ', length(landscape_t0$temp), ')')
+plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab="Aridity", frame.plot=F, type="l", col='black', lwd=2)
+points( landscape_t0$temp,landscape_t0$prec, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
+legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
+
+```
+
+Indeed aridity is correlated with temperature. Thus let'sinvestigate the association of aridity and species richness.
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, results='hide', echo=F}
