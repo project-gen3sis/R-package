@@ -269,16 +269,20 @@ landscape_t0 <- na.omit(landscape_t0)
 
 Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and investigate the relationship between richness and environmental variables at the at the final time step of the simulation. For this we will fit two univariate models, where each explains the relationship between species richness and one of the environmental variables.
 
-
-```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
-# Fit a generalized linear model
+For this we first fit a generalized linear model between richness and temperature.
+```{r eval=TRUE, echo=TRUE}
 glm.uni <- glm(rich ~ poly(temp, 2), data=landscape_t0, family=poisson)
 cor(landscape_t0$temp, landscape_t0$rich)
 
-#Plot the response curve
+```
+
+Second we plot the response curve.
+```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
+# prepare data with temperature and predicted richness from our model
 data_plot <- data.frame(cbind(landscape_t0$temp, predict(glm.uni,type = "response")))
-sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
-data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
+# sort data for plotting and ommit NA's
+data_plot <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
+# data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
 n <- paste0('observations (n = ', length(landscape_t0$rich), ')')
 plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab=expression(paste(alpha," richness")), frame.plot=F, type="l", col='red', lwd=2)
 points(landscape_t0$temp, landscape_t0$rich, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
@@ -289,7 +293,6 @@ By looking at the model fit of the generalized linear model we can see that the 
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
-#do linear model between temperature and aridity
 lm <- glm(prec ~ temp, data=landscape_t0)
 cor(landscape_t0$prec, landscape_t0$temp)
 
@@ -298,10 +301,9 @@ data_plot <- data.frame(cbind(landscape_t0$temp, predict(lm, type = "response"))
 sorted <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
 data_plot <- data.frame(cbind(sorted[,1],sorted[,2]))
 n <- paste0('observations (n = ', length(landscape_t0$temp), ')')
-plot(data_plot[,1],data_plot[,2], xlab="Temperature", ylab="Aridity", frame.plot=F, type="l", col='black', lwd=2)
+plot(data_plot[,1],data_plot[,2], xlab="Temperature [\u00B0C]", ylab="Aridity [index]", frame.plot=F, type="l", col='black', lwd=2)
 points( landscape_t0$temp,landscape_t0$prec, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend(5,20, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
-
+legend("topleft", col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
 ```
 
 Indeed aridity is correlated with temperature. Thus let'sinvestigate the association of aridity and species richness.
