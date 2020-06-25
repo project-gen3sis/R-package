@@ -27,7 +27,8 @@ environmental_ranges = list("temp" = c(-45, 55), "area"=c(101067, 196949), "prec
 
 # a place to inspect the internal state of the simulation and collect additional information if desired
 end_of_timestep_observer = function(data, vars, config){
-  save_species()
+  # save_species()
+  plot_richness(data$all_species, data$landscape)
   # example 1 plot over simulation
     # par(mfrow=c(2,3))
     # plot_raster_single(data$landscape$environment[,"temp"], data$landscape, "temp", NA)
