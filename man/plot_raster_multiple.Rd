@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_raster_multiple}
 \alias{plot_raster_multiple}
-\title{Plot a set of values onto a given landscape}
+\title{plot a set of values onto a given landscape}
 \usage{
 plot_raster_multiple(values, landscape, no_data = 0)
 }
@@ -15,5 +15,5 @@ this will result in ncol(values) raster plots.}
 \item{no_data}{what value should be used for missing values in values}
 }
 \description{
-Plot a set of values onto a given landscape
+plot a set of values onto a given landscape
 }

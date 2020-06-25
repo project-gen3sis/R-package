@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_richness}
 \alias{plot_richness}
-\title{Plot the richness of the given list of species on a landscape}
+\title{plot the richness of the given list of species on a landscape}
 \usage{
 plot_richness(species_list, landscape)
 }
@@ -12,7 +12,7 @@ plot_richness(species_list, landscape)
 \item{landscape}{a landscape to plot the richness onto}
 }
 \description{
-Plot the richness of the given list of species on a landscape
+plot the richness of the given list of species on a landscape
 }
 \examples{
 ##TODO##

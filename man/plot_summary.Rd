@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_summary}
 \alias{plot_summary}
-\title{Plot simulation default summary}
+\title{plot simulation default summary object}
 \usage{
 plot_summary(output, summary_title = NULL, summary_legend = NULL)
 }
@@ -14,7 +14,7 @@ plot_summary(output, summary_title = NULL, summary_legend = NULL)
 \item{summary_legend}{either a satring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.}
 }
 \description{
-Plot simulation default summary
+plot simulation default summary object
 }
 \examples{
 #'\dontrun{

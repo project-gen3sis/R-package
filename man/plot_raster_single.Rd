@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_raster_single}
 \alias{plot_raster_single}
-\title{Plot a single set of values onto a given landscape}
+\title{plot a single set of values onto a given landscape}
 \usage{
 plot_raster_single(values, landscape, title, no_data = 0, col)
 }
@@ -18,11 +18,18 @@ plot_raster_single(values, landscape, title, no_data = 0, col)
 \item{col}{corresponds to the \link{raster} col plot parameter. This can be omitted and colors handled by raster::plot}
 }
 \description{
-Plot a single set of values onto a given landscape
+plot a single set of values onto a given landscape
 }
 \examples{
-##TODO##
+# get path to output objects
+datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
 
-# add example
-# plot_raster_single(values, landscape, title, no_data = 0)
+# plot environmental variables at a given step
+landscape_t_150 <- readRDS(
+  file.path(datapath, "output", "config_worldcenter", "landscapes", "landscape_t_150.rds"))
+par(mfrow=c(1,2))
+plot_raster_single(landscape_t_150$environment[,"temp"], landscape_150, "Temperature", NA)
+# use col to change the color
+plot_raster_single(landscape_t_150$environment[,"prec"], landscape_150, "Aridity", NA, col=topo.colors(5))
+# note that these values are scaled by the configuration object
 }
