@@ -1,6 +1,6 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' Create an landscape input
+#' create an landscape input from a named list of rasters or raster files
 #'
 #' @param landscapes list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past.
 #' The list names are important since these are the environmental names
@@ -16,8 +16,9 @@
 #' @param calculate_full_distance_matrices TRUE or FALSE. If TRUE calculates the entire distance matrix for every timestep and between all habitable cells (faster CPU time, higher storage required). If FALSE, only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)
 #' @param crs the coordinate reference system in crs format (see rater::crs)
 #' @param overwrite_output TRUE or FALSE
-#' @param verbose print distance calculation progress
+#' @param verbose print distance calculation progress (default: FALSE)
 #'
+#' @return no return object. This function saves the landscape input files for gen3sis at the output_directory
 #' @importFrom gdistance transition costDistance
 #' @example inst/examples/create_input_landscape_help.R
 #' @export
