@@ -17,9 +17,9 @@ create_ancestor_species  <- function(landscape, config){
 }
 
 
-#' The function create_species creates a new species.
+#' creates a new species.
 #'
-#' @details This function is intented to be used in the create_ancestor_species function at the configuration 
+#' @details This function is to be used in the create_ancestor_species function at the configuration 
 #' of a simulation. It will create a species object representing one species in the simulation occupying the 
 #' given list of initial cells.
 #'

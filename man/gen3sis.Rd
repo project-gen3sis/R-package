@@ -12,19 +12,25 @@ Gen3sis is implemented in a mix of R and C++ code, and wrapped into an R-package
 }
 \examples{
 \dontrun{
-# 1. Load gen3sis and check if we all necessary input data is set (landscape and config).
+
+# 1. Load gen3sis and all necessary input data is set (landscape and config).
+
 library(gen3sis)
+
 # get path to example input inside package
 datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
 path_config <- file.path(datapath, "config/config_worldcenter.R")
 path_landscape <- file.path(datapath, "landscape")
 
-# 2. Run one simple example simulation
+# 2. Run simulation
+
 sim <- run_simulation(config = path_config, landscape = path_landscape)
 
 # 3. Visualize the outputs
+
 # plot summary of entire simulation
 plot_summary(sim)
+
 # plot richness at a given timestep 
 # this only works if species is saved for this timestep
 landscape_t_150 <- readRDS(file.path(datapath, 

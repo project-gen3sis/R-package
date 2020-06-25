@@ -2,7 +2,7 @@
 % Please edit documentation in R/input_creation.R
 \name{create_input_landscape}
 \alias{create_input_landscape}
-\title{Create an landscape input}
+\title{create an landscape input from a named list of rasters or raster files}
 \usage{
 create_input_landscape(
   landscapes,
@@ -39,10 +39,13 @@ where src is a vector of environmental conditions for the origin cell, src_habit
 
 \item{overwrite_output}{TRUE or FALSE}
 
-\item{verbose}{print distance calculation progress}
+\item{verbose}{print distance calculation progress (default: FALSE)}
+}
+\value{
+no return object. This function saves the landscape input files for gen3sis at the output_directory
 }
 \description{
-Create an landscape input
+create an landscape input from a named list of rasters or raster files
 }
 \examples{
 ##TODO##

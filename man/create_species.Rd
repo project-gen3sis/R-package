@@ -2,7 +2,7 @@
 % Please edit documentation in R/gen3sis_species.R
 \name{create_species}
 \alias{create_species}
-\title{The function create_species creates a new species.}
+\title{creates a new species.}
 \usage{
 create_species(initial_cells, config)
 }
@@ -15,18 +15,40 @@ create_species(initial_cells, config)
 returns a newly created species occupying the provided initial cells
 }
 \description{
-The function create_species creates a new species.
+creates a new species.
 }
 \details{
-This function is intented to be used in the create_ancestor_species function at the configuration 
+This function is to be used in the create_ancestor_species function at the configuration 
 of a simulation. It will create a species object representing one species in the simulation occupying the 
 given list of initial cells.
 }
 \examples{
-##TODO##
+\dontrun{
+# inside a create_ancestor_species function of a config taking a landscape and a config
+# create_species creates a new species
 
-# add example
-#create_species This creates a new species
+# define range of species for the entire world in this case lat long system
+range <- c(-180, 180, -90, 90)
 
-# create_species(initial_cells, config)
+## select coordinates within the range stipulated above
+# takes landscape coordinates
+co <- landscape$coordinates
+# select coordinates within the range
+selection <- co[, "x"] >= range[1] &
+  co[, "x"] <= range[2] &
+  co[, "y"] >= range[3] &
+  co[, "y"] <= range[4]
+# get the initial cells
+initial_cells <- rownames(co)[selection]
+
+# call create_species
+new_species <- create_species(initial_cells, config)
+
+# extra: set local adaptation to max optimal temp equals local temp
+new_species$traits[ , "temp"] <- landscape$environment[,"temp"]
+
+# extra: set a certaintrait (e.g. traitX) to one on all populations of this species
+new_species$traits[ , "tratiX"] <- 1
+  
+}
 }
