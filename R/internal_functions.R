@@ -39,7 +39,7 @@ get_geo_richness <- function(species_list, landscape){
 }
 
 
-#' Calculate the individual average traits for all given species
+#' calculate the individual average traits for all given species
 #'
 #' @param species_list a list
 #'

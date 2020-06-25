@@ -1,6 +1,6 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' The function prepare_directories checks if the necessary directories exist, and otherwise creates them.
+#' checks if the necessary directories exist, and otherwise creates them.
 #' This function will be called by the simulation, but is made available if the directories should be created
 #' manually beforehand, for example to redirect the stdout to a file in the output directory.
 #'
@@ -83,7 +83,7 @@ prepare_directories <- function(config_file = NA,
 
 
 
-#' The function create_input_config creates either an empty configuration or a pre-filled configuration from a config file.
+#' creates either an empty configuration or a pre-filled configuration object from a config file.
 #'
 #' @param config_file the path to a valid configuration file. if NA it creates an empty config.
 #' @return list of configuration elements, similar generated from reading a config_file.R. The internal elements of this list are: "general", "initialization", "dispersal", "speciation", "mutation" and "ecology".
@@ -114,7 +114,7 @@ internal_categories <- c("general",
                          )
 
 
-#' The function populate_config initializes a config with the values from a provided config file.
+#' initializes a config with the values from a provided config file.
 #'
 #' @param config config object to fill
 #' @param config_file config file to retrieve settings from

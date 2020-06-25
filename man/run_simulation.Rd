@@ -2,7 +2,7 @@
 % Please edit documentation in R/gen3sis_main.R
 \name{run_simulation}
 \alias{run_simulation}
-\title{run a simulation in gen3sis and return a summary object.}
+\title{run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder.}
 \usage{
 run_simulation(
   config = NA,
@@ -36,7 +36,7 @@ run_simulation(
 a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) and some usefull simulation data
 }
 \description{
-run a simulation in gen3sis and return a summary object.
+run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder.
 }
 \details{
 run a simulation with defined landscape and config objects. Possibly plot and save specified outputs as defined in the end_of_timestep_observer function inside the config object

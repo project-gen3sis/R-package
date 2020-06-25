@@ -2,7 +2,7 @@
 % Please edit documentation in R/config_handling.R
 \name{prepare_directories}
 \alias{prepare_directories}
-\title{The function prepare_directories checks if the necessary directories exist, and otherwise creates them.
+\title{checks if the necessary directories exist, and otherwise creates them.
 This function will be called by the simulation, but is made available if the directories should be created
 manually beforehand, for example to redirect the stdout to a file in the output directory.}
 \usage{
@@ -23,7 +23,7 @@ prepare_directories(
 returns a named list with the paths for the input and output directories
 }
 \description{
-The function prepare_directories checks if the necessary directories exist, and otherwise creates them.
+checks if the necessary directories exist, and otherwise creates them.
 This function will be called by the simulation, but is made available if the directories should be created
 manually beforehand, for example to redirect the stdout to a file in the output directory.
 }
