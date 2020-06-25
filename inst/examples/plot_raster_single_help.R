@@ -1,4 +1,11 @@
-##TODO##
+# get path to output objects
+datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
 
-# add example
-# plot_raster_single(values, landscape, title, no_data = 0)
+# plot environmental variables at a given step
+landscape_t_150 <- readRDS(
+  file.path(datapath, "output", "config_worldcenter", "landscapes", "landscape_t_150.rds"))
+par(mfrow=c(1,2))
+plot_raster_single(landscape_t_150$environment[,"temp"], landscape_150, "Temperature", NA)
+# use col to change the color
+plot_raster_single(landscape_t_150$environment[,"prec"], landscape_150, "Aridity", NA, col=topo.colors(5))
+# note that these values are scaled by the configuration object

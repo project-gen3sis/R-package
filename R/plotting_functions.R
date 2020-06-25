@@ -35,8 +35,8 @@ plot_landscape <- function(landscape) {
 #' plot the outline of a given landscape over time
 #'
 #' @param landscape the input landscape to plot
-#' @param slices the amount of slices though time between start and end (dafaul value is 2).
-#' @param start_end_times the stating and ending times of the simulation (default is NULL, takes the oldest and most recent avaiable)
+#' @param slices the amount of slices though time between start and end (default value is 2).
+#' @param start_end_times the stating and ending times of the simulation (default is NULL, takes the oldest and most recent available)
 #'
 #' @export
 plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
@@ -58,7 +58,7 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 }
 
 
-#' Plot simulation default summary
+#' plot simulation default summary object
 #'
 #' @param output tsgen3sis output object resulting from a gen3sis simulation 
 #' @param summary_title summary plot title as character. If NULL, title computed from input name.
@@ -141,7 +141,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
 
 
 
-#' Plot the richness of the given list of species on a landscape
+#' plot the richness of the given list of species on a landscape
 #'
 #' @param species_list a list of species to use in the richness calculation
 #' @param landscape a landscape to plot the richness onto
@@ -186,7 +186,7 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
 }
 
 
-#' Plot a single set of values onto a given landscape
+#' plot a single set of values onto a given landscape
 #'
 #' @param values a named list of values, the names must correspond to cells in the landscape
 #' @param landscape a landscape to plot the values onto
@@ -204,7 +204,7 @@ plot_raster_single <- function(values, landscape, title, no_data = 0, col) {
 }
 
 
-#' Plot a set of values onto a given landscape
+#' plot a set of values onto a given landscape
 #'
 #' @param values a matrix of values with columns coresponding to sets of values, and rows corresponding to grid cells,
 #' this will result in ncol(values) raster plots.
