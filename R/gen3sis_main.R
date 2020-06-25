@@ -1,13 +1,33 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' @title Gen3sis: General Engine for Eco-Evolutionary Simulations
+#' @title gen3sis: General Engine for Eco-Evolutionary Simulations
 #' @name gen3sis
-#' @description main gen3sis
+#' @description Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several satelite functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes on biodiversity patterns as a general term.
+#' @references O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
+#' @details Gen3sis is implemented in a mix of R and C++ code, and wrapped into an R-package. All high-level functions that the user may interact with are written in R, and are documented via the standard R / Roxygen help files for R-packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. Additionally, the package provides several convenience functions to generate input data, configuration files and plots, as well as tutorials in the form of vignettes that illustrate how to declare models and run simulations.
+#' @seealso \code{\link{create_input_config}}   \code{\link{create_input_landscape}}  \code{\link{end_of_timestep_observer}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
+#' @keywords programming IO iteration methods utilities
+#' @concept gen3sis modeling eco-evolutionary macroevolution macroecology mechanisms
 #' @examples
 #' \dontrun{
-#' #runing a Gen3sis simulation
-#' # add(1, 1)
-#' # add(10, 1)
+#' # 1. Load gen3sis and check if we all necessary input data is set (landscape and config).
+#' library(gen3sis)
+#' # get path to example input inside package
+#' datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
+#' path_config <- file.path(datapath, "config/config_worldcenter.R")
+#' path_landscape <- file.path(datapath, "landscape")
+#' 
+#' # 2. Run one simple example simulation
+#'sim <- run_simulation(config = path_config, landscape = path_landscape)
+#'
+#' # 3. Visualize the outputs
+#' # plot summary of entire simulation
+#' plot_summary(sim)
+#' # plot richness at a given timestep (only works if speciesis saved for this timestep)
+#' landscape_t_150 <- readRDS(file.path(datapath, "output", "config_worldcenter", "landscapes", "landscape_t_150.rds"))   
+#' species_t_150 <- readRDS(file.path(datapath, "output", "config_worldcenter", "species", "species_t_150.rds"))   
+#' plot_richness(species_t_150, landscape_t_150)   
+#'
 #' }
 #' @docType package
 #' @useDynLib gen3sis, .registration = TRUE
