@@ -33,7 +33,7 @@ plot_richness(species_t_150, landscape_t_150)
 }
 }
 \references{
-O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
+O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). gen3sis: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
 }
 \seealso{
 \code{\link{create_input_config}}   \code{\link{create_input_landscape}}  \code{\link{end_of_timestep_observer}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
