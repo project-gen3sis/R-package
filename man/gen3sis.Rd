@@ -25,9 +25,12 @@ sim <- run_simulation(config = path_config, landscape = path_landscape)
 # 3. Visualize the outputs
 # plot summary of entire simulation
 plot_summary(sim)
-# plot richness at a given timestep (only works if speciesis saved for this timestep)
-landscape_t_150 <- readRDS(file.path(datapath, "output", "config_worldcenter", "landscapes", "landscape_t_150.rds"))   
-species_t_150 <- readRDS(file.path(datapath, "output", "config_worldcenter", "species", "species_t_150.rds"))   
+# plot richness at a given timestep 
+# this only works if species is saved for this timestep
+landscape_t_150 <- readRDS(file.path(datapath, 
+"output", "config_worldcenter", "landscapes", "landscape_t_150.rds"))   
+species_t_150 <- readRDS(file.path(datapath, 
+"output", "config_worldcenter", "species", "species_t_150.rds"))   
 plot_richness(species_t_150, landscape_t_150)   
 
 }
@@ -36,7 +39,7 @@ plot_richness(species_t_150, landscape_t_150)
 O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). gen3sis: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
 }
 \seealso{
-\code{\link{create_input_config}}   \code{\link{create_input_landscape}}  \code{\link{end_of_timestep_observer}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
+\code{\link{create_input_config}}   \code{\link{create_input_landscape}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
 }
 \concept{gen3sis modeling eco-evolutionary macroevolution macroecology mechanisms}
 \keyword{IO}

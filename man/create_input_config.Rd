@@ -10,7 +10,7 @@ create_input_config(config_file = NA)
 \item{config_file}{the path to a valid configuration file. if NA it creates an empty config.}
 }
 \value{
-list of configuration elements, similar generated from reading a config_file.R. The internal elementes of this list are: "general", "initialization", "dispersal", "speciation", "mutation" and "ecology".
+list of configuration elements, similar generated from reading a config_file.R. The internal elements of this list are: "general", "initialization", "dispersal", "speciation", "mutation" and "ecology".
 }
 \description{
 The function create_input_config creates either an empty configuration or a pre-filled configuration from a config file.
