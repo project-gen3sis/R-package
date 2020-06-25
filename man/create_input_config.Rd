@@ -7,17 +7,30 @@
 create_input_config(config_file = NA)
 }
 \arguments{
-\item{config_file}{if NA it creates an empty config or the path to a valid configuration file}
+\item{config_file}{the path to a valid configuration file. if NA it creates an empty config.}
 }
 \value{
-list of configs, similar generated from reading a config_file.R
+list of configuration elements, similar generated from reading a config_file.R. The internal elementes of this list are: "general", "initialization", "dispersal", "speciation", "mutation" and "ecology".
 }
 \description{
 The function create_input_config creates either an empty configuration or a pre-filled configuration from a config file.
 }
 \examples{
-##TODO##
+# create empty config object
+config_empty <- create_input_config(config_file = NA)
 
-# add example
-# create_input_config(config_file = NA)
+# create a config object from config_file
+# get path to example config
+datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
+path_config <- file.path(datapath, "config/config_worldcenter.R")
+config_object <- create_input_config(config_file = path_config)
+
+# change seed of config_worldcenter config object
+config_object$gen3sis$general$random_seed <- 999
+
+
+# run the model for config_object
+\dontrun{
+  sim <- run_simulation(config = config_object, landscape = file.path(datapath, "landscape"))
+}
 }

@@ -85,8 +85,8 @@ prepare_directories <- function(config_file = NA,
 
 #' The function create_input_config creates either an empty configuration or a pre-filled configuration from a config file.
 #'
-#' @param config_file if NA it creates an empty config or the path to a valid configuration file
-#' @return list of configs, similar generated from reading a config_file.R
+#' @param config_file the path to a valid configuration file. if NA it creates an empty config.
+#' @return list of configuration elements, similar generated from reading a config_file.R. The internal elementes of this list are: "general", "initialization", "dispersal", "speciation", "mutation" and "ecology".
 #' @example inst/examples/create_input_config_help.R
 #' @export
 create_input_config <- function(config_file = NA) {
