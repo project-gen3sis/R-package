@@ -21,15 +21,15 @@ This vignette will guide you trough the config input object. It can be either an
 
 Here we will:
 
-1. Create a config form scratch
-2. Modify an existing config
-3. Config elements
+[1. **Create a config**](#create) form scratch.
+[2. **Modify a config**](#modify)
+[3. **Explore config**](#explore), where we will go over the config elements used at the [introduction.html](this vignette) vignette.
 
 ```{r setup}
 library(gen3sis)
 ```
 
-## 1. Create a config from scratch
+## 1. Create a config from scratch {#create}
 
 
 In order to create an empty config, we use the function *write_config_skeleton* and define the output location. For that we have to define where the empty config will be stored.
@@ -123,11 +123,37 @@ apply_ecology <- function(abundance, traits, environment, config) {
 ```
 :::
 
-Note that the main core functions have a stop warning by default, so this configuration is empty and needs to be edited according to the model that
-is to be implemented. You can do this from scratch or by modifiying an existing config.
+Note that the main core functions have stop warnings by default, this forces the configuration to be edited according to the rules and assumptions (model) that is to be created. You can do this from scratch or by modifying an existing config.
 
-## 2. Modify an existing config
+## 2. Modify a config {#modify}
 
-The configuration object (Figure 1 B), also required by the function contains the biological parameters that describe the rules of evolution, as well as technical parameters, such as seedding. The function “write_config_skeleton (“my_config.R”) creates a skeleton config file, which can then be changed by the user. 
+A configuration object can be modified by editing a file or the config object in R. Here we will load the config_worldcenter.R as an R object and modify it's random seed.
+
+```{r eval=TRUE}
+# get data path
+datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
+# creates config object from config file
+config_object <- create_input_config(file.path(datapath, "config/config_worldcenter.R"))
+# modify random seed
+config_object$gen3sis$general$random_seed <- 2020
+```
+
+Like so, functions and parameters can be conveniently changed and simulated in gen3sis. Remember that *run_simulation* works either with a path to a config file or config object, so we can run the old and the new modified config.
+
+```{r eval=F}
+# run simulation by indicating config file path
+sim_old <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
+               landscape = file.path(datapath, "landscape"))
+
+# run simulation by indicating config object
+sim_new <- run_simulation(config = config_object, 
+               landscape = file.path(datapath, "landscape"))
+
+```
+## 3. Explore example config elements.
+
+Here wi will go bit by bit of the config used at the [introduction.html](this vignette) vignette
+
+The configuration object (Figure 1 B), also required by the function contains the biological parameters that describe the rules of evolution, as well as technical parameters, such as seeding. The function “write_config_skeleton (“my_config.R”) creates a skeleton config file, which can then be changed by the user. 
 
 The initialization function creates the ancestor species at the start of the simulation. Users can define the number of ancestor species, their distribution within the ancient landscape and their trait values. With the observer function, changes over time in any abiotic or biotic information of the virtual world can be recorded by defining the outputs that are saved at specified time steps, and results can be saved and plotted in real-time as the model runs. 

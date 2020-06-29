@@ -7,10 +7,10 @@
 # set the random seed for the simulation
 random_seed = 666
 
-# set the starting time step or leave NA to use the earliest/highest timestep
+# set the starting time step or leave NA to use the earliest/highest time-step
 start_time = NA
 
-# set the end time step or leave as NA to use the lates/lowest timestep (0)
+# set the end time step or leave as NA to use the latest/lowest time-step (0)
 end_time = NA
 
 # maximum total number of species in the simulation before it is aborted
@@ -20,7 +20,7 @@ max_number_of_species = 50000
 max_number_of_coexisting_species = 10000
 
 # a list of traits to include with each species
-trait_names = c("temp",  "dispersal") # "prec",
+trait_names = c("temp",  "dispersal")
 
 # ranges to scale the input environemts with:
 environmental_ranges = list("temp" = c(-45, 55), "area"=c(101067, 196949), "prec"=c(1,0.5))
@@ -90,9 +90,9 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 }
 
 
-################
-### Mutation ###
-################
+#################
+### Evolution ###
+#################
 # mutate the traits of a species and return the new traits matrix
 apply_evolution <- function(species, cluster_indices, landscape, config) {
   
