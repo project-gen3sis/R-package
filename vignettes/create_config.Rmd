@@ -34,7 +34,7 @@ library(gen3sis)
 
 In order to create an empty config, we use the function *write_config_skeleton* and define the output location. For that we have to define where the empty config will be stored.
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 # get data path
 datapath <- system.file(file.path("extdata", "EmptyConfig"), package="gen3sis")
 # set config_empty.R file path
@@ -49,7 +49,7 @@ write_config_skeleton(config_file_path)
 ```
 This is how the config_empty.R looks like.You can identify the main areas and each part is described briefly.
 
-```{r comment=''}
+```{r comment='', eval=FALSE}
 cat(readLines(config_file_path), sep = '\n')
 ```
 
