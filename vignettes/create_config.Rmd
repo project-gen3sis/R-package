@@ -123,6 +123,10 @@ apply_ecology <- function(abundance, traits, environment, config) {
 ```
 :::
 
+Note that the main core functions have a stop warning by default, so this configuration is empty and needs to be edited according to the model that
+is to be implemented. You can do this from scratch or by modifiying an existing config.
+
+## 2. Modify an existing config
 
 The configuration object (Figure 1 B), also required by the function contains the biological parameters that describe the rules of evolution, as well as technical parameters, such as seedding. The function “write_config_skeleton (“my_config.R”) creates a skeleton config file, which can then be changed by the user. 
 
