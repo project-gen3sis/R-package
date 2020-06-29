@@ -254,12 +254,12 @@ complete_config <- function(config) {
 }
 
 
-#' This function writes out a config skeleton.
+#' writes out a config skeleton, that is, an empty config file to be eddited by the user.
 #'
 #' @param file_path file path to write the file to
 #' @param overwrite overwrite existing file defaults to FALSE
 #'
-#' @return returns a boolean indicating succes or failure
+#' @return returns a boolean indicating success or failure
 #' @example inst/examples/write_config_skeleton_help.R
 #' @export
 write_config_skeleton <- function(file_path = "./config_skeleton.R", overwrite = FALSE) {

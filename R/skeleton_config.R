@@ -33,10 +33,24 @@ environmental_ranges = list( )
 
 # a place to inspect the internal state of the simulation and collect additional information if desired
 end_of_timestep_observer = function(data, vars, config){
-  # a list of all species can be found in data$all_species
+  # the list of all species can be found in data$all_species
   # the current landscape can be found in data$landscape
-  save_landscape()
-  save_species()
+  
+  # saving functions example:
+    # save_landscape()
+    # save_species()
+  
+  # plotting functions example:
+    # plot environmental conditions
+    # plot_landscape(data$landscape)
+    # plot richness
+    # plot_richness(data$all_species, data$landscape)
+    # plot a specific environmental condition
+    # plot_raster_single(data$landscape$environment[,"temp"], data$landscape, "temp", NA)
+    # plot species 1 range
+    # plot_species_presence(data$all_species[[1]], data$landscape)
+    # plot(0,type="n",axes=FALSE,ann=FALSE)
+
 }
 
 

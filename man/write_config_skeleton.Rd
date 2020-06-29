@@ -2,7 +2,7 @@
 % Please edit documentation in R/config_handling.R
 \name{write_config_skeleton}
 \alias{write_config_skeleton}
-\title{This function writes out a config skeleton.}
+\title{writes out a config skeleton, that is, an empty config file to be eddited by the user.}
 \usage{
 write_config_skeleton(file_path = "./config_skeleton.R", overwrite = FALSE)
 }
@@ -12,10 +12,10 @@ write_config_skeleton(file_path = "./config_skeleton.R", overwrite = FALSE)
 \item{overwrite}{overwrite existing file defaults to FALSE}
 }
 \value{
-returns a boolean indicating succes or failure
+returns a boolean indicating success or failure
 }
 \description{
-This function writes out a config skeleton.
+writes out a config skeleton, that is, an empty config file to be eddited by the user.
 }
 \examples{
 ##TODO##
