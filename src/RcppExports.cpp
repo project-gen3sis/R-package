@@ -5,39 +5,6 @@
 
 using namespace Rcpp;
 
-// integrateModelVectorized
-Rcpp::List integrateModelVectorized(Rcpp::NumericVector init, Rcpp::NumericVector g_in, Rcpp::NumericVector c_in, Rcpp::NumericVector l_in, double t0, double t1, double dt);
-RcppExport SEXP _gen3sis_integrateModelVectorized(SEXP initSEXP, SEXP g_inSEXP, SEXP c_inSEXP, SEXP l_inSEXP, SEXP t0SEXP, SEXP t1SEXP, SEXP dtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type init(initSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type g_in(g_inSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type c_in(c_inSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type l_in(l_inSEXP);
-    Rcpp::traits::input_parameter< double >::type t0(t0SEXP);
-    Rcpp::traits::input_parameter< double >::type t1(t1SEXP);
-    Rcpp::traits::input_parameter< double >::type dt(dtSEXP);
-    rcpp_result_gen = Rcpp::wrap(integrateModelVectorized(init, g_in, c_in, l_in, t0, t1, dt));
-    return rcpp_result_gen;
-END_RCPP
-}
-// integrateModel
-Rcpp::List integrateModel(Rcpp::NumericVector init, Rcpp::NumericVector r, Rcpp::NumericMatrix a, double t0, double t1, double dt);
-RcppExport SEXP _gen3sis_integrateModel(SEXP initSEXP, SEXP rSEXP, SEXP aSEXP, SEXP t0SEXP, SEXP t1SEXP, SEXP dtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type init(initSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type r(rSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type t0(t0SEXP);
-    Rcpp::traits::input_parameter< double >::type t1(t1SEXP);
-    Rcpp::traits::input_parameter< double >::type dt(dtSEXP);
-    rcpp_result_gen = Rcpp::wrap(integrateModel(init, r, a, t0, t1, dt));
-    return rcpp_result_gen;
-END_RCPP
-}
 // getEntities
 IntegerVector getEntities(NumericMatrix ma);
 RcppExport SEXP _gen3sis_getEntities(SEXP maSEXP) {
@@ -110,62 +77,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// AllopatryKernel
-Rcpp::IntegerVector AllopatryKernel(Rcpp::NumericMatrix dist1, double ds, Rcpp::IntegerVector Speciesj);
-RcppExport SEXP _gen3sis_AllopatryKernel(SEXP dist1SEXP, SEXP dsSEXP, SEXP SpeciesjSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type dist1(dist1SEXP);
-    Rcpp::traits::input_parameter< double >::type ds(dsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type Speciesj(SpeciesjSEXP);
-    rcpp_result_gen = Rcpp::wrap(AllopatryKernel(dist1, ds, Speciesj));
-    return rcpp_result_gen;
-END_RCPP
-}
-// SympatryKernel
-Rcpp::IntegerVector SympatryKernel(Rcpp::IntegerVector Speciesj, double p, int NbAllo);
-RcppExport SEXP _gen3sis_SympatryKernel(SEXP SpeciesjSEXP, SEXP pSEXP, SEXP NbAlloSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type Speciesj(SpeciesjSEXP);
-    Rcpp::traits::input_parameter< double >::type p(pSEXP);
-    Rcpp::traits::input_parameter< int >::type NbAllo(NbAlloSEXP);
-    rcpp_result_gen = Rcpp::wrap(SympatryKernel(Speciesj, p, NbAllo));
-    return rcpp_result_gen;
-END_RCPP
-}
-// DispersionKernel
-Rcpp::IntegerVector DispersionKernel(Rcpp::NumericMatrix dist2, double d, IntegerVector Speciesj);
-RcppExport SEXP _gen3sis_DispersionKernel(SEXP dist2SEXP, SEXP dSEXP, SEXP SpeciesjSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type dist2(dist2SEXP);
-    Rcpp::traits::input_parameter< double >::type d(dSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type Speciesj(SpeciesjSEXP);
-    rcpp_result_gen = Rcpp::wrap(DispersionKernel(dist2, d, Speciesj));
-    return rcpp_result_gen;
-END_RCPP
-}
-// SpDiv
-IntegerMatrix SpDiv(double ds, double d, double p, IntegerMatrix MatrixSpecies, NumericMatrix dist1, NumericMatrix dist2, int SpMax);
-RcppExport SEXP _gen3sis_SpDiv(SEXP dsSEXP, SEXP dSEXP, SEXP pSEXP, SEXP MatrixSpeciesSEXP, SEXP dist1SEXP, SEXP dist2SEXP, SEXP SpMaxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type ds(dsSEXP);
-    Rcpp::traits::input_parameter< double >::type d(dSEXP);
-    Rcpp::traits::input_parameter< double >::type p(pSEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type MatrixSpecies(MatrixSpeciesSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type dist1(dist1SEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type dist2(dist2SEXP);
-    Rcpp::traits::input_parameter< int >::type SpMax(SpMaxSEXP);
-    rcpp_result_gen = Rcpp::wrap(SpDiv(ds, d, p, MatrixSpecies, dist1, dist2, SpMax));
-    return rcpp_result_gen;
-END_RCPP
-}
 // get_distance_matrix
 Rcpp::NumericMatrix get_distance_matrix(const IntegerVector habitable_cells, const int num_cells, const IntegerVector dist_p, const IntegerVector dist_i, const NumericVector dist_x, const double max_distance);
 RcppExport SEXP _gen3sis_get_distance_matrix(SEXP habitable_cellsSEXP, SEXP num_cellsSEXP, SEXP dist_pSEXP, SEXP dist_iSEXP, SEXP dist_xSEXP, SEXP max_distanceSEXP) {
@@ -184,18 +95,12 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_gen3sis_integrateModelVectorized", (DL_FUNC) &_gen3sis_integrateModelVectorized, 7},
-    {"_gen3sis_integrateModel", (DL_FUNC) &_gen3sis_integrateModel, 6},
     {"_gen3sis_getEntities", (DL_FUNC) &_gen3sis_getEntities, 1},
     {"_gen3sis_epsN", (DL_FUNC) &_gen3sis_epsN, 2},
     {"_gen3sis_conc", (DL_FUNC) &_gen3sis_conc, 2},
     {"_gen3sis_is_any_f", (DL_FUNC) &_gen3sis_is_any_f, 1},
     {"_gen3sis_Tdbscan", (DL_FUNC) &_gen3sis_Tdbscan, 3},
     {"_gen3sis_Tdbscan_variable", (DL_FUNC) &_gen3sis_Tdbscan_variable, 3},
-    {"_gen3sis_AllopatryKernel", (DL_FUNC) &_gen3sis_AllopatryKernel, 3},
-    {"_gen3sis_SympatryKernel", (DL_FUNC) &_gen3sis_SympatryKernel, 3},
-    {"_gen3sis_DispersionKernel", (DL_FUNC) &_gen3sis_DispersionKernel, 3},
-    {"_gen3sis_SpDiv", (DL_FUNC) &_gen3sis_SpDiv, 7},
     {"_gen3sis_get_distance_matrix", (DL_FUNC) &_gen3sis_get_distance_matrix, 6},
     {NULL, NULL, 0}
 };
