@@ -15,7 +15,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-The configuration object includes the customizable initialization, observer, speciation, dispersal, evolution and ecology functions. Altogether, these six functions are applied as defined in the simulation engine. The possibility to customize these functions confers the high flexibility of *gen3sis* in terms of including a wide range of theoretical knowledge. Additionally, the configuration object lists the model settings, i.e. the ecological traits considered in the simulation: whether a random seed is used; allowing simulation reproducibility; start and end times of the simulation; and rules about aborting the simulation, including the maximum global or local species number permitted. 
+The configuration object defines the core processes of the system modeled and define some run settings. It is essential to define the model to be simulated.
+
+- Core processes:  include a customizable initialization, observer, speciation, dispersal, evolution and ecology function. Altogether, these six functions are applied as defined in the simulation engine. The possibility to customize these functions confers the high flexibility of *gen3sis* in terms of including a wide range of theoretical knowledge.
+- Settings: include the ecological traits considered in the simulation: whether a random seed is used; allowing simulation reproducibility; start and end times of the simulation; and rules about aborting the simulation, including the maximum global or local species number permitted.
+Additionally, the configuration object lists the 
 
 This vignette will guide you trough the config input object. It can be either an R object or a file, that can be easily shared and modified.
 
@@ -52,7 +56,7 @@ And then create an empty config.
 #writes out a config skeleton
 write_config_skeleton(config_file_path)
 ```
-This is how the config_empty.R looks like. We present them by main areas and each part is described briefly. For more information see next session.
+This is how the config_empty.R looks like. We present them by main areas and each part is described briefly. For more information and a hand's on example see next session.
 
 
 ::: {.infobox .caution data-latex="{caution}"}
