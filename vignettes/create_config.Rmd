@@ -139,7 +139,7 @@ Here we will go bit by bit of the config used at the [introduction.html](this vi
 ### **Content of config_.empty_worldcenter.R**
 
 ### ***Settings***
-We start our simulation with the first avaiable timestep and end it a the latest available timestep at the landscape, thus *start_time* and *end_time* are set to NA. We limit the maximum total number of species alive in a simulation to 50000 with *max_number_of_species* and the maximum number of species with one cell to 10000 with *max_number_of_coexisting_species*. Like so, we stop simulations that could possible go off hand and generate too many species. We define which traits we will consider in our simulation with *traits_names*, in our example, species only have a dispersal ability and a optimum temperature traits. For our model to work, we normalize the environmental values, according to the range informed at *environmental_ranges*.
+We start our simulation with the first avaiable timestep and end it a the latest available time-step at the landscape, thus *start_time* and *end_time* are set to NA. We limit the maximum total number of species alive in a simulation to 50000 with *max_number_of_species* and the maximum number of species with one cell to 10000 with *max_number_of_coexisting_species*. Like so, we stop simulations that could possible go off hand and generate too many species. We define which traits we will consider in our simulation with *traits_names*, in our example, species only have a dispersal ability and a optimum temperature traits. For our model to work, we normalize the environmental values, according to the range informed at *environmental_ranges*.
 
 >```{r eval=FALSE}
 random_seed = 666
@@ -152,6 +152,7 @@ environmental_ranges = list("temp" = c(-45, 55), "area"=c(101067, 196949), "prec
 ```
 
 ### ***Observer***
+With the observer function, changes over time in any abiotic or biotic information of the virtual world can be recorded by defining the outputs that are saved at specified time steps, and results can be saved and plotted in real-time as the model runs. 
 In our observer function we save the species and plot the richness. Like so, plots are printed as the simulation progresses and also saved inside the plot folder inside output.
 
 >```{r eval=FALSE}
@@ -177,7 +178,8 @@ end_of_timestep_observer = function(data, vars, config){
 ```
 
 ### ***Initialization***
-The initial abundance of the ancestor species as well as the abundance of species on newly colonized cells is 1. We set one single ancestor species spread across the entire globe, i.e. between longitudes [-180, 180] and latitudes [-90, 90]. We set the **temp** trait of each population of the initial species to the environmental temperature. This means, that each population is adapted to the local conditions, as we will see later on the ecology function. Dispersal is set to one, since it is not ranging. The function *create_ancestor_species* is expected to return a list of new species, i.e. the ancestor(s) one(s).
+The initialization function creates the ancestor species at the start of the simulation. Users can define the number of ancestor species, their distribution within the ancient landscape and their trait values.
+In our example, the initial abundance of the ancestor species as well as the abundance of species on newly colonized cells is 1. We set one single ancestor species spread across the entire globe, i.e. between longitudes [-180, 180] and latitudes [-90, 90]. We set the **temp** trait of each population of the initial species to the environmental temperature. This means, that each population is adapted to the local conditions, as we will see later on the ecology function. Dispersal is set to one, since it is not ranging. The function *create_ancestor_species* is expected to return a list of new species, i.e. the ancestor(s) one(s).
 
 >```{r eval=FALSE}
 initial_abundance = 1
@@ -200,7 +202,7 @@ create_ancestor_species <- function(landscape, config) {
 ### ***Core Processes***
 
 #### ***Dispersal***
-The dispersal of all species is the same and is stochastic, following a weibull distribution with shape 6 and scale 999. For different dispersal between species, the dispersal trait should be used. Moreover, dispersal can be made deterministic by making the function return a fix value. 
+The dispersal function iterates over all species populations and determines the connectivity between sites and the colonization of new sites in the grid cell. In our example, the dispersal of all species is the same and is stochastic, following a weibull distribution with shape 6 and scale 999. For different dispersal between species, the dispersal trait should be used. Note that dispersal can be made deterministic by making the function return a fix value. 
 
 >```{r eval=FALSE}
 get_dispersal_values <- function(n, species, landscape, config) {
@@ -208,55 +210,75 @@ get_dispersal_values <- function(n, species, landscape, config) {
   return(values) }
 ```
 
-This is the histogram of 100 drwans from the dispersal function used abover.
+The histogram of 100 draws from the dispersal function used above.
 
->```{r eval=TRUE, fig.width=7, fig.height=3.2}
+>```{r eval=TRUE, fig.width=6, fig.height=3.2}
 n <- 100
-hist(rweibull(n, shape = 6, scale = 999))
+hist(rweibull(n, shape = 6, scale = 999), col="black")
 ```
 
 ### ***Speciation***
-
+The speciation iterates over every species separately, registers populations’ geographic occupancy (species range), and determines when geographic isolation between population clusters is higher than a user-defined threshold, triggering a lineage splitting event of cladogenesis. The clustering of occupied sites is based on the species’ dispersal capacity and the landscape connection costs. Over time, disconnected clusters gradually accumulate incompatibility, analogous to genetic differentiation. When the divergence between clusters is above the speciation threshold, those clusters become two or more distinct species, and a divergence matrix reset follows. On the other hand, if geographic clusters come into secondary contact before the speciation occurs, they coalesce and incompatibilities are gradually reduced to zero. In our example, speciation takes place after 12 time-steps of isolation and the divergence increase is the same for all species as indicated by *get_divergence_threshold*.
 >```{r eval=FALSE}
+divergence_threshold = 12 #this is 2Myrs
+get_divergence_factor <- function(species, cluster_indices, landscape, config) {
+  return(1) }
 ```
 
-# threshold for genetic distance after which a speciation event takes place.
-divergence_threshold = NULL
-# factor by which the divergence is increased between geographically isolated population.
-# can also be a matrix between the different population clusters.
-get_divergence_factor <- function(species, cluster_indices, landscape, config) {
-  stop("calculate divergence factor here")
-}
 ### ***Evolution***
 
->```{r eval=FALSE}
-```
+In the function bellow, clustered populations (exchanging genes) had their trait homogenized and weighted by abundance, meaning that a trait o a population that is doing well is a site, as dictated by the ecology function. Later, populations mutate based on a normal distribution with standard deviation 0.001, possibly increasing or decreasing species optimum temperature.
 
-# mutate the traits of a species and return the new traits matrix.
+>```{r eval=FALSE}
+# mutate the traits of a species and return the new traits matrix
 apply_evolution <- function(species, cluster_indices, landscape, config) {
-  stop("mutate species traits here")
+  trait_evolutionary_power <- 0.001
+  traits <- species[["traits"]]
+  cells <- rownames(traits)
+  #homogenize trait based on abundance
+  for(cluster_index in unique(cluster_indices)){
+    cells_cluster <- cells[which(cluster_indices == cluster_index)]
+    mean_abd <- mean(species$abundance[cells_cluster])
+    weight_abd <- species$abundance[cells_cluster]/mean_abd
+    traits[cells_cluster, "temp"] <- mean(traits[cells_cluster, "temp"]*weight_abd)
+  }
+  #mutations
+  mutation_deltas <-rnorm(length(traits[, "temp"]), mean=0, sd=trait_evolutionary_power)
+  traits[, "temp"] <- traits[, "temp"] + mutation_deltas
+  return(traits)
 }
-###  ***Ecology***
-
->```{r eval=FALSE}
 ```
 
-# called for every cell with all occurring species, this function calculates abundances and/or who survives for each sites
-# returns a vector of abundances.
-# set the abundance to 0 for every species supposed to die.
-apply_ecology <- function(abundance, traits, environment, config) {
-  stop("calculate species abundances and deaths here")
+###  ***Ecology***
+The ecology function determines the abundance or presence of the populations in occupied sites of each species. The function iterates over all occupied sites and updates the species population abundances or presences on the basis of local environmental values, updated co-occurrence patterns and species traits. The function takes as input the species abundance, species trait, species divergence and clusters, and the landscape values. In our example, we calculate abundances in a site based on how close the species is to the site temperature. We scale the values to avoid small numbers and apply a carrying capacity based on aridity and temperature corrected by the area of a site. If abundances are below 1, species are considered extinct, if total abundance in a site is above the carrying capacity, small abundances are removed progressively and randomly distributed across the present species until total abundance is smaller or equal to the carrying capacity.
+
+>```{r eval=FALSE}
+apply_ecology <- function(abundance, traits, landscape, config) {
+  abundance_scale = 10
+  abundance_threshold = 1
+  #abundance treashold
+  survive <- abundance>=abundance_threshold
+  abundance[!survive] <- 0
+  abundance <- (( 1-abs( traits[, "temp"] - landscape[, "temp"]))*abundance_scale)*as.numeric(survive)
+  #abundance thhreashold
+  abundance[abundance<abundance_threshold] <- 0
+  k <- ((landscape[,"area"]*(landscape[,"prec"]+0.1)*(landscape[,"temp"]+0.1))*abundance_scale^2)
+  total_ab <- sum(abundance)
+  subtract <- total_ab-k
+  if (subtract > 0) {
+    # print(paste("should:", k, "is:", total_ab, "DIFF:", round(subtract,0) ))
+    while (total_ab>k){
+      alive <- abundance>0
+      loose <- sample(1:length(abundance[alive]),1)
+      abundance[alive][loose] <- abundance[alive][loose]-1
+      total_ab <- sum(abundance)
+    }
+    #set negative abundances to zero
+    abundance[!alive] <- 0
+  }
+  return(abundance)
 }
-
-
-
-
-
-
-The configuration object (Figure 1 B), also required by the function contains the biological parameters that describe the rules of evolution, as well as technical parameters, such as seeding. The function “write_config_skeleton (“my_config.R”) creates a skeleton config file, which can then be changed by the user. 
-
-The initialization function creates the ancestor species at the start of the simulation. Users can define the number of ancestor species, their distribution within the ancient landscape and their trait values. With the observer function, changes over time in any abiotic or biotic information of the virtual world can be recorded by defining the outputs that are saved at specified time steps, and results can be saved and plotted in real-time as the model runs. 
-
+```
 
 ## 3. Modify a config {#modify}
 
