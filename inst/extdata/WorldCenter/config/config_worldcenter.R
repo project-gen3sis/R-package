@@ -58,6 +58,24 @@ end_of_timestep_observer = function(data, vars, config){
 # the initial abundance of a newly colonized cell, both during setup and later when colonizing a cell during the dispersal
 initial_abundance = 1
 
+# defines the initial speices traits and ranges
+# place species within rectangle, our case entire globe
+create_ancestor_species <- function(landscape, config) {
+  range <- c(-180, 180, -90, 90)
+  co <- landscape$coordinates
+  selection <- co[, "x"] >= range[1] &
+    co[, "x"] <= range[2] &
+    co[, "y"] >= range[3] &
+    co[, "y"] <= range[4]
+  initial_cells <- rownames(co)[selection]
+  new_species <- create_species(initial_cells, config)
+  #set local adaptation to max optimal temp equals local temp
+  new_species$traits[ , "temp"] <- landscape$environment[,"temp"]
+  new_species$traits[ , "dispersal"] <- 1
+  
+  return(list(new_species))
+}
+
 ###################
 #### Dispersal ####
 ###################
@@ -78,7 +96,6 @@ divergence_threshold = 12 #this is 2Myrs
 # factor by which the divergence is increased between geographicaly isolated population
 # can also be a matrix between the different population clusters
 get_divergence_factor <- function(species, cluster_indices, landscape, config) {
-  
   return(1)
 }
 
