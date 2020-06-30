@@ -1,7 +1,7 @@
 \dontrun{
 # get path containing example rasters
 datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
-# get species
+# get species at t0
 species_t_0 <- readRDS(file.path(datapath, "output/config_worldcenter/species/species_t_0.rds"))
 # get divergence matrix from species 1
 divergence_sp1_t0 <- get_divergence_matrix(species_t_0[[1]])
