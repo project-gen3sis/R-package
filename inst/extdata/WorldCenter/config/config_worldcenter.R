@@ -93,7 +93,7 @@ get_dispersal_values <- function(n, species, landscape, config) {
 # threshold for genetic distance after which a speciation event takes place
 divergence_threshold = 12 #this is 2Myrs
 
-# factor by which the divergence is increased between geographicaly isolated population
+# factor by which the divergence is increased between geographically isolated population
 # can also be a matrix between the different population clusters
 get_divergence_factor <- function(species, cluster_indices, landscape, config) {
   return(1)
