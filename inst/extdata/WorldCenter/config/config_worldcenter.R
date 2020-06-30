@@ -3,7 +3,10 @@
 ## Hagen et al. 2020
 ########################
 
+##########################
 #### General settings ####
+##########################
+
 # set the random seed for the simulation
 random_seed = 666
 
@@ -25,9 +28,13 @@ trait_names = c("temp",  "dispersal")
 # ranges to scale the input environemts with:
 environmental_ranges = list("temp" = c(-45, 55), "area"=c(101067, 196949), "prec"=c(1,0.5))
 
+################
+### Observer ###
+################
+
 # a place to inspect the internal state of the simulation and collect additional information if desired
 end_of_timestep_observer = function(data, vars, config){
-  # save_species()
+  save_species()
   plot_richness(data$all_species, data$landscape)
   # example 1 plot over simulation
     # par(mfrow=c(2,3))
@@ -44,9 +51,10 @@ end_of_timestep_observer = function(data, vars, config){
   
 }
 
-
-
+########################
 #### Initialization ####
+########################
+
 # the intial abundace of a newly colonized cell, both during setup and later when colonizing a cell during the dispersal
 initial_abundance = 1
 

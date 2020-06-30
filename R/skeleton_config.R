@@ -31,6 +31,11 @@ trait_names = c("dispersal")
 # listed with a given range r: the environmental variable will be scaled from [r1, r2] to [0, 1]
 environmental_ranges = list( )
 
+
+################
+### Observer ###
+################
+
 # a place to inspect the internal state of the simulation and collect additional information if desired.
 end_of_timestep_observer = function(data, vars, config){
   # the list of all species can be found in data$all_species
@@ -57,6 +62,7 @@ end_of_timestep_observer = function(data, vars, config){
 ######################
 ### Initialization ###
 ######################
+
 # the initial abundance of a newly colonized cell, both during setup and later when 
 # colonizing a cell during the dispersal.
 initial_abundance = 1
@@ -70,6 +76,7 @@ create_ancestor_species <- function(landscape, config) {
 #################
 ### Dispersal ###
 #################
+
 # the maximum range to consider when calculating the distances from local distance inputs.
 max_dispersal <- Inf
 
@@ -82,6 +89,7 @@ get_dispersal_values <- function(n, species, landscape, config) {
 ##################
 ### Speciation ###
 ##################
+
 # threshold for genetic distance after which a speciation event takes place.
 divergence_threshold = NULL
 
@@ -95,6 +103,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 #################
 ### Evolution ###
 #################
+
 # mutate the traits of a species and return the new traits matrix.
 apply_evolution <- function(species, cluster_indices, landscape, config) {
   stop("mutate species traits here")
@@ -104,6 +113,7 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
 ###############
 ### Ecology ###
 ###############
+
 # called for every cell with all occurring species, this function calculates abundances and/or 
 # who survives for each sites.
 # returns a vector of abundances.

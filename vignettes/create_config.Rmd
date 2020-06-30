@@ -1,5 +1,5 @@
 ---
-title: "Creating Configurations in gen3sis"
+title: "Creating input configurations in gen3sis"
 output: rmarkdown::html_vignette
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 vignette: >
@@ -21,18 +21,20 @@ This vignette will guide you trough the config input object. It can be either an
 
 Here we will:
 
-[1. **Create a config**](#create) form scratch.
+[1. **Create an empty config**](#create) using the *write_config_skeleton* function. 
 
-[2. **Modify a config**](#modify)
+[2. **Explain an example config**](#explore) using the config from [introduction.html](this vignette) vignette.
 
-[3. **Explore config**](#explore), where we will go over the config elements used at the [introduction.html](this vignette) vignette.
+[3. **Modify a config**](#modify) from within R.
+
+
 
 
 ```{r setup}
 library(gen3sis)
 ```
 
-## 1. Create a config from scratch {#create}
+## 1. Create an empty config {#create}
 
 
 In order to create an empty config, we use the function *write_config_skeleton* and define the output location. For that we have to define where the empty config will be stored.
@@ -50,11 +52,11 @@ And then create an empty config.
 #writes out a config skeleton
 write_config_skeleton(config_file_path)
 ```
-This is how the config_empty.R looks like. We present them by main areas and each part is described briefly.
+This is how the config_empty.R looks like. We present them by main areas and each part is described briefly. For more information see next session.
 
 
 ::: {.infobox .caution data-latex="{caution}"}
-> ## **Content of config.empty.R**
+> ## **Content of config_empty.R**
 >
 >***Settings***
 >```{r eval=FALSE}
@@ -128,7 +130,135 @@ apply_ecology <- function(abundance, traits, environment, config) {
 
 Note that the main core functions have stop warnings by default, this forces the configuration to be edited according to the rules and assumptions (model) that is to be created. You can do this from scratch or by modifying an existing config.
 
-## 2. Modify a config {#modify}
+
+## 2. Explain example config {#explore}
+
+Here we will go bit by bit of the config used at the [introduction.html](this vignette) vignette. We will follow the structure presented above.
+
+
+### **Content of config_.empty_worldcenter.R**
+
+### ***Settings***
+We start our simulation with the first avaiable timestep and end it a the latest available timestep at the landscape, thus *start_time* and *end_time* are set to NA. We limit the maximum total number of species alive in a simulation to 50000 with *max_number_of_species* and the maximum number of species with one cell to 10000 with *max_number_of_coexisting_species*. Like so, we stop simulations that could possible go off hand and generate too many species. We define which traits we will consider in our simulation with *traits_names*, in our example, species only have a dispersal ability and a optimum temperature traits. For our model to work, we normalize the environmental values, according to the range informed at *environmental_ranges*.
+
+>```{r eval=FALSE}
+random_seed = 666
+start_time = NA
+end_time = NA
+max_number_of_species = 50000
+max_number_of_coexisting_species = 10000
+trait_names = c("temp",  "dispersal")
+environmental_ranges = list("temp" = c(-45, 55), "area"=c(101067, 196949), "prec"=c(1,0.5))
+```
+
+### ***Observer***
+In our observer function we save the species and plot the richness. Like so, plots are printed as the simulation progresses and also saved inside the plot folder inside output.
+
+>```{r eval=FALSE}
+end_of_timestep_observer = function(data, vars, config){
+  save_species()
+  plot_richness(data$all_species, data$landscape)
+}
+```
+
+Combined plots can be generated inside the observer function as for example:
+
+>```{r eval=FALSE}
+end_of_timestep_observer = function(data, vars, config){
+    par(mfrow=c(2,3))
+    plot_raster_single(data$landscape$environment[,"temp"], data$landscape, "temp", NA)
+    plot_raster_single(data$landscape$environment[,"prec"], data$landscape, "prec", NA)
+    plot_raster_single(data$landscape$environment[,"area"], data$landscape, "area", NA)
+    plot_richness(data$all_species, data$landscape)
+    plot_species_presence(data$all_species[[1]], data$landscape)
+    plot(0,type='n',axes=FALSE,ann=FALSE)
+    mtext("STATUS",1)
+}
+```
+
+### ***Initialization***
+The initial abundance of the ancestor species as well as the abundance of species on newly colonized cells is 1. We set one single ancestor species spread across the entire globe, i.e. between longitudes [-180, 180] and latitudes [-90, 90]. We set the **temp** trait of each population of the initial species to the environmental temperature. This means, that each population is adapted to the local conditions, as we will see later on the ecology function. Dispersal is set to one, since it is not ranging. The function *create_ancestor_species* is expected to return a list of new species, i.e. the ancestor(s) one(s).
+
+>```{r eval=FALSE}
+initial_abundance = 1
+create_ancestor_species <- function(landscape, config) {
+  range <- c(-180, 180, -90, 90)
+  co <- landscape$coordinates
+  selection <- co[, "x"] >= range[1] &
+    co[, "x"] <= range[2] &
+    co[, "y"] >= range[3] &
+    co[, "y"] <= range[4]
+  initial_cells <- rownames(co)[selection]
+  new_species <- create_species(initial_cells, config)
+  #set local adaptation to max optimal temp equals local temp
+  new_species$traits[ , "temp"] <- landscape$environment[,"temp"]
+  new_species$traits[ , "dispersal"] <- 1
+  return(list(new_species))
+}
+```
+
+### ***Core Processes***
+
+#### ***Dispersal***
+The dispersal of all species is the same and is stochastic, following a weibull distribution with shape 6 and scale 999. For different dispersal between species, the dispersal trait should be used. Moreover, dispersal can be made deterministic by making the function return a fix value. 
+
+>```{r eval=FALSE}
+get_dispersal_values <- function(n, species, landscape, config) {
+  values <- rweibull(n, shape = 6, scale = 999)
+  return(values) }
+```
+
+This is the histogram of 100 drwans from the dispersal function used abover.
+
+>```{r eval=TRUE, fig.width=7, fig.height=3.2}
+n <- 100
+hist(rweibull(n, shape = 6, scale = 999))
+```
+
+### ***Speciation***
+
+>```{r eval=FALSE}
+```
+
+# threshold for genetic distance after which a speciation event takes place.
+divergence_threshold = NULL
+# factor by which the divergence is increased between geographically isolated population.
+# can also be a matrix between the different population clusters.
+get_divergence_factor <- function(species, cluster_indices, landscape, config) {
+  stop("calculate divergence factor here")
+}
+### ***Evolution***
+
+>```{r eval=FALSE}
+```
+
+# mutate the traits of a species and return the new traits matrix.
+apply_evolution <- function(species, cluster_indices, landscape, config) {
+  stop("mutate species traits here")
+}
+###  ***Ecology***
+
+>```{r eval=FALSE}
+```
+
+# called for every cell with all occurring species, this function calculates abundances and/or who survives for each sites
+# returns a vector of abundances.
+# set the abundance to 0 for every species supposed to die.
+apply_ecology <- function(abundance, traits, environment, config) {
+  stop("calculate species abundances and deaths here")
+}
+
+
+
+
+
+
+The configuration object (Figure 1 B), also required by the function contains the biological parameters that describe the rules of evolution, as well as technical parameters, such as seeding. The function “write_config_skeleton (“my_config.R”) creates a skeleton config file, which can then be changed by the user. 
+
+The initialization function creates the ancestor species at the start of the simulation. Users can define the number of ancestor species, their distribution within the ancient landscape and their trait values. With the observer function, changes over time in any abiotic or biotic information of the virtual world can be recorded by defining the outputs that are saved at specified time steps, and results can be saved and plotted in real-time as the model runs. 
+
+
+## 3. Modify a config {#modify}
 
 A configuration object can be modified by editing a file or the config object in R. Here we will load the config_worldcenter.R as an R object and modify it's random seed.
 
@@ -153,85 +283,3 @@ sim_new <- run_simulation(config = config_object,
                landscape = file.path(datapath, "landscape"))
 
 ```
-## 3. Explore example config elements {#explore}
-
-Here we will go bit by bit of the config used at the [introduction.html](this vignette) vignette. We will follow the structure presented above.
-
-## **Content of config.empty.R**
-
-## ***Settings***
->```{r eval=FALSE}
-# set the random seed for the simulation.
-random_seed = NA
-# set the starting time step or leave NA to use the earliest/highest time-step.
-start_time = NA
-# set the end time step or leave as NA to use the latest/lowest time-step (0).
-end_time = NA
-# maximum total number of species in the simulation before it is aborted.
-max_number_of_species = 25000
-# maximum number of species within one cell before the simulation is aborted.
-max_number_of_coexisting_species = 2500
-# a list of traits to include with each species.
-# a "dispersal" trait is implicitly added in any case.
-trait_names = c("dispersal")
-# ranges to scale the input environments with:
-# not listed variable:         no scaling takes place
-# listed, set to NA:           env. variable will be scaled from [min, max] to [0, 1]
-# listed with a given range r: env. variable will be scaled from [r1, r2] to [0, 1]
-environmental_ranges = list( )
-```
-## ***Observer***
->```{r eval=FALSE}
-end_of_timestep_observer = function(data, vars, config){
-  # the list of all species can be found in data$all_species.
-  # the current landscape can be found in data$landscape.
-}
-```
->***Initialization***
->```{r eval=FALSE}
-# the initial abundance of a newly colonized cell, both during setup and later when 
-# colonizing a cell during the dispersal.
-initial_abundance = 1
-# place species in the landscape:
-create_ancestor_species <- function(landscape, config) {
- stop("create the initial species here")
-}
-```
->***Core Processes***
->```{r eval=FALSE}
-### Dispersal
-# the maximum range to consider when calculating the distances from local distance inputs.
-max_dispersal <- Inf
-# returns n dispersal values.
-get_dispersal_values <- function(n, species, landscape, config) {
-  stop("calculate dispersal values here")
-}
-### Speciation
-# threshold for genetic distance after which a speciation event takes place.
-divergence_threshold = NULL
-# factor by which the divergence is increased between geographically isolated population.
-# can also be a matrix between the different population clusters.
-get_divergence_factor <- function(species, cluster_indices, landscape, config) {
-  stop("calculate divergence factor here")
-}
-### Evolution
-# mutate the traits of a species and return the new traits matrix.
-apply_evolution <- function(species, cluster_indices, landscape, config) {
-  stop("mutate species traits here")
-}
-### Ecology
-# called for every cell with all occurring species, this function calculates abundances and/or who survives for each sites
-# returns a vector of abundances.
-# set the abundance to 0 for every species supposed to die.
-apply_ecology <- function(abundance, traits, environment, config) {
-  stop("calculate species abundances and deaths here")
-}
-```
-:::
-
-
-
-
-The configuration object (Figure 1 B), also required by the function contains the biological parameters that describe the rules of evolution, as well as technical parameters, such as seeding. The function “write_config_skeleton (“my_config.R”) creates a skeleton config file, which can then be changed by the user. 
-
-The initialization function creates the ancestor species at the start of the simulation. Users can define the number of ancestor species, their distribution within the ancient landscape and their trait values. With the observer function, changes over time in any abiotic or biotic information of the virtual world can be recorded by defining the outputs that are saved at specified time steps, and results can be saved and plotted in real-time as the model runs. 
