@@ -42,13 +42,11 @@ run a simulation in gen3sis and return a summary object possibly saving outputs 
 run a simulation with defined landscape and config objects. Possibly plot and save specified outputs as defined in the end_of_timestep_observer function inside the config object
 }
 \examples{
-## running a simple simulation
-
+\dontrun{
 # get path or correct input objects
 datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
 
 # run simulation and store summary obejct to sim
-\dontrun{
 sim <- run_simulation(config = file.path(datapath,"config/config_fast.R"), 
                 landscape = file.path(datapath,"landscape"))
 
