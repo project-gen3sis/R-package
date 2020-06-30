@@ -7,7 +7,12 @@
   landscape_t_0 <- readRDS(file.path(datapath, "output/config_worldcenter/landscapes/landscape_t_0.rds"))
   # get geo richness
   richness_t_0 <- get_geo_richness(species_t_0, landscape_t_0)
-  # get divergence matrix from species 12
-  divergence_sp12_t0 <- get_divergence_matrix(species_t_0[[12]])
-  # note that species 1 has no divergence between it's populations, while 12 has.
+  
+  # histogram of richness at t0
+  hist(richness_t_0)
+  
+  ## plot richness using raster and gen3sis color_richness (see plot_richness for alternative)
+  # combine richness and geographical coordinates
+  geo_richness_t_0 <- cbind(landscape_t_0$coordinates, richness_t_0)
+  plot(rasterFromXYZ(geo_richness_t_0), col=color_richness(20))
 }
