@@ -1,5 +1,5 @@
 ---
-title: "Creating input in gen3sis"
+title: "Creating input landscapes in gen3sis"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -19,24 +19,34 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette aims at showing how to use the function create_input_landscape() that creates input landscape objects necessary to run gen3sis: 
+This vignette aims at showing how to use the function *create_input_landscape* that creates input landscape objects necessary to run *gen3sis*. These objects are:
 
-1) a rds file containing a landscape list of raster stacks for environmental variables; 
+- a rds file containing a landscape list of raster stacks for environmental variables; 
 
-2) a series os rds files, one for each timestep, including distance matrices between sites. 
+- a series of rds files, one for each timestep, including distance matrices between sites. 
 
 
 To create these files, the function requires as arguments: 
 
-A) a named list of rasters, with each raster containing the spatio-temporal distribution of an environmental variable; 
+A) a named list of environmental rasters containing layers for the different time steps, with each raster layer representing the spatial distribution of an environmental variable; 
 
-B) a cost function defining how dispersal between particular types of cells is penalized (to be used for the calculation of the distance matrices). 
+B) a cost function defining how dispersal between particular types of sites is penalized (to be used for the calculation of the distance matrices). 
 
-Further arguments can be modified from the default values depending on user preferences. Below, we go step by step to generate the R objects required by the function create_input(). For this exercise, we will use the simple island landscape that we used in the introduction vignette and in the main text of the package manuscript as case study 1. This example is important, because the user will define each required object him/herself.
+Further arguments can be modified from the default values depending on user preferences. Below, we will generate the R objects required by the function *create_input_landscape* step by step. For this exercise, we will use the simple island landscape that we used in the [introduction vignette](introduction.html) and in the main text of the package manuscript as case study 1. This example is important, because the user will define each required object him/herself.
 
-The first step is to load the necessary packages:
+The first step is to load the necessary packages and set the working directory:
 
-```{r setup, message=F}
+```{r setup, message=F, eval=F, results='hide'}
+library(gen3sis)
+library(raster)
+
+datapath <- system.file("extdata", package="gen3sis")
+setwd(datapath)
+```
+
+```{r echo=FALSE, message=F, results='hide'}
+knitr::opts_knit$set(root.dir = '../inst/extdata/')
+getwd()
 library(gen3sis)
 library(raster)
 ```
@@ -44,14 +54,14 @@ library(raster)
 ## Creating the environmental data frames
 In this step, the user needs to create the data frames containing the spatiotemporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 4d sample world that has been used in the introduction vignette. We first load the three corresponding raster bricks from the hard drive.
 
-```{r eval=FALSE, message=F}
-temperature_brick <- brick('inst/extdata/InputRasters/WorldCenter/temp_rasters.tif') #WIP
-aridity_brick <- brick('inst/extdata/InputRasters/WorldCenter/arid_rasters.tif') #WIP
-area_brick <- brick('inst/extdata/InputRasters/WorldCenter/area_rasters.tif') #WIP
+```{r eval=T, message=F}
+temperature_brick <- brick('InputRasters/WorldCenter/temp_rasters.tif')
+aridity_brick <- brick('InputRasters/WorldCenter/arid_rasters.tif')
+area_brick <- brick('InputRasters/WorldCenter/area_rasters.tif')
 ```
 
 
-If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the [design_landscape.html](design_landscape vignette).
+If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the [design_landscape vignette](design_landscape.html).
 
 
 ## Creating a list with the environmental data frames
@@ -59,7 +69,7 @@ To create the input landscape for *gen3sis*, all environmental variables have to
 
 We will now create a list that contains all of the layers of our raster bricks for temperature, aridity and area.
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 landscapes_list <- list(temp=NULL, arid=NULL, area=NULL)
 for(i in 1:nlayers(temperature_brick)){
   landscapes_list$temp <- c(landscapes_list$temp, temperature_brick[[i]])
@@ -70,15 +80,110 @@ for(i in 1:nlayers(temperature_brick)){
 
 
 ## Defining a cost function 
-The second argument we need to define is a cost function. This function should define how connected and reachable sites are via dispersal. For example, suitable terrestrial cells should pose no cost for dispersal, but dispersal over water sites should increase the cost of dispersal. The costs have to be defined in meters because the coordinate system is in meters for real landscapes (automatically corrected to km in later on by the create_input_landscape() function). Hence, we can define a simple cost function in which the dispersal is not penalized: 
+The second argument we need to define is a cost function. This function should define the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
 
-```{r eval=FALSE}
-my_cost_function <- function(){
-  return(1)
+First, let's look at a very simple cost function, which is not penalizing dispersal for crossing a certain type of sites. The costs have to be defined in meters because the coordinate system is in meters for real landscapes (automatically corrected to km in later on by the *create_input_landscape* function). Hence, we can define a simple cost function in which the dispersal is not penalized: 
+
+```{r eval=TRUE}
+cost_function_null <- function(source, habitable_src, dest, habitable_dest) {
+    return(1)
 }
 ```
 
-XXXXX Add here two examples, from africa to South America XXXXX
+```{r, echo=FALSE, eval=F}
+landscapes_list_t0 <- list(temp=NULL)
+landscapes_list_t0$temp <- c(landscapes_list_t0$temp, temperature_brick[[1]])
+
+create_input(landscapes = landscapes_list_t0,
+                               cost_function = cost_function_null,
+                               output_directory = "../CostFunctionExamples/cost_function_null",# a directory name to save the files in
+                               directions = 8, # all surrounding sites from a focus site
+                               calculate_full_distance_matrices = TRUE  # full distance matrix
+)
+
+```
+
+```{r, echo=FALSE, fig.width=7, fig.height=5, fig.cap='This figure shows the travelling costs from one site in central Africa to all other sites. The distance matrix was computed using the very simple cost function that has been introduced before and is not adding a penalty for crossing a certain tipe of site.', fig.align='left'}
+dist_matrix_null_t0 <- readRDS('CostFunctionExamples/cost_function_null/distances_full/distances_full_0.rds')
+landscapes_null <- readRDS('CostFunctionExamples/cost_function_null/landscapes.rds')
+landscapes_null_t0 <- na.omit(landscapes_null$temp[, c('x', 'y', '0')])
+dist_null_t0_mat <- cbind(landscapes_null_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_null_t0[,140]))
+dist_null_t0 <- rasterFromXYZ(dist_null_t0_mat)
+
+maxcost <- 155
+mincost <- 0
+cost_breaks <- seq(mincost, maxcost, by=1)
+cost_colors <- rev(gray(seq(0.03, 0.9, length.out=length(cost_breaks)-1)))
+
+par(mar=c(1,1,1,2))
+layout(matrix(c(1,1,1,1,2), ncol=1))
+
+#par(mar=c(1,1,1,2))
+image(dist_null_t0, col=cost_colors, breaks=cost_breaks)
+#plot(dist_null_t0, col=cost_colors, breaks=cost_breaks, axes=F, box=F, legend.args = list(text = 'connection cost', side = 2, 
+#         font = 2, line = 0.5, cex = 0.8))
+arrows(10, 8, -54, 8, lwd=3, col='red')
+text(-22, 11, labels=paste('connection cost =', round(dist_null_t0_mat$cost[dist_null_t0_mat$x==(-54) & dist_null_t0_mat$y==8], 1)), cex=1.5, font=2)
+
+plot.new()
+legend_df <- as.data.frame(cbind(seq(0, length(cost_breaks)-1, length.out=(length(cost_breaks))), rep(0.25, (length(cost_breaks))), cost_breaks))
+legend_image <- rasterFromXYZ(legend_df, res=0.01)
+plot(legend_image, legend.only=T, col=cost_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.45, 0.6), 
+   axis.args=list(at=seq(mincost, maxcost, 25),labels=seq(mincost, maxcost, 25)), legend.args=list(text='connection cost'))
+```
+
+
+
+Now, let's look at a slightly more sophisticated cost function. Only cells which are not NA in all of the environmental rasters are considered habitable. Here, suitable terrestrial sites should pose no cost for dispersal, but dispersal over water sites should increase the cost of dispersal. 
+
+```{r eval=TRUE}
+cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
+  if(!all(habitable_src, habitable_dest)) {
+    return(2)
+  } else {
+    return(1)
+  }
+}
+```
+
+```{r, echo=FALSE, eval=F}
+create_input(landscapes = landscapes_list_t0,
+                               cost_function = cost_function_water,
+                               output_directory = "CostFunctionExamples/cost_function_water",# a directory name to save the files in
+                               directions = 8, # all surrounding sites from a focus site
+                               calculate_full_distance_matrices = TRUE  # full distance matrix
+)
+
+```
+
+```{r, echo=FALSE, fig.width=7, fig.height=5, fig.cap='This figure shows the travelling costs from one site in central Africa to all other sites. The distance matrix was computed using the user defined cost function presented above, where crossing water has double the costs of crossing a land site.', fig.align='left'}
+dist_matrix_water_t0 <- readRDS('CostFunctionExamples/cost_function_water/distances_full/distances_full_0.rds')
+landscapes_water <- readRDS('CostFunctionExamples/cost_function_water/landscapes.rds')
+landscapes_water_t0 <- na.omit(landscapes_water$temp[, c('x', 'y', '0')])
+dist_water_t0_mat <- cbind(landscapes_water_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_water_t0[,140]))
+dist_water_t0 <- rasterFromXYZ(dist_water_t0_mat)
+
+cmaxcost <- 155
+mincost <- 0
+cost_breaks <- seq(mincost, maxcost, by=1)
+cost_colors <- rev(gray(seq(0.03, 0.9, length.out=length(cost_breaks)-1)))
+
+par(mar=c(1,1,1,2))
+layout(matrix(c(1,1,1,1,2), ncol=1))
+
+#par(mar=c(1,1,1,2))
+image(dist_water_t0, col=cost_colors, breaks=cost_breaks)
+#plot(dist_water_t0, col=cost_colors, breaks=cost_breaks, axes=F, box=F, legend.args = list(text = 'connection cost', side = 2, 
+#         font = 2, line = 0.5, cex = 0.8))
+arrows(10, 8, -54, 8, lwd=3, col='red')
+text(-22, 11, labels=paste('connection cost =', round(dist_water_t0_mat$cost[dist_water_t0_mat$x==(-54) & dist_water_t0_mat$y==8], 1)), cex=1.5, font=2)
+
+plot.new()
+legend_df <- as.data.frame(cbind(seq(0, length(cost_breaks)-1, length.out=(length(cost_breaks))), rep(0.25, (length(cost_breaks))), cost_breaks))
+legend_image <- rasterFromXYZ(legend_df, res=0.01)
+plot(legend_image, legend.only=T, col=cost_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.45, 0.6), 
+   axis.args=list(at=seq(mincost, maxcost, 25),labels=seq(mincost, maxcost, 25)), legend.args=list(text='connection cost'))
+```
 
 
 Whether a specific site can be reached or not depends on the properties of the population or species.
@@ -86,24 +191,25 @@ Whether a specific site can be reached or not depends on the properties of the p
 ## Further useful arguments
 Besides the landscape list, the cost function and the experiment folder, we can define further arguments: directions, timesteps and calculate_full_distance_matrices. 
 
-The argument 'directions' requires an integer providing the amount of directions used to calculate distances. It can take 4, 8, 16 as values to consider the four, eigth or 16 neiboring sites. This is the same homonimous argument used by the function transition in the gdistance package (gdistance::transition). 
+The argument 'directions' requires an integer providing the amount of directions used to calculate distances. It can take 4, 8 or 16 as values to consider the four, eigth or 16 neighboring sites. This is the same homonimous argument used by the function *transition* in the gdistance package (gdistance::transition). 
 
-The argument 'timesteps' requires a vector of strings of mode character and is used to name the files and to name the timesteps in the .rds landscape object created by the create_input() function. It is not necessary to define this argument, but it helps readibility when manipulating the object. 
+The argument 'timesteps' requires a vector of strings of mode character and is used to name the files and to name the timesteps in the .rds landscape object created by the *create_input_landscape* function. It is not necessary to define this argument, but it helps readibility when manipulating the object. 
 
-The argument 'calculate_full_distance_matrices' defines whether the create_input_landscape() function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring cells specified in 'directions' around each suitable grid cell (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
+The argument 'calculate_full_distance_matrices' defines whether the *create_input_landscape* function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring sites specified in 'directions' around each suitable site (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
 
-The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [design_landscape.html](design_landscape vignette), geographic distance would be measured in units of grid cells (sites).
+The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [design_landscape vignette](design_landscape.html), geographic distance would be measured in units of sites.
 
 ## Create input files 
 
-The model uses serialized R files (.rds) format for all inputs. The functions for processing the input data in the required format are available in the package. Once the data is processed, the simulation can be started with the function run_simulation().
-
+The model uses serialized R files (.rds) format for all inputs. The functions for processing the input data in the required format are available in the package. The file path where the landscapes and the distance matrices of all time steps should be stored can bus specified in the *create_input_landscape* function.
 ```{r eval=FALSE}
 create_input_landscape(landscapes = landscapes_list,
-             cost_function = my_cost_function,
-             output_directory = "../My_experiment_Input",# a directory name to save the files in
-             directions = 8, # all surrounding sites from a focus cell
+             cost_function = cost_function_water(),
+             output_directory = "WorldCenter/landscape",# a directory name to save the files in
+             directions = 8, # all surrounding sites from a focus site
              timesteps = as.character(300:0), # just to name the files
              calculate_full_distance_matrices = TRUE  # full distance matrix
 )
 ```
+
+ Once the data is processed, the simulation can be started with the function *run_simulation*.

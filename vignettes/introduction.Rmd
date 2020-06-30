@@ -82,7 +82,7 @@ The first landscape class contains: (i) the geographic coordinates of the landsc
 The second landscape class defines the permeability of the landscape for species movement between sites via dispersal. Connection cost between sites is computed for each time step from the gridded landscape data based on harvesine geographic distances modified by a user-defined cost function and stored as sparse distance matrices. Distance matrices, containing the connection costs, are provided at every time step as either: (i) a pre-computed full distance matrix, containing all habitable sites in the landscape (faster simulations but more storage required); or (ii) a local distance matrix, computed from neighbouring site distances up to a user-defined range limit (slower simulations but less storage required).
 
 
-**NOTE** the *gen3sis* landscape contains several files. The .rds file contains the landscape changing over time with it's environmental variables. The distances folder stores the information how the landscape is connected (connections costs) which will interact with the disperal hability of the modeled organisms. To see how to create a landscape object refer to [design_landscape.html](this vignette) and [create_input_landscape.html](this vignette).
+**NOTE** the *gen3sis* landscape contains several files. The .rds file contains the landscape changing over time with it's environmental variables. The distances folder stores the information how the landscape is connected (connections costs) which will interact with the disperal hability of the modeled organisms. To see how to create a landscape object refer to [this vignette](design_landscape.html) and [this vignette](create_input_landscape.html).
 
 
 This is how the landscape we will use here looks like at 150, 125 and 100Ma, below are the plots of temperature and aridity.
@@ -335,6 +335,6 @@ summary(richness_model)$coefficients
 ```
 Above we report the explained deviance of the glm model on richness considering temperature and aridity. This explained deviance will not be total since there are other effects including dispersal limitations, that are not considered in this statistical summary. It's important to consider as well that we have now only been analyzing the species richness at one time-step, namely the last one. The emerged patterns are more likely not only to be explained by the environmental conditions of that time but also dependent on historical conditions which gen3sis used as input. 
 
-For more details on how to create a landscape and prepare it to use in *gen3sis* see [design_landscape.html](this vignette) and [create_input_landscape.html](this vignette). For more details on how to create or modify a configuration object see [create_config.html](this vignette)
+For more details on how to create a landscape and prepare it to use in *gen3sis* see [this vignette](design_landscape.html) and [this vignette](create_input_landscape.html). For more details on how to create or modify a configuration object see [this vignette](create_config.html)
 
 It's now up to you to explore the "virtual" world. 
