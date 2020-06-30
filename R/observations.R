@@ -136,6 +136,7 @@ save_extract <- function(element) {
   save_landscape()
   dir.create(file.path(config$directories$output, element), showWarnings = F, recursive = T)
   tmp <- lapply(data$all_species, function(x){return(x[[element]])})
+  names(tmp) <- sapply(data$all_species, function(x){x$id})
   saveRDS(object = tmp,
           file = file.path(config$directories$output, element, paste0(element, "_t_", vars$ti, ".rds")))
 }
