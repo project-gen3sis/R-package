@@ -313,6 +313,4 @@ summary(richness_model)$coefficients
 ```
 Above we report the explained deviance of the glm model on richness considering temperature and aridity. This explained deviance will not be total since there are other effects including dispersal limitations, that are not considered in this statistical summary. It's important to consider as well that we have now only been analyzing the species richness at one time-step, namely the last one. The emerged patterns are more likely not only to be explained by the environmental conditions of that time but also dependent on historical conditions which gen3sis used as input. 
 
-For more details on how to create a landscape and prepare it to use in *gen3sis* see [design_landscape.html](this vignette) and [create_input_landscape.html](this vignette). For more details on how to create or modify a configuration object see [create_config.html](this vignette)
-
-It's now up to you to explore the "virtual" world. 
+For more details on how to create a landscape and prepare it to use in *gen3sis* see [design_landscape.html](this vignette) and [create_input_landscape.html](this vignette). For more details on how to create or modify a configuration object see [create_config.html](this vignette). It's now up to you to explore the "virtual" world. 
