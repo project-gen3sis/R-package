@@ -83,6 +83,7 @@ create_ancestor_species <- function(landscape, config) {
 # returns n dispersal values
 get_dispersal_values <- function(n, species, landscape, config) {
   values <- rweibull(n, shape = 6, scale = 999)
+  
   return(values)
 }
 
@@ -96,6 +97,7 @@ divergence_threshold = 12 #this is 2Myrs
 # factor by which the divergence is increased between geographically isolated population
 # can also be a matrix between the different population clusters
 get_divergence_factor <- function(species, cluster_indices, landscape, config) {
+  
   return(1)
 }
 
@@ -103,6 +105,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 #################
 ### Evolution ###
 #################
+
 # mutate the traits of a species and return the new traits matrix
 apply_evolution <- function(species, cluster_indices, landscape, config) {
   
@@ -127,6 +130,7 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
 ###############
 ### Ecology ###
 ###############
+
 # called for every cell with all occurring species, this function calculates the who survives in the current cells
 # returns a vector of abundances
 # set the abundance to 0 for every species supposed to die
