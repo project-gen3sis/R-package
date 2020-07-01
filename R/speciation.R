@@ -65,15 +65,14 @@ loop_speciation <- function(config, data, vars) {
     gen_dist_spi <- decompress_divergence(species[["divergence"]])
     # update genetic distances
     ifactor <- config$gen3sis$speciation$get_divergence_factor(species, clu_geo_spi_ti, data[["landscape"]], config)
-
     gen_dist_spi <- update_divergence(gen_dist_spi, clu_geo_spi_ti, ifactor = ifactor )
 
     gen_dist_spi <- compress_divergence(gen_dist_spi)
 
     species[["divergence"]] <- gen_dist_spi
 
-    clu_gen_spi_ti_c <- Tdbscan(gen_dist_spi$cluster_divergence, config$gen3sis$speciation$divergence_threshold, 1)
-    clu_gen_spi_ti <- clu_gen_spi_ti_c[gen_dist_spi$clusters]
+    clu_gen_spi_ti_c <- Tdbscan(gen_dist_spi$compressed_matrix, config$gen3sis$speciation$divergence_threshold, 1)
+    clu_gen_spi_ti <- clu_gen_spi_ti_c[gen_dist_spi$index]
     n_new_sp <- max(clu_gen_spi_ti)-1
 
     # update count of new species at this timestep
@@ -98,15 +97,15 @@ loop_speciation <- function(config, data, vars) {
       #required for proper initialiaztion of new species
       full_gen_dist <- gen_dist_spi
 
-      gen_dist_spi$clusters <- gen_dist_spi$clusters[clu_gen_spi_ti == 1]
-      ue <- unique(gen_dist_spi$clusters)
-      gen_dist_spi$cluster_divergence <- gen_dist_spi$cluster_divergence[ue,ue, drop=F]
+      gen_dist_spi$index <- gen_dist_spi$index[clu_gen_spi_ti == 1]
+      ue <- unique(gen_dist_spi$index)
+      gen_dist_spi$compressed_matrix <- gen_dist_spi$compressed_matrix[ue,ue, drop=F]
       #update names
       if (length(ue)>0) {
         fullrange <- 1:length(ue)
-        dimnames(gen_dist_spi$cluster_divergence) <- list(fullrange, fullrange)
-        for (i in 1:length(gen_dist_spi$clusters)){
-          gen_dist_spi$clusters[i] <- fullrange[ue==gen_dist_spi$clusters[i]]
+        dimnames(gen_dist_spi$compressed_matrix) <- list(fullrange, fullrange)
+        for (i in 1:length(gen_dist_spi$index)){
+          gen_dist_spi$index[i] <- fullrange[ue==gen_dist_spi$index[i]]
         }
       }
 

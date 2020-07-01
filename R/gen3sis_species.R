@@ -41,12 +41,12 @@ create_species <- function(initial_cells, config) {
                                 ncol = length(traits),
                                 dimnames = list(initial_cells, traits))
 
-  clusters <- as.integer(rep(1, length = num_cells))
-  names(clusters) <- initial_cells
-  dist_matrix <- matrix(0, nrow = 1, ncol = 1)
-  dimnames(dist_matrix) <- list(1, 1)
-  species[["divergence"]] <- list("clusters" = clusters,
-                                  "cluster_divergence" = dist_matrix)
+  index <- as.integer(rep(1, length = num_cells))
+  names(index) <- initial_cells
+  compressed_matrix <- matrix(0, nrow = 1, ncol = 1)
+  dimnames(compressed_matrix) <- list(1, 1)
+  species[["divergence"]] <- list("index" = index,
+                                  "compressed_matrix" = compressed_matrix)
   class(species) <- "gen3sis_species"
   return(invisible(species))
 }
@@ -66,11 +66,11 @@ create_species_from_existing <- function(parent_species, new_id, new_cells, conf
   new_species[["id"]] <- new_id
   new_species[["abundance"]] <- parent_species[["abundance"]][new_cells]
   new_species[["traits"]] <- parent_species[["traits"]][new_cells, , drop = F]
-  gen_dist <- limit_divergence_to_cells(parent_species[["divergence"]], new_cells)
+  divergence <- limit_divergence_to_cells(parent_species[["divergence"]], new_cells)
 
   # quick and dirty fix
   # if the cells belong to multiple genetic clusters those clusters are not collapsed if possible.
-  new_species[["divergence"]] <- consolidate_divergence(gen_dist)
+  new_species[["divergence"]] <- consolidate_divergence(divergence)
 
   return(invisible(new_species))
 }
@@ -128,9 +128,9 @@ disperse_species <- function(species, source, destination, config){
   rownames(traits) <- destination
   species[["traits"]] <- rbind(species[["traits"]], traits)[sorted, , drop = F]
 
-  clusters <- species[["divergence"]][["clusters"]]
-  clusters[destination] <- clusters[source]
-  species[["divergence"]][["clusters"]] <- clusters[sorted]
+  index <- species[["divergence"]][["index"]]
+  index[destination] <- index[source]
+  species[["divergence"]][["index"]] <- index[sorted]
 
   return(invisible(species))
 }
