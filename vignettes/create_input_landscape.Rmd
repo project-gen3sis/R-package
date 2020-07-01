@@ -52,6 +52,7 @@ knitr::opts_knit$set(root.dir = '../inst/extdata/')
 getwd()
 library(gen3sis)
 library(raster)
+library(rgdal)
 ```
 
 ## Creating the environmental data frames
