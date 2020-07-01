@@ -11,7 +11,7 @@ plot_summary(output, summary_title = NULL, summary_legend = NULL)
 
 \item{summary_title}{summary plot title as character. If NULL, title computed from input name.}
 
-\item{summary_legend}{either a satring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.}
+\item{summary_legend}{either a staring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.}
 }
 \description{
 plot simulation default summary object

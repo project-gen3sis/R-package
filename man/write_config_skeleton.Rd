@@ -2,7 +2,7 @@
 % Please edit documentation in R/config_handling.R
 \name{write_config_skeleton}
 \alias{write_config_skeleton}
-\title{writes out a config skeleton, that is, an empty config file to be eddited by the user.}
+\title{writes out a config skeleton, that is, an empty config file to be edited by the user.}
 \usage{
 write_config_skeleton(file_path = "./config_skeleton.R", overwrite = FALSE)
 }
@@ -15,7 +15,7 @@ write_config_skeleton(file_path = "./config_skeleton.R", overwrite = FALSE)
 returns a boolean indicating success or failure
 }
 \description{
-writes out a config skeleton, that is, an empty config file to be eddited by the user.
+writes out a config skeleton, that is, an empty config file to be edited by the user.
 }
 \examples{
 \dontrun{

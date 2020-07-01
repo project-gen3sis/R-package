@@ -29,8 +29,8 @@
 #' # plot summary of entire simulation
 #' plot_summary(sim)
 #' 
-#' # plot richness at a given timestep 
-#' # this only works if species is saved for this timestep
+#' # plot richness at a given time-step 
+#' # this only works if species is saved for this time-step
 #' landscape_t_150 <- readRDS(file.path(datapath, 
 #' "output", "config_worldcenter", "landscapes", "landscape_t_150.rds"))   
 #' species_t_150 <- readRDS(file.path(datapath, 
@@ -53,13 +53,13 @@ assign("dist", -Inf, envir = counting)
 #' @param config configuration file for the simulation or configuration object derived from a config file
 #' @param landscape directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
-#' @param timestep_restart = set the start time timestep. If NA start at the beginning, If "ti" start from the last available timestep, if a number "x" start from timestep x
-#' @param save_state = save the internal state of the simulation for restarts. If "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep
-#' @param call_observer call observer functions if any, NA calls at the start and end times, "all" call all timesteps, You can also provide the number of timesteps equaly spaced between start and end steps, that the observer function is called 
+#' @param timestep_restart = set the start time time-step. If NA start at the beginning, If "ti" start from the last available time-step, if a number "x" start from timestep x
+#' @param save_state = save the internal state of the simulation for restarts. If "all" save all time-step, if a vector, saves the desired time-steps if "last", saves only last timestep
+#' @param call_observer call observer functions if any, NA calls at the start and end times, "all" call all time-steps, You can also provide the number of time-steps equaly spaced between start and end steps, that the observer function is called 
 #' @param enable_gc enable gc in case of memory shortages
-#' @param verbose integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)
+#' @param verbose integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 time-step progress, 2 enable additional progress outputs regarding current time-step, 3 aditional information from within modules (default is 1)
 #'
-#' @return a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) and some usefull simulation data
+#' @return a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) and some useful simulation data
 #'
 #' @importFrom utils packageVersion write.table
 #' 
@@ -229,19 +229,19 @@ run_simulation <- function(config = NA,
     }
     
     
-    # #     #------------------------------------------------------------------#
-    # #     ######## end of timestep loop variable update (simulation.R) #######
-    # #     #------------------------------------------------------------------#
+    # #     #-------------------------------------------------------------------#
+    # #     ######## end of time-step loop variable update (simulation.R) #######
+    # #     #-------------------------------------------------------------------#
     
     if(verbose>=2){
       cat("end of loop updates \n")
     }
     #
     #
-    #   #-----------------------------------------------------------------#
-    #   ########     update loop steps variable (simulation.R)      #######
-    #   ######## !!! check with end of timestep variable update !!! #######
-    #   #-----------------------------------------------------------------#
+    #   #------------------------------------------------------------------#
+    #   ########     update loop steps variable (simulation.R)       #######
+    #   ######## !!! check with end of time-step variable update !!! #######
+    #   #------------------------------------------------------------------#
     val$vars$n_sp_alive <- sum(sapply(val$data$all_species, function(sp){ifelse(length(sp[["abundance"]]), 1, 0) }))
     val$vars$n_sp <- length(val$data$all_species)
 

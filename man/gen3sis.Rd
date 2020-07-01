@@ -31,8 +31,8 @@ sim <- run_simulation(config = path_config, landscape = path_landscape)
 # plot summary of entire simulation
 plot_summary(sim)
 
-# plot richness at a given timestep 
-# this only works if species is saved for this timestep
+# plot richness at a given time-step 
+# this only works if species is saved for this time-step
 landscape_t_150 <- readRDS(file.path(datapath, 
 "output", "config_worldcenter", "landscapes", "landscape_t_150.rds"))   
 species_t_150 <- readRDS(file.path(datapath, 

@@ -7,10 +7,10 @@
 # set the random seed for the simulation
 random_seed = 666
 
-# set the starting time step or leave NA to use the earliest/highest timestep
+# set the starting time step or leave NA to use the earliest/highest time-step
 start_time = NA
 
-# set the end time step or leave as NA to use the lates/lowest timestep (0)
+# set the end time step or leave as NA to use the latest/lowest time-step (0)
 end_time = NA
 
 # maximum total number of species in the simulation before it is aborted

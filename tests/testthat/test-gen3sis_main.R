@@ -7,7 +7,7 @@ test_that("run_simulation works", {
   #take data from case study 1 (Hagen et al. 2020)
   datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
   config <- create_input_config(file.path(datapath,"config/config_rte.R"))
-  #run only the latest timesteps
+  #run only the latest time-steps
   config$gen3sis$general$start_time <- 5
   #re-set call of observer
   config$gen3sis$general$end_of_timestep_observer <- function(data, vars, config){}

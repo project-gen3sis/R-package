@@ -255,7 +255,7 @@ complete_config <- function(config) {
 }
 
 
-#' writes out a config skeleton, that is, an empty config file to be eddited by the user.
+#' writes out a config skeleton, that is, an empty config file to be edited by the user.
 #'
 #' @param file_path file path to write the file to
 #' @param overwrite overwrite existing file defaults to FALSE
@@ -269,7 +269,7 @@ write_config_skeleton <- function(file_path = "./config_skeleton.R", overwrite =
     return(FALSE)
   } else {
     new_file <- file(file_path, open = "w")
-    writeLines(skeleton_config, new_file)
+    writeLines(skeleton_config(), new_file)
     close(new_file)
     return(TRUE)
   }

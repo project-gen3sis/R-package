@@ -12,8 +12,8 @@
 #' where src is a vector of environmental conditions for the origin cell, src_habitable (TRUE or FALSE) for habitable condition of the origin cell, dest is a vector of environmental conditions for the destination cell, dest_habitable  (TRUE or FALSE) for habitable condition of the destination cell
 #' @param directions 4, 8, 16 oder adjacency matrix (see gdistance package)
 #' @param output_directory path for storing the gen3sis ready landscape 
-#' @param timesteps vector of names for every tiumestep to represent the timestep at gen3sis ready landscape. if NULL, timsteps are sequentialy numbered from 0 (present)
-#' @param calculate_full_distance_matrices TRUE or FALSE. If TRUE calculates the entire distance matrix for every timestep and between all habitable cells (faster CPU time, higher storage required). If FALSE, only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)
+#' @param timesteps vector of names for every time-step to represent the time-step at gen3sis ready landscape. if NULL, tim-steps are sequentially numbered from 0 (present)
+#' @param calculate_full_distance_matrices TRUE or FALSE. If TRUE calculates the entire distance matrix for every time-step and between all habitable cells (faster CPU time, higher storage required). If FALSE, only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)
 #' @param crs the coordinate reference system in crs format (see rater::crs)
 #' @param overwrite_output TRUE or FALSE
 #' @param verbose print distance calculation progress (default: FALSE)
@@ -56,9 +56,14 @@ create_input_landscape <- function( landscapes,
                                             timesteps,
                                             habitability_masks)
   saveRDS(compiled_landscapes, file.path(output_directory, "landscapes.rds"))
+  
+  
+  # save METADATA.txt a empty landscape template @skeleteon_landscape_metadata.R
+  write.table(skeleton_landscape_metadata, file = file.path(output_directory, "METADATA.txt"), 
+              sep="\t", col.names = F, row.names = F, quote = FALSE)
 
   # create local distances
-  # iterate over timesteps
+  # iterate over times-teps
   for( step in 1:length(timesteps) ) {
     if (verbose){
       cat(paste("starting distance calculations for timestep", step, '\n'))
@@ -94,8 +99,8 @@ create_input_landscape <- function( landscapes,
 
 #' compile the landscapes for storing
 #'
-#' @param landscapes full list of landscasep over all timesteps
-#' @param timesteps given names / identifiers for timesteps
+#' @param landscapes full list of landscape over all time-steps
+#' @param timesteps given names / identifiers for time-steps
 #' @param habitabiliy_masks full list of habitability masks (if available)
 #'
 #' @return a list of compiled landscapes ready to be saved
@@ -112,7 +117,7 @@ compile_landscapes <-  function(landscapes, timesteps, habitability_masks) {
   }
   names(compiled) <- names(landscapes)
 
-  # collect environments for every timestep
+  # collect environments for every time-step
   for (i in 1:length(timesteps)) {
     # collect landscapes
     landscape_stack <- stack_landscapes(landscapes, i)

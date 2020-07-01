@@ -22,18 +22,18 @@ run_simulation(
 
 \item{output_directory}{directory for the simulation output}
 
-\item{timestep_restart}{= set the start time timestep. If NA start at the beginning, If "ti" start from the last available timestep, if a number "x" start from timestep x}
+\item{timestep_restart}{= set the start time time-step. If NA start at the beginning, If "ti" start from the last available time-step, if a number "x" start from timestep x}
 
-\item{save_state}{= save the internal state of the simulation for restarts. If "all" save all timestep, if a vector, saves the desired timesteps if "last", saves only last timestep}
+\item{save_state}{= save the internal state of the simulation for restarts. If "all" save all time-step, if a vector, saves the desired time-steps if "last", saves only last timestep}
 
-\item{call_observer}{call observer functions if any, NA calls at the start and end times, "all" call all timesteps, You can also provide the number of timesteps equaly spaced between start and end steps, that the observer function is called}
+\item{call_observer}{call observer functions if any, NA calls at the start and end times, "all" call all time-steps, You can also provide the number of time-steps equaly spaced between start and end steps, that the observer function is called}
 
 \item{enable_gc}{enable gc in case of memory shortages}
 
-\item{verbose}{integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 timestep progress, 2 enable additional progress outputs regarding current timestep, 3 aditional information from within modules (default is 1)}
+\item{verbose}{integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 time-step progress, 2 enable additional progress outputs regarding current time-step, 3 aditional information from within modules (default is 1)}
 }
 \value{
-a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) and some usefull simulation data
+a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) and some useful simulation data
 }
 \description{
 run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder.

@@ -53,7 +53,7 @@ save_ecogengeo <- function(val){
 #' restore_state restores the simulation form a previously saved state
 #'
 #' @param val a semi valid simulation state
-#' @param restart_timestep the timestep to restart from
+#' @param restart_timestep the time-step to restart from
 #' @noRd
 restore_state <- function(val, restart_timestep){
   ### val contains a populated config, required for directory information
@@ -63,7 +63,7 @@ restore_state <- function(val, restart_timestep){
     regex <- "\\d+"
     files <- list.files(val$config$directories$output_val)
     if(length(files) == 0){
-      print("no val found, starting from the initial timestep")
+      print("no val found, starting from the initial time-step")
       return(val)
     }
     numbers <- as.integer(regmatches(files, regexpr(regex, files)))
@@ -79,7 +79,7 @@ restore_state <- function(val, restart_timestep){
   if(timestep > 0){
     val$vars$save_steps <- (timestep-1):(val$config$gen3sis$general$end_time)
     val$vars$steps <- (timestep-1):(val$config$gen3sis$general$end_time)
-    print(paste("restarting at timestep:", timestep))
+    print(paste("restarting at time-step:", timestep))
   } else {
     val$vars$save_steps <- NULL
     val$vars$steps <- NULL

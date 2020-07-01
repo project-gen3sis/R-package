@@ -1,7 +1,13 @@
 # Copyright (c) 2020, ETH Zurich
 
 # DO NOT USE ' IN THIS CONFIG
-skeleton_config <- paste0(c('
+
+#' empty skeleton config
+#' 
+#' @return compiled string
+#' @noRd
+skeleton_config <- function(){
+paste0(c('
 ######################################
 ###            METADATA            ###
 ######################################
@@ -140,3 +146,4 @@ apply_ecology <- function(abundance, traits, environment, config) {
 }
 
 ')) # DO NOT REMOVE THIS ->'<-. IT IS IMPORTANT
+}

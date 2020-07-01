@@ -31,9 +31,9 @@ where src is a vector of environmental conditions for the origin cell, src_habit
 
 \item{output_directory}{path for storing the gen3sis ready landscape}
 
-\item{timesteps}{vector of names for every tiumestep to represent the timestep at gen3sis ready landscape. if NULL, timsteps are sequentialy numbered from 0 (present)}
+\item{timesteps}{vector of names for every tiume-step to represent the time-step at gen3sis ready landscape. if NULL, tim-steps are sequentially numbered from 0 (present)}
 
-\item{calculate_full_distance_matrices}{TRUE or FALSE. If TRUE calculates the entire distance matrix for every timestep and between all habitable cells (faster CPU time, higher storage required). If FALSE, only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)}
+\item{calculate_full_distance_matrices}{TRUE or FALSE. If TRUE calculates the entire distance matrix for every time-step and between all habitable cells (faster CPU time, higher storage required). If FALSE, only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)}
 
 \item{crs}{the coordinate reference system in crs format (see rater::crs)}
 

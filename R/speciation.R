@@ -75,7 +75,7 @@ loop_speciation <- function(config, data, vars) {
     clu_gen_spi_ti <- clu_gen_spi_ti_c[gen_dist_spi$index]
     n_new_sp <- max(clu_gen_spi_ti)-1
 
-    # update count of new species at this timestep
+    # update count of new species at this time-step
     vars$n_new_sp_ti <- vars$n_new_sp_ti + n_new_sp
 
     if ( n_new_sp > 0 ){ #if a speciation occured

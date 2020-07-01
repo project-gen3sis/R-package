@@ -39,7 +39,7 @@ setup_inputs <- function(config, data, vars) {
   }
   data[["inputs"]][["environments"]] <- environments
 
-  # timesteps
+  # time-steps
   data[["inputs"]][["timesteps"]] <- colnames(environments[[1]])
 
   # coordinates
@@ -64,14 +64,14 @@ setup_inputs <- function(config, data, vars) {
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_variables <- function(config, data, vars) {
-  # timesteps
-  # -1 as timesteps are 0-based
+  # time-steps
+  # -1 as time-steps are 0-based
   if (is.na(config$gen3sis$general$start_time)) {
     config$gen3sis$general$start_time <- length(data[["inputs"]][["timesteps"]]) - 1
   } else if (is.character(config$gen3sis$general$start_time)) {
     config$gen3sis$general$start_time<- which(data[["inputs"]][["timesteps"]] == config$gen3sis$general$start_time) - 1
   } else {
-    # user supplied numerical timestep
+    # user supplied numerical time-step
   }
 
   if(is.na(config$gen3sis$general$end_time)) {
@@ -79,7 +79,7 @@ setup_variables <- function(config, data, vars) {
   } else if (is.character(config$gen3sis$general$end_time)) {
     config$gen3sis$general$end_time <- which(data[["inputs"]][["timesteps"]] == config$gen3sis$general$end_time) - 1
   } else {
-    # user supplied numerical timestep
+    # user supplied numerical time-step
   }
 
   # put in start time for create_landscape

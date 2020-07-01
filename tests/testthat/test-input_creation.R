@@ -37,13 +37,13 @@ test_that("stack_landscapes from raster objects works", {
   r22 <- raster(nrows = 5, ncols = 5, vals = runif(25))
   landscapes = list(l1 = c(r11, r12) , l2 = c(r21, r22))
 
-  # check "timestep 1"
+  # check "time-step 1"
   stacked <- stack_landscapes(landscapes, 1)
   expect_true(all(names(stacked) == c("l1", "l2")))
   expect_true(all.equal(r11, stacked[["l1"]]))
   expect_true(all.equal(r21, stacked[["l2"]]))
 
-  # check "timestep 2"
+  # check "time-step 2"
   stacked <- stack_landscapes(landscapes, 2)
   expect_true(all(names(stacked) == c("l1", "l2")))
   expect_true(all.equal(r12, stacked[["l1"]]))
