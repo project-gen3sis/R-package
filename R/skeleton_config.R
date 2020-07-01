@@ -1,17 +1,15 @@
 # Copyright (c) 2020, ETH Zurich
 
 # DO NOT USE ' IN THIS CONFIG
-skeleton_config <- '
-
+skeleton_config <- paste0(c('
 ######################################
 ###            METADATA            ###
 ######################################
 # Version: 1.0
 #
 # Author:
-#
-# Date:
-#
+#', paste0("# Date: ", format(Sys.Date(), format="%d.%m.%Y")),                          
+'#
 # Landscape:
 #
 # Publications:
@@ -24,6 +22,7 @@ skeleton_config <- '
 ######################################
 ###         General settings       ###
 ######################################
+
 # set the random seed for the simulation.
 random_seed = NA
 
@@ -140,4 +139,4 @@ apply_ecology <- function(abundance, traits, environment, config) {
   stop("calculate species abundances and deaths here")
 }
 
-' # DO NOT REMOVE THIS ->'<-. IT IS IMPORTANT
+')) # DO NOT REMOVE THIS ->'<-. IT IS IMPORTANT
