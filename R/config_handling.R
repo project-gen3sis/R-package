@@ -164,6 +164,7 @@ populate_settings_list <- function(config_list, user_env) {
 #' @param config a config object
 #' @return Returns TRUE for a valid config, FALSE otherwise, in which case a list of
 #' missing parameters will be printed out as well
+#' @seealso \code{\link{create_input_config}}    \code{\link{write_config_skeleton}}   
 #' @example inst/examples/verify_config_help.R
 #' @export
 verify_config <- function(config) {
