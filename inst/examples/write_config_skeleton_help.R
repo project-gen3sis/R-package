@@ -1,4 +1,6 @@
-##TODO##
-
-# add example
-# write_config_skeleton(file_path = "./config_skeleton.R", overwrite = FALSE )
+\dontrun{
+# set config_empty.R file path
+config_file_path <- file.path("./FOLDER", "EmptyConfig", "config_empty.R")
+#writes out a config skeleton
+write_config_skeleton(config_file_path)
+}

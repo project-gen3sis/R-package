@@ -15,7 +15,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-The configuration object includes the customizable initialization, observer, speciation, dispersal, evolution and ecology functions. Altogether, these six functions are applied as defined in the simulation engine. The possibility to customize these functions confers the high flexibility of *gen3sis* in terms of including a wide range of theoretical knowledge. Additionally, the configuration object lists the model settings, i.e. the ecological traits considered in the simulation: whether a random seed is used; allowing simulation reproducibility; start and end times of the simulation; and rules about aborting the simulation, including the maximum global or local species number permitted. 
+The configuration object defines the core processes of the system modeled and define some run settings. It is essential to define the model to be simulated.
+
+- Core processes:  include a customizable initialization, observer, speciation, dispersal, evolution and ecology function. Altogether, these six functions are applied as defined in the simulation engine. The possibility to customize these functions confers the high flexibility of *gen3sis* in terms of including a wide range of theoretical knowledge.
+- Settings: include the ecological traits considered in the simulation: whether a random seed is used; allowing simulation reproducibility; start and end times of the simulation; and rules about aborting the simulation, including the maximum global or local species number permitted.
+Additionally, the configuration object lists the 
 
 This vignette will guide you trough the config input object. It can be either an R object or a file, that can be easily shared and modified.
 
@@ -52,7 +56,7 @@ And then create an empty config.
 #writes out a config skeleton
 write_config_skeleton(config_file_path)
 ```
-This is how the config_empty.R looks like. We present them by main areas and each part is described briefly. For more information see next session.
+This is how the config_empty.R looks like. We present them by main areas and each part is described briefly. For more information and a hand's on example see next session.
 
 
 ::: {.infobox .caution data-latex="{caution}"}
@@ -139,7 +143,7 @@ Here we will go bit by bit of the config used at the [introduction.html](this vi
 ### **Content of config_.empty_worldcenter.R**
 
 ### ***Settings***
-We start our simulation with the first avaiable timestep and end it a the latest available time-step at the landscape, thus *start_time* and *end_time* are set to NA. We limit the maximum total number of species alive in a simulation to 50000 with *max_number_of_species* and the maximum number of species with one cell to 10000 with *max_number_of_coexisting_species*. Like so, we stop simulations that could possible go off hand and generate too many species. We define which traits we will consider in our simulation with *traits_names*, in our example, species only have a dispersal ability and a optimum temperature traits. For our model to work, we normalize the environmental values, according to the range informed at *environmental_ranges*.
+We start our simulation with the first avaiable timestep and end it a the latest available time-step at the landscape, thus *start_time* and *end_time* are set to NA. We limit the maximum total number of species alive in a simulation to 50000 with *max_number_of_species* and the maximum number of species within one site to 10000 with *max_number_of_coexisting_species*. Like so, we stop simulations that could possible go off hand and generate too many species. We define which traits we will consider in our simulation with *traits_names*, in our example, species only have a dispersal ability and a optimum temperature traits. For our model to work, we normalize the environmental values, according to the range informed at *environmental_ranges*.
 
 >```{r eval=FALSE}
 random_seed = 666
@@ -179,7 +183,7 @@ end_of_timestep_observer = function(data, vars, config){
 
 ### ***Initialization***
 The initialization function creates the ancestor species at the start of the simulation. Users can define the number of ancestor species, their distribution within the ancient landscape and their trait values.
-In our example, the initial abundance of the ancestor species as well as the abundance of species on newly colonized cells is 1. We set one single ancestor species spread across the entire globe, i.e. between longitudes [-180, 180] and latitudes [-90, 90]. We set the **temp** trait of each population of the initial species to the environmental temperature. This means, that each population is adapted to the local conditions, as we will see later on the ecology function. Dispersal is set to one, since it is not ranging. The function *create_ancestor_species* is expected to return a list of new species, i.e. the ancestor(s) one(s).
+In our example, the initial abundance of the ancestor species as well as the abundance of species on newly colonized sites is 1. We set one single ancestor species spread across the entire globe, i.e. between longitudes [-180, 180] and latitudes [-90, 90]. We set the **temp** trait of each population of the initial species to the environmental temperature. This means, that each population is adapted to the local conditions, as we will see later on the ecology function. Dispersal is set to one, since it is not ranging. The function *create_ancestor_species* is expected to return a list of new species, i.e. the ancestor(s) one(s).
 
 >```{r eval=FALSE}
 initial_abundance = 1
@@ -227,7 +231,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 
 ### ***Evolution***
 
-In the function bellow, clustered populations (exchanging genes) had their trait homogenized and weighted by abundance, meaning that a trait o a population that is doing well is a site, as dictated by the ecology function. Later, populations mutate based on a normal distribution with standard deviation 0.001, possibly increasing or decreasing species optimum temperature.
+In the function bellow, clustered populations (exchanging genes) had their trait homogenized and weighted by abundance, meaning that a trait of a population that is doing well in a site, as dictated by the ecology function, will contribute more to the average trait of a cluster. Later, populations mutate based on a normal distribution with standard deviation 0.001, possibly increasing or decreasing species optimum temperature.
 
 >```{r eval=FALSE}
 # mutate the traits of a species and return the new traits matrix
@@ -294,6 +298,12 @@ config_object$gen3sis$general$random_seed <- 2020
 ```
 
 Like so, functions and parameters can be conveniently changed and simulated in gen3sis. Remember that *run_simulation* works either with a path to a config file or config object, so we can run the old and the new modified config.
+
+Before using a new config, you can test if it is a valid one. If the function *verify_config* returns TRUE, you are good to go.
+
+```{r}
+verify_config(config_object)
+```
 
 ```{r eval=F}
 # run simulation by indicating config file path

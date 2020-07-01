@@ -171,11 +171,7 @@ The **configuration** are the rules of our virtual planet, here is where we defi
 
 The configuration object includes information on the model initialization, the observer function and the biological functions, namey speciation, dispersal, evolution, and ecology. The possibility of the user to customize these functions confers the flexibility of *gen3sis*. The initialization function creates the ancestor species at the start of the simulation. Users can define  the number of species, their distribution within the landscape and their trait values. The observer function allows recording any abiotic or biotic information of the virtual world as it changes by defining the outputs that are saved at specified time-steps. The configuration further allows to define the speciation function, the  dispersal function, the evolution function and the ecological function, which are defined in the section on core processes below. Altogether, those six functions are specified in the configuration object and interact with a set of core objects defined in the simulation engine. The configuration object further lists the ecological traits considered in the simulation, sets a random seed allowing simulation reproducibility, start and end times of the simulation, as well as simulation aborting rules including the limits for a total or local number of species.
 
-
-
-
-
-You should now have all the necessary files to run a simulation. 
+In our example, we start our simulation with the first available timestep and end it a the latest available time-step at the landscape, i.e. 150-100Ma. We set one single ancestor species spread across the entire land available with initial optimum temperature equal to the local temperature of the site. The dispersal of all species is the same and stochastic, following a weibull distribution with shape 6 and scale 999. Speciation takes place after 12 time-steps (2 Myr) of isolation. Clustered populations (exchanging genes) had their trait homogenized and weighted by abundance, meaning that a temperature optimum of populations that are doing well in a site will contribute more to the average trait of a cluster. Temperature optimum evolves based on a normal distribution with standard deviation 0.001, possibly increasing or decreasing species optimum temperature. Abundances in a site are based on how close the species population optimum temperature is to the site temperature. We scale the values to avoid small numbers and apply a carrying capacity based on aridity and temperature corrected by the area. If abundances are below 1, species are considered extinct, if total abundance in a site (sum of all species in a site) is above the carrying capacity, small abundances are removed progressively and randomly distributed across the present species until total abundance is smaller or equal to the carrying capacity. For more details regarding the configuration used here and how to modify it, please refer to [create_config.html](this vignette).
 
 
 [^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
@@ -289,25 +285,7 @@ legend(5,0.52, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch
 ```
 
 
-By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, indicating that species richness highest at intermediate temperature levels. First the higher richness found above 10° is consistent with the ecological rule that we imposed. At higher temperature, we have a higher energy and capacity facilitating coexist. This is consistent with our model expectations. Moreover, we can observe a large spread of the points at high temperature. This is likely because high temperature regions frequently have high aridity. This is why we need to also explore aridity.
-
-For this we first fit a linear model between temperature and aridity and then plot aridity~temperature, similarly to how it was done before.
-```{r eval=TRUE, echo=TRUE}
-linear_model <- lm(prec ~ temp, data=landscape_t0)
-cor(landscape_t0$prec, landscape_t0$temp)
-```
-
-```{r eval=TRUE,echo=FALSE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
-#Plot the response curve
-data_plot <- data.frame(cbind(landscape_t0$temp, predict(linear_model, type = "response")))
-data_plot <- na.omit(data_plot[order(data_plot[,1], decreasing = FALSE),])
-n <- paste0('observations (n = ', length(landscape_t0$temp), ')')
-plot(data_plot[,1],data_plot[,2], xlab="Temperature [\u00B0C]", ylab="Aridity [index]", frame.plot=F, type="l", col='black', lwd=2)
-points( landscape_t0$temp,landscape_t0$prec, col=rgb(0.5,0.5,0.5, alpha=0.4), pch=16) 
-legend("topleft", col=c(rgb(0.5,0.5,0.5,0.4), 'black'), legend=c(n, 'model fit'), pch=c(16, NA), lty=c(NA, 1), lwd=c(NA, 2), bty='n')
-```
-
-Indeed aridity is correlated with temperature. Thus let's investigate the association of aridity and species richness by fitting a generalized linear model between richness and aridity
+By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, indicating that species richness highest at intermediate temperature levels. First the higher richness found above 10° is consistent with the ecological rule that we imposed. At higher temperature, we have a higher energy and capacity facilitating coexist. This is consistent with our model expectations. Moreover, we can observe a large spread of the points at high temperature. This is likely because high temperature regions frequently have high aridity. Thus let's investigate the association of aridity and species richness by fitting a generalized linear model between richness and aridity
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, results='hide', echo=F}
@@ -333,8 +311,7 @@ Finally we fit a multivariate model for explaining species richness by taking in
 richness_model <- glm(rich ~ poly(temp, 2) + poly(prec, 2), family='quasipoisson', data=landscape_t0)
 summary(richness_model)$coefficients
 ```
-Above we report the explained deviance of the glm model on richness considering temperature and aridity. This explained deviance will not be total since there are other effects including dispersal limitations, that are not considered in this statistical summary. It's important to consider as well that we have now only been analyzing the species richness at one time-step, namely the last one. The emerged patterns are more likely not only to be explained by the environmental conditions of that time but also dependent on historical conditions which gen3sis used as input. 
 
-For more details on how to create a landscape and prepare it to use in *gen3sis* see [this vignette](design_landscape.html) and [this vignette](create_input_landscape.html). For more details on how to create or modify a configuration object see [this vignette](create_config.html)
+Above we report the explained deviance of the glm model on richness considering temperature and aridity. The explained deviance of this relationship is D2=`r round((richness_model$null.deviance - richness_model$deviance) / richness_model$null.deviance,3)`. This explained deviance will not be total since there are other effects including dispersal limitations, that are not considered in this statistical summary. It's important to consider as well that we have now only been analyzing the species richness at one time-step, namely the last one. The emerged patterns are more likely not only to be explained by the environmental conditions of that time but also dependent on historical conditions which gen3sis used as input. 
 
-It's now up to you to explore the "virtual" world. 
+For more details on how to create a landscape and prepare it to use in *gen3sis* see [design_landscape.html](this vignette) and [create_input_landscape.html](this vignette). For more details on how to create or modify a configuration object see [create_config.html](this vignette). It's now up to you to explore the "virtual" world. 

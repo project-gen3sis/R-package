@@ -10,5 +10,12 @@ save_richness()
 This function can be called within the observer function to save the current richness pattern
 }
 \examples{
-##TODO##
+\dontrun{
+  ## save the current richness pattern from within observer for each species
+  # this functions should be called inside the end_of_timestep_observer function at the config file:
+  save_richness()
+}
+}
+\seealso{
+\code{\link{save_species}}
 }

@@ -32,5 +32,5 @@ plot_raster_single(landscape_t_150$environment[,"temp"], landscape_t_150, "Tempe
 # use col to change the color
 plot_raster_single(landscape_t_150$environment[,"prec"], landscape_t_150, "Aridity", NA, 
                    col=topo.colors(5))
-# note that these values are scaled by the configuration object
+# note that these values were scaled by the configuration object
 }

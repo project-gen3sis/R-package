@@ -17,8 +17,19 @@ plot_summary(output, summary_title = NULL, summary_legend = NULL)
 plot simulation default summary object
 }
 \examples{
-#'\dontrun{
-#'output <- run_simulation(config, landscape)
-#'plot_summary(output)
-#'}
+\dontrun{
+# run simulation
+output <- run_simulation(config, landscape)
+# plot output summary
+plot_summary(output)
+
+# load existing summary example
+datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
+output <- readRDS(file.path(datapath, "output/config_worldcenter/sgen3sis.rds"))
+# plot output summary
+plot_summary(output)
+}
+}
+\seealso{
+\code{\link{run_simulation}}
 }
