@@ -7,7 +7,7 @@ datapath <- system.file(file.path("extdata", "InputRasters"), package="gen3sis")
 
 # create raster bricks
 temperature_brick <- brick(file.path(datapath, "WorldCenter/temp_rasters.grd"))
-aridity_brick <-  brick(file.path(datapath, "WorldCenter/arid_rasters.grd"))
+aridity_brick <-  brick(file.path(datapath, "WorldCenter/aridity_rasters.grd"))
 area_brick <-  brick(file.path(datapath, "WorldCenter/area_rasters.grd"))
 
 # create list of environmental variables
@@ -27,12 +27,12 @@ cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
   }
 }
 
-# CAUTION! THIS TAKES A LONG TIME!
 # create input landscape ready for gen3sis
+# CAUTION! This takes ~ 5min to finish!
 create_input_landscape(
   landscapes = landscapes_list,
-  cost_function = cost_function_water(),
-  output_directory = "OUTPUT_DIRECTORY_HERE",
+  cost_function = cost_function_water,
+  output_directory = "C:/temp/OUTPUT_DIRECTORY_HERE",
   directions = 8, # surrounding sites for each site
   timesteps = paste0(round(seq(150, 100, length.out = 301),2), "Ma"),
   calculate_full_distance_matrices = TRUE) # full distance matrix
