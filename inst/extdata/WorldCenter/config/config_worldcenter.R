@@ -9,26 +9,17 @@
 #
 # Landscape: WorldCenter
 #
-<<<<<<< HEAD
 # Publications: R-package gen3sis
-=======
-# Publications: R-package gen3sis 
->>>>>>> 7640e99d69ca8a2d2d9595ce87af7a5b97c86d2b
+
 #
 # Description: Example config used at the introduction vignette and similar to case study global configs in Hagen et al. 2020.
 # O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. gen3sis: The GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity.
 ######################################
 
-<<<<<<< HEAD
 
-##########################
-#### General settings ####
-##########################
-=======
 ######################################
 ###         General settings       ###
 ######################################
->>>>>>> 7640e99d69ca8a2d2d9595ce87af7a5b97c86d2b
 
 # set the random seed for the simulation
 random_seed = 666
