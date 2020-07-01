@@ -97,7 +97,7 @@ cost_function_null <- function(source, habitable_src, dest, habitable_dest) {
 landscapes_list_t0 <- list(temp=NULL)
 landscapes_list_t0$temp <- c(landscapes_list_t0$temp, temperature_brick[[1]])
 
-create_input(landscapes = landscapes_list_t0,
+create_input_landscape(landscapes = landscapes_list_t0,
                                cost_function = cost_function_null,
                                output_directory = "../CostFunctionExamples/cost_function_null",# a directory name to save the files in
                                directions = 8, # all surrounding sites from a focus site
@@ -150,7 +150,7 @@ cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
 ```
 
 ```{r, echo=FALSE, eval=F}
-create_input(landscapes = landscapes_list_t0,
+create_input_landscape(landscapes = landscapes_list_t0,
                                cost_function = cost_function_water,
                                output_directory = "CostFunctionExamples/cost_function_water",# a directory name to save the files in
                                directions = 8, # all surrounding sites from a focus site
@@ -205,13 +205,13 @@ The real geographic coordinate system can be provided which allows for the globa
 ## Create input files 
 
 The *create_input_landscape* function creates *.rds* files that will be used as input for *gen3sis*. The file path where the landscapes and the distance matrices of all time steps should be stored can be specified within the function.
-```{r eval=FALSE}
+```{r eval=F}
 create_input_landscape(landscapes = landscapes_list,
-             cost_function = cost_function_water(),
+             cost_function = cost_function_water,
              output_directory = "WorldCenter/landscape",# a directory name to save the files in
              directions = 8, # all surrounding sites from a focus site
              timesteps = as.character(300:0), # just to name the files
-             calculate_full_distance_matrices = TRUE  # full distance matrix
+             calculate_full_distance_matrices = F  # full distance matrix
 )
 ```
 
