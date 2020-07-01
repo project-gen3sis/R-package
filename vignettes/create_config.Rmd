@@ -299,6 +299,12 @@ config_object$gen3sis$general$random_seed <- 2020
 
 Like so, functions and parameters can be conveniently changed and simulated in gen3sis. Remember that *run_simulation* works either with a path to a config file or config object, so we can run the old and the new modified config.
 
+Before using a new config, you can test if it is a valid one. If the function *verify_config* returns TRUE, you are good to go.
+
+```{r}
+verify_config(config_object)
+```
+
 ```{r eval=F}
 # run simulation by indicating config file path
 sim_old <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
