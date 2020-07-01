@@ -5,7 +5,7 @@
 #' manually beforehand, for example to redirect the stdout to a file in the output directory.
 #'
 #' @param config_file path to the config file, if NA the default config will be used
-#' @param input_directory path to input directoy, if NA it will be derived from the config file path
+#' @param input_directory path to input directory, if NA it will be derived from the config file path
 #' @param output_directory path to output directory, if NA it will be derived from the config file path
 #' @return returns a named list with the paths for the input and output directories
 #'
