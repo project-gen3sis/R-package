@@ -59,7 +59,7 @@ In this step, the user needs to create the data frames containing the spatiotemp
 
 ```{r eval=T, message=F}
 temperature_brick <- brick('InputRasters/WorldCenter/temp_rasters.grd')
-aridity_brick <- brick('InputRasters/WorldCenter/arid_rasters.grd')
+aridity_brick <- brick('InputRasters/WorldCenter/aridity_rasters.grd')
 area_brick <- brick('InputRasters/WorldCenter/area_rasters.grd')
 ```
 
