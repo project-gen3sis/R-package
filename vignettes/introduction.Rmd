@@ -58,7 +58,9 @@ print(paste("gen3sis version:", packageVersion("gen3sis")))
 
 All *gen3sis* simulations need a **landscape** object which define the abiotic environment over which the simulation will take place and a **configuration** object which defines the mechanisms of speciation, dispersal, trait evolution and ecological interactions. Here we will use a published example[^1]. We cropped at the Earth center, with a timespam between 150-100Ma and aggregated to a 4&deg; resolution to make the simulations fast and the data small (252 KB). 
 
-All the data we will use (i.e. the **landscape** and the **configuration** object) is available with the package, you can just get the path to the data inside the package. To access this dataset, you first need to define the path to the data contained inside the package.
+All the data we will use (i.e. the **landscape** and the **configuration** object) is available with the package, you can just get the path to the data inside the package. If you want more information about these input data, please check the associated metadata. For the landscape input this is a metadata.txt file in the same folder, and for the config input it is stored as a comment in the beginning of the config R script.
+
+To access this dataset, you first need to define the path to the data contained inside the package.
 
 ```{r eval=TRUE}
 datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
@@ -69,7 +71,11 @@ The full [landscape](https://github.com/project-Gen3sis) can be downloaded and s
 |>EXPERIMENT_FOLDER     |
 |:-------------------------|
 |&nbsp;&nbsp;&nbsp;**>landscape**|
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>distances_local|
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>landscapes.rds|
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>metadata.txt|
 |&nbsp;&nbsp;&nbsp;**>config**|
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>config.R.txt|
 
 
 

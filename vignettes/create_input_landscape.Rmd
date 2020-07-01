@@ -215,4 +215,5 @@ create_input_landscape(landscapes = landscapes_list,
 )
 ```
 
-Once the input landscape is ready, the *run_simulation* function can start the simulation using the path of the new landscape.
+Finally, don't forget to specify the important metadata for the landscape you just created. We recommend storing it in form of a metadata.txt file within the landscape folder.
+Once the input landscape is ready, the *run_simulation* function can start the simulation using the path of the new landscape. 

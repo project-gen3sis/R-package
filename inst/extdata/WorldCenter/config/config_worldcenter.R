@@ -1,7 +1,20 @@
-########################
-## Example Config 
-## Hagen et al. 2020
-########################
+######################################
+###            METADATA            ###
+######################################
+# Version: 1.0
+#
+# Author: Oskar Hagen
+#
+# Date: 1.7.2020
+#
+# Landscape: WorldCenter
+#
+# Publications: R-package gen3sis
+#
+# Description: Example config used at the introduction vignette and similar to case study global configs in Hagen et al. 2020.
+# O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. gen3sis: The GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity.
+######################################
+
 
 ##########################
 #### General settings ####

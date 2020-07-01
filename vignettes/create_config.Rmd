@@ -62,6 +62,15 @@ This is how the config_empty.R looks like. We present them by main areas and eac
 ::: {.infobox .caution data-latex="{caution}"}
 > ## **Content of config_empty.R**
 >
+>***Metadata***
+>```{r eval=FALSE}
+# Version: 1.0
+# Author:
+# Date:
+# Landscape:
+# Publications:
+# Description:
+```
 >***Settings***
 >```{r eval=FALSE}
 # set the random seed for the simulation.
@@ -141,6 +150,20 @@ Here we will go bit by bit of the config used at the [introduction.html](this vi
 
 
 ### **Content of config_.empty_worldcenter.R**
+
+### ***Metadata***
+The first section of the config file contains metadata. It informs the user when and by whom the file has been created, which landscape it was made for and informs about associated publications.
+
+>```{r eval=FALSE}
+# Version: 1.0
+# Author: Oskar Hagen
+# Date: 1.7.2020
+# Landscape: WorldCenter
+# Publications: R-package gen3sis
+# Description: Example config used at the introduction vignette and similar to case study global configs in Hagen et al. 2020.
+# O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. gen3sis: The GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity.
+```
+
 
 ### ***Settings***
 We start our simulation with the first avaiable timestep and end it a the latest available time-step at the landscape, thus *start_time* and *end_time* are set to NA. We limit the maximum total number of species alive in a simulation to 50000 with *max_number_of_species* and the maximum number of species within one site to 10000 with *max_number_of_coexisting_species*. Like so, we stop simulations that could possible go off hand and generate too many species. We define which traits we will consider in our simulation with *traits_names*, in our example, species only have a dispersal ability and a optimum temperature traits. For our model to work, we normalize the environmental values, according to the range informed at *environmental_ranges*.
