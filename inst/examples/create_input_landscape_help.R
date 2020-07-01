@@ -32,7 +32,7 @@ cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
 create_input_landscape(
   landscapes = landscapes_list,
   cost_function = cost_function_water,
-  output_directory = "C:/temp/OUTPUT_DIRECTORY_HERE",
+  output_directory = "YOUR_OUTPUT_DIRECTORY_HERE",
   directions = 8, # surrounding sites for each site
   timesteps = paste0(round(seq(150, 100, length.out = 301),2), "Ma"),
   calculate_full_distance_matrices = TRUE) # full distance matrix

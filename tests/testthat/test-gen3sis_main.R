@@ -4,7 +4,7 @@
 test_that("run_simulation works", {
   skip_on_cran()
   #get correct path or correct input objects
-  #take data from case study 1
+  #take data from case study 1 (Hagen et al. 2020)
   datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
   config <- create_input_config(file.path(datapath,"config/config_rte.R"))
   #run only the latest timesteps

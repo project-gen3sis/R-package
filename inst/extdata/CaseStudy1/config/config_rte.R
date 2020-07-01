@@ -1,8 +1,34 @@
+######################################
+###            METADATA            ###
+######################################
+# Version: 1.0
+#
+# Author:  J.S. Cabral and O. Hagen
+#
+# Date: 1.7.2020
+#
+# Landscape: CaseStudy1
+#
+# Publications: R-package gen3sis 
+#
+# Description: Example config used at the introduction vignette and similar to case study island configs in (Hagen et al. 2020).
+#Scenarios (these 3 scenarios were repeated for each experiment) this config represents only one!:
+#I) mutation rates = temporal environmental variance (control):
+#SD for temperature: 0.5
+#SD for precipitation: 50
+#II) mutation rates < temporal environmental variance (higher phylo constraint): 
+#SD for temperature: 0.3
+#SD for precipitation: 30
+#III) mutation rates > temporal environmental variance (less phylo constraint):
+#SD for temperature: 0.7
+#SD for precipitation: 70
+# O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. gen3sis: The GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity.
+######################################
 
+######################################
+###         General settings       ###
+######################################
 
-########################
-### General settings ###
-########################
 # set seed for the simulation
 random_seed = 666
 
@@ -29,6 +55,10 @@ trait_names = c("temp",  "prec", "dispersal")
 # lsited with a given range r: the environmental variable will be scaled from [r1, r2] to [0, 1]
 #environmental_ranges = list("temp" = c(-45, 25), "prec" = NA )
 
+######################################
+###            Observer            ###
+######################################
+
 # a place to inspect the internal state of the simulation and collect additional information if desired
 end_of_timestep_observer = function(data, vars, config){
   # a list of all species can be found in data$all_species
@@ -38,9 +68,10 @@ end_of_timestep_observer = function(data, vars, config){
 }
 
 
-######################
-### Initialization ###
-######################
+######################################
+###         Initialization         ###
+######################################
+
 # the intial abundace of a newly colonized cell, both during setup and later when colonizing a cell during the dispersal
 initial_abundance = 10
 
@@ -63,9 +94,10 @@ create_ancestor_species <- function(landscape, config) {
 }
 
 
-#################
-### Dispersal ###
-#################
+######################################
+###             Dispersal          ###
+######################################
+
 # returns n dispersal values
 get_dispersal_values <- function(n, species, landscape, config) {
   dispersal_range = c(0, 1)
@@ -78,9 +110,10 @@ get_dispersal_values <- function(n, species, landscape, config) {
 }
 
 
-##################
-### Speciation ###
-##################
+######################################
+###          Speciation            ###
+######################################
+
 # threshold for genetic distance after which a speciation event takes place
 divergence_threshold = 12#runif(1,min=5, max=5.5) ### Arbitrary value to ensure enough diversification wihtout stopping the simulation midway
 
@@ -91,19 +124,10 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 }
 
 
-################
-### Mutation ###
-################
-#Scenarios (these 3 scenarios were repeated for each experiment):
-#I) mutation rates = temporal environmental variance (control):
-#SD for temperature: 0.5
-#SD for precipitation: 50
-#II) mutation rates < temporal environmental variance (higher phylo constraint): 
-#SD for temperature: 0.3
-#SD for precipitation: 30
-#III) mutation rates > temporal environmental variance (less phylo constraint):
-#SD for temperature: 0.7
-#SD for precipitation: 70
+######################################
+###            Evolution           ###
+######################################
+
 # mutate the traits of a species and return the new traits matrix
 apply_evolution <- function(species, cluster_indices, landscape, config) {
   traits <- species[["traits"]]

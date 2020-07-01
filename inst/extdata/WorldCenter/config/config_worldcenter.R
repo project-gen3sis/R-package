@@ -9,16 +9,26 @@
 #
 # Landscape: WorldCenter
 #
+<<<<<<< HEAD
 # Publications: R-package gen3sis
+=======
+# Publications: R-package gen3sis 
+>>>>>>> 7640e99d69ca8a2d2d9595ce87af7a5b97c86d2b
 #
 # Description: Example config used at the introduction vignette and similar to case study global configs in Hagen et al. 2020.
 # O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. gen3sis: The GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity.
 ######################################
 
+<<<<<<< HEAD
 
 ##########################
 #### General settings ####
 ##########################
+=======
+######################################
+###         General settings       ###
+######################################
+>>>>>>> 7640e99d69ca8a2d2d9595ce87af7a5b97c86d2b
 
 # set the random seed for the simulation
 random_seed = 666
@@ -41,9 +51,9 @@ trait_names = c("temp",  "dispersal")
 # ranges to scale the input environemts with:
 environmental_ranges = list("temp" = c(-45, 55), "area"=c(101067, 196949), "prec"=c(1,0.5))
 
-################
-### Observer ###
-################
+######################################
+###            Observer            ###
+######################################
 
 # a place to inspect the internal state of the simulation and collect additional information if desired
 end_of_timestep_observer = function(data, vars, config){
@@ -64,9 +74,9 @@ end_of_timestep_observer = function(data, vars, config){
   
 }
 
-########################
-#### Initialization ####
-########################
+######################################
+###         Initialization         ###
+######################################
 
 # the initial abundance of a newly colonized cell, both during setup and later when colonizing a cell during the dispersal
 initial_abundance = 1
@@ -89,9 +99,9 @@ create_ancestor_species <- function(landscape, config) {
   return(list(new_species))
 }
 
-###################
-#### Dispersal ####
-###################
+######################################
+###             Dispersal          ###
+######################################
 
 # returns n dispersal values
 get_dispersal_values <- function(n, species, landscape, config) {
@@ -100,9 +110,9 @@ get_dispersal_values <- function(n, species, landscape, config) {
   return(values)
 }
 
-####################
-#### Speciation ####
-####################
+######################################
+###          Speciation            ###
+######################################
 
 # threshold for genetic distance after which a speciation event takes place
 divergence_threshold = 12 #this is 2Myrs
@@ -115,9 +125,9 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 }
 
 
-#################
-### Evolution ###
-#################
+######################################
+###            Evolution           ###
+######################################
 
 # mutate the traits of a species and return the new traits matrix
 apply_evolution <- function(species, cluster_indices, landscape, config) {
@@ -140,9 +150,9 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
 }
 
 
-###############
-### Ecology ###
-###############
+######################################
+###             Ecology            ###
+######################################
 
 # called for every cell with all occurring species, this function calculates the who survives in the current cells
 # returns a vector of abundances
