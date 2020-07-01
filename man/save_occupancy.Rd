@@ -10,5 +10,9 @@ save_occupancy()
 This function can be called within the observer function to save the current occupancy pattern
 }
 \examples{
-##TODO##
+\dontrun{
+  ## save occupancies from within observer
+  # this functions should be called inside the end_of_timestep_observer function at the config file:
+  save_occupancy()
+}
 }

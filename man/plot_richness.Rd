@@ -16,6 +16,8 @@ plot the richness of the given list of species on a landscape
 }
 \examples{
 \dontrun{
+  
+  ## plot from saved outputs
   # get path containing example rasters
   datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
   # get species at t0
@@ -24,5 +26,10 @@ plot the richness of the given list of species on a landscape
   landscape_t_0 <- readRDS(file.path(datapath, "output/config_worldcenter/landscapes/landscape_t_0.rds"))
   # plot richness
   plot_richness(species_t_0, landscape_t_0)
+  
+  
+  ## plot from within observer
+  ## call plot_richness from inside the end_of_timestep_observer function at the config file:
+  plot_richness(data$all_species, data$landscape)
 }  
 }

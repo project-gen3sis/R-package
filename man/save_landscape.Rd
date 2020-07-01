@@ -2,15 +2,24 @@
 % Please edit documentation in R/observations.R
 \name{save_landscape}
 \alias{save_landscape}
-\title{saves the current landscape, can be called independantly by the user and is called by 
-other observer functions relying on the landscape to be present}
+\title{This function can be called within the observer function to save 
+the current landscape, can be called independently by the user and is called by 
+other observer functions relying on the landscape to be present (e.g. save_species)}
 \usage{
 save_landscape()
 }
 \description{
-saves the current landscape, can be called independantly by the user and is called by 
-other observer functions relying on the landscape to be present
+This function can be called within the observer function to save 
+the current landscape, can be called independently by the user and is called by 
+other observer functions relying on the landscape to be present (e.g. save_species)
 }
 \examples{
-##TODO##
+\dontrun{
+  ## save landscape from within observer for each species
+  # this functions should be called inside the end_of_timestep_observer function at the config file:
+  save_landscape()
+}
+}
+\seealso{
+\code{\link{save_species}}
 }

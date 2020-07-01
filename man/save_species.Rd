@@ -16,7 +16,8 @@ This function can be called within the observer function to save the full specie
 # and the respective landscape at outputfolder/landscapes for the times steps the observer 
 # function is called (i.e. call_observer parameter at the run_simulation function)
 save_species()
-  
-  
 }
+}
+\seealso{
+\code{\link{save_landscape}}
 }

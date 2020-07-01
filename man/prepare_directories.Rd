@@ -15,7 +15,7 @@ prepare_directories(
 \arguments{
 \item{config_file}{path to the config file, if NA the default config will be used}
 
-\item{input_directory}{path to input directoy, if NA it will be derived from the config file path}
+\item{input_directory}{path to input directory, if NA it will be derived from the config file path}
 
 \item{output_directory}{path to output directory, if NA it will be derived from the config file path}
 }
@@ -28,9 +28,14 @@ This function will be called by the simulation, but is made available if the dir
 manually beforehand, for example to redirect the stdout to a file in the output directory.
 }
 \examples{
-##TODO##
-
-# add example
-
-# prepare_directories(...)
+\dontrun{
+  # this is an internal function used to attribute directories by deduction
+  # called at the start of a simulation run
+  datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
+  # deducing input directory and setting output directory
+  prepare_directories(config_file = file.path(datapath, "config/config_worldcenter.R"))
+  # setting output directory
+  prepare_directories(config_file = file.path(datapath, "config/config_worldcenter.R"), 
+                      input_directory = file.path(datapath, "landscape"))
+}
 }

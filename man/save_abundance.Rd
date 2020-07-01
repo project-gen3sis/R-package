@@ -10,5 +10,12 @@ save_abundance()
 This function can be called within the observer function to save the species abundances.
 }
 \examples{
-##TODO##
+\dontrun{
+  ## save abundances from within observer
+  # this functions should be called inside the end_of_timestep_observer function at the config file:
+  save_abundance()
+}
+}
+\seealso{
+\code{\link{save_species}}
 }

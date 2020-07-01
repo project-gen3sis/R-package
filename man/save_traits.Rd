@@ -10,5 +10,12 @@ save_traits()
 This function can be called within the observer function to save the species traits.
 }
 \examples{
-##TODO##
+\dontrun{
+  ## save the current traits pattern from within observer for each population of each species
+  # this functions should be called inside the end_of_timestep_observer function at the config file:
+  save_traits()
+}
+}
+\seealso{
+\code{\link{save_species}}
 }
