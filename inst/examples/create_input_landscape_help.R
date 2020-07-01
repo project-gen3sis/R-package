@@ -6,9 +6,9 @@ library(raster)
 datapath <- system.file(file.path("extdata", "InputRasters"), package="gen3sis")
 
 # create raster bricks
-temperature_brick <- brick(file.path(datapath, "WorldCenter/temp_rasters.tif"))
-aridity_brick <-  brick(file.path(datapath, "WorldCenter/arid_rasters.tif"))
-area_brick <-  brick(file.path(datapath, "WorldCenter/area_rasters.tif"))
+temperature_brick <- brick(file.path(datapath, "WorldCenter/temp_rasters.grd"))
+aridity_brick <-  brick(file.path(datapath, "WorldCenter/arid_rasters.grd"))
+area_brick <-  brick(file.path(datapath, "WorldCenter/area_rasters.grd"))
 
 # create list of environmental variables
 landscapes_list <- list(temp=NULL, arid=NULL, area=NULL)
