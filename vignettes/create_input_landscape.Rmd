@@ -24,7 +24,7 @@ This vignette aims at showing how to use the function *create_input_landscape* t
 
 - a rds file containing a landscape list of raster stacks for environmental variables; 
 
-- a series of rds files, one for each timestep, including distance matrices between sites. 
+- a series of rds files, one for each time-step, including distance matrices between sites. 
 
 
 To create these files, the function requires as arguments: 
@@ -208,11 +208,9 @@ The *create_input_landscape* function creates *.rds* files that will be used as 
 ```{r eval=F}
 create_input_landscape(landscapes = landscapes_list,
              cost_function = cost_function_water,
-             output_directory = "WorldCenter/landscape",# a directory name to save the files in
-             directions = 8, # all surrounding sites from a focus site
-             timesteps = as.character(300:0), # just to name the files
-             calculate_full_distance_matrices = F  # full distance matrix
-)
+             output_directory = "YOUR_OUTPUT_DIRECTORY_HERE/WorldCenter/landscape",
+             timesteps = paste0(round(seq(150, 100, length.out = 301),2), "Ma")),
+             calculate_full_distance_matrices = F)
 ```
 
 Finally, don't forget to specify the important metadata for the landscape you just created. We recommend storing it in form of a metadata.txt file within the landscape folder.
