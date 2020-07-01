@@ -29,10 +29,12 @@ cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
 
 # CAUTION! THIS TAKES A LONG TIME!
 # create input landscape ready for gen3sis
-create_input_landscape(landscapes = landscapes_list,
-                       cost_function = cost_function_water(),
-                       output_directory = "OUTPUT_DIRECTORY_HERE", # directory that landscape will be saved
-                       directions = 8, # surrounding sites for each site
-                       timesteps = paste0(round(seq(150, 100, length.out = 301),2), "Ma"), # just to name the files
-                       calculate_full_distance_matrices = TRUE) # full distance matrix
+create_input_landscape(
+  landscapes = landscapes_list,
+  cost_function = cost_function_water(),
+  output_directory = "OUTPUT_DIRECTORY_HERE",
+  directions = 8, # surrounding sites for each site
+  timesteps = paste0(round(seq(150, 100, length.out = 301),2), "Ma"),
+  calculate_full_distance_matrices = TRUE) # full distance matrix
+
 }
