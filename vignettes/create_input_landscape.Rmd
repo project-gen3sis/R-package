@@ -28,19 +28,21 @@ This vignette aims at showing how to use the function *create_input_landscape* t
 
 To create these files, the function requires as arguments: 
 
-A) a named list of environmental rasters containing layers for the different time steps, with each raster layer representing the spatial distribution of an environmental variable; 
+- a named list of environmental rasters containing layers for the different time steps, with each raster layer representing the spatial distribution of an environmental variable; 
 
-B) a cost function defining how dispersal between particular types of sites is penalized (to be used for the calculation of the distance matrices). 
+- a cost function defining how dispersal between particular types of sites is penalized (to be used for the calculation of the distance matrices). 
 
-Further arguments can be modified from the default values depending on user preferences. Below, we will generate the R objects required by the function *create_input_landscape* step by step. For this exercise, we will use the simple island landscape that we used in the [introduction vignette](introduction.html) and in the main text of the package manuscript as case study 1. This example is important, because the user will define each required object him/herself.
+Below, we will generate the R objects required by the function *create_input_landscape* step by step. For this exercise, we will use the simple center of the world landscape that we used in the [introduction vignette](introduction.html) and in the main text of the package manuscript as case study 1.
 
 The first step is to load the necessary packages and set the working directory:
 
 ```{r setup, message=F, eval=F, results='hide'}
+#first we load the required packages
 library(gen3sis)
 library(raster)
 
-datapath <- system.file("extdata", package="gen3sis")
+#next we set the working directory to the package path 
+datapath <- system.file("extdata", package="gen3sis") 
 setwd(datapath)
 ```
 
@@ -52,7 +54,7 @@ library(raster)
 ```
 
 ## Creating the environmental data frames
-In this step, the user needs to create the data frames containing the spatiotemporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 4d sample world that has been used in the introduction vignette. We first load the three corresponding raster bricks from the hard drive.
+In this step, the user needs to create the data frames containing the spatiotemporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 4d sample world that has been used in the [introduction vignette](introduction.html). We first load the three corresponding raster bricks from the hard drive.
 
 ```{r eval=T, message=F}
 temperature_brick <- brick('InputRasters/WorldCenter/temp_rasters.tif')
@@ -82,7 +84,7 @@ for(i in 1:nlayers(temperature_brick)){
 ## Defining a cost function 
 The second argument we need to define is a cost function. This function should define the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
 
-First, let's look at a very simple cost function, which is not penalizing dispersal for crossing a certain type of sites. The costs have to be defined in meters because the coordinate system is in meters for real landscapes (automatically corrected to km in later on by the *create_input_landscape* function). Hence, we can define a simple cost function in which the dispersal is not penalized: 
+First, let’s look at a very simple case, where no cost is added to the geographical distances, meaning that connections costs equal geographic distance. The costs have to be defined in meters because the coordinate system is in meters for real landscapes. Hence, we can define a simple cost function in which the dispersal is not penalized: 
 
 ```{r eval=TRUE}
 cost_function_null <- function(source, habitable_src, dest, habitable_dest) {
@@ -103,7 +105,7 @@ create_input(landscapes = landscapes_list_t0,
 
 ```
 
-```{r, echo=FALSE, fig.width=7, fig.height=5, fig.cap='This figure shows the travelling costs from one site in central Africa to all other sites. The distance matrix was computed using the very simple cost function that has been introduced before and is not adding a penalty for crossing a certain tipe of site.', fig.align='left'}
+```{r, echo=FALSE, fig.width=7, fig.height=5, fig.cap='This figure shows the connection costs from one site in central Africa to all other sites. To travel to the site in South America that is indicated with the arrow, the travelling cost is 64. The distance matrix was computed using the very simple cost function that has been introduced before and is not adding any penalty.', fig.align='left'}
 dist_matrix_null_t0 <- readRDS('CostFunctionExamples/cost_function_null/distances_full/distances_full_0.rds')
 landscapes_null <- readRDS('CostFunctionExamples/cost_function_null/landscapes.rds')
 landscapes_null_t0 <- na.omit(landscapes_null$temp[, c('x', 'y', '0')])
@@ -134,7 +136,7 @@ plot(legend_image, legend.only=T, col=cost_colors, horizontal=T, smallplot=c(0.2
 
 
 
-Now, let's look at a slightly more sophisticated cost function. Only cells which are not NA in all of the environmental rasters are considered habitable. Here, suitable terrestrial sites should pose no cost for dispersal, but dispersal over water sites should increase the cost of dispersal. 
+Now, let's look at a slightly more sophisticated cost function. Only sites which have environmental values (no NAs) are considered habitable. Here, suitable terrestrial sites should have a cost penalty of one dispersal, but dispersal over water sites should double the cost of dispersal. 
 
 ```{r eval=TRUE}
 cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
@@ -156,7 +158,7 @@ create_input(landscapes = landscapes_list_t0,
 
 ```
 
-```{r, echo=FALSE, fig.width=7, fig.height=5, fig.cap='This figure shows the travelling costs from one site in central Africa to all other sites. The distance matrix was computed using the user defined cost function presented above, where crossing water has double the costs of crossing a land site.', fig.align='left'}
+```{r, echo=FALSE, fig.width=7, fig.height=5, fig.align='left'}
 dist_matrix_water_t0 <- readRDS('CostFunctionExamples/cost_function_water/distances_full/distances_full_0.rds')
 landscapes_water <- readRDS('CostFunctionExamples/cost_function_water/landscapes.rds')
 landscapes_water_t0 <- na.omit(landscapes_water$temp[, c('x', 'y', '0')])
@@ -193,7 +195,7 @@ Besides the landscape list, the cost function and the experiment folder, we can 
 
 The argument 'directions' requires an integer providing the amount of directions used to calculate distances. It can take 4, 8 or 16 as values to consider the four, eigth or 16 neighboring sites. This is the same homonimous argument used by the function *transition* in the gdistance package (gdistance::transition). 
 
-The argument 'timesteps' requires a vector of strings of mode character and is used to name the files and to name the timesteps in the .rds landscape object created by the *create_input_landscape* function. It is not necessary to define this argument, but it helps readibility when manipulating the object. 
+The argument 'timesteps' requires a vector of strings and is used to name the files and to name the timesteps in the .rds landscape object created by the *create_input_landscape* function. It is not necessary to define this argument, but it helps readibility when manipulating the object. 
 
 The argument 'calculate_full_distance_matrices' defines whether the *create_input_landscape* function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring sites specified in 'directions' around each suitable site (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
 
@@ -201,7 +203,7 @@ The real geographic coordinate system can be provided which allows for the globa
 
 ## Create input files 
 
-The model uses serialized R files (.rds) format for all inputs. The functions for processing the input data in the required format are available in the package. The file path where the landscapes and the distance matrices of all time steps should be stored can bus specified in the *create_input_landscape* function.
+The *create_input_landscape* function creates *.rds* files that will be used as input for *gen3sis*. The file path where the landscapes and the distance matrices of all time steps should be stored can be specified within the function.
 ```{r eval=FALSE}
 create_input_landscape(landscapes = landscapes_list,
              cost_function = cost_function_water(),
@@ -212,4 +214,4 @@ create_input_landscape(landscapes = landscapes_list,
 )
 ```
 
- Once the data is processed, the simulation can be started with the function *run_simulation*.
+Once the input landscape is ready, the *run_simulation* function can start the simulation using the path of the new landscape.
