@@ -15,8 +15,14 @@ plot_richness(species_list, landscape)
 plot the richness of the given list of species on a landscape
 }
 \examples{
-##TODO##
-
-# add example
-# plot_richness(species_list, landscape)
+\dontrun{
+  # get path containing example rasters
+  datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
+  # get species at t0
+  species_t_0 <- readRDS(file.path(datapath, "output/config_worldcenter/species/species_t_0.rds"))
+  # get landscape at t0
+  landscape_t_0 <- readRDS(file.path(datapath, "output/config_worldcenter/landscapes/landscape_t_0.rds"))
+  # plot richness
+  plot_richness(species_t_0, landscape_t_0)
+}  
 }

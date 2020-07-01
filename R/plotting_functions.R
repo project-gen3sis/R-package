@@ -63,6 +63,7 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 #' @param output tsgen3sis output object resulting from a gen3sis simulation 
 #' @param summary_title summary plot title as character. If NULL, title computed from input name.
 #' @param summary_legend either a satring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.
+#' @seealso \code{\link{run_simulation}}   
 #' @example inst/examples/plot_summary_help.R
 #' @importFrom graphics layout legend axis mtext points
 #' @importFrom grDevices rgb colorRampPalette

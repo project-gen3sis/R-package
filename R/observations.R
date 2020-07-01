@@ -17,7 +17,7 @@ call_main_observer <- function(data, vars, config) {
 
 #' This function can be called within the observer function to save the current occupancy pattern
 #' 
-#' @example inst/examples/save_richness_help.R
+#' @example inst/examples/save_occupancy_help.R
 #' @export
 save_occupancy <- function() {
   config <- dynGet("config")
@@ -34,6 +34,7 @@ save_occupancy <- function() {
 
 #' This function can be called within the observer function to save the current richness pattern
 #' 
+#' @seealso \code{\link{save_species}}   
 #' @example inst/examples/save_richness_help.R
 #' @export
 save_richness <- function() {
@@ -67,6 +68,7 @@ save_phylogeny <- function(){
 
 #' This function can be called within the observer function to save the full species list.
 #' 
+#' @seealso \code{\link{save_landscape}}   
 #' @example inst/examples/save_species_help.R
 #' @export
 save_species <- function() {
@@ -81,9 +83,11 @@ save_species <- function() {
 }
 
 
-#' saves the current landscape, can be called independantly by the user and is called by 
-#' other observer functions relying on the landscape to be present
+#' This function can be called within the observer function to save 
+#' the current landscape, can be called independently by the user and is called by 
+#' other observer functions relying on the landscape to be present (e.g. save_species)
 #'
+#' @seealso \code{\link{save_species}}   
 #' @example inst/examples/save_landscape_help.R
 #' @export
 save_landscape <- function() {
@@ -101,6 +105,7 @@ save_landscape <- function() {
 
 #' This function can be called within the observer function to save the species abundances.
 #' 
+#' @seealso \code{\link{save_species}}   
 #' @example inst/examples/save_abundance_help.R
 #' @export
 save_abundance <- function() {
@@ -110,6 +115,7 @@ save_abundance <- function() {
 
 #' This function can be called within the observer function to save the species traits.
 #' 
+#' @seealso \code{\link{save_species}}   
 #' @example inst/examples/save_traits_help.R
 #' @export
 save_traits <- function() {
@@ -119,6 +125,7 @@ save_traits <- function() {
 
 #' This function can be called within the observer function to save the compressed species divergence.
 #' 
+#' @seealso \code{\link{save_species}}   
 #' @example inst/examples/save_divergence_help.R
 #' @export
 save_divergence <- function() {
