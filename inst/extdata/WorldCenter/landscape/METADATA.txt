@@ -1,0 +1,62 @@
+Version: 
+1.0
+
+Author: 
+Oskar Hagen
+
+Date: 
+1.7.2020
+
+Spatial extent: 
+latitude [-40;40] longitude [-80;80]
+
+Spatial resolution: 
+4 degrees
+
+Temporal extent: 
+150-100Ma
+
+Temporal resolution: 
+1 time-step = 1Myr/6 ~ 170'000kyrs
+
+Environmental variables: 
+- Temperature (MAT in degrees Celsius)
+- Aridity (index [0;1])
+- Area (grid cell area in Km2)
+
+Cost function: 
+- 1 land
+- 2 to water.
+
+Source Data: 
+Hagen et al. 2019; R-package gen3sis
+
+Publications: 
+- O. Hagen, L. Vaterlaus, C. Albouy, A. Brown, F. Leugger, R.E. Onstein, C.N. Santana, C.R. Scotese, L. Pellissier. Mountain building, climate cooling and the richness of cold-adapted plants in the Northern Hemisphere. J Biogeogr. 2019. doi: 10.1111/jbi.13653.
+- O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. gen3sis: The GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity.
+
+Description:
+We reconstructed approximate air surface temperatures and aridity for the Cenozoic (65 Ma until present) for the entire world from available paleoelevation models and lithologic indicators of climate at a temporal resolution of ~170 ky, i.e. six time steps per Myr  [similary to 1]. 
+Plate tectonic and paleogeographic digital elevation models providing paleotopography at a resolution of 1˚ x 1˚ were obtained from Scotese’s paleoatlas [2]. 
+Paleotopographies were estimated by combining information on the dynamics of sea floor spreading, continental rift, subduction, continental collisions and other isostatic events influencing plate tectonics, together with other indicators of paleotopography and bathymetry [2]. 
+We also used reconstructions of Köppen climatic zones plotted on paleoreconstructions at 1 Myr intervals [1]. 
+The basic Köppen classification depends on average monthly values of temperature and precipitation, and has five primary climatic zones corresponding to: tropical ever-wet, subtropical arid, warm temperate, cold temperate and polar. 
+Reconstructions of the ancient Köppen zones are based on the geographic distribution of lithologic indicators of climate, including coal, evaporite, bauxite, tillite, glendonite, dropstones and other fossil evidence, such as high-latitude occurrences of palm, mangroves and alligators [3, 4]. 
+A complete description of the sources of these lithologic indicators of climate can be found in [5]. 
+The five principal Köppen climatic zones were drawn over twelve Cenozoic paleotopographic reconstructions according to the distribution of these lithologic indicators of climate. 
+The average temperature of each of the modern Köppen zones was then calculated on the basis of present-day global temperature estimations. 
+Modern temperatures served as the initial estimate of the temperature of each of the Köppen zones, which were then adjusted in order to match global mean temperature change over the Cenozoic [6]. 
+Because the Köppen zones have hard boundaries, we applied a focal analysis with a radius of 13° to smooth the temperature transition between each zone. 
+The Köppen zones provide an estimate of the average surface temperature, but do not account for topographic features. 
+To account for the decrease in temperature with elevation, we computed the current temperature lapse rate (i.e. the rate of decrease in temperature with elevation) for each Köppen zone based on the current digital elevation model and the Worldclim2 (WorldClim: 18 September 2018) annual mean temperature raster [7]. 
+We applied the zone-specific lapse rate and linearly predicted the decrease in temperature with elevation to obtain the final reconstruction of temperature at a temporal resolution of ~170 ky for the last 65 Myr. 
+The aridity index was computed based on the subtropical arid Köppen zone. Terrestrial surfaces covered by the subtropical arid zone had an aridity index value of one, while all the other zones had a value of zero. 
+We conducted a focal analysis with a radius of 13° to smooth the transition between arid and non-arid zones, followed by linear interpolation to achieve a ~170 ky temporal resolution.
+References
+1.	Hagen O, Vaterlaus L, Albouy C, Brown A, Leugger F, Onstein RE, et al. Mountain building, climate cooling and the richness of cold-adapted plants in the Northern Hemisphere. J Biogeogr. 2019. doi: 10.1111/jbi.13653.
+2.	Scotese CR, Wright N. PALEOMAP Paleodigital Elevation Models (PaleoDEMS) for the Phanerozoic. 2018. Available from: https://www.earthbyte.org/paleodem-resource-scotese-and-wright-2018.
+3.	Boucot AJ, Xu C, Scotese CR, Morley RJ. Phanerozoic paleoclimate: an atlas of lithologic indicators of climate. 2013.
+4.	Scotese CR. Some thoughts on global climate change: the transition from icehouse to hothouse. Paleomap project. 2015;21:1 (2).
+5.	Boucot AJ, Xu C, Scotese CR, Morley RJ. Phanerozoic paleoclimate: an atlas of lithologic indicators of climate. Tulsa, U.S.A.: Society of Economic Paleontologists and Mineralogists (Society for Sedimentary Geology); 2013.
+6.	Royer DL, Berner RA, Montañez IP, Tabor NJ, Beerling DJ. CO2 as a primary driver of Phanerozoic climate. GSA Today. 2004;14(3). doi: 10.1130/1052-5173(2004)014<4:Caapdo>2.0.Co;2.
+7.	Fick SE, Hijmans RJ. WorldClim 2: new 1-km spatial resolution climate surfaces for global land areas. International Journal of Climatology. 2017;37(12):4302-15. PubMed PMID: WOS:000412095400006.Fick SE, Hijmans RJ. WorldClim 2: new 1-km spatial resolution climate surfaces for global land areas. International Journal of Climatology. 2017;37(12):4302-15. PubMed PMID: WOS:000412095400006.
