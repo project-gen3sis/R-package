@@ -146,7 +146,7 @@ saveRDS(landscapes_list, "inputfolder/my_experiment/landscapes.rds")
 
 
 ## Add a cost function
-The connection cost between sites is defined as the distance between these sites modified by an optional cost function. This user defined cost function can give a penalty (or benefit) for crossing certain cells and will be stored as a distance matrix. For this virtual landscape, we will not add a cost function, meaning that the connection costs are only the distance between the sites inside our grid cells. If you want to learn how to make a cost function, refer to the [create_input_landscape.html](create_input_landscape vignette).
+The connection cost between sites is defined as the distance between these sites modified by an optional cost function. This user defined cost function can give a penalty (or benefit) for crossing certain cells and will be stored as a distance matrix. For this virtual landscape, we will not add a cost function, meaning that the connection costs are only the distance between the sites inside our grid cells. If you want to learn how to make a cost function, refer to the [**create_input_landscape vignette**](create_input_landscape.html).
 
 
 

@@ -27,7 +27,7 @@ Here we will:
 
 [1. **Create an empty config**](#create) using the *write_config_skeleton* function. 
 
-[2. **Explain an example config**](#explore) using the config from [introduction.html](this vignette) vignette.
+[2. **Explain an example config**](#explore) using the config from [**introduction vignette**](introduction.html).
 
 [3. **Modify a config**](#modify) from within R.
 
@@ -146,7 +146,7 @@ Note that the main core functions have stop warnings by default, this forces the
 
 ## 2. Explain example config {#explore}
 
-Here we will go bit by bit of the config used at the [introduction.html](this vignette) vignette. We will follow the structure presented above.
+Here we will go bit by bit of the config used at the [**introduction vignette**](introduction.html) vignette. We will follow the structure presented above.
 
 
 ### **Content of config_.empty_worldcenter.R**

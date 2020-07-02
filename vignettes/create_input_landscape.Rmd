@@ -33,7 +33,7 @@ To create these files, the function requires as arguments:
 
 - a cost function defining how dispersal between particular types of sites is penalized (to be used for the calculation of the distance matrices). 
 
-Below, we will generate the R objects required by the function *create_input_landscape* step by step. For this exercise, we will use the simple center of the world landscape that we used in the [introduction vignette](introduction.html) and in the main text of the package manuscript as case study 1.
+Below, we will generate the R objects required by the function *create_input_landscape* step by step. For this exercise, we will use the simple center of the world landscape that we used in the [**introduction vignette**](introduction.html) and in the main text of the package manuscript as case study 1.
 
 The first step is to load the necessary packages and set the working directory:
 
@@ -55,7 +55,7 @@ library(raster)
 ```
 
 ## Creating the environmental data frames
-In this step, the user needs to create the data frames containing the spatiotemporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 4d sample world that has been used in the [introduction vignette](introduction.html). We first load the three corresponding raster bricks from the hard drive.
+In this step, the user needs to create the data frames containing the spatiotemporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 4d sample world that has been used in the [**introduction vignette**](introduction.html). We first load the three corresponding raster bricks from the hard drive.
 
 ```{r eval=T, message=F}
 temperature_brick <- brick('InputRasters/WorldCenter/temp_rasters.grd')
@@ -64,7 +64,7 @@ area_brick <- brick('InputRasters/WorldCenter/area_rasters.grd')
 ```
 
 
-If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the [design_landscape vignette](design_landscape.html).
+If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the [**design_landscape vignette**](design_landscape.html).
 
 
 ## Creating a list with the environmental data frames
@@ -200,7 +200,7 @@ The argument 'timesteps' requires a vector of strings and is used to name the fi
 
 The argument 'calculate_full_distance_matrices' defines whether the *create_input_landscape* function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring sites specified in 'directions' around each suitable site (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
 
-The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [design_landscape vignette](design_landscape.html), geographic distance would be measured in units of sites.
+The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [**design_landscape vignette**](design_landscape.html), geographic distance would be measured in units of sites.
 
 ## Create input files 
 
