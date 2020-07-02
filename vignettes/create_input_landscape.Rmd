@@ -213,5 +213,5 @@ create_input_landscape(landscapes = landscapes_list,
              calculate_full_distance_matrices = F)
 ```
 
-Finally, don't forget to specify the important metadata for the landscape you just created. We recommend storing it in form of a metadata.txt file within the landscape folder.
+Finally, don't forget to specify the important metadata for the landscape you just created. We recommend storing it in form of a METADATA.txt file within the landscape folder.A template is automatically created by the functions *create_input_landscape*.
 Once the input landscape is ready, the *run_simulation* function can start the simulation using the path of the new landscape. 
