@@ -105,6 +105,8 @@ setup_variables <- function(config, data, vars) {
 #' @import raster
 #' @noRd
 init_attribute_ancestor_distribution <- function(config, data, vars) {
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   
   all_species <- config$gen3sis$initialization$create_ancestor_species(data$landscape, config)
   for (i in 1:length(all_species)){

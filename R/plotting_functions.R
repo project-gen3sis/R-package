@@ -40,21 +40,20 @@ plot_landscape <- function(landscape) {
 #'
 #' @export
 plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
-
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   landscape <- landscape[[1]] # takes only the first one
   if (is.null(start_end_times)){ # takes last and first time-steps
     start_end_times <- which(colnames(landscape)%in%colnames(landscape)[c(3,ncol(landscape))])
   }
   
   times=rev(round(seq(from=start_end_times[1], to=start_end_times[2], length.out = slices+2  ),0))
-  previous_par <- par(no.readonly = TRUE)
   par(mfrow=c(1,length(times)))
   for (times_i in 1:length(times)){
     # times_i <- 1
     plot(rasterFromXYZ(landscape[,c(1,2,times[times_i])]), col="black", 
          axes=F,legend=FALSE, tck = 0, main=colnames(landscape)[times[times_i]], line=-3)
   }
-  par(previous_par)
 }
 
 
@@ -70,6 +69,9 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 #' @importFrom stringr str_split str_remove
 #' @export
 plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  
   if (class(output)!="gen3sis_output"){
     stop("this is not  a gen3sis_output object")
   }
