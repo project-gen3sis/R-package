@@ -23,7 +23,7 @@ Until then, you can install the latest development release from GitHub via
 
 ```{r}
 devtools::install_github(repo = "project-gen3sis/R-package/", 
-  dependencies = T, build_vignettes = T)
+  dependencies = TRUE, build_vignettes = TRUE)
 ```
 Below the status of the automatic Travis CI tests on the master branch
 

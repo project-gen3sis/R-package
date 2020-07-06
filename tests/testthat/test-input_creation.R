@@ -5,7 +5,7 @@ test_that("create_directories overwrite protection works", {
   local_mock(dir.create = function(new_dir, ...){ new_dirs <<- append(new_dirs, new_dir)} )
   # test overwrite protection
   local_mock(file.exists = function(...){ return(TRUE)} )
-  expect_error(create_directories("test", overwrite = F, full_matrices = F),
+  expect_error(create_directories("test", overwrite = FALSE, full_matrices = FALSE),
                "output directory already exists", fixed = TRUE)
 })
 
@@ -15,13 +15,13 @@ test_that("create_directories works", {
   new_dirs <- list()
   local_mock(dir.create = function(new_dir, ...){ new_dirs <<- append(new_dirs, new_dir)} )
 
-  create_directories("test", overwrite = F, full_matrices = F)
+  create_directories("test", overwrite = FALSE, full_matrices = FALSE)
   expect_true("test" %in% new_dirs)
   expect_true(!("test/distances_full" %in% new_dirs))
 
   # create directory for full matrices
   new_dirs <- list()
-  create_directories("test", overwrite = F, full_matrices = T)
+  create_directories("test", overwrite = FALSE, full_matrices = TRUE)
   expect_true("test" %in% new_dirs)
   expect_true("test/distances_local" %in% new_dirs)
   expect_true("test/distances_full" %in% new_dirs)
@@ -119,8 +119,8 @@ test_that("get_local_distances works", {
 
   distance_local <- get_local_distances(landscape_stack, habitable_mask, cost_function, directions, crs)
 
-  tr <- transition(r1, function(x){1/x[1]}, 8, symm = F)
-  co <- geoCorrection(tr, "c", multpl = T)
+  tr <- transition(r1, function(x){1/x[1]}, 8, symm = FALSE)
+  co <- geoCorrection(tr, "c", multpl = TRUE)
 
   # the gdistance transition is in transition[src, dest] format
   # for efficiency reasons the local distances are in distnace_local[dest, src] format
