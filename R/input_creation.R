@@ -60,7 +60,7 @@ create_input_landscape <- function( landscapes,
   
   # save METADATA.txt a empty landscape template @skeleteon_landscape_metadata.R
   write.table(skeleton_landscape_metadata, file = file.path(output_directory, "METADATA.txt"), 
-              sep="\t", col.names = F, row.names = F, quote = FALSE)
+              sep="\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
   # create local distances
   # iterate over times-teps
