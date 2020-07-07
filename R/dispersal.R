@@ -76,7 +76,7 @@ disperse <- function(species, landscape, distance_matrix, config){
 
   r_disp <- config$gen3sis$dispersal$get_dispersal_values(num_draws, species, landscape, config)
 
-  geo_disp <- distance_matrix[presence_spi_ti, free_cells, drop=F] #lines mark where they are present, cols the possible suitable sites
+  geo_disp <- distance_matrix[presence_spi_ti, free_cells, drop=FALSE] #lines mark where they are present, cols the possible suitable sites
   geo_disp <- geo_disp <= r_disp
 
   colonized <- rep(FALSE, length(all_cells))
@@ -91,7 +91,7 @@ disperse <- function(species, landscape, distance_matrix, config){
     if ( length(presence_spi_ti)==1 ){
       orig <- rep(1,length(dest))
     } else {
-      orig <- apply(geo_disp[, colonized[free_cells], drop = F], 2,
+      orig <- apply(geo_disp[, colonized[free_cells], drop=FALSE], 2,
                     function(x){ a <- which(x); ifelse( length(a) > 1, sample( a, 1), a)})
     }
     orig <- as.numeric(presence_spi_ti[orig])
