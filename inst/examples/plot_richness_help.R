@@ -15,5 +15,5 @@ plot_richness(species_t_0, landscape_t_0)
 # call plot_richness from inside the end_of_timestep_observer function 
 # at the config file:
 \dontrun{
-  plot_richness(data$all_species, data$landscape)
+plot_richness(data$all_species, data$landscape)
 }  
