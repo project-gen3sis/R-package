@@ -84,9 +84,9 @@ disperse <- function(species, landscape, distance_matrix, config){
   colonized[free_cells] <- apply(geo_disp, 2, any)
 
   tep_occ_id <- all_cells[colonized]
-  if ( length( tep_occ_id ) > 0 ) { # if there are new occurences....
+  if ( length( tep_occ_id ) > 0 ) { # if there are new occurrences....
     # destiny of genes
-    dest <- which(colonized==T)
+    dest <- which(colonized==TRUE)
     # origin of genes
     if ( length(presence_spi_ti)==1 ){
       orig <- rep(1,length(dest))
