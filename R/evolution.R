@@ -43,13 +43,13 @@ evolve <- function(species, landscape, distance_matrix, config){
 
   permutation <- sample(1:length(species_presence), length(species_presence))
   cluster_indices <- Tdbscan_variable(distance_matrix[species_presence[permutation],species_presence[permutation],
-                                                         drop = F], distances, 1)
+                                                         drop=FALSE], distances, 1)
   cluster_indices <- cluster_indices[order(permutation)]
 
   new_traits <- config$gen3sis$mutation$apply_evolution(species, cluster_indices, landscape, config)
 
   species_traits <- colnames(species[["traits"]])
-  species[["traits"]][ , species_traits] <- new_traits[, species_traits, drop = F]
+  species[["traits"]][ , species_traits] <- new_traits[, species_traits, drop=FALSE]
 
   return(species)
 }
