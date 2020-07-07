@@ -198,10 +198,10 @@ init_simulation <- function(config, data, vars) {
 #' @noRd
 setup_landscape <- function(config, data, vars) {
   index <- vars$ti + 1
-  habitable_cells <- data$inputs$environments[[1]][, index, drop = F]
-  habitable_cells <- habitable_cells[which(!is.na(habitable_cells)), , drop = F]
+  habitable_cells <- data$inputs$environments[[1]][, index, drop=FALSE]
+  habitable_cells <- habitable_cells[which(!is.na(habitable_cells)), , drop=FALSE]
   habitable_cells <- rownames(habitable_cells)
-  envir <- do.call(cbind, lapply(data$inputs$environments, "[", habitable_cells, index, drop = F))
+  envir <- do.call(cbind, lapply(data$inputs$environments, "[", habitable_cells, index, drop=FALSE))
   colnames(envir) <- names(data[["inputs"]][["environments"]])
   landscape <- create_landscape(id = vars$ti,
                                 environment = envir,

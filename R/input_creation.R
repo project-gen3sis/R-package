@@ -28,10 +28,10 @@ create_input_landscape <- function( landscapes,
                           directions,
                           output_directory,
                           timesteps = NULL,
-                          calculate_full_distance_matrices = F,
+                          calculate_full_distance_matrices = FALSE,
                           crs = NULL,
-                          overwrite_output = F,
-                          verbose = F) {
+                          overwrite_output = FALSE,
+                          verbose = FALSE) {
   # # in case outpu_directory is NULL, use the same directory as the input
   # if (is.null(output_directory)){
   #   output_directory <- dirname(path)
@@ -162,7 +162,7 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
   transition_index <- gdistance::transition(ref_raster,
                                             transitionFunction = function(x){x[1]},
                                             directions = directions,
-                                            symm = F)
+                                            symm = FALSE)
 
   # calculate the correction for distortions and keep separate to apply after the users cost function
   correction <- gdistance::geoCorrection(transition_index, type = "c", multpl=TRUE)
