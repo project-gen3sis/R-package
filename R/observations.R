@@ -141,7 +141,7 @@ save_extract <- function(element) {
   data <- dynGet("data")
   vars <-  dynGet("vars")
   save_landscape()
-  dir.create(file.path(config$directories$output, element), showWarnings = F, recursive = T)
+  dir.create(file.path(config$directories$output, element), showWarnings=FALSE, recursive=TRUE)
   tmp <- lapply(data$all_species, function(x){return(x[[element]])})
   names(tmp) <- sapply(data$all_species, function(x){x$id})
   saveRDS(object = tmp,
