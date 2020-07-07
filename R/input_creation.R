@@ -110,7 +110,7 @@ compile_landscapes <-  function(landscapes, timesteps, habitability_masks) {
   landscape_stack <- stack_landscapes(landscapes, 1)
 
   # setup coordinates
-  coords <- as.data.frame(landscape_stack, xy = T)[,c("x", "y")]
+  coords <- as.data.frame(landscape_stack, xy=TRUE)[,c("x", "y")]
   rownames(coords) <- 1:nrow(coords)
   for (name in names(landscapes)) {
     compiled <- append(compiled, list(coords))
@@ -165,7 +165,7 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
                                             symm = F)
 
   # calculate the correction for distortions and keep separate to apply after the users cost function
-  correction <- gdistance::geoCorrection(transition_index, type = "c", multpl = T)
+  correction <- gdistance::geoCorrection(transition_index, type = "c", multpl=TRUE)
   correction@transitionMatrix@x <- 1 / correction@transitionMatrix@x
 
   transition_matrix <- as(transition_index@transitionMatrix, "dgCMatrix")
