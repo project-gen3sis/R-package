@@ -99,7 +99,7 @@ loop_speciation <- function(config, data, vars) {
 
       gen_dist_spi$index <- gen_dist_spi$index[clu_gen_spi_ti == 1]
       ue <- unique(gen_dist_spi$index)
-      gen_dist_spi$compressed_matrix <- gen_dist_spi$compressed_matrix[ue,ue, drop=F]
+      gen_dist_spi$compressed_matrix <- gen_dist_spi$compressed_matrix[ue,ue, drop=FALSE]
       #update names
       if (length(ue)>0) {
         fullrange <- 1:length(ue)
