@@ -86,7 +86,7 @@ write_nex <- function(phy, label="sp", output_file){
   }
 
   #remove root
-  phy_no_root <- phy[-1, , drop=F]
+  phy_no_root <- phy[-1, , drop=FALSE]
 
   if (nrow(phy_no_root)==0){
     #following TreeSimGM and TreeSim convertion
