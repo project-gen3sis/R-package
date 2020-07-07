@@ -53,7 +53,7 @@ loop_ecology <- function(config, data, vars) {
     local_environment = data$landscape[["environment"]][cell, , drop = F]
 
     coo_sp <- which(all_species_presence[cell,])
-    #create coocuring species traits for idi #maybe use Reduce("rbind", eco[[coo_sp_ti_idi]][idi,], accumulate=T) ?
+    #create coocuring species traits for idi
     traits <- matrix(nrow = length(coo_sp), ncol = length(config$gen3sis$general$trait_names))
     abundance <- numeric(length(coo_sp))
 
