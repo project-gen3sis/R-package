@@ -20,7 +20,7 @@ compress_divergence <- function(divergence_matrix){
 
   compressed_matrix <- matrix(NA, nrow = num_indices, ncol = num_indices)
   unique_index = !duplicated(index)
-  compressed_matrix <- divergence_matrix[unique_index, unique_index, drop = F]
+  compressed_matrix <- divergence_matrix[unique_index, unique_index, drop=FALSE]
   rownames(compressed_matrix) <- c(1:num_indices)
   colnames(compressed_matrix) <- c(1:num_indices)
   names(index) <- rownames(divergence_matrix)
@@ -42,7 +42,7 @@ decompress_divergence <- function(divergence) {
   if(length(divergence$index)==0){
     return(matrix(0,0,0,dimnames=list(NULL,NULL)))
   }
-  divergence_full <- divergence$compressed_matrix[divergence$index, divergence$index, drop = F]
+  divergence_full <- divergence$compressed_matrix[divergence$index, divergence$index, drop=FALSE]
   ne <- names(divergence$index)
   dimnames(divergence_full) <- list(ne,ne)
   return(divergence_full)
@@ -59,7 +59,7 @@ decompress_divergence <- function(divergence) {
 limit_divergence_to_cells <- function(divergence, cells) {
   new_index <- divergence[["index"]][cells]
   unique_indices <- unique(new_index)
-  new_compressed_matrix <- divergence[["compressed_matrix"]][unique_indices, unique_indices, drop = F]
+  new_compressed_matrix <- divergence[["compressed_matrix"]][unique_indices, unique_indices, drop=FALSE]
   if(length(unique_indices)) {
     new_range <- 1:length(unique_indices)
     dimnames(new_compressed_matrix) <- list(new_range, new_range)
