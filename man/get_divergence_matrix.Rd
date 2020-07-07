@@ -20,7 +20,6 @@ The functions allows to extract the full divergence matrix representing the accu
 between all the cells that are occupied by the species. The input is a species object for any time step.
 }
 \examples{
-\dontrun{
 # get path containing example rasters
 datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
 # get species at t0
@@ -30,5 +29,4 @@ divergence_sp1_t0 <- get_divergence_matrix(species_t_0[[1]])
 # get divergence matrix from species 12
 divergence_sp12_t0 <- get_divergence_matrix(species_t_0[[12]])
 # note that species 1 has no divergence between it's populations, while 12 has.
-}
 }

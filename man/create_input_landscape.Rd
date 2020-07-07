@@ -10,10 +10,10 @@ create_input_landscape(
   directions,
   output_directory,
   timesteps = NULL,
-  calculate_full_distance_matrices = F,
+  calculate_full_distance_matrices = FALSE,
   crs = NULL,
-  overwrite_output = F,
-  verbose = F
+  overwrite_output = FALSE,
+  verbose = FALSE
 )
 }
 \arguments{

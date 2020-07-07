@@ -11,7 +11,7 @@ run_simulation(
   timestep_restart = NA,
   save_state = NA,
   call_observer = "all",
-  enable_gc = F,
+  enable_gc = FALSE,
   verbose = 1
 )
 }
