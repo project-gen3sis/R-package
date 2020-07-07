@@ -52,7 +52,7 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
   for (times_i in 1:length(times)){
     # times_i <- 1
     plot(rasterFromXYZ(landscape[,c(1,2,times[times_i])]), col="black", 
-         axes=F,legend=FALSE, tck = 0, main=colnames(landscape)[times[times_i]], line=-3)
+         axes=FALSE,legend=FALSE, tck = 0, main=colnames(landscape)[times[times_i]], line=-3)
   }
 }
 
