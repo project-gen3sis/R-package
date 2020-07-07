@@ -179,7 +179,7 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
     # run during simulation save plot to file
     config <- dynGet("config")
     plot_folder <- file.path(config$directories$output, "plots", title)
-    dir.create(plot_folder, showWarnings = F, recursive = T)
+    dir.create(plot_folder, showWarnings=FALSE, recursive=TRUE)
     file_name <- file.path(plot_folder, paste0(title, "_t_", landscape$id, ".png"))
     png(file_name)
     plot_fun(...)
