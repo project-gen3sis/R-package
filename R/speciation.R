@@ -58,7 +58,7 @@ loop_speciation <- function(config, data, vars) {
 
       permutation <- sample(1:length(species_presence), length(species_presence))
       clu_geo_spi_ti <- Tdbscan_variable(data$distance_matrix[species_presence[permutation],species_presence[permutation],
-                                                            drop = F], distances, 1)
+                                                            drop=FALSE], distances, 1)
       clu_geo_spi_ti <- clu_geo_spi_ti[order(permutation)]
     }
 
