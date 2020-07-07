@@ -65,7 +65,7 @@ create_species_from_existing <- function(parent_species, new_id, new_cells, conf
   new_species <- create_species(new_cells, config)
   new_species[["id"]] <- new_id
   new_species[["abundance"]] <- parent_species[["abundance"]][new_cells]
-  new_species[["traits"]] <- parent_species[["traits"]][new_cells, , drop = F]
+  new_species[["traits"]] <- parent_species[["traits"]][new_cells, , drop=FALSE]
   divergence <- limit_divergence_to_cells(parent_species[["divergence"]], new_cells)
 
   # quick and dirty fix
@@ -124,9 +124,9 @@ disperse_species <- function(species, source, destination, config){
   abundance[destination] <- config$gen3sis$initialization$initial_abundance
   species[["abundance"]] <- abundance[sorted]
 
-  traits <- species[["traits"]][source, , drop = F]
+  traits <- species[["traits"]][source, , drop=FALSE]
   rownames(traits) <- destination
-  species[["traits"]] <- rbind(species[["traits"]], traits)[sorted, , drop = F]
+  species[["traits"]] <- rbind(species[["traits"]], traits)[sorted, , drop=FALSE]
 
   index <- species[["divergence"]][["index"]]
   index[destination] <- index[source]
@@ -152,7 +152,7 @@ limit_species_to_cells <- function(species, cells) {
   limited_cells <- limited_cells[which(limited_cells %in% cells)]
 
   species[["abundance"]] <- species[["abundance"]][limited_cells]
-  species[["traits"]] <- species[["traits"]][limited_cells, , drop = F]
+  species[["traits"]] <- species[["traits"]][limited_cells, , drop=FALSE]
   species[["divergence"]] <- limit_divergence_to_cells(species[["divergence"]], limited_cells)
 
   return(invisible(species))
