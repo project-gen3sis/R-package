@@ -155,8 +155,8 @@ write_nex <- function(phy, label="sp", output_file){
   write.table(String_final,
               output_file,
               quote=FALSE, 
-              row.names = F, 
-              col.names=F)
+              row.names=FALSE, 
+              col.names=FALSE)
 
   #read phylo
   # t <- read.nexus(file.path(output_location, "phy.nex"))
