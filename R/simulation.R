@@ -25,8 +25,8 @@ setup_inputs <- function(config, data, vars) {
     if (name %in% names(config[["gen3sis"]][["general"]][["environmental_ranges"]]) ) {
       range <- config[["gen3sis"]][["general"]][["environmental_ranges"]][[name]]
       if( any(is.na(range)) ) {
-        r_min <- min(tmp, na.rm = T)
-        r_max <- max(tmp, na.rm = T)
+        r_min <- min(tmp, na.rm=TRUE)
+        r_max <- max(tmp, na.rm=TRUE)
         range <- c(r_min, r_max)
       } else {
         range <- range
