@@ -50,7 +50,7 @@ loop_ecology <- function(config, data, vars) {
   occupied_cells <- rownames(all_species_presence)[rowSums(all_species_presence)>0]
 
   for (cell in occupied_cells) { # strat loop over ids with at least one species...
-    local_environment = data$landscape[["environment"]][cell, , drop = F]
+    local_environment = data$landscape[["environment"]][cell, , drop=FALSE]
 
     coo_sp <- which(all_species_presence[cell,])
     #create coocuring species traits for idi
@@ -78,7 +78,7 @@ loop_ecology <- function(config, data, vars) {
     rownames(traits) <- coo_sp
     names(abundance) <- coo_sp
 
-    #species <- traits[, c("abd", config$gen3sis$general$trait_names), drop = F]
+    #species <- traits[, c("abd", config$gen3sis$general$trait_names), drop = FALSE]
   
 
     NEW_abd <- config$gen3sis$ecology$apply_ecology(abundance, traits, local_environment, config)
