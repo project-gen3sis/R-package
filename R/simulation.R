@@ -124,7 +124,7 @@ init_attribute_ancestor_distribution <- function(config, data, vars) {
   grDevices::dev.off()
 
   plot_richness(all_species, data$landscape)
-  #data$geo_sp_ti <- geo_sp_ti[habitable_cells_ti, ,drop=F]
+  #data$geo_sp_ti <- geo_sp_ti[habitable_cells_ti, ,drop=FALSE]
   
   # n_sp <- ncol(geo_sp_ti)
   n_sp <- length(data$all_species)
