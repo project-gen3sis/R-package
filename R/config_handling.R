@@ -123,7 +123,7 @@ internal_categories <- c("general",
 #' @noRd
 populate_config <- function(config, config_file) {
   user_config_env <- new.env()
-  source(config_file, chdir = T, local=user_config_env)
+  source(config_file, chdir=TRUE, local=user_config_env)
   for ( category in internal_categories) {
     config[["gen3sis"]][[category]] <- populate_settings_list(config[["gen3sis"]][[category]], user_config_env)
   }
