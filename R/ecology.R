@@ -46,7 +46,7 @@ loop_ecology <- function(config, data, vars) {
   rownames(all_species_presence) <- all_cells
 
   # take ids that have at least one species...
-  #occupied_cells <- rownames(geo_sp_ti[rowSums(data$geo_sp_ti)>0, ,drop=F])
+  #occupied_cells <- rownames(geo_sp_ti[rowSums(data$geo_sp_ti)>0, ,drop=FALSE])
   occupied_cells <- rownames(all_species_presence)[rowSums(all_species_presence)>0]
 
   for (cell in occupied_cells) { # strat loop over ids with at least one species...
