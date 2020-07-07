@@ -134,10 +134,10 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   
   # richness map
   ras <- rasterFromXYZ(output$summary$`richness-final`)
-  rc <- color_richness(max(ras@data@values, na.rm=T))
+  rc <- color_richness(max(ras@data@values, na.rm=TRUE))
   image(ras, col=rc, bty = "o", xlab = "", ylab = "", las=1)
   mtext(4, text="Final \u03B1 richness", line=1, cex=1.2)
-  raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=T, add=T,col=rc)
+  raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=TRUE, add=TRUE,col=rc)
   }
 }
 
@@ -152,7 +152,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
 #' @export
 plot_richness <- function(species_list, landscape) {
   richness <- get_geo_richness(species_list, landscape)
-  rc <- color_richness(max(richness, na.rm=T))
+  rc <- color_richness(max(richness, na.rm=TRUE))
   conditional_plot("richness",
                    landscape,
                    plot_raster_single,
