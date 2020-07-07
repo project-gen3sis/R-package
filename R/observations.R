@@ -24,7 +24,7 @@ save_occupancy <- function() {
   data <- dynGet("data")
   vars <-  dynGet("vars")
   save_landscape()
-  dir.create(file.path(config$directories$output, "occupancy"), showWarnings = F, recursive = T)
+  dir.create(file.path(config$directories$output, "occupancy"), showWarnings=FALSE, recursive=TRUE)
   tmp <- get_geo_richness(data$all_species, data$landscape)
   tmp <- tmp > 0 
   saveRDS(object = tmp,
@@ -42,7 +42,7 @@ save_richness <- function() {
   data <- dynGet("data")
   vars <-  dynGet("vars")
   save_landscape()
-  dir.create(file.path(config$directories$output, "richness"), showWarnings = F, recursive = T)
+  dir.create(file.path(config$directories$output, "richness"), showWarnings=FALSE, recursive=TRUE)
   richness <- get_geo_richness(data$all_species, data$landscape)
   saveRDS(object = richness,
           file = file.path(config$directories$output, "richness", paste0("richness_t_", vars$ti, ".rds")))
@@ -59,7 +59,7 @@ save_phylogeny <- function(){
   vars <-  dynGet("vars")
   
   directory <- file.path(config$directories$output, "phylogeny")
-  dir.create(directory, showWarnings = F, recursive = T)
+  dir.create(directory, showWarnings=FALSE, recursive=TRUE)
   
   file <- file.path(directory, paste0("phylogeny_t_", vars$ti, ".nex"))
   write_nex(phy=data$phy, label="species", output_file=file)
@@ -76,7 +76,7 @@ save_species <- function() {
   data <- dynGet("data")
   vars <-  dynGet("vars")
   save_landscape()
-  dir.create(file.path(config$directories$output, "species"), showWarnings = F, recursive = T)
+  dir.create(file.path(config$directories$output, "species"), showWarnings=FALSE, recursive=TRUE)
   species <- data$all_species
   saveRDS(object = species,
           file = file.path(config$directories$output, "species", paste0("species_t_", vars$ti, ".rds")))
@@ -96,7 +96,7 @@ save_landscape <- function() {
   vars <-  dynGet("vars")
   landscape_file = file.path(config$directories$output, "landscapes", paste0("landscape_t_", vars$ti, ".rds"))
   if( !file.exists(landscape_file)){
-    dir.create(file.path(config$directories$output, "landscapes"), showWarnings = F, recursive = T)
+    dir.create(file.path(config$directories$output, "landscapes"), showWarnings=FALSE, recursive=TRUE)
     landscape <- data$landscape
     saveRDS(object = landscape, file = landscape_file)
   }
