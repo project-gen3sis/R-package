@@ -270,7 +270,7 @@ create_directories <- function(directory, overwrite, full_matrices) {
   if(file.exists(directory) && !overwrite) {
     stop("output directory already exists")
   } else if(file.exists(directory) && overwrite) {
-    unlink(directory, recursive = T)
+    unlink(directory, recursive=TRUE)
   }
   # create directories
   dir.create(file.path(directory), recursive=TRUE, showWarnings = FALSE)
