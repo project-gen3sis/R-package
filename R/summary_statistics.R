@@ -179,7 +179,7 @@ trait_ranges <- function(species_list) {
 }
 
 
-habitat_extents <- function(species_list, exclude_extinct = T, plot_hist = F) {
+habitat_extents <- function(species_list, exclude_extinct=TRUE, plot_hist=FALSE) {
   extents <- sapply(species_list, function(sp){length(sp[["abundance"]])})
   names(extents) <- sapply(species_list, function(sp){as.character(sp[["id"]])})
   if(exclude_extinct) {
