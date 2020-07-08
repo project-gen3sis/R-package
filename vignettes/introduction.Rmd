@@ -203,7 +203,7 @@ Additionally to the main functions, the package provides several convenience fun
 To launch a simulation you need to call the *run_simulation* function. We only store one intermediate step between the starting and end time-steps by setting "call_observer=1", this means one time-step equally distributed between the starting and ending time-steps. Like so we will have a look at our virtual world at 150, 125 and 100 Ma. 
 
 ```{r eval=FALSE, echo=TRUE}
-#we set verbose to 0 to avoid a large console outputs of how the simulation is developping
+#we set verbose to 0 to avoid a large console outputs of how the simulation is developing
 sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
                landscape = file.path(datapath, "landscape"),
                call_observer = 1,
