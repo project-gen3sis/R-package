@@ -47,7 +47,7 @@ In order to create an empty config, we use the function *write_config_skeleton* 
 # get data path
 datapath <- system.file(file.path("extdata", "EmptyConfig"), package="gen3sis")
 # set config_empty.R file path
-config_file_path <- file.path(datapath, "EmptyConfig", "config_empty.R")
+config_file_path <- file.path(tempdir(), "config_empty.R")
 ```
 
 And then create an empty config.
@@ -331,10 +331,12 @@ verify_config(config_object)
 ```{r eval=F}
 # run simulation by indicating config file path
 sim_old <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
-               landscape = file.path(datapath, "landscape"))
+               landscape = file.path(datapath, "landscape"),
+               output_directory=tempdir())
 
 # run simulation by indicating config object
 sim_new <- run_simulation(config = config_object, 
-               landscape = file.path(datapath, "landscape"))
+               landscape = file.path(datapath, "landscape"),
+               output_directory=tempdir())
 
 ```
