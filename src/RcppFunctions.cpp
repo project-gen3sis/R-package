@@ -1,6 +1,6 @@
 // Copyright (c) 2020, ETH Zurich
 
-// Author: Oskar Hagen (oskar@hagen.bio) partially addapted from Theo Gaboriau (theo.gaboriau@umontpellier.fr)
+// Author: Oskar Hagen (oskar@hagen.bio) partially adapted from Theo Gaboriau (theo.gaboriau@unil.ch)
 
 #include <Rcpp.h>
 using namespace Rcpp;
