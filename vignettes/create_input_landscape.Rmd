@@ -99,7 +99,7 @@ landscapes_list_t0$temp <- c(landscapes_list_t0$temp, temperature_brick[[1]])
 
 create_input_landscape(landscapes = landscapes_list_t0,
                                cost_function = cost_function_null,
-                               output_directory = "../CostFunctionExamples/cost_function_null",# a directory name to save the files in
+                               output_directory = file.path(tempdir(), "cost_function_null"),# a directory name to save the files in
                                directions = 8, # all surrounding sites from a focus site
                                calculate_full_distance_matrices = TRUE  # full distance matrix
 )
@@ -152,7 +152,7 @@ cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
 ```{r, echo=FALSE, eval=F}
 create_input_landscape(landscapes = landscapes_list_t0,
                                cost_function = cost_function_water,
-                               output_directory = "CostFunctionExamples/cost_function_water",# a directory name to save the files in
+                               output_directory = file.path(tempdir(), "cost_function_water"),# a directory name to save the files in
                                directions = 8, # all surrounding sites from a focus site
                                calculate_full_distance_matrices = TRUE  # full distance matrix
 )
@@ -208,8 +208,8 @@ The *create_input_landscape* function creates *.rds* files that will be used as 
 ```{r eval=F}
 create_input_landscape(landscapes = landscapes_list,
              cost_function = cost_function_water,
-             output_directory = "YOUR_OUTPUT_DIRECTORY_HERE/WorldCenter/landscape",
-             timesteps = paste0(round(seq(150, 100, length.out = 301),2), "Ma")),
+             output_directory = file.path(tempdir(), "WorldCenter"),
+             timesteps = paste0(round(seq(150, 100, length.out = 301),2), "Ma"),
              calculate_full_distance_matrices = F)
 ```
 
