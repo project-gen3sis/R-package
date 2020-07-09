@@ -10,8 +10,9 @@ config_object <- create_input_config(config_file = path_config)
 # change seed of config_worldcenter config object
 config_object$gen3sis$general$random_seed <- 2020
 
-
 # run the model for config_object
-\dontrun{
-  sim <- run_simulation(config = config_object, landscape = file.path(datapath, "landscape"))
+\donttest{
+  sim <- run_simulation(config = config_object, 
+                        landscape = file.path(datapath, "landscape"), 
+                        output_directory = tempdir())
 }

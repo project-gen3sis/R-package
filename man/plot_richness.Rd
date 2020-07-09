@@ -33,5 +33,5 @@ plot_richness(species_t_0, landscape_t_0)
 # at the config file:
 \dontrun{
 plot_richness(data$all_species, data$landscape)
-}  
+} 
 }

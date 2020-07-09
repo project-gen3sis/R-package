@@ -65,6 +65,7 @@ end_of_timestep_observer = function(data, vars, config){
   # the current landscape can be found in data$landscape
   save_landscape()
   save_species()
+  plot_richness(data$all_species, data$landscape)
 }
 
 
