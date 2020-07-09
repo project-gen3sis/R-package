@@ -4,6 +4,7 @@ output <- readRDS(file.path(datapath, "output/config_worldcenter/sgen3sis.rds"))
 # plot output summary
 plot_summary(output)
 
+\donttest{
 ## run simulation and plot summary
 # get path or correct input objects
 datapath <- system.file(file.path("extdata", "CaseStudy1"), package="gen3sis")
@@ -13,3 +14,4 @@ output <- run_simulation(config = file.path(datapath,"config/config_fast.R"),
                       output_directory = tempdir())
 # plot output summary
 plot_summary(output)
+}
