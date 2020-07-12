@@ -34,7 +34,11 @@ Below the status of the automatic Travis CI tests on the master branch
 Load and run a simulation with the desired config and landscapes. Exemple data is provided with the package
 ```{r}
 library("gen3sis")
-sim <- run_simulation(config = "config_xD.R", input_directory = "./simulations/World")
+datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
+sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
+               landscape = file.path(datapath, "landscape"),
+               output_directory = tempdir(),
+               verbose=0)
 ```
 A summary statistics is stored at 'sim' more data can be save using the oberver function
 
