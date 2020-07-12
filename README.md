@@ -34,7 +34,9 @@ Below the status of the automatic Travis CI tests on the master branch
 Load and run a simulation with the desired config and landscapes. Exemple data is provided with the package
 ```{r}
 library("gen3sis")
+
 datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
+
 sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
                landscape = file.path(datapath, "landscape"),
                output_directory = tempdir(),
