@@ -13,13 +13,13 @@ Package authorship according to: http://epub.wu.ac.at/3269/1/Report114.pdf
 
 ### How to install gen3sis
 
-gen3sis will be soon on CRAN. As soon as this is done, you can install the latest CRAN release via
+gen3sis is avabaile on [CRAN](https://CRAN.R-project.org/package=gen3sis). You can install the latest CRAN release via
 
 ```{r}
 install.packages("gen3sis")
 ```
 
-Until then, you can install the latest development release from GitHub via 
+you can also install the latest development release from GitHub via 
 
 ```{r}
 devtools::install_github(repo = "project-gen3sis/R-package/", 
@@ -61,4 +61,4 @@ Make sure you have the latest gen3sis version
 paste("gen3sis version:", packageVersion("gen3sis"))
 ```
 
-Package mantined by Oskar Hagen (oskar@hagen.bio)
+Package mantined by Oskar Hagen [(oskar@hagen.bio)](https://www.hagen.bio)
