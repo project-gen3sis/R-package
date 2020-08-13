@@ -59,7 +59,7 @@ restore_state <- function(val, restart_timestep){
   ### val contains a populated config, required for directory information
   ### restore previous simulation state
   if(restart_timestep == "ti"){
-    #look for the most recent completed timestep
+    #look for the most recent completed time-step
     regex <- "\\d+"
     files <- list.files(val$config$directories$output_val)
     if(length(files) == 0){
