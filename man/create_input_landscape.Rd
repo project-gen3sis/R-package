@@ -21,7 +21,8 @@ create_input_landscape(
 NOTE: the list names are important since these are the environmental names}
 
 \item{cost_function}{function that returns a cost value between a pair of sites (neighbors) that should have the following signature:
- \code{cost_function <- function(src, src_habitable, dest, dest_habitable){
+ \code{cost_function <- 
+ function(src, src_habitable, dest, dest_habitable){
  rules for environmental factors to be considered (e.g. elevation)
  return(cost value)
 }}
