@@ -2,8 +2,8 @@
 
 #' plot a species' presence on a given landscape
 #'
-#' @param species a single species
-#' @param landscape a landscape
+#' @param species a single species object
+#' @param landscape a landscape object
 #' @example inst/examples/plot_species_presence_help.R
 #' @export
 plot_species_presence <- function(species, landscape) {
