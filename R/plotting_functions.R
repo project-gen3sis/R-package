@@ -34,7 +34,7 @@ plot_landscape <- function(landscape) {
 
 #' plot the outline of a given landscape over time
 #'
-#' @param landscape the input landscape to plot
+#' @param landscape the input landscape to be plotted
 #' @param slices the amount of slices though time between start and end (default value is 2).
 #' @param start_end_times the stating and ending times of the simulation (default is NULL, takes the oldest and most recent available)
 #'
@@ -59,8 +59,8 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 
 #' plot simulation default summary object
 #'
-#' @param output tsgen3sis output object resulting from a gen3sis simulation 
-#' @param summary_title summary plot title as character. If NULL, title computed from input name.
+#' @param output a sgen3sis output object resulting from a gen3sis simulation (i.e. run_simulation)
+#' @param summary_title summary plot title as character. If NULL, title is computed from input name.
 #' @param summary_legend either a staring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.
 #' @seealso \code{\link{run_simulation}}   
 #' @example inst/examples/plot_summary_help.R
@@ -111,7 +111,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   par(xpd=TRUE)
   legend("topleft", inset=c(-0.3,-0.3), title=summary_title, legend=summary_legend, bty="n")
 
-  #plot  time behaviour
+  #plot time behavior
   d <- output$summary$phylo_summary[-1,-1]
   plot( d[,"alive"],  xlab="", ylab="", type='l', col="black", lwd=4, frame.plot = FALSE, xaxt='n', yaxt='n')
   axis(4,line=-1, cex=1, cex.axis=1, col="black")
