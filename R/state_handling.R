@@ -1,6 +1,6 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' save_val is the internal function to save the current simulation state
+#' Internal function that saves the current simulation state
 #'
 #' @param val the internal state
 #' @param save_val a tri-state flag: NA to not save, "all" to save the current state,
@@ -27,9 +27,9 @@ save_val <- function(val, save_val = NA){
 }
 
 
-#' saves the current species/landscape, to be renamed
+#' Saves the current species and landscape objects
 #'
-#' @param val the current simulaiton state
+#' @param val the current simulation state
 #' @noRd
 save_ecogengeo <- function(val){
   # save eco at time ti
@@ -50,7 +50,7 @@ save_ecogengeo <- function(val){
 }
 
 
-#' restore_state restores the simulation form a previously saved state
+#' Restores the simulation form a previously saved state
 #'
 #' @param val a semi valid simulation state
 #' @param restart_timestep the time-step to restart from
