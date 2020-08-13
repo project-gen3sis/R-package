@@ -18,24 +18,30 @@ create_input_landscape(
 }
 \arguments{
 \item{landscapes}{list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past.
-The list names are important since these are the environmental names}
+NOTE: the list names are important since these are the environmental names}
 
-\item{cost_function}{function that returns a cost value between a pair of cell (neighbours) that should have the following signature:
-#' cost_fuinction <- function(src, src_habitable, dest, dest_habitable){
- #rules for envoriolmental factors to be considered (e.g. elevation)
- #return(cost value)
-}
-where src is a vector of environmental conditions for the origin cell, src_habitable (TRUE or FALSE) for habitable condition of the origin cell, dest is a vector of environmental conditions for the destination cell, dest_habitable  (TRUE or FALSE) for habitable condition of the destination cell}
+\item{cost_function}{function that returns a cost value between a pair of sites (neighbors) that should have the following signature:
+ \code{cost_function <- function(src, src_habitable, dest, dest_habitable){
+ rules for environmental factors to be considered (e.g. elevation)
+ return(cost value)
+}}
+where: **src** is a vector of environmental conditions for the origin sites, 
+**src_habitable** (TRUE or FALSE) for habitable condition of the origin sites, 
+**dest** is a vector of environmental conditions for the destination site, dest_habitable  (TRUE or FALSE) for habitable condition of the destination cell}
 
-\item{directions}{4, 8, 16 oder adjacency matrix (see gdistance package)}
+\item{directions}{4, 8 or 16 neighbors, dictates the connection of cell neighbors on adjacency matrix (see gistance package)}
 
-\item{output_directory}{path for storing the gen3sis ready landscape}
+\item{output_directory}{path for storing the gen3sis ready landscape (i.e. landscape.rds, metadata.txt and full- and/or local_distance folders)}
 
-\item{timesteps}{vector of names for every time-step to represent the time-step at gen3sis ready landscape. if NULL, tim-steps are sequentially numbered from 0 (present)}
+\item{timesteps}{vector of names for every time-step to represent the time-step at gen3sis ready landscape. 
+If timesteps=NULL (default), time-steps are sequentially numbered from 0 to the latest time-step.}
 
-\item{calculate_full_distance_matrices}{TRUE or FALSE. If TRUE calculates the entire distance matrix for every time-step and between all habitable cells (faster CPU time, higher storage required). If FALSE, only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)}
+\item{calculate_full_distance_matrices}{should a full distance matrix be calculated? TRUE or FALSE? 
+If TRUE calculates the entire distance matrix for every time-step and between all habitable cells 
+(faster CPU time, higher storage required). 
+If FALSE (default), only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)}
 
-\item{crs}{the coordinate reference system in crs format (see rater::crs)}
+\item{crs}{the coordinate reference system in crs format (see raster::crs)}
 
 \item{overwrite_output}{TRUE or FALSE}
 
@@ -46,6 +52,10 @@ no return object. This function saves the landscape input files for gen3sis at t
 }
 \description{
 create an landscape input from a named list of rasters or raster files
+}
+\details{
+This function creates the input landscapes files needed by the run_simulation function. 
+It uses as input the dynamic landscape rasters and user defined geodesimal corrections as well as rules to define the connection costs between sites
 }
 \examples{
 
@@ -108,4 +118,7 @@ create_input_landscape(
   timesteps = paste0(round(seq(150, 100, length.out = 301),2), "Ma"),
   calculate_full_distance_matrices = FALSE) # full distance matrix
 }
+}
+\seealso{
+\code{\link{run_simulation}}
 }

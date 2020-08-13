@@ -2,17 +2,17 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_species_presence}
 \alias{plot_species_presence}
-\title{plot a species' presence on a given landscape}
+\title{Plot a species' presence on a given landscape}
 \usage{
 plot_species_presence(species, landscape)
 }
 \arguments{
-\item{species}{a single species}
+\item{species}{a single species object}
 
-\item{landscape}{a landscape}
+\item{landscape}{a landscape object}
 }
 \description{
-plot a species' presence on a given landscape
+Plot a species' presence on a given landscape
 }
 \examples{
 # get path to output objects

@@ -2,7 +2,7 @@
 % Please edit documentation in R/gen3sis_species.R
 \name{create_ancestor_species}
 \alias{create_ancestor_species}
-\title{The function create_ancestor_species  allows the user to populate the world at the beginning of a simulation.}
+\title{Allows the user to populate the world at the beginning of a simulation}
 \usage{
 create_ancestor_species(landscape, config)
 }
@@ -15,10 +15,10 @@ create_ancestor_species(landscape, config)
 a list of species
 }
 \description{
-The function create_ancestor_species  allows the user to populate the world at the beginning of a simulation.
+Allows the user to populate the world at the beginning of a simulation
 }
 \details{
-Using this function any number of new species can be created. For every species, a number of
-habitable cells from the landscape are selected and call 'create_species'. In another step, the user must initialize 
-the species[["traits"]] matrix with the desired initial traits values.
+Using this function, any number of new species can be created. For every species, a number of
+habitable sites from the landscape are selected and call 'create_species'. In another step, the user must initialize 
+the species[["traits"]] matrix with the desired initial traits values
 }

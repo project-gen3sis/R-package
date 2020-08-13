@@ -2,7 +2,7 @@
 % Please edit documentation in R/config_handling.R
 \name{verify_config}
 \alias{verify_config}
-\title{This function verifies that all required config fields are provided.}
+\title{Verifies if all required config fields are provided}
 \usage{
 verify_config(config)
 }
@@ -14,7 +14,7 @@ Returns TRUE for a valid config, FALSE otherwise, in which case a list of
 missing parameters will be printed out as well
 }
 \description{
-This function verifies that all required config fields are provided.
+Verifies if all required config fields are provided
 }
 \examples{
 # get path to input config

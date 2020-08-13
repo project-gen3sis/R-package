@@ -1,22 +1,28 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' create an landscape.rds input from a named list of rasters or raster files
+#' create an landscape input from a named list of rasters or raster files
 #' 
 #' @details This function creates the input landscapes files needed by the run_simulation function. 
 #' It uses as input the dynamic landscape rasters and user defined geodesimal corrections as well as rules to define the connection costs between sites
 #' @param landscapes list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past.
 #' NOTE: the list names are important since these are the environmental names
-#' @param cost_function function that returns a cost value between a pair of sites (neighbors) that should have the following signature:\\\\
-#' #' cost_function <- function(src, src_habitable, dest, dest_habitable){\\
-#'  #rules for environmental factors to be considered (e.g. elevation)\\
-#'  #return(cost value)
-#' }
-#' where src is a vector of environmental conditions for the origin cell, src_habitable (TRUE or FALSE) for habitable condition of the origin cell, dest is a vector of environmental conditions for the destination cell, dest_habitable  (TRUE or FALSE) for habitable condition of the destination cell
-#' @param directions 4, 8, 16 oder adjacency matrix (see gdistance package)
-#' @param output_directory path for storing the gen3sis ready landscape 
-#' @param timesteps vector of names for every time-step to represent the time-step at gen3sis ready landscape. if NULL, tim-steps are sequentially numbered from 0 (present)
-#' @param calculate_full_distance_matrices TRUE or FALSE. If TRUE calculates the entire distance matrix for every time-step and between all habitable cells (faster CPU time, higher storage required). If FALSE, only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)
-#' @param crs the coordinate reference system in crs format (see rater::crs)
+#' @param cost_function function that returns a cost value between a pair of sites (neighbors) that should have the following signature:
+#'  \code{cost_function <- function(src, src_habitable, dest, dest_habitable){
+#'  rules for environmental factors to be considered (e.g. elevation)
+#'  return(cost value)
+#' }}
+#' where: **src** is a vector of environmental conditions for the origin sites, 
+#' **src_habitable** (TRUE or FALSE) for habitable condition of the origin sites, 
+#' **dest** is a vector of environmental conditions for the destination site, dest_habitable  (TRUE or FALSE) for habitable condition of the destination cell
+#' @param directions 4, 8 or 16 neighbors, dictates the connection of cell neighbors on adjacency matrix (see gistance package)
+#' @param output_directory path for storing the gen3sis ready landscape (i.e. landscape.rds, metadata.txt and full- and/or local_distance folders) 
+#' @param timesteps vector of names for every time-step to represent the time-step at gen3sis ready landscape. 
+#' If timesteps=NULL (default), time-steps are sequentially numbered from 0 to the latest time-step.
+#' @param calculate_full_distance_matrices should a full distance matrix be calculated? TRUE or FALSE? 
+#' If TRUE calculates the entire distance matrix for every time-step and between all habitable cells 
+#' (faster CPU time, higher storage required). 
+#' If FALSE (default), only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)
+#' @param crs the coordinate reference system in crs format (see raster::crs)
 #' @param overwrite_output TRUE or FALSE
 #' @param verbose print distance calculation progress (default: FALSE)
 #'
@@ -43,7 +49,7 @@ create_input_landscape <- function( landscapes,
   # habitability masks removed for now.. assumin NA's from input data as non-habitable (applies if only one env. variable has NA in the cell)!
   habitability_masks = NULL
   # @param habitability_masks either (1) a list of files or rasters starting from the present indicating the habitability of cell at that timestep.
-  # #' or (2) NULL, every cell with at least one NA as environmentalvalue(s) will be considered inhabitable 
+  # #' or (2) NULL, every cell with at least one NA as envvalue(s) will be considered inhabitable 
   
   
   

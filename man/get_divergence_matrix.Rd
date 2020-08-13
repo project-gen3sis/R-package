@@ -2,7 +2,7 @@
 % Please edit documentation in R/gen3sis_species.R
 \name{get_divergence_matrix}
 \alias{get_divergence_matrix}
-\title{The function get_divergence_matrix returns the full divergence matrix for a given species (cell x cell).}
+\title{Returns the full divergence matrix for a given species (site x site).}
 \usage{
 get_divergence_matrix(species)
 }
@@ -13,11 +13,11 @@ get_divergence_matrix(species)
 the full decompressed divergence matrix
 }
 \description{
-The function get_divergence_matrix returns the full divergence matrix for a given species (cell x cell).
+Returns the full divergence matrix for a given species (site x site).
 }
 \details{
 The functions allows to extract the full divergence matrix representing the accumulated differentiation
-between all the cells that are occupied by the species. The input is a species object for any time step.
+between all the sites that are occupied by the species. The input is a species object for any time step.
 }
 \examples{
 # get path containing example rasters

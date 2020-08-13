@@ -2,17 +2,17 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_landscape_overview}
 \alias{plot_landscape_overview}
-\title{plot the outline of a given landscape over time}
+\title{Plot the outline of a given landscape over time}
 \usage{
 plot_landscape_overview(landscape, slices = 2, start_end_times = NULL)
 }
 \arguments{
-\item{landscape}{the input landscape to plot}
+\item{landscape}{the input landscape to be plotted}
 
 \item{slices}{the amount of slices though time between start and end (default value is 2).}
 
 \item{start_end_times}{the stating and ending times of the simulation (default is NULL, takes the oldest and most recent available)}
 }
 \description{
-plot the outline of a given landscape over time
+Plot the outline of a given landscape over time
 }

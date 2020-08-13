@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_raster_single}
 \alias{plot_raster_single}
-\title{plot a single set of values onto a given landscape}
+\title{Plot a single set of values onto a given landscape}
 \usage{
 plot_raster_single(values, landscape, title, no_data = 0, col)
 }
@@ -11,14 +11,14 @@ plot_raster_single(values, landscape, title, no_data = 0, col)
 
 \item{landscape}{a landscape to plot the values onto}
 
-\item{title}{a title string for resulting plot, the time will be taken and appended from the landscape id}
+\item{title}{a title string for resulting plot, the time information will be taken and appended from the landscape id}
 
 \item{no_data}{what value should be used for missing values in values}
 
 \item{col}{corresponds to the \link{raster} col plot parameter. This can be omitted and colors handled by raster::plot}
 }
 \description{
-plot a single set of values onto a given landscape
+Plot a single set of values onto a given landscape
 }
 \examples{
 # get path to output objects

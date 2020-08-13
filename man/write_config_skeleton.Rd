@@ -2,12 +2,12 @@
 % Please edit documentation in R/config_handling.R
 \name{write_config_skeleton}
 \alias{write_config_skeleton}
-\title{writes out a config skeleton, that is, an empty config file to be edited by the user.}
+\title{Writes out a config skeleton}
 \usage{
 write_config_skeleton(file_path = "./config_skeleton.R", overwrite = FALSE)
 }
 \arguments{
-\item{file_path}{file path to write the file to}
+\item{file_path}{file path to write the file into}
 
 \item{overwrite}{overwrite existing file defaults to FALSE}
 }
@@ -15,7 +15,10 @@ write_config_skeleton(file_path = "./config_skeleton.R", overwrite = FALSE)
 returns a boolean indicating success or failure
 }
 \description{
-writes out a config skeleton, that is, an empty config file to be edited by the user.
+Writes out a config skeleton
+}
+\details{
+This function writes out a config skeleton, that is, an empty config file to be edited by the user.
 }
 \examples{
 # set config_empty.R file path

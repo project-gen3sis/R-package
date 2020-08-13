@@ -2,37 +2,40 @@
 % Please edit documentation in R/dispersal.R
 \name{get_dispersal_values}
 \alias{get_dispersal_values}
-\title{get_dispersal_values allows the user to generates dispersal value(s) for a given species. The simulation request the user 
-to return a vector of dispersal values with length num_draws.}
+\title{Allows the user to generates dispersal value(s) for a given species. The simulation request the user 
+to return a vector of dispersal values with length specified by the num_draws parameter}
 \usage{
 get_dispersal_values(num_draws, species, landscape, config)
 }
 \arguments{
-\item{num_draws}{'num_draws' the number of dispersal values drawn}
+\item{num_draws}{the number of dispersal values drawn}
 
-\item{species}{'species' the species for which the values are to be produced}
+\item{species}{the species for which the values are to be produced}
 
-\item{landscape}{'landscape' the landscape of the current time step}
+\item{landscape}{the landscape of the current time step}
 
-\item{config}{'config' the config of the simulation}
+\item{config}{the config of the simulation}
 }
 \value{
 a numerical vector of length num_draws with dispersal values
 }
 \description{
-get_dispersal_values allows the user to generates dispersal value(s) for a given species. The simulation request the user 
-to return a vector of dispersal values with length num_draws.
+Allows the user to generates dispersal value(s) for a given species. The simulation request the user 
+to return a vector of dispersal values with length specified by the num_draws parameter
 }
 \details{
-Dispersal values are used for two different operations. First, they are used to evaluate pairwise dispersal
-events between colonized and uninhabited cells. Second, they are used during the geographical clustering of
-species populations when determining which cells are in range of each other and belong to the same geographic cluster.
+Dispersal values are used for two different operations. 
+First, for colonization, dispersal values are used to evaluate pairwise dispersal
+events between colonized and uninhabited sites. 
+Second, for geographic clustering, dispersal values are used during the clustering of
+species populations when determining which sites 
+are in range of each other and belong to the same geographic cluster.
 
 num_draws tells the user how many dispersal values are requested by the simulation when this function is called and must 
-be returned. It can be of varying length depending on the operation calling it, i.e. colonisation or geographic clustering. 
+be returned. It can be of varying length depending on the operation calling it, i.e. colonization or geographic clustering. 
 If the dispersal is considered as fixed the function should return a vector of length num_draws with repeated identical
 values, or varying values in case of more complex dispersal kernels.
 
-Note: if the distances are randomized the cluster formation may be asymetrical. Therefore the ordering of all
+Note: if the distances are randomized the cluster formation may be asymmetrical. Therefore the ordering of all
 clustering operations is randomized.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/evolution.R
 \name{evolution_mode_none}
 \alias{evolution_mode_none}
-\title{evolution_mode_none}
+\title{No evolution considered}
 \usage{
 evolution_mode_none(species, cluster_indices, landscape, config)
 }
@@ -16,5 +16,5 @@ evolution_mode_none(species, cluster_indices, landscape, config)
 \item{config}{the general config}
 }
 \description{
-evolution_mode_none
+No evolution considered
 }

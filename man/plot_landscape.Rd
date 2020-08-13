@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_landscape}
 \alias{plot_landscape}
-\title{plot the environment variable of a given landscape}
+\title{Plot the environment variable of a given landscape}
 \usage{
 plot_landscape(landscape)
 }
@@ -10,5 +10,5 @@ plot_landscape(landscape)
 \item{landscape}{the landscape to plot the environment from}
 }
 \description{
-plot the environment variable of a given landscape
+Plot the environment variable of a given landscape
 }

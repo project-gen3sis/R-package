@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting_functions.R
 \name{color_richness}
 \alias{color_richness}
-\title{define gen3sis richness color scale}
+\title{Define gen3sis richness color scale}
 \usage{
 color_richness(n)
 }
@@ -10,8 +10,8 @@ color_richness(n)
 \item{n}{corresponds to the \link{colorRampPalette} parameter}
 }
 \value{
-returns a \link{colorRampPalette} function with the gen3sis richness colours
+returns a \link{colorRampPalette} function with the gen3sis richness colors
 }
 \description{
-define gen3sis richness color scale
+Define gen3sis richness color scale
 }

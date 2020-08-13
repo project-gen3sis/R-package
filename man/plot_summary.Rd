@@ -2,19 +2,19 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_summary}
 \alias{plot_summary}
-\title{plot simulation default summary object}
+\title{Plot simulation default summary object}
 \usage{
 plot_summary(output, summary_title = NULL, summary_legend = NULL)
 }
 \arguments{
-\item{output}{tsgen3sis output object resulting from a gen3sis simulation}
+\item{output}{a sgen3sis output object resulting from a gen3sis simulation (i.e. run_simulation)}
 
-\item{summary_title}{summary plot title as character. If NULL, title computed from input name.}
+\item{summary_title}{summary plot title as character. If NULL, title is computed from input name.}
 
 \item{summary_legend}{either a staring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.}
 }
 \description{
-plot simulation default summary object
+Plot simulation default summary object
 }
 \examples{
 # load existing summary example

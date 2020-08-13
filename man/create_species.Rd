@@ -2,12 +2,12 @@
 % Please edit documentation in R/gen3sis_species.R
 \name{create_species}
 \alias{create_species}
-\title{creates a new species.}
+\title{Creates a new species}
 \usage{
 create_species(initial_cells, config)
 }
 \arguments{
-\item{initial_cells}{a list of initial cells (strings) to occupy}
+\item{initial_cells}{a list of initial sites (strings) to occupy}
 
 \item{config}{the configuration information}
 }
@@ -15,12 +15,12 @@ create_species(initial_cells, config)
 returns a newly created species occupying the provided initial cells
 }
 \description{
-creates a new species.
+Creates a new species
 }
 \details{
 This function is to be used in the create_ancestor_species function at the configuration 
 of a simulation. It will create a species object representing one species in the simulation occupying the 
-given list of initial cells.
+given list of initial sites
 }
 \examples{
 \dontrun{
