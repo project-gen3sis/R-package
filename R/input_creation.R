@@ -1,12 +1,14 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' create an landscape input from a named list of rasters or raster files
-#'
+#' create an landscape.rds input from a named list of rasters or raster files
+#' 
+#' @details This function creates the input landscapes files needed by the run_simulation function. 
+#' It uses as input the dynamic landscape rasters and user defined geodesimal corrections as well as rules to define the connection costs between sites
 #' @param landscapes list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past.
-#' The list names are important since these are the environmental names
-#' @param cost_function function that returns a cost value between a pair of cell (neighbours) that should have the following signature:
-#' #' cost_fuinction <- function(src, src_habitable, dest, dest_habitable){
-#'  #rules for envoriolmental factors to be considered (e.g. elevation)
+#' NOTE: the list names are important since these are the environmental names
+#' @param cost_function function that returns a cost value between a pair of sites (neighbors) that should have the following signature:\\\\
+#' #' cost_function <- function(src, src_habitable, dest, dest_habitable){\\
+#'  #rules for environmental factors to be considered (e.g. elevation)\\
 #'  #return(cost value)
 #' }
 #' where src is a vector of environmental conditions for the origin cell, src_habitable (TRUE or FALSE) for habitable condition of the origin cell, dest is a vector of environmental conditions for the destination cell, dest_habitable  (TRUE or FALSE) for habitable condition of the destination cell
@@ -21,6 +23,7 @@
 #' @return no return object. This function saves the landscape input files for gen3sis at the output_directory
 #' @importFrom gdistance transition costDistance
 #' @example inst/examples/create_input_landscape_help.R
+#' @seealso \code{\link{run_simulation}} 
 #' @export
 
 create_input_landscape <- function( landscapes,
