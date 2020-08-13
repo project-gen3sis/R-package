@@ -1,11 +1,11 @@
 # Copyright (c) 2020, ETH Zurich
 
 
-#' The function create_ancestor_species  allows the user to populate the world at the beginning of a simulation.
+#' Allows the user to populate the world at the beginning of a simulation
 #'
-#' @details Using this function any number of new species can be created. For every species, a number of
-#' habitable cells from the landscape are selected and call 'create_species'. In another step, the user must initialize 
-#' the species[["traits"]] matrix with the desired initial traits values.
+#' @details Using this function, any number of new species can be created. For every species, a number of
+#' habitable sites from the landscape are selected and call 'create_species'. In another step, the user must initialize 
+#' the species[["traits"]] matrix with the desired initial traits values
 #'
 #' @param landscape the landscape over which to create the species
 #' @param config the configuration information
@@ -17,13 +17,13 @@ create_ancestor_species  <- function(landscape, config){
 }
 
 
-#' creates a new species.
+#' Creates a new species
 #'
 #' @details This function is to be used in the create_ancestor_species function at the configuration 
 #' of a simulation. It will create a species object representing one species in the simulation occupying the 
-#' given list of initial cells.
+#' given list of initial sites
 #'
-#' @param initial_cells a list of initial cells (strings) to occupy
+#' @param initial_cells a list of initial sites (strings) to occupy
 #' @param config the configuration information
 #'
 #' @return returns a newly created species occupying the provided initial cells
@@ -52,7 +52,7 @@ create_species <- function(initial_cells, config) {
 }
 
 
-#' Creates a new species from an existing species.
+#' Creates a new species from an existing species
 #'
 #' @param parent_species the parent species
 #' @param new_id the id of the new species
@@ -84,10 +84,10 @@ update_species_from_abundance <- function(species) {
 }
 
 
-#' The function get_divergence_matrix returns the full divergence matrix for a given species (cell x cell).
+#' Returns the full divergence matrix for a given species (site x site).
 #'
 #' @details The functions allows to extract the full divergence matrix representing the accumulated differentiation
-#' between all the cells that are occupied by the species. The input is a species object for any time step.
+#' between all the sites that are occupied by the species. The input is a species object for any time step.
 #' 
 #' @param species the species for which the divergence matrix should be produced
 #'
@@ -99,10 +99,10 @@ get_divergence_matrix <- function(species) {
 }
 
 
-#' The function disperse_species disperses a species to occupy a list of newly selected cells.
+#' Disperses a species to occupy a list of newly selected sites
 #'
-#' @details This function disperses a species to new cells. In order to maintain the divergence and trait
-#' distributions for every newly occupied cell, this function inputs the source cell to take this information from.
+#' @details This function disperses a species to new sites In order to maintain the divergence and trait
+#' distributions for every newly occupied site, this function inputs the source site to take this information into account.
 #'
 #' @param species the species to which dispersal is applied
 #' @param source a list of cell occupied by the species
@@ -136,14 +136,17 @@ disperse_species <- function(species, source, destination, config){
 }
 
 
-#' The function limit_species_to_cells limits a species to a given set of cells.
+#' Limits a species to a given set of sites.
 #'
-#' @details This function is used in two situations. First, after creating a new species during a speciation event,
-#' this function removes any cell from the first species that will be transferred to the newly separated species. 
-#' Second, at the beginning of a new time step, it is used to remove all cells that have become uninhabitable.
+#' @details This function is used in two situations. 
+#' First, for new species, after creating a new species during a speciation event, 
+#' this function removes any sites from the first species occupied by the newly separated species. 
+#' The new sites are transmitted to the new species from the old species. 
+#' Second, for removing unsuitable sites, at the beginning of a new time-step, 
+#' it removes all sites that have become uninhabitable for all species.
 #'
 #' @param species the species to which this limit should be applied
-#' @param cells the list of cells to limit the species to
+#' @param cells the list of sites to limit the species into
 #'
 #' @return the newly constrained species
 #' @noRd
