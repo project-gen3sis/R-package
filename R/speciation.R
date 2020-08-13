@@ -28,7 +28,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config){
   stop("this function documents the user function interface only, do not use it!")
 }
 
-#' loop_speciation orchestrates the speciation of any species alive in the simualtion
+#' Orchestrates the speciation of any species alive in the simulation
 #'
 #' @param config the current config object
 #' @param data the current data object
