@@ -45,7 +45,7 @@ max_number_of_species = 25000
 max_number_of_coexisting_species = 2500
 
 # a list of traits to include with each species
-# a "dispersal" trait is implictly added in any case
+# a "dispersal" trait is implicitly added in any case
 trait_names = c("dispersal")
 
 # ranges to scale the input environments with:
