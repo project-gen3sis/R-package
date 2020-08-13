@@ -197,10 +197,10 @@ verify_config <- function(config) {
 }
 
 
-#' This function creates an empty config object
+#' Creates an empty config object
 #'
-#' @details all config fields are created and set to NA if they can be omited by the user
-#' or set to NULL if they must be provided before starting a simulation
+#' @details All config fields are created and set to NA if they can be omitted by the user
+#' or set to NULL if they must be provided before starting a simulation.
 #' @return returns an empty config structure
 #' @noRd
 create_empty_config <- function(){
@@ -236,9 +236,9 @@ create_empty_config <- function(){
 }
 
 
-#' This function completes the settings of a given config
+#' Completes the settings of a given config
 #'
-#' @details some final checks and settings before the simulations runs.
+#' @details This function conducts the final checks and settings before the simulations runs.
 #' currently these include setting the random seed and adding a dispersal trait if not done by the user
 #' @param config the current config for this simulation run
 #' @noRd
@@ -256,9 +256,10 @@ complete_config <- function(config) {
 }
 
 
-#' writes out a config skeleton, that is, an empty config file to be edited by the user.
+#' Writes out a config skeleton
 #'
-#' @param file_path file path to write the file to
+#' @details This function writes out a config skeleton, that is, an empty config file to be edited by the user.
+#' @param file_path file path to write the file into
 #' @param overwrite overwrite existing file defaults to FALSE
 #'
 #' @return returns a boolean indicating success or failure
