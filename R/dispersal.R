@@ -1,24 +1,27 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' get_dispersal_values allows the user to generates dispersal value(s) for a given species. The simulation request the user 
-#' to return a vector of dispersal values with length num_draws.
+#' Allows the user to generates dispersal value(s) for a given species. The simulation request the user 
+#' to return a vector of dispersal values with length specified by the num_draws parameter
 #'
-#' @details Dispersal values are used for two different operations. First, they are used to evaluate pairwise dispersal
-#' events between colonized and uninhabited cells. Second, they are used during the geographical clustering of
-#' species populations when determining which cells are in range of each other and belong to the same geographic cluster.
+#' @details Dispersal values are used for two different operations. 
+#' First, for colonization, dispersal values are used to evaluate pairwise dispersal
+#' events between colonized and uninhabited sites. 
+#' Second, for geographic clustering, dispersal values are used during the clustering of
+#' species populations when determining which sites 
+#' are in range of each other and belong to the same geographic cluster.
 #' 
 #' num_draws tells the user how many dispersal values are requested by the simulation when this function is called and must 
-#' be returned. It can be of varying length depending on the operation calling it, i.e. colonisation or geographic clustering. 
+#' be returned. It can be of varying length depending on the operation calling it, i.e. colonization or geographic clustering. 
 #' If the dispersal is considered as fixed the function should return a vector of length num_draws with repeated identical
 #' values, or varying values in case of more complex dispersal kernels.
 #' 
-#' Note: if the distances are randomized the cluster formation may be asymetrical. Therefore the ordering of all
+#' Note: if the distances are randomized the cluster formation may be asymmetrical. Therefore the ordering of all
 #' clustering operations is randomized.
 #' 
-#' @param num_draws 'num_draws' the number of dispersal values drawn
-#' @param species 'species' the species for which the values are to be produced
-#' @param landscape 'landscape' the landscape of the current time step
-#' @param config 'config' the config of the simulation
+#' @param num_draws the number of dispersal values drawn
+#' @param species the species for which the values are to be produced
+#' @param landscape the landscape of the current time step
+#' @param config the config of the simulation
 #'
 #' @return a numerical vector of length num_draws with dispersal values
 #' @export
@@ -51,17 +54,17 @@ loop_dispersal <- function(config, data, vars){
 }
 
 
-#' disperses a given species
+#' Disperses a given species
 #'
-#' @details This function selects all suitable cells from the landscape and checks whether the given
+#' @details This function selects all suitable sites from the landscape and checks whether the given
 #' species can reach and colonize any one of them.
 #'
-#' @param species The species to apply dispersal to
-#' @param landscape The landscape of the current time step
-#' @param distance_matrix The distance matrix between cells to check the dispersal capabilities against
+#' @param species the species to apply dispersal to
+#' @param landscape the landscape of the current time-step
+#' @param distance_matrix the distance matrix between sites to check the dispersal capabilities against
 #' @param config the config of the simulation
 #'
-#' @return The dispersed species
+#' @return the dispersed species object
 #' @noRd
 disperse <- function(species, landscape, distance_matrix, config){
   if ( !length(species[["abundance"]]) ) {
