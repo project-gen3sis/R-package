@@ -22,7 +22,7 @@ Temporal resolution:
    (e.g. 1 time-step = 1Myr; 1 time-step = 1Myr/6 ~ 170000kyrs)
 
 Environmental variables: 
-   (e.g.: - Temperature (degrees celcius) 
+   (e.g.: - Temperature (degrees Celcius) 
           - Precipitation (mm/year) )
 
 Cost function: 
