@@ -55,7 +55,7 @@ setup_inputs <- function(config, data, vars) {
   return(list(config = config, data = data, vars = vars))
 }
 
-#' setup_variables initializes the timestep-variables and flags
+#' setup_variables initializes the time-step-variables and flags
 #'
 #' @param config the current config
 #' @param data the current data
@@ -92,7 +92,7 @@ setup_variables <- function(config, data, vars) {
 }
 
 
-#' init_attribute_ancestor_distribution calls the creation for the initial species and prepares some furhter data storage
+#' init_attribute_ancestor_distribution calls the creation for the initial species and prepares some further data storage
 #'
 #' @param config the current config
 #' @param data the current data
@@ -143,7 +143,7 @@ init_attribute_ancestor_distribution <- function(config, data, vars) {
 }
 
 
-#' init_simulation prepares some of the summray statistics to be accumulated in the simulation (geo_richness)
+#' init_simulation prepares some of the summary statistics to be accumulated in the simulation (e.g. geo_richness object)
 #'
 #' @param config the current config
 #' @param data the current data
