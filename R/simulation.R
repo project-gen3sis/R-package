@@ -4,7 +4,7 @@
 ######## START OF INITIALIZATION ########
 #---------------------------------------#
 
-#' setup_inputs initializes the landscape inputs
+#' Initializes the landscape inputs
 #'
 #' @param config the current config
 #' @param data the current data
@@ -55,7 +55,7 @@ setup_inputs <- function(config, data, vars) {
   return(list(config = config, data = data, vars = vars))
 }
 
-#' setup_variables initializes the time-step-variables and flags
+#' Initializes the time-step-variables and flags
 #'
 #' @param config the current config
 #' @param data the current data
@@ -92,7 +92,7 @@ setup_variables <- function(config, data, vars) {
 }
 
 
-#' init_attribute_ancestor_distribution calls the creation for the initial species and prepares some further data storage
+#' Calls the creation for the initial species and prepares further data storage
 #'
 #' @param config the current config
 #' @param data the current data
@@ -143,7 +143,7 @@ init_attribute_ancestor_distribution <- function(config, data, vars) {
 }
 
 
-#' init_simulation prepares some of the summary statistics to be accumulated in the simulation (e.g. geo_richness object)
+#' Prepares summary statistics to be accumulated in the simulation (e.g. geo_richness object)
 #'
 #' @param config the current config
 #' @param data the current data
@@ -188,7 +188,7 @@ init_simulation <- function(config, data, vars) {
 ######## -> LOOP SETUP #######
 #-------------------------#
 
-#' setup_landscape creates the landscape for the current time step.
+#' Prepares the landscape for the current time step
 #'
 #' @param config the current config
 #' @param data the current data
@@ -216,7 +216,7 @@ setup_landscape <- function(config, data, vars) {
 }
 
 
-#' restrict_species iterates over all species and calls
+#' Iterates over all species and calls
 #' limit_species_to_cells to restrict them to the currently habitable cells
 #'
 #' @param config the current config
@@ -231,7 +231,7 @@ restrict_species <- function(config, data, vars) {
 }
 
 
-#' loop_setup_geo_dist_m_ti loads and prepares the distance matrix for the current time step
+#' Loads and prepares the distance matrix for the current time step
 #'
 #' @param config the current config
 #' @param data the current data
@@ -255,7 +255,7 @@ loop_setup_geo_dist_m_ti <- function(config, data, vars) {
 }
 
 
-#' setup_distance_matrix load or calculates the distance matrix used for clustering and dispersial
+#' Load or calculates the distance matrix used for clustering and dispersal
 #'
 #' @details If a full matrix is found in input/distance_matrices it will be used. Otherwise the local distances
 #' are loaded from the distance_neighbours directory are loaded and a distance_matrix is internally calculated
@@ -295,7 +295,7 @@ setup_distance_matrix <- function(config, data, vars) {
 #-------------------------------------------#
 ######## -> UPDATE LOOP STEPS VARIABLE  #######
 #--------------------------------------------#
-#' update_loop_steps_variable updates the geo_richness, turnover, and eco_by_sp (tbr)
+#' Updates the geo_richness, turnover and eco_by_sp objects
 #'
 #' @param config the current config
 #' @param data the current data
@@ -326,7 +326,7 @@ update_loop_steps_variable <- function(config, data, vars) {
 #--------------------------------#
 
 
-#' update_phylo updates the phylo with the survival/extinctions of the current time step
+#' Updates the phylogeny with the survival and extinctions from the current time step
 #'
 #' @param config the current config
 #' @param data the current data
