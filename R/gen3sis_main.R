@@ -47,19 +47,35 @@ NULL
 counting <- new.env(parent = emptyenv())
 assign("dist", -Inf, envir = counting)
 
-#' run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder. 
+#' Run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder 
 #' 
-#' @details run a simulation with defined landscape and config objects. Possibly plot and save specified outputs as defined in the end_of_timestep_observer function inside the config object
+#' @details This function runs a simulation with defined landscape and config objects. 
+#' Possibly plot and save specified outputs as defined in the end_of_timestep_observer function inside the config object
 #' @param config configuration file for the simulation or configuration object derived from a config file
 #' @param landscape directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
-#' @param timestep_restart = set the start time time-step. If NA start at the beginning, If "ti" start from the last available time-step, if a number "x" start from timestep x
-#' @param save_state = save the internal state of the simulation for restarts. If "all" save all time-step, if a vector, saves the desired time-steps if "last", saves only last timestep
-#' @param call_observer call observer functions if any, NA calls at the start and end times, "all" call all time-steps, You can also provide the number of time-steps equaly spaced between start and end steps, that the observer function is called 
+#' @param timestep_restart set the start time time-step. 
+#' If timestep_restart=NA (default), start at the oldest available landscape. 
+#' If timestep_restart="ti", start from the last available time-step. 
+#' If a number "x", start at time-step x (e.g. timestep_restartstart=6)
+#' @param save_state save the internal state of the simulation for restarts.
+#' If save_state=NA (default), do not save any internal state of the simulation.
+#' If save_state="all", save all time-step. 
+#' If save_state="last", saves only last time-step.
+#' If a vector, saves the desired time-steps (e.g. save_state=c(1,3,5))
+#' @param call_observer call observer functions.
+#' If call_observer="all" (default), call all time-steps.
+#' If call_observer=NA, calls the start and end times.
+#' If a number "X", call call_observer at x time-steps equally spaced between start and end steps. 
+#' For example, on a simulation with start time of 1 and end time of 20, call_observer=1 calls the observer function at time-steps 1, 11 and 20.
 #' @param enable_gc enable gc in case of memory shortages
-#' @param verbose integer value (0, 1 ,2 or 3). If 0 no printed statement, 1 time-step progress, 2 enable additional progress outputs regarding current time-step, 3 aditional information from within modules (default is 1)
+#' @param verbose integer value (i.e. 0, 1 ,2 or 3). 
+#' If verbose=0, no printed statement.
+#' If verbose=1 (default), print time-step progress.
+#' If verbose=2, enable additional progress outputs regarding current time-step.
+#' If verbose=3, enable additional information from within modules
 #'
-#' @return a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) and some useful simulation data
+#' @return a summary object containing a minimal summary on simulation and dynamics progress (alive, speciations, extinctions) as well as useful simulation data
 #'
 #' @importFrom utils packageVersion write.table
 #' 
@@ -108,8 +124,8 @@ run_simulation <- function(config = NA,
 
   val$config$gen3sis$general$verbose <- verbose
 
-  #val$config$gen3sis$version <- "1.0"
-  #val$config$gen3sis$nickname <- "Quintessence"
+  #val$config$gen3sis$version <- "1.1"
+  #val$config$gen3sis$nickname <- "Quintessenced"
 
   # #---------------------------------------------------------#
   # ###### ATTRIBUTE ANCESTOR DISTRIBUTION (simulation.R) #####
@@ -145,7 +161,7 @@ run_simulation <- function(config = NA,
                               val$config$gen3sis$general$end_time,
                               length.out = steps))
   }
-  # # When to save the species data. +1 is added to tf for matters of timeps jumps between ti and tn
+  # # when to save the species data. +1 is added to tf for matters of timeps jumps between ti and tn
   val$vars$save_steps <- save_steps
 
   val$vars$steps <- val$config$gen3sis$general$start_time:val$config$gen3sis$general$end_time
@@ -157,7 +173,7 @@ run_simulation <- function(config = NA,
   }
 
   for(ti in val$vars$steps){ #loop over time steps
-    # set to zero every new timestep!
+    # set to zero every new time-step!
     val$vars$n_new_sp_ti <- 0
     val$vars$n_ext_sp_ti <- 0
     val$vars$n_sp_added_ti <- 0
