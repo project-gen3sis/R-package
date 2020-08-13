@@ -1,21 +1,21 @@
 # Copyright (c) 2020, ETH Zurich
 
 
-#' apply_ecology allows the user to define the ecology of the species that takes place within each cell,
-#' which define species survival and species abundance. 
+#' Allows the user to define the ecological consequences for species within each site,
+#' defining thus species survival and abundance
 #'
 #' @details The arguments of the function allows to apply abiotic and biotic ecological rules to species in each 
-#' cell. Based on those rules, the function updates the abundance of each species in each cell. If the abundance 
+#' site. Based on those rules, the function updates the abundance of each species in each site. If the abundance 
 #' is null, the species is absent or extinct. Ecology can account for local environmental conditions, the abundance of
-#' species, or their traits.
+#' species, and/or their traits.
 #'
 #' @param abundance a named vector of abundances with one abundance value per species
-#' @param traits a named matrix containg the species traits, one row per species
-#' @param local_environment the environmental values for the given cell
+#' @param traits a named matrix containing the species traits, one row per species
+#' @param local_environment the environmental values for the given site
 #' @param config the config of the simulation
 #'
-#' @return an abundance vector with the new abundace values for every species.
-#' An abundance value of 0 indicates species death, any other values survival.
+#' @return an abundance vector with the new abundance values for every species.
+#' An abundance value of 0 indicates species death, any other values indicates survival.
 #' @export
 apply_ecology <- function(abundance, traits, local_environment, config) {
   stop("this function documents the user function interface only, do not use it.")
@@ -23,11 +23,11 @@ apply_ecology <- function(abundance, traits, local_environment, config) {
 
 
 
-#' loop_ecology is the orchestrator for applying the ecology function to all cells.
+#' Orchestrates for applying the ecology function to all sites
 #'
-#' @details The ecology is applied on a per cell basis over all species occurring in each cell.
-#' Therefore this function iterates over all cells and collects the abundance and traits of any species occuring there.
-#' It then calls the user supplied apply_ecology function to this collection and apply ecology to each cell.
+#' @details The ecology is applied on a per site basis over all species occurring in each site.
+#' Therefore this function iterates over all sites and collects the abundance and traits of any species occurring there.
+#' It then calls the user supplied apply_ecology function to this collection and apply ecology to each site.
 #'
 #' @param config the general config of the simulation
 #' @param data the general data list
