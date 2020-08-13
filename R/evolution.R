@@ -7,8 +7,8 @@
 #' @details This function is called for any single species alongside an index for
 #' the geographical clusters within the species
 #'
-#' @param species The target species object whose traits will be changed
-#' @param cluster_indices an index vector indicating the cluster every occupied cell is part of
+#' @param species the target species object whose traits will be changed
+#' @param cluster_indices an index vector indicating the cluster every occupied site is part of
 #' @param landscape the current landscape which can co-determine the rate of trait changes
 #' @param config the current config
 #'
@@ -56,7 +56,7 @@ evolve <- function(species, landscape, distance_matrix, config){
 
 
 
-#' evolution_mode_none
+#' No evolution considered
 #'
 #' @param species the current species
 #' @param cluster_indices indices to assign cells to geographic clusters

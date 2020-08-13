@@ -1,16 +1,16 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' The function create_landscape creates an object representing the current landscape for a given time step
+#' Creates an object representing the current landscape for a given time-step
 #'
 #' @details This function generates the internal representation of a given landscape. It 
 #' consists of an identifier for the input time step, an environmental matrix containing the environmental 
-#' conditions for each suitable cell, and a coordinates matrix containing the cell centre coordinates of 
-#' all suitable cells
+#' conditions for each suitable site, and a coordinates matrix containing the site cell center coordinates of 
+#' all suitable sites
 #'
-#' @param id the identifier of the input time step
-#' @param timestep the name of the input time step 
+#' @param id the identifier of the input time-step
+#' @param timestep the name of the input time-step 
 #' @param environment a matrix containing the environmental conditions
-#' @param coordinates a matrix containg the coordinates of the cells centre
+#' @param coordinates a matrix containing the coordinates of the cells centers
 #' @param extent the extent of the landscape
 #' @param resolution the spatial resolution of the input 
 #'
