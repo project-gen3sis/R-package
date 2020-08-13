@@ -147,7 +147,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
 #' plot the richness of the given list of species on a landscape
 #'
 #' @param species_list a list of species to use in the richness calculation
-#' @param landscape a landscape to plot the richness onto
+#' @param landscape a corresponding landscape object
 #' @example inst/examples/plot_richness_help.R
 #' @export
 plot_richness <- function(species_list, landscape) {
@@ -167,7 +167,7 @@ plot_richness <- function(species_list, landscape) {
 #'
 #' @param title folder and file name
 #' @param landscape current landscape
-#' @param plot_fun ploting function to use (single or multiple rasters for now)
+#' @param plot_fun plotting function to use (single or multiple rasters)
 #' @param ... arguments for plot_fun
 #'
 #' @importFrom grDevices png
