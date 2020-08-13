@@ -1,6 +1,6 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' Checks if the necessary directories exist, and otherwise creates them.
+#' Checks if the necessary directories exist, and otherwise creates them
 #' 
 #' @details This function will be called by the simulation, but is made available if the directories should be created
 #' manually beforehand, for example to redirect the stdout to a file in the output directory.
@@ -83,7 +83,7 @@ prepare_directories <- function(config_file = NA,
 
 
 
-#' creates either an empty configuration or a pre-filled configuration object from a config file.
+#' Creates either an empty configuration or a pre-filled configuration object from a config file
 #'
 #' @param config_file the path to a valid configuration file. if NA it creates an empty config.
 #' @return list of configuration elements, similar generated from reading a config_file.R. The internal elements of this list are: "general", "initialization", "dispersal", "speciation", "mutation" and "ecology".
@@ -114,7 +114,7 @@ internal_categories <- c("general",
                          )
 
 
-#' initializes a config with the values from a provided config file.
+#' Initializes a config with the values from a provided config file
 #'
 #' @param config config object to fill
 #' @param config_file config file to retrieve settings from
@@ -140,8 +140,9 @@ populate_config <- function(config, config_file) {
   return(invisible(config))
 }
 
-#' This function is a helper function to take on a set of user options for the given category.
+#' Helper function taking on a set of user options for the given category
 #'
+#' @details This function is a helper function to take on a set of user options for the given category.
 #' @param config_list a named list of settings to look for
 #' @param user_env an environment containing all the user provided config options
 #'
@@ -159,7 +160,7 @@ populate_settings_list <- function(config_list, user_env) {
 }
 
 
-#' This function verifies that all required config fields are provided.
+#' Verifies if all required config fields are provided
 #'
 #' @param config a config object
 #' @return Returns TRUE for a valid config, FALSE otherwise, in which case a list of
