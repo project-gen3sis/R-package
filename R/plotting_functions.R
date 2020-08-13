@@ -193,7 +193,7 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
 #'
 #' @param values a named list of values, the names must correspond to cells in the landscape
 #' @param landscape a landscape to plot the values onto
-#' @param title a title string for resulting plot, the time will be taken and appended from the landscape id
+#' @param title a title string for resulting plot, the time information will be taken and appended from the landscape id
 #' @param no_data what value should be used for missing values in values
 #' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors handled by raster::plot  
 #' @example inst/examples/plot_raster_single_help.R
@@ -209,10 +209,10 @@ plot_raster_single <- function(values, landscape, title, no_data = 0, col) {
 
 #' plot a set of values onto a given landscape
 #'
-#' @param values a matrix of values with columns coresponding to sets of values, and rows corresponding to grid cells,
+#' @param values a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
 #' this will result in ncol(values) raster plots.
 #' @param landscape a landscape to plot the values onto
-#' @param no_data what value should be used for missing values in values
+#' @param no_data what value should be used for missing data present in the values parameter
 #'
 #' @export
 plot_raster_multiple <- function(values, landscape, no_data = 0) {
@@ -232,7 +232,7 @@ plot_raster_multiple <- function(values, landscape, no_data = 0) {
 
 #' define gen3sis richness color scale
 #' @param n corresponds to the \link{colorRampPalette} parameter 
-#' @return returns a \link{colorRampPalette} function with the gen3sis richness colours
+#' @return returns a \link{colorRampPalette} function with the gen3sis richness colors
 #' @export
 color_richness <- colorRampPalette(
   c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
