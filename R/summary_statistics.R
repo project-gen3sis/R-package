@@ -61,10 +61,10 @@ update_summary_statistics <- function(data, vars, config) {
 }
 
 
-#' Compiles summry statistics at the end of a simulation run
+#' Compiles summary statistics at the end of a simulation run
 #'
 #' @param config the current config object
-#' @param data the current data oject
+#' @param data the current data object
 #' @param vars the current vars object
 #' @param total_runtim simulation runtime in hours
 #' @param save_file boolean if sgen3sis.rds should be saved
@@ -135,7 +135,7 @@ write_runtime_statisitics <- function( data, vars, config, total_runtime) {
 }
 
 
-#' calcuates the ratio of occupied cells in a given landscape
+#' Calcuates the ratio of occupied cells in a given landscape
 #'
 #' @param species_list a list of species to consider 
 #' @param landscape the landscape to use
