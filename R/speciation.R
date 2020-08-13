@@ -148,7 +148,7 @@ loop_speciation <- function(config, data, vars) {
 #'
 #' @param gen_dist_spi a divergence matrix
 #' @param clu_geo_spi_ti a cluster index
-#' @param ifactor the divergence factor by which the clusters distances are to be incresed
+#' @param ifactor the divergence factor by which the clusters distances are to be increased
 #'
 #' @return an updated divergence matrix
 #' @noRd
@@ -176,7 +176,7 @@ update_divergence <- function(divergence, cluster_indices, ifactor) {
 }
 
 
-#' Updates the total number of existing species, to be replaced
+#' Updates the total number of species
 #'
 #' @param config the current config object
 #' @param data the current data list
