@@ -57,7 +57,7 @@ loop_dispersal <- function(config, data, vars){
 #' Disperses a given species
 #'
 #' @details This function selects all suitable sites from the landscape and checks whether the given
-#' species can reach and colonize any one of them.
+#' species can reach and colonize any one of them
 #'
 #' @param species the species to apply dispersal to
 #' @param landscape the landscape of the current time-step
