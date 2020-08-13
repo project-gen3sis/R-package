@@ -1,17 +1,17 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' The function compress_divergence compresses the divergence matrix into an index and smaller
+#' Compresses the divergence matrix into an index and smaller
 #' matrix by storing only unique rows/columns
 #'
 #' @param divergence_matrix the divergence matrix to compress
+#' @details   compresses genetic distance from all locations to all locations into index that are similar. 
+#' Therefore creating a gen distance of index against index (i.e. $compressed_matrix) and a list of 
+#' index named by their idi and geografical location (i.e. $index)
 #'
 #' @return the compressed divergence matrix
 #' @noRd
 compress_divergence <- function(divergence_matrix){
-  #compresses genetic distance from all locations to all locations
-  #into index that are similar. Therefore creating a gen distance
-  #of index against index (i.e. $compressed_matrix) and
-  #a list of index named by their idi / geografical location (i.e. $index)
+
   index <- getEntities(divergence_matrix)
   if(length(index)==0){
     return(list(compressed_matrix = matrix(0,0,0,dimnames=list(NULL,NULL)), index = index))
@@ -30,7 +30,7 @@ compress_divergence <- function(divergence_matrix){
 
 
 
-#' The function decompress_divergence rebuilds the full divergence matrix from its compressed form
+#' Rebuilds the full divergence matrix from its compressed form
 #'
 #' @param divergence the compressed form of the divergence matrix
 #'
@@ -49,7 +49,7 @@ decompress_divergence <- function(divergence) {
 }
 
 
-#' The function limit_divergence_to_cells limits the given compressed divergence to a given set of cells
+#' Limits the given compressed divergence to a given set of cells
 #'
 #' @param divergence a compressed divergence matrix
 #' @param cells a list of cells to limit the divergence to
@@ -72,7 +72,7 @@ limit_divergence_to_cells <- function(divergence, cells) {
 }
 
 
-#' The function consolidate_divergence checks and possibly merges identical divergence clusters that may arise when removing cells from a species
+#' Checks and possibly merges identical divergence clusters that may arise when removing cells from a species
 #'
 #' @param divergence a compressed divergence matrix
 #'
