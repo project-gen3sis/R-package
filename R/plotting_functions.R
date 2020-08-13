@@ -1,6 +1,6 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' plot a species' presence on a given landscape
+#' Plot a species' presence on a given landscape
 #'
 #' @param species a single species object
 #' @param landscape a landscape object
@@ -18,7 +18,7 @@ plot_species_presence <- function(species, landscape) {
 }
 
 
-#' plot the environment variable of a given landscape
+#' Plot the environment variable of a given landscape
 #'
 #' @param landscape the landscape to plot the environment from
 #'
@@ -32,7 +32,7 @@ plot_landscape <- function(landscape) {
 }
 
 
-#' plot the outline of a given landscape over time
+#' Plot the outline of a given landscape over time
 #'
 #' @param landscape the input landscape to be plotted
 #' @param slices the amount of slices though time between start and end (default value is 2).
@@ -57,7 +57,7 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 }
 
 
-#' plot simulation default summary object
+#' Plot simulation default summary object
 #'
 #' @param output a sgen3sis output object resulting from a gen3sis simulation (i.e. run_simulation)
 #' @param summary_title summary plot title as character. If NULL, title is computed from input name.
@@ -144,7 +144,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
 
 
 
-#' plot the richness of the given list of species on a landscape
+#' Plot the richness of the given list of species on a landscape
 #'
 #' @param species_list a list of species to use in the richness calculation
 #' @param landscape a corresponding landscape object
@@ -163,7 +163,7 @@ plot_richness <- function(species_list, landscape) {
 }
 
 
-#' save plots if called from within a simulation run, display as well if run interactively
+#' Save plots if called from within a simulation run, display as well if run interactively
 #'
 #' @param title folder and file name
 #' @param landscape current landscape
@@ -189,7 +189,7 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
 }
 
 
-#' plot a single set of values onto a given landscape
+#' Plot a single set of values onto a given landscape
 #'
 #' @param values a named list of values, the names must correspond to cells in the landscape
 #' @param landscape a landscape to plot the values onto
@@ -207,7 +207,7 @@ plot_raster_single <- function(values, landscape, title, no_data = 0, col) {
 }
 
 
-#' plot a set of values onto a given landscape
+#' Plot a set of values onto a given landscape
 #'
 #' @param values a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
 #' this will result in ncol(values) raster plots.
@@ -230,7 +230,7 @@ plot_raster_multiple <- function(values, landscape, no_data = 0) {
 }
 
 
-#' define gen3sis richness color scale
+#' Define gen3sis richness color scale
 #' @param n corresponds to the \link{colorRampPalette} parameter 
 #' @return returns a \link{colorRampPalette} function with the gen3sis richness colors
 #' @export
