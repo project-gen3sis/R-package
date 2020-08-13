@@ -1,9 +1,9 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' checks if the necessary directories exist, and otherwise creates them.
-#' This function will be called by the simulation, but is made available if the directories should be created
+#' Checks if the necessary directories exist, and otherwise creates them.
+#' 
+#' @details This function will be called by the simulation, but is made available if the directories should be created
 #' manually beforehand, for example to redirect the stdout to a file in the output directory.
-#'
 #' @param config_file path to the config file, if NA the default config will be used
 #' @param input_directory path to input directory, if NA it will be derived from the config file path
 #' @param output_directory path to output directory, if NA it will be derived from the config file path
