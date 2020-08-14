@@ -22,18 +22,18 @@ knitr::opts_chunk$set(
 
 This vignette aims at showing how to use the function *create_input_landscape* that creates input landscape objects necessary to run *gen3sis*. These objects are:
 
-- a rds file containing a landscape list of raster stacks for environmental variables; 
+- a landscape.rds file containing a landscape list of raster stacks for environmental variables; 
 
 - a series of rds files, one for each time-step, including distance matrices between sites. 
 
 
-To create these files, the function requires as arguments: 
+To create these files, the function *create_input_landscape* requires as arguments: 
 
 - a named list of environmental rasters containing layers for the different time steps, with each raster layer representing the spatial distribution of an environmental variable; 
 
 - a cost function defining how dispersal between particular types of sites is penalized (to be used for the calculation of the distance matrices). 
 
-Below, we will generate the R objects required by the function *create_input_landscape* step by step. For this exercise, we will use the simple center of the world landscape that we used in the [**introduction vignette**](introduction.html) and in the main text of the package manuscript as case study 1.
+Below, we will generate the R objects required by the function *create_input_landscape* step by step. For this exercise, we will use the simple center of the world landscape that we used in the [**introduction vignette**](introduction.html) and in the case study 1 of the main package manuscript[^1].
 
 The first step is to load the necessary packages and set the working directory:
 
@@ -54,8 +54,8 @@ library(gen3sis)
 library(raster)
 ```
 
-## Creating the environmental data frames
-In this step, the user needs to create the data frames containing the spatiotemporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 4d sample world that has been used in the [**introduction vignette**](introduction.html). We first load the three corresponding raster bricks from the hard drive.
+## Creating the environmental dataframes
+In this step, the user needs to create the dataframes containing the spatio-temporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 4d sample world that has been used in the [**introduction vignette**](introduction.html). We first load the three corresponding raster bricks from the hard drive.
 
 ```{r eval=T, message=F}
 temperature_brick <- brick('InputRasters/WorldCenter/temp_rasters.grd')
@@ -83,7 +83,7 @@ for(i in 1:nlayers(temperature_brick)){
 
 
 ## Defining a cost function 
-The second argument we need to define is a cost function. This function should define the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
+The second argument we need to define is a *cost function*. This function should define the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
 
 First, let’s look at a very simple case, where no cost is added to the geographical distances, meaning that connections costs equal geographic distance. The costs have to be defined in meters because the coordinate system is in meters for real landscapes. Hence, we can define a simple cost function in which the dispersal is not penalized: 
 
@@ -137,7 +137,7 @@ plot(legend_image, legend.only=T, col=cost_colors, horizontal=T, smallplot=c(0.2
 
 
 
-Now, let's look at a slightly more sophisticated cost function. Only sites which have environmental values (no NAs) are considered habitable. Here, suitable terrestrial sites should have a cost penalty of one dispersal, but dispersal over water sites should double the cost of dispersal. 
+Now, let's look at a slightly more sophisticated cost function. Only sites which have environmental values (no NAs) are considered habitable. Here, suitable terrestrial sites should have a cost penalty of one (1), but dispersal over water sites should double (2) the cost of dispersal. 
 
 ```{r eval=TRUE}
 cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
@@ -192,13 +192,13 @@ plot(legend_image, legend.only=T, col=cost_colors, horizontal=T, smallplot=c(0.2
 Whether a specific site can be reached or not depends on the properties of the population or species.
 
 ## Further useful arguments
-Besides the landscape list, the cost function and the experiment folder, we can define further arguments: directions, timesteps and calculate_full_distance_matrices. 
+Besides the (i) landscape list, (ii) cost function and (iii) experiment folder, we can define further arguments such as: directions, timesteps and calculate_full_distance_matrices. 
 
-The argument 'directions' requires an integer providing the amount of directions used to calculate distances. It can take 4, 8 or 16 as values to consider the four, eigth or 16 neighboring sites. This is the same homonimous argument used by the function *transition* in the gdistance package (gdistance::transition). 
+The argument 'directions' requires an integer providing the amount of directions used to calculate distances. It can take 4, 8 or 16 as values to consider the four, eighth or 16 neighboring sites. This is the same argument used by the function *transition* in the gdistance package (gdistance::transition). 
 
-The argument 'timesteps' requires a vector of strings and is used to name the files and to name the timesteps in the .rds landscape object created by the *create_input_landscape* function. It is not necessary to define this argument, but it helps readibility when manipulating the object. 
+The argument 'timesteps' requires a vector of strings and is used to name the files and to name the timesteps in the *landscapes.rds* landscape object created by the *create_input_landscape* function. It is not necessary to define this argument, but it helps readability when manipulating the object. 
 
-The argument 'calculate_full_distance_matrices' defines whether the *create_input_landscape* function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neigboring sites specified in 'directions' around each suitable site (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each timestep during a simulation run. 
+The argument 'calculate_full_distance_matrices' defines whether the *create_input_landscape* function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neighboring sites specified in 'directions' around each suitable site (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each time-step during a simulation run. 
 
 The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [**design_landscape vignette**](design_landscape.html), geographic distance would be measured in units of sites.
 
@@ -214,4 +214,7 @@ create_input_landscape(landscapes = landscapes_list,
 ```
 
 Finally, don't forget to specify the important metadata for the landscape you just created. We recommend storing it in form of a METADATA.txt file within the landscape folder.A template is automatically created by the functions *create_input_landscape*.
-Once the input landscape is ready, the *run_simulation* function can start the simulation using the path of the new landscape. 
+Once the input landscape is ready, the *run_simulation* function can start the simulation using the path of the new landscape.
+
+
+[^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)

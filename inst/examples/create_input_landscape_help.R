@@ -39,7 +39,7 @@ create_input_landscape(
   calculate_full_distance_matrices = FALSE) # full distance matrix
 
 
-\donttest{
+\donrun{
 # create list of all environmental variables available
 landscapes_list <- list(temp=NULL, arid=NULL, area=NULL)
 for(i in 1:nlayers(temperature_brick)){
