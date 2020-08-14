@@ -17,9 +17,8 @@ knitr::opts_chunk$set(
 
 The configuration object defines the core processes of the system modeled and define some run settings. It is essential to define the model to be simulated.
 
-- Core processes:  include a customizable initialization, observer, speciation, dispersal, evolution and ecology function. Altogether, these six functions are applied as defined in the simulation engine. The possibility to customize these functions confers the high flexibility of *gen3sis* in terms of including a wide range of theoretical knowledge.
+- Core processes:  include a custom initialization, observer, speciation, dispersal, evolution and ecology functions. Altogether, these six functions are applied as defined in the simulation engine. The possibility to customize these functions confers the high flexibility and generality of *gen3sis* in terms of including a wide range of theoretical knowledge.
 - Settings: include the ecological traits considered in the simulation: whether a random seed is used; allowing simulation reproducibility; start and end times of the simulation; and rules about aborting the simulation, including the maximum global or local species number permitted.
-Additionally, the configuration object lists the 
 
 This vignette will guide you trough the config input object. It can be either an R object or a file, that can be easily shared and modified.
 
@@ -56,7 +55,7 @@ And then create an empty config.
 #writes out a config skeleton
 write_config_skeleton(config_file_path)
 ```
-This is how the config_empty.R looks like. We present them by main areas and each part is described briefly. For more information and a hand's on example see next session.
+This is how the *config_empty.R* looks like. We present them by main areas and each part is described briefly. For more information and a hand's on example see next session.
 
 
 ::: {.infobox .caution data-latex="{caution}"}
@@ -152,7 +151,7 @@ Here we will go bit by bit of the config used at the [**introduction vignette**]
 ### **Content of config_.empty_worldcenter.R**
 
 ### ***Metadata***
-The first section of the config file contains metadata. It informs the user when and by whom the file has been created, which landscape it was made for and informs about associated publications.
+The first section of the config file contains metadata. It informs the user when and by whom the file has been created, which landscape it was made for and informs about associated publications and implemented processes or exploration intentions of the specific configuration.
 
 >```{r eval=FALSE}
 # Version: 1.0
@@ -166,10 +165,10 @@ The first section of the config file contains metadata. It informs the user when
 
 
 ### ***Settings***
-We start our simulation with the first avaiable timestep and end it a the latest available time-step at the landscape, thus *start_time* and *end_time* are set to NA. We limit the maximum total number of species alive in a simulation to 50000 with *max_number_of_species* and the maximum number of species within one site to 10000 with *max_number_of_coexisting_species*. Like so, we stop simulations that could possible go off hand and generate too many species. We define which traits we will consider in our simulation with *traits_names*, in our example, species only have a dispersal ability and a optimum temperature traits. For our model to work, we normalize the environmental values, according to the range informed at *environmental_ranges*.
+We start our simulation with the first available time-step and end it a the latest available time-step at the landscape, thus *start_time* and *end_time* are set to NA. We limit the maximum total number of species alive in a simulation to 50000 with *max_number_of_species* and the maximum number of species within one site to 10000 with *max_number_of_coexisting_species*. Like so, simulations that could possible go off hand and generate too many species are stoped. We define which traits we will consider in our simulation with *traits_names*, in our example, species only have a dispersal ability and a optimum temperature traits. For our model to work, we normalize the environmental values, according to the range informed at *environmental_ranges*.
 
 >```{r eval=FALSE}
-random_seed = 666
+random_seed = 001
 start_time = NA
 end_time = NA
 max_number_of_species = 50000
@@ -309,7 +308,7 @@ apply_ecology <- function(abundance, traits, landscape, config) {
 
 ## 3. Modify a config {#modify}
 
-A configuration object can be modified by editing a file or the config object in R. Here we will load the config_worldcenter.R as an R object and modify it's random seed.
+A configuration object can be modified by editing a file or the config object in R. Here we will load the *config_worldcenter.R* as an R object and modify it's random seed.
 
 ```{r eval=TRUE}
 # get data path
