@@ -19,9 +19,9 @@ knitr::opts_chunk$set(
   results='hold'
 )
 ```
-In this vignette you will be introduced to *gen3sis*, an engine for simulating various spatial eco-evolutionary models. We will create a virtual planet, 'biodiversify' it and examine some brand new virtual species.
+*gen3sis* stands for *gen*eral *e*ngine for *e*co-*e*volutionary *si*mulation*s*. In this vignette you will be introduced to *gen3sis*, an engine for simulating various spatial eco-evolutionary models. Here will create a virtual planet, 'biodiversify' it and examine some brand new virtual species.
 
-In particular, in this vignette, we will run through the following steps: 
+In particular, we will run through the following steps: 
 
 [1. **Set-up**](#setup) *gen3sis* package and check if we are set with all the necessary input data.
 
@@ -35,7 +35,7 @@ In particular, in this vignette, we will run through the following steps:
 
 
 
-The first step for running a simulation consists of setting up the folder structure with the required input data from which the landscape object and the distance matrices are calculated. 
+The first step for running a simulation consists of setting up the folder structure that should contain input data (i.e. config and landscape). 
 
 
 
@@ -56,9 +56,9 @@ print(paste("gen3sis version:", packageVersion("gen3sis")))
 
 
 
-All *gen3sis* simulations need a **landscape** object which define the abiotic environment over which the simulation will take place and a **configuration** object which defines the mechanisms of speciation, dispersal, trait evolution and ecological interactions. Here we will use a published example[^1]. We cropped at the Earth center, with a timespam between 150-100Ma and aggregated to a 4&deg; resolution to make the simulations fast and the data small (252 KB). 
+All *gen3sis* simulations need a **landscape** object which define the abiotic environment over which the simulation will take place and a **configuration** object which defines the mechanisms of speciation, dispersal, trait evolution and ecological interactions. Here we will use a published example[^1]. We cropped at the Earth center, with a time spam between 150Ma and 100Ma and aggregated to a 4&deg; resolution to make the simulations fast and the data small (252 KB). 
 
-All the data we will use (i.e. the **landscape** and the **configuration** object) is available with the package, you can just get the path to the data inside the package. If you want more information about these input data, please check the associated metadata. For the landscape input this is a METADATA.txt file in the same folder, and for the config input it is stored as a comment in the beginning of the config R script.
+All the data we will use here (i.e. the **landscape** and the **configuration** object) is available with the package. So you can just get the path to the data inside the package to work on here. If you want more information about these input data, please check the associated metadata. For the landscape input this is a METADATA.txt file in the same folder, and for the config input it is stored as a comment in the beginning of the config R script.
 
 To access this dataset, you first need to define the path to the data contained inside the package.
 
@@ -85,13 +85,13 @@ The **landscape** is the virtual environment in which the processes of speciatio
 
 The first landscape class contains: (i) the geographic coordinates of the landscape site, (ii) the corresponding information on which sites are generally suitable for the organisms modeled (e.g. land or ocean), and (iii) the environmental conditions relevant for the species’ ecology (e.g. temperature and precipitation). The landscape may be simplified into a single geographic axis for theoretical experiments, or it may consider realistic configurations aimed at reproducing real local or global landscapes. 
 
-The second landscape class defines the permeability of the landscape for species movement between sites via dispersal. Connection cost between sites is computed for each time step from the gridded landscape data based on harvesine geographic distances modified by a user-defined cost function and stored as sparse distance matrices. Distance matrices, containing the connection costs, are provided at every time step as either: (i) a pre-computed full distance matrix, containing all habitable sites in the landscape (faster simulations but more storage required); or (ii) a local distance matrix, computed from neighbouring site distances up to a user-defined range limit (slower simulations but less storage required).
+The second landscape class defines the permeability of the landscape for species movement between sites via dispersal. Connection cost between sites is computed for each time step from the gridded landscape data based on harvesine geographic distances modified by a user-defined cost function and stored as sparse distance matrices. Distance matrices, containing the connection costs, are provided at every time step as either: (i) a pre-computed full distance matrix, containing all habitable sites in the landscape (faster simulations but more storage required); or (ii) a local distance matrix, computed from neighboring site distances up to a user-defined range limit (slower simulations but less storage required).
 
 
-**NOTE** the *gen3sis* landscape contains several files. The .rds file contains the landscape changing over time with it's environmental variables. The distances folder stores the information how the landscape is connected (connections costs) which will interact with the disperal hability of the modeled organisms. To see how to create a landscape object refer to [**design_landscape vignette**](design_landscape.html) and [**create_input_landscape vignette**](create_input_landscape.html).
+**NOTE** the *gen3sis* landscape contains several files. The landscape.rds file contains the landscape changing over time with it's environmental variables. The distances folder stores the information on how the landscape is connected (connections costs) which will interact with the disperal hability of the modeled organisms. To see how to create a landscape object, refer to [**design_landscape vignette**](design_landscape.html) and [**create_input_landscape vignette**](create_input_landscape.html).
 
 
-This is how the landscape we will use here looks like at 150, 125 and 100Ma, below are the plots of temperature and aridity.
+This is how the landscape we will use looks like at 150, 125 and 100Ma, below are the plots of temperature and aridity.
 
 ```{r eval=T, fig.width=7, fig.height=3.2, message=F, echo=F, warning=T, results='hide'}
 library(raster)
@@ -173,11 +173,11 @@ axis.args=list(at=seq(minarid, maxarid, 0.2),labels=seq(minarid, maxarid, 0.2)))
    
 
 ### Configuration
-The **configuration** are the rules of our virtual planet, here is where we define all the ecological and evolutionary equations and parameters.
+The **configuration** are the rules of our virtual planet, it is where we define all the ecological and evolutionary equations and parameters.
 
-The configuration object includes information on the model initialization, the observer function and the biological functions, namey speciation, dispersal, evolution, and ecology. The possibility of the user to customize these functions confers the flexibility of *gen3sis*. The initialization function creates the ancestor species at the start of the simulation. Users can define  the number of species, their distribution within the landscape and their trait values. The observer function allows recording any abiotic or biotic information of the virtual world as it changes by defining the outputs that are saved at specified time-steps. The configuration further allows to define the speciation function, the  dispersal function, the evolution function and the ecological function, which are defined in the section on core processes below. Altogether, those six functions are specified in the configuration object and interact with a set of core objects defined in the simulation engine. The configuration object further lists the ecological traits considered in the simulation, sets a random seed allowing simulation reproducibility, start and end times of the simulation, as well as simulation aborting rules including the limits for a total or local number of species.
+The configuration object includes information on the model initialization, the observer function and the biological functions, namely speciation, dispersal, evolution, and ecology. The possibility of the user to customize these functions confers the flexibility and generality of *gen3sis*. The initialization function creates the ancestor species at the start of the simulation. Users can define the number of species, their distribution within the landscape and their trait values. The observer function allows recording any abiotic or biotic information of the virtual world as it changes by defining the outputs that are saved at specified time-steps. The configuration further allows to define the *speciation* function, the *dispersal* function, the *evolution* function and the *ecological* function, which are defined in the section on core processes below. Altogether, those six functions are specified in the configuration object and interact with a set of core objects defined in the simulation engine. The configuration object further lists the ecological traits considered in the simulation, sets a random seed allowing simulation reproducibility, start and end times of the simulation, as well as simulation aborting rules including the limits for a total or local number of species.
 
-In our example, we start our simulation with the first available timestep and end it a the latest available time-step at the landscape, i.e. 150-100Ma. We set one single ancestor species spread across the entire land available with initial optimum temperature equal to the local temperature of the site. The dispersal of all species is the same and stochastic, following a weibull distribution with shape 6 and scale 999. Speciation takes place after 12 time-steps (2 Myr) of isolation. Clustered populations (exchanging genes) had their trait homogenized and weighted by abundance, meaning that a temperature optimum of populations that are doing well in a site will contribute more to the average trait of a cluster. Temperature optimum evolves based on a normal distribution with standard deviation 0.001, possibly increasing or decreasing species optimum temperature. Abundances in a site are based on how close the species population optimum temperature is to the site temperature. We scale the values to avoid small numbers and apply a carrying capacity based on aridity and temperature corrected by the area. If abundances are below 1, species are considered extinct, if total abundance in a site (sum of all species in a site) is above the carrying capacity, small abundances are removed progressively and randomly distributed across the present species until total abundance is smaller or equal to the carrying capacity. For more details regarding the configuration used here and how to modify it, please refer to [**create_config vignette**](create_config.html).
+In our example, we start our simulation with the first available time-step and end it a the latest available time-step at the landscape, i.e. 150 and 100Ma. We set one single ancestor species spread across the entire land available with initial optimum temperature equal to the local temperature of the site. The dispersal of all species is the same and stochastic, following a Weibull distribution with shape 6 and scale 999. Speciation takes place after 12 time-steps (2 Myr) of isolation. Clustered populations (exchanging genes) had their trait homogenized and weighted by abundance, meaning that a temperature optimum of populations that are doing well in a site will contribute more to the average trait of a cluster. Temperature optimum evolves based on a normal distribution with standard deviation 0.001, possibly increasing or decreasing species optimum temperature. Abundances in a site are based on how close the species population optimum temperature is to the site temperature. We scale the values to avoid small numbers and apply a carrying capacity based on aridity and temperature corrected by the area. If abundances are below 1, species are considered extinct, if total abundance in a site (sum of all species in a site) is above the carrying capacity, small abundances are removed progressively and randomly distributed across the present species until total abundance is smaller or equal to the carrying capacity. For more details regarding the configuration used here and how to modify it, please refer to [**create_config vignette**](create_config.html).
 
 
 [^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
@@ -191,13 +191,13 @@ Now that we have set up the general folder structure and loaded the input data a
 
 1) Read in the config and prepare the output directories, initial landscape and call *create_ancestor_species* from the user config to create the initial species for the simulation.
 
-2) Start the main loop over the time-steps. For every time-step it loads the appropriate landscape, removes all cells that became uninhabitable in the new time-step, and calls the main steps of any iteration.
+2) Start the main loop over the time-steps. For every time-step it loads the appropriate landscape, removes all sites that became uninhabitable in the new time-step, and calls the main steps of any iteration.
 
 3) At the end of every time-step, if desired, the simulation saves the species, landscapes, species richness patterns, etc... by calling the *end_of_timestep_observer* from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
 
-4) When the simulation reaches the end, a phylogeny, runtime_information, the world starting conditions and the used config are saved at the output folder, which is not specified is deduced from the landscape location. The function will return an summary object, here we will save it as *sim*.
+4) When the simulation reaches the end, a phylogeny, runtime_information, the world starting conditions and the used config are saved at the output folder, which is not specified is deduced from the landscape location. The function will return a summary object. In this vignette we will save it as *sim*.
 
-Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analysed. 
+Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analyzed. 
 
 
 To launch a simulation you need to call the *run_simulation* function. We only store one intermediate step between the starting and end time-steps by setting "call_observer=1", this means one time-step equally distributed between the starting and ending time-steps. Like so we will have a look at our virtual world at 150, 125 and 100 Ma. 
@@ -226,7 +226,7 @@ After the simulation is finished, a plot is created inside the WorldCenter folde
 
 ## 3. Visualize {#visualize}
 
-After having run the simulation we can load and plot the species richness at different time-steps. Here, we will load them at the time-steps 300, 150 and 0. Since we have six time-steps within this time frame, this corresponds to 150, 125 and 100 Ma, respectively.
+After having run the simulation, we can load and plot the species richness at different time-steps. Here, we will load them at the time-steps 300, 150 and 0. Since we have six time-steps within this time frame, this corresponds to 150, 125 and 100 Ma, respectively.
 
 ```{r eval=T, echo=T, fig.width=7, fig.height=2}
 timesteps <- c(300, 150, 0)
@@ -239,10 +239,10 @@ for(i in timesteps){
 ```
 
 
-*Gen3sis* also creates a summary object at the end of the simulation storing some default observer functions. These are summaries that document the changes of the world over time.
+*Gen3sis* also creates a summary object at the end of the simulation storing some default summary functions and important simulation data. These summaries document the changes of the world over time.
 **NOTE** You can also create your own observer function. 
 
-One default observer function is the collection of the richness over time. This was stored as *sim*.
+One default observer function is the collection of the richness over time. Remember that we stored the summary object (sgen3sis class) as *sim*.
 We can quickly visualize some main results using the *plot_summary function*.
 
 
@@ -255,7 +255,7 @@ There are a few visualization tools already included in the package, but you are
 
 ## 4. Analyze {#analyze}
 
-Now that we have run the simulation we are ready to perform some analysis to investigate whether the model behaves as expected. Because we set a limit to the total abundances lower in colder and in more arid environments, we expect that the number of species that can co-exist also decreases in those environment. 
+Now that we have run the simulation, we are ready to perform some analysis to investigate model behavior. Because we set a limit to the total abundances lower in colder and in more arid environments, we expect that the number of species that can co-exist also decreases in those environments.
 We will perform a few statistical analyses to investigate those patterns based on the species richness pattern that emerged at the end of the simulation. To do so, we first load the landscape and combine it with the simulated species richness.
 
 ```{r eval=TRUE, fig.width=8, fig.height=5, fig.retina=2}
@@ -267,15 +267,15 @@ landscape_t0 <- na.omit(landscape_t0)
 
 
 
-Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and investigate the relationship between richness and environmental variables at the at the final time step of the simulation. For this we will fit two univariate models, where each explains the relationship between species richness and one of the environmental variables.
+Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and investigate the relationship between richness and environmental variables at the at the final time-step of the simulation. For this, we will fit two univariate models, where each explains the relationship between species richness and one of the environmental variables.
 
-For this we first fit a generalized linear model between richness and temperature.
+For this, we first fit a generalized linear model between richness and temperature.
 ```{r eval=TRUE, echo=TRUE}
 glm.uni <- glm(rich ~ poly(temp, 2), data=landscape_t0, family=poisson)
 cor(landscape_t0$temp, landscape_t0$rich)
 ```
 
-Second we plot the response curve.
+Second, we plot the response curve.
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
 # prepare data with temperature and predicted richness from our model
 data_plot <- data.frame(cbind(landscape_t0$temp, predict(glm.uni,type = "response")))
@@ -292,7 +292,7 @@ legend(5,0.52, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch
 ```
 
 
-By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, indicating that species richness highest at intermediate temperature levels. First the higher richness found above 10° is consistent with the ecological rule that we imposed. At higher temperature, we have a higher energy and capacity facilitating coexist. This is consistent with our model expectations. Moreover, we can observe a large spread of the points at high temperature. This is likely because high temperature regions frequently have high aridity. Thus let's investigate the association of aridity and species richness by fitting a generalized linear model between richness and aridity
+By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, indicating that species richness is highest at intermediate temperature levels. First the higher richness found above 10° is consistent with the ecological rule that we imposed. At higher temperature, we have a higher energy and capacity facilitating coexist. This is consistent with our model expectations. Moreover, we can observe a large spread of the points at high temperature. This is likely because high temperature regions frequently have high aridity. Thus let's investigate the association of aridity and species richness by fitting a generalized linear model between richness and aridity.
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, results='hide', echo=F}
@@ -309,10 +309,10 @@ legend(0,10, col=c(rgb(0.5,0.5,0.5,0.4), 'blue'), legend=c(n, 'model fit'), pch=
 ```
 
 
-The number of species is negatively related to aridity. The explained deviance of this relationship is D2=`r round((glm.uni$null.deviance - glm.uni$deviance) / glm.uni$null.deviance,3)`. This relationship emerge because we set a lower carrying capacity in cells with higher level of aridity. Hence, the models behaves as expected from the configuration function.
+The number of species is negatively related to aridity. The explained deviance of this relationship is D2=`r round((glm.uni$null.deviance - glm.uni$deviance) / glm.uni$null.deviance,3)`. This relationship emerge because we set a lower carrying capacity in sites with higher level of aridity. Hence, the models behaves as expected from the configuration function.
 
 
-Finally we fit a multivariate model for explaining species richness by taking into account the two predictors together.
+Finally, we fit a multivariate model for explaining species richness by taking into account the two predictors together.
 
 ```{r eval=TRUE}
 richness_model <- glm(rich ~ poly(temp, 2) + poly(prec, 2), family='quasipoisson', data=landscape_t0)
@@ -321,4 +321,4 @@ summary(richness_model)$coefficients
 
 Above we report the explained deviance of the glm model on richness considering temperature and aridity. The explained deviance of this relationship is D2=`r round((richness_model$null.deviance - richness_model$deviance) / richness_model$null.deviance,3)`. This explained deviance will not be total since there are other effects including dispersal limitations, that are not considered in this statistical summary. It's important to consider as well that we have now only been analyzing the species richness at one time-step, namely the last one. The emerged patterns are more likely not only to be explained by the environmental conditions of that time but also dependent on historical conditions which gen3sis used as input. 
 
-For more details on how to create a landscape and prepare it to use in *gen3sis* see [**design_landscape vignette**](design_landscape.html) and [**create_input_landscape vignette**](create_input_landscape.html). For more details on how to create or modify a configuration object see [**create_config vignette**](create_config.html). It's now up to you to explore the "virtual" world. 
+For more details on how to create a landscape and prepare it to use in *gen3sis* see [**design_landscape vignette**](design_landscape.html) and [**create_input_landscape vignette**](create_input_landscape.html). For more details on how to create or modify a configuration object see [**create_config vignette**](create_config.html). It's now up to you to explore the "virtual" world.
