@@ -126,7 +126,7 @@ for (timestep in 1:Ntimesteps){ # temporal loop
 ```
 
 
-The create_input_landscape() function of the *gen3sis* package takes temperature and precipitation values as a list raster layers or raster layer filenames. Based on the dataframes we just created, we can now create temperature and precipitation rasters for each time step. We then store them in a named list and save to the hard drive.
+The *create_input_landscape()* function of the *gen3sis* package takes temperature and precipitation values as a list raster layers or raster layer file names. Based on the dataframes we just created, we can now create temperature and precipitation rasters for each time-step. We then store them in a named list and save to the hard drive.
 
 
 ```{r eval=FALSE}
@@ -146,7 +146,7 @@ saveRDS(landscapes_list, "inputfolder/my_experiment/landscapes.rds")
 
 
 ## Add a cost function
-The connection cost between sites is defined as the distance between these sites modified by an optional cost function. This user defined cost function can give a penalty (or benefit) for crossing certain cells and will be stored as a distance matrix. For this virtual landscape, we will not add a cost function, meaning that the connection costs are only the distance between the sites inside our grid cells. If you want to learn how to make a cost function, refer to the [**create_input_landscape vignette**](create_input_landscape.html).
+The connection cost between sites is defined as the distance between these sites modified by an optional cost function. This user defined cost function can give a penalty (or benefit) for crossing certain cells and will be stored as a distance matrix. For this virtual landscape, we will add a simple cost function (i.e. equal value of 1 to all sites), meaning that the connection costs are only the distance between the sites inside our grid cells. If you want to learn how to make a cost function, refer to the [**create_input_landscape vignette**](create_input_landscape.html).
 
 
 
