@@ -152,7 +152,20 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
 #' @export
 plot_richness <- function(species_list, landscape) {
   richness <- get_geo_richness(species_list, landscape)
-  rc <- color_richness(max(richness, na.rm=TRUE) + 1)
+  max_richness <- max(richness, na.rm=TRUE)
+  min_richnes <- min(richness, na.rm=TRUE)
+  
+  # attribute proper color scale
+  zerorichness_col <- "navajowhite3"
+  if (max_richness==0){ #if all extinct
+    rc <-  zerorichness_col
+  } else {
+    rc <- color_richness(max_richness)
+    if (min_richnes==0){ #if there is zero-richness (i.e. inhabited sites)
+      rc <- c(zerorichness_col, rc)
+    }
+  }
+  
   conditional_plot("richness",
                    landscape,
                    plot_raster_single,
