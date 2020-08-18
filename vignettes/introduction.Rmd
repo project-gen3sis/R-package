@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r tidy=T, out.width='70%', echo=F, fig.cap='*gen3sis*: **gen**eral **e**ngine for **e**co-**e**volutionary **si**mulation**s**', fig.margin=F}
-knitr::include_graphics("./logo/gen3sis_logo.png")
+knitr::include_graphics("logo/gen3sis_logo.png")
 ```
 
 <br>
