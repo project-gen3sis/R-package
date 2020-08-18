@@ -67,7 +67,7 @@ area_brick <- brick('InputRasters/WorldCenter/area_rasters.grd')
 If you want to learn how you can create a virtual dynamic landscape from scratch, please refer to the [**design_landscape vignette**](design_landscape.html).
 
 
-## Creating a list with the environmental data frames
+## Creating a list with the environmental raster bricks
 To create the input landscape for *gen3sis*, all environmental variables have to be stored as raster files in a named list. It is important to add the name of the environmental variable you want to use in the list, which will be used when specifying the config file. Alternatively, you can also create a list which contains all of the raster file paths on your hard drive.
 
 We will now create a list that contains all of the layers of our raster bricks for temperature, aridity and area.
