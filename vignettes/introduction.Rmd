@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-![](gen3sis_logo.png){width=20%} stands for **gen**eral **e**ngine for **e**co-**e**volutionary **si**mulation**s**. In this vignette you will be introduced to *gen3sis*, an engine for simulating various spatial eco-evolutionary models. Here will create a virtual planet, 'biodiversify' it and examine some brand new virtual species.
+![](gen3sis_logo.png) stands for **gen**eral **e**ngine for **e**co-**e**volutionary **si**mulation**s**. In this vignette you will be introduced to *gen3sis*, an engine for simulating various spatial eco-evolutionary models. Here will create a virtual planet, 'biodiversify' it and examine some brand new virtual species.
 
 
 
