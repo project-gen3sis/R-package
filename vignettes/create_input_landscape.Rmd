@@ -137,7 +137,7 @@ plot(legend_image, legend.only=T, col=cost_colors, horizontal=T, smallplot=c(0.2
 
 
 
-Now, let's look at a slightly more sophisticated cost function. Only sites which have environmental values (no NAs) are considered habitable. Here, suitable terrestrial sites should have a cost penalty of one (1), but dispersal over water sites should double (2) the cost of dispersal. 
+Now, let's look at a slightly more sophisticated cost function. Only sites which have environmental values (no NAs) are considered habitable. Here, suitable terrestrial sites should have a cost penalty of one (1), but dispersal over water sites should double (2) the cost of dispersal. Since our example landscape has resolution of 4 degrees, terrestrial sites will have cost penalty of four (4) and aquatic sites of eight (8).
 
 ```{r eval=TRUE}
 cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
@@ -200,7 +200,7 @@ The argument 'timesteps' requires a vector of strings and is used to name the fi
 
 The argument 'calculate_full_distance_matrices' defines whether the *create_input_landscape* function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neighboring sites specified in 'directions' around each suitable site (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each time-step during a simulation run. 
 
-The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [**design_landscape vignette**](design_landscape.html), geographic distance would be measured in units of sites multiplied by the grid cell resolution.
+The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes with valide coordinate system (e.g. *crs="+proj=longlat +datum=WGS84"*), the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [**design_landscape vignette**](design_landscape.html), geographic distance would be measured in units of sites multiplied by the grid cell resolution.
 
 ## Create input files 
 
