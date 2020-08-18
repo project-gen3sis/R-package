@@ -85,11 +85,11 @@ for(i in 1:nlayers(temperature_brick)){
 ## Defining a cost function 
 The second argument we need to define is a *cost function*. This function should define the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
 
-First, let’s look at a very simple case, where no cost is added to the geographical distances, meaning that connections costs equal geographic distance. The costs here will be defined in cell unit weighted by degrees, so that the same landscape under different spatial resolution in equivalent. For landscapes with a coordinate system (crs) the cost is defined in meters, since the coordinate system is in meters. Hence, we can define a simple cost function in which the dispersal is not penalized: 
+First, let’s look at a very simple case, where no additional cost is added to the geographical distances, meaning that connections costs equal distance in  grid cell units multiplied by the raster resolution. The costs here will be defined in cell unit weighted by degrees, so that the same landscape under different spatial resolution in equivalent. For landscapes with a coordinate system (*crs*) the cost is defined in meters, since the coordinate system is in meters. Hence, we can define a simple cost function in which the dispersal is not penalized: 
 
 ```{r eval=TRUE}
 cost_function_null <- function(source, habitable_src, dest, habitable_dest) {
-    return(1)
+    return(1) #represents cost 4 in a 4degree landscape
 }
 ```
 
