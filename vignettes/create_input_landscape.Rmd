@@ -85,7 +85,7 @@ for(i in 1:nlayers(temperature_brick)){
 ## Defining a cost function 
 The second argument we need to define is a *cost function*. This function should define the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
 
-First, let’s look at a very simple case, where no cost is added to the geographical distances, meaning that connections costs equal geographic distance. The costs have to be defined in meters because the coordinate system is in meters for real landscapes. Hence, we can define a simple cost function in which the dispersal is not penalized: 
+First, let’s look at a very simple case, where no cost is added to the geographical distances, meaning that connections costs equal geographic distance. The costs here will be defined in cell unit weighted by degrees, so that the same landscape under different spatial resolution in equivalent. For landscapes with a coordinate system (crs) the cost is defined in meters, since the coordinate system is in meters. Hence, we can define a simple cost function in which the dispersal is not penalized: 
 
 ```{r eval=TRUE}
 cost_function_null <- function(source, habitable_src, dest, habitable_dest) {
@@ -192,7 +192,7 @@ plot(legend_image, legend.only=T, col=cost_colors, horizontal=T, smallplot=c(0.2
 Whether a specific site can be reached or not depends on the properties of the population or species.
 
 ## Further useful arguments
-Besides the (i) landscape list, (ii) cost function and (iii) experiment folder, we can define further arguments such as: directions, timesteps and calculate_full_distance_matrices. 
+Besides the (i) landscape list, (ii) cost function and (iii) experiment folder, we can define further arguments such as: directions, time-steps and calculate_full_distance_matrices. 
 
 The argument 'directions' requires an integer providing the amount of directions used to calculate distances. It can take 4, 8 or 16 as values to consider the four, eighth or 16 neighboring sites. This is the same argument used by the function *transition* in the gdistance package (gdistance::transition). 
 
@@ -200,7 +200,7 @@ The argument 'timesteps' requires a vector of strings and is used to name the fi
 
 The argument 'calculate_full_distance_matrices' defines whether the *create_input_landscape* function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neighboring sites specified in 'directions' around each suitable site (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each time-step during a simulation run. 
 
-The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [**design_landscape vignette**](design_landscape.html), geographic distance would be measured in units of sites.
+The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes, the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [**design_landscape vignette**](design_landscape.html), geographic distance would be measured in units of sites multiplied by the grid cell resolution.
 
 ## Create input files 
 
