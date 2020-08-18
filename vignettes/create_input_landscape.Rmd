@@ -54,8 +54,8 @@ library(gen3sis)
 library(raster)
 ```
 
-## Creating the environmental dataframes
-In this step, the user needs to create the dataframes containing the spatio-temporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 4d sample world that has been used in the [**introduction vignette**](introduction.html). We first load the three corresponding raster bricks from the hard drive.
+## Creating the environmental rasters bricks
+In this step, the user needs to create the rastebriks containing the spatio-temporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 4d sample world that has been used in the [**introduction vignette**](introduction.html). We first load the three corresponding raster bricks from the hard drive.
 
 ```{r eval=T, message=F}
 temperature_brick <- brick('InputRasters/WorldCenter/temp_rasters.grd')
