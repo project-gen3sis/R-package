@@ -20,12 +20,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-#```{r tidy=T, out.width='70%', echo=F, fig.cap='*gen3sis*: **gen**eral **e**ngine for **e**co-**e**volutionary #**si**mulation**s**', fig.margin=F}
-# knitr::include_graphics("logo/gen3sis_logo.png")
-#```
-
-<img src="logo/gen3sis_logo.png" style="display: inline-block; margin: 0; width: 15%; border: 0; float: left" /> <br> 
-
+```{r tidy=T, out.width='70%', echo=F, fig.cap='*gen3sis*: **gen**eral **e**ngine for **e**co-**e**volutionary **si**mulation**s**', fig.margin=F}
+knitr::include_graphics("logo/gen3sis_logo.png")
+```
 In this vignette you will be introduced to *gen3sis*, an engine for simulating various spatial eco-evolutionary models. Here will create a virtual planet, 'biodiversify' it and examine some brand new virtual species.
 
 
