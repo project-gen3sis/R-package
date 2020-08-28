@@ -89,6 +89,7 @@ cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
   }
 }
 
+\dontrun{
 # create input landscape ready for gen3sis from sub-list 
 # (i.e. 10 time-steps) and only local-distances.
 create_input_landscape(
@@ -100,7 +101,6 @@ create_input_landscape(
   calculate_full_distance_matrices = FALSE) # full distance matrix
 
 
-\dontrun{
 # create list of all environmental variables available
 landscapes_list <- list(temp=NULL, arid=NULL, area=NULL)
 for(i in 1:nlayers(temperature_brick)){
