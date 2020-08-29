@@ -1,4 +1,4 @@
-![logo](logo.png)
+![gen3sis](./inst/logo/gen3sis_logo.png)
 
 
 # General Engine for Eco-Evolutionary Simulations
