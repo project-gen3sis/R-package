@@ -42,7 +42,7 @@ library(gen3sis)
 
 In order to create an empty config, we use the function *write_config_skeleton* and define the output location. For that we have to define where the empty config will be stored.
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 # get data path
 datapath <- system.file(file.path("extdata", "EmptyConfig"), package="gen3sis")
 # set config_empty.R file path
@@ -148,7 +148,7 @@ Note that the main core functions have stop warnings by default, this forces the
 Here we will go bit by bit of the config used at the [**introduction vignette**](introduction.html) vignette. We will follow the structure presented above.
 
 
-### **Content of config_.empty_worldcenter.R**
+### **Content of config_.empty_southamerica.R**
 
 ### ***Metadata***
 The first section of the config file contains metadata. It informs the user when and by whom the file has been created, which landscape it was made for and informs about associated publications and implemented processes or exploration intentions of the specific configuration.
@@ -157,7 +157,7 @@ The first section of the config file contains metadata. It informs the user when
 # Version: 1.0
 # Author: Oskar Hagen
 # Date: 1.7.2020
-# Landscape: WorldCenter
+# Landscape: SouthAmerica
 # Publications: R-package gen3sis
 # Description: Example config used at the introduction vignette and similar to case study global configs in Hagen et al. 2020.
 # O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. gen3sis: The GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity.
@@ -238,7 +238,7 @@ get_dispersal_values <- function(n, species, landscape, config) {
 
 The histogram of 100 draws from the dispersal function used above.
 
->```{r eval=TRUE, fig.width=6, fig.height=3.2}
+>```{r eval=FALSE, fig.width=6, fig.height=3.2}
 n <- 100
 hist(rweibull(n, shape = 6, scale = 999), col="black")
 ```
@@ -308,13 +308,13 @@ apply_ecology <- function(abundance, traits, landscape, config) {
 
 ## 3. Modify a config {#modify}
 
-A configuration object can be modified by editing a file or the config object in R. Here we will load the *config_worldcenter.R* as an R object and modify it's random seed.
+A configuration object can be modified by editing a file or the config object in R. Here we will load the *config_southamerica.R* as an R object and modify it's random seed.
 
-```{r eval=TRUE}
+```{r eval=T}
 # get data path
-datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
+datapath <- system.file(file.path("extdata", "SouthAmerica"), package="gen3sis")
 # creates config object from config file
-config_object <- create_input_config(file.path(datapath, "config/config_worldcenter.R"))
+config_object <- create_input_config(file.path(datapath, "config/config_southamerica.R"))
 # modify random seed
 config_object$gen3sis$general$random_seed <- 2020
 ```
@@ -327,9 +327,9 @@ Before using a new config, you can test if it is a valid one. If the function *v
 verify_config(config_object)
 ```
 
-```{r eval=F}
+```{r eval=T}
 # run simulation by indicating config file path
-sim_old <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
+sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica.R"), 
                landscape = file.path(datapath, "landscape"),
                output_directory=tempdir())
 
