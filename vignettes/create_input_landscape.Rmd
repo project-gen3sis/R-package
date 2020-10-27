@@ -55,11 +55,11 @@ library(raster)
 ```
 
 ## Creating the environmental rasters bricks
-In this step, the user needs to create the rasterbricks containing the spatio-temporal distribution of the environmental variables of interest. Here, we will use the temperature, precipitation and area rasters of the 4d sample world that has been used in the [**introduction vignette**](introduction.html). We first load the three corresponding raster bricks from the hard drive.
+In this step, the user needs to create the rasterbricks containing the spatio-temporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 1d example of South America that has been used in the [**introduction vignette**](introduction.html). We first load the three corresponding raster bricks from the hard drive.
 
 ```{r eval=T, message=F}
 temperature_brick <- brick('InputRasters/SouthAmerica/temperature_rasters.grd')
-precipitation_brick <- brick('InputRasters/SouthAmerica/precipitation_rasters.grd')
+aridity_brick <- brick('InputRasters/SouthAmerica/aridity_rasters.grd')
 area_brick <- brick('InputRasters/SouthAmerica/area_rasters.grd')
 ```
 
@@ -70,13 +70,13 @@ If you want to learn how you can create a virtual dynamic landscape from scratch
 ## Creating a list with the environmental raster bricks
 To create the input landscape for *gen3sis*, all environmental variables have to be stored as raster files in a named list. It is important to add the name of the environmental variable you want to use in the list, which will be used when specifying the config file. Alternatively, you can also create a list which contains all of the raster file paths on your hard drive.
 
-We will now create a list that contains all of the layers of our raster bricks for temperature, precipitation and area.
+We will now create a list that contains all of the layers of our raster bricks for temperature, aridity and area.
 
 ```{r eval=TRUE}
 landscapes_list <- list(temp=NULL, prec=NULL, area=NULL)
 for(i in 1:nlayers(temperature_brick)){
   landscapes_list$temp <- c(landscapes_list$temp, temperature_brick[[i]])
-  landscapes_list$prec <- c(landscapes_list$prec, precipitation_brick[[i]])
+  landscapes_list$prec <- c(landscapes_list$prec, aridity_brick[[i]])
   landscapes_list$area <- c(landscapes_list$area, area_brick[[i]])
 }
 ```
@@ -85,11 +85,11 @@ for(i in 1:nlayers(temperature_brick)){
 ## Defining a cost function 
 The second argument we need to define is a *cost function*. This function should define the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
 
-First, let’s look at a very simple case, where no additional cost is added to the geographical distances, meaning that connections costs equal distance in  grid cell units multiplied by the raster resolution. The costs here will be defined in cell unit weighted by degrees, so that the same landscape under different spatial resolution in equivalent. For landscapes with a coordinate system (*crs*) the cost is defined in meters, since the coordinate system is in meters. Hence, we can define a simple cost function in which the dispersal is not penalized: 
+First, let’s look at a very simple case, where no additional cost is added to the geographical distances, meaning that connections costs equal distance in  grid cell units multiplied by the raster resolution. For landscapes with a coordinate system (*crs*) the cost is defined in meters, since the coordinate system is in meters. We can define a simple cost function in which the dispersal is not penalized: 
 
 ```{r eval=TRUE}
 cost_function_null <- function(source, habitable_src, dest, habitable_dest) {
-    return(1) #represents cost 4 in a 4degree landscape
+    return(1/1000) 
 }
 ```
 
@@ -101,50 +101,52 @@ create_input_landscape(landscapes = landscapes_list_t0,
                                cost_function = cost_function_null,
                                output_directory =  "CostFunctionExamples/cost_function_null",# a directory name to save the files in
                                directions = 8, # all surrounding sites from a focus site
-                               calculate_full_distance_matrices = TRUE  # full distance matrix
+                               calculate_full_distance_matrices = TRUE,  # full distance matrix
+                               overwrite_output = T,
+                               crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs" 
 )
 
 ```
 
-```{r, echo=FALSE, fig.width=7, fig.height=5, fig.cap='This figure shows the connection costs from one site in central Africa to all other sites. To travel to the site in South America that is indicated with the arrow, the travelling cost is 64. The distance matrix was computed using the very simple cost function that has been introduced before and is not adding any penalty.', fig.align='left'}
+```{r, echo=FALSE, fig.width=4, fig.height=7, fig.cap='This figure shows the connection costs from one site in the middle of South America to all other sites. To travel to the site of Antarctica that is indicated with the arrow, the travelling cost is 3790. The distance matrix was computed using the very simple cost function that has been introduced before and is not adding any penalty.', fig.align='center'}
 dist_matrix_null_t0 <- readRDS('CostFunctionExamples/cost_function_null/distances_full/distances_full_0.rds')
 landscapes_null <- readRDS('CostFunctionExamples/cost_function_null/landscapes.rds')
 landscapes_null_t0 <- na.omit(landscapes_null$temp[, c('x', 'y', '0')])
-dist_null_t0_mat <- cbind(landscapes_null_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_null_t0[,140]))
+dist_null_t0_mat <- cbind(landscapes_null_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_null_t0[,1300]))
 dist_null_t0 <- rasterFromXYZ(dist_null_t0_mat)
 
-maxcost <- 155
+maxcost <- 10000
 mincost <- 0
-cost_breaks <- seq(mincost, maxcost, by=1)
+cost_breaks <- seq(mincost, maxcost, by=20)
 cost_colors <- rev(gray(seq(0.03, 0.9, length.out=length(cost_breaks)-1)))
 
-par(mar=c(1,1,1,2))
+par(mar=c(1,2,1,2))
 layout(matrix(c(1,1,1,1,2), ncol=1))
 
 #par(mar=c(1,1,1,2))
 image(dist_null_t0, col=cost_colors, breaks=cost_breaks)
 #plot(dist_null_t0, col=cost_colors, breaks=cost_breaks, axes=F, box=F, legend.args = list(text = 'connection cost', side = 2, 
 #         font = 2, line = 0.5, cex = 0.8))
-arrows(10, 8, -54, 8, lwd=3, col='red')
-text(-22, 11, labels=paste('connection cost =', round(dist_null_t0_mat$cost[dist_null_t0_mat$x==(-54) & dist_null_t0_mat$y==8], 1)), cex=1.5, font=2)
+arrows(-61.5, -30.5, -61.5, -64.5, lwd=3, col='red')
+text(-55, -40, labels=paste('connection cost =', round(dist_null_t0_mat$cost[dist_null_t0_mat$x==(-61.5) & dist_null_t0_mat$y==(-64.5)], 0)), cex=1.5, font=2)
 
 plot.new()
 legend_df <- as.data.frame(cbind(seq(0, length(cost_breaks)-1, length.out=(length(cost_breaks))), rep(0.25, (length(cost_breaks))), cost_breaks))
 legend_image <- rasterFromXYZ(legend_df, res=0.01)
 plot(legend_image, legend.only=T, col=cost_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.45, 0.6), 
-   axis.args=list(at=seq(mincost, maxcost, 25),labels=seq(mincost, maxcost, 25)), legend.args=list(text='connection cost'))
+   axis.args=list(at=seq(mincost, maxcost, 500),labels=seq(mincost, maxcost, 500)), legend.args=list(text='connection cost'))
 ```
 
 
 
-Now, let's look at a slightly more sophisticated cost function. Only sites which have environmental values (no NAs) are considered habitable. Here, suitable terrestrial sites should have a cost penalty of one (1), but dispersal over water sites should double (2) the cost of dispersal. Since our example landscape has resolution of 4 degrees, terrestrial sites will have cost penalty of four (4) and aquatic sites of eight (8).
+Now, let's look at a slightly more sophisticated cost function. Only sites which have environmental values (no NAs) are considered habitable. Here, suitable terrestrial sites should have a cost penalty of one (1), but dispersal over water sites should double (2) the cost of dispersal. 
 
 ```{r eval=TRUE}
 cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
   if(!all(habitable_src, habitable_dest)) {
-    return(2)
+    return(2/1000)
   } else {
-    return(1)
+    return(1/1000)
   }
 }
 ```
@@ -154,38 +156,40 @@ create_input_landscape(landscapes = landscapes_list_t0,
                                cost_function = cost_function_water,
                                output_directory = "CostFunctionExamples/cost_function_water",# a directory name to save the files in
                                directions = 8, # all surrounding sites from a focus site
-                               calculate_full_distance_matrices = TRUE  # full distance matrix
+                               calculate_full_distance_matrices = TRUE,  # full distance matrix
+                               overwrite_output = T,
+                               crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs" 
 )
 
 ```
 
-```{r, echo=FALSE, fig.width=7, fig.height=5, fig.align='left'}
+```{r, echo=FALSE, fig.width=4, fig.height=7, fig.align='center', fig.cap='By using a cost function which penalises the crossing of water, the cost of travelling from our cell in the middle of South America to Antarctica increases to 5204.'}
 dist_matrix_water_t0 <- readRDS('CostFunctionExamples/cost_function_water/distances_full/distances_full_0.rds')
 landscapes_water <- readRDS('CostFunctionExamples/cost_function_water/landscapes.rds')
 landscapes_water_t0 <- na.omit(landscapes_water$temp[, c('x', 'y', '0')])
-dist_water_t0_mat <- cbind(landscapes_water_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_water_t0[,140]))
+dist_water_t0_mat <- cbind(landscapes_water_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_water_t0[,1300]))
 dist_water_t0 <- rasterFromXYZ(dist_water_t0_mat)
 
-cmaxcost <- 155
+maxcost <- 10000
 mincost <- 0
-cost_breaks <- seq(mincost, maxcost, by=1)
+cost_breaks <- seq(mincost, maxcost, by=20)
 cost_colors <- rev(gray(seq(0.03, 0.9, length.out=length(cost_breaks)-1)))
 
-par(mar=c(1,1,1,2))
+par(mar=c(1,2,1,2))
 layout(matrix(c(1,1,1,1,2), ncol=1))
 
 #par(mar=c(1,1,1,2))
 image(dist_water_t0, col=cost_colors, breaks=cost_breaks)
 #plot(dist_water_t0, col=cost_colors, breaks=cost_breaks, axes=F, box=F, legend.args = list(text = 'connection cost', side = 2, 
 #         font = 2, line = 0.5, cex = 0.8))
-arrows(10, 8, -54, 8, lwd=3, col='red')
-text(-22, 11, labels=paste('connection cost =', round(dist_water_t0_mat$cost[dist_water_t0_mat$x==(-54) & dist_water_t0_mat$y==8], 1)), cex=1.5, font=2)
+arrows(-61.5, -30.5, -61.5, -64.5, lwd=3, col='red')
+text(-55, -40, labels=paste('connection cost =', round(dist_water_t0_mat$cost[dist_water_t0_mat$x==(-61.5) & dist_water_t0_mat$y==(-64.5)], 0)), cex=1.5, font=2)
 
 plot.new()
 legend_df <- as.data.frame(cbind(seq(0, length(cost_breaks)-1, length.out=(length(cost_breaks))), rep(0.25, (length(cost_breaks))), cost_breaks))
 legend_image <- rasterFromXYZ(legend_df, res=0.01)
 plot(legend_image, legend.only=T, col=cost_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.45, 0.6), 
-   axis.args=list(at=seq(mincost, maxcost, 25),labels=seq(mincost, maxcost, 25)), legend.args=list(text='connection cost'))
+   axis.args=list(at=seq(mincost, maxcost, 500),labels=seq(mincost, maxcost, 500)), legend.args=list(text='connection cost'))
 ```
 
 
@@ -209,6 +213,7 @@ The *create_input_landscape* function creates *.rds* files that will be used as 
 create_input_landscape(landscapes = landscapes_list,
              cost_function = cost_function_water,
              directions=8,
+             #output_directory = "SouthAmerica",
              output_directory = file.path(tempdir(), "SouthAmerica"),
              timesteps = paste0(seq(65, 0, by=-1), "Ma"),
              calculate_full_distance_matrices = F)

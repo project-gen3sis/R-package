@@ -156,7 +156,7 @@ The first section of the config file contains metadata. It informs the user when
 >```{r eval=FALSE}
 # Version: 1.0
 # Author: Oskar Hagen
-# Date: 1.7.2020
+# Date: 26.10.2020
 # Landscape: SouthAmerica
 # Publications: R-package gen3sis
 # Description: Example config used at the introduction vignette and similar to case study global configs in Hagen et al. 2020.
@@ -165,16 +165,17 @@ The first section of the config file contains metadata. It informs the user when
 
 
 ### ***Settings***
-We start our simulation with the first available time-step and end it a the latest available time-step at the landscape, thus *start_time* and *end_time* are set to NA. We limit the maximum total number of species alive in a simulation to 50000 with *max_number_of_species* and the maximum number of species within one site to 10000 with *max_number_of_coexisting_species*. Like so, simulations that could possible go off hand and generate too many species are stoped. We define which traits we will consider in our simulation with *traits_names*, in our example, species only have a dispersal ability and a optimum temperature traits. For our model to work, we normalize the environmental values, according to the range informed at *environmental_ranges*.
+We start our simulation 40 million years ago, which corresponds to time step 40. We end it a the latest available time-step at the landscape, thus *start_time* is set to *40* and *end_time* is set to NA. We limit the maximum total number of species alive in a simulation to 50000 with *max_number_of_species* and the maximum number of species within one site to 10000 with *max_number_of_coexisting_species*. Like so, simulations that could possible go off hand and generate too many species are stopped. We define which traits we will consider in our simulation with *traits_names*, in our example, species only have a dispersal ability and a optimum temperature traits. For our model to work, we normalize the environmental values, according to the range informed at *environmental_ranges*.
 
 >```{r eval=FALSE}
-random_seed = 001
-start_time = NA
+random_seed = 6
+start_time = 40
 end_time = NA
 max_number_of_species = 50000
 max_number_of_coexisting_species = 10000
 trait_names = c("temp",  "dispersal")
-environmental_ranges = list("temp" = c(-45, 55), "area"=c(101067, 196949), "prec"=c(1,0.5))
+environmental_ranges = list("temp" = c(-45, 55), "area"=c(2361.5, 12923.4), 
+    "prec"=c(1,0.5))
 ```
 
 ### ***Observer***
@@ -205,50 +206,58 @@ end_of_timestep_observer = function(data, vars, config){
 
 ### ***Initialization***
 The initialization function creates the ancestor species at the start of the simulation. Users can define the number of ancestor species, their distribution within the ancient landscape and their trait values.
-In our example, the initial abundance of the ancestor species as well as the abundance of species on newly colonized sites is 1. We set one single ancestor species spread across the entire globe, i.e. between longitudes [-180, 180] and latitudes [-90, 90]. We set the **temp** trait of each population of the initial species to the environmental temperature. This means, that each population is adapted to the local conditions, as we will see later on the ecology function. Dispersal is set to one, since it is not ranging. The function *create_ancestor_species* is expected to return a list of new species, i.e. the ancestor(s) one(s).
+In our example, the initial abundance of the ancestor species as well as the abundance of species on newly colonized sites is 1. We restrict the region of coloization to roughly to South America by limiting the range to a spatial extent of *c(-95, -24, -68, 13)*. We then create ten different species, each of which is randomly inhabiting on of the cells of the continent. We set the **temp** trait of each population of the initial species to the environmental temperature. This means, that each population is adapted to the local conditions, as we will see later on the ecology function. Dispersal is set to one, since it is not ranging. The function *create_ancestor_species* is expected to return a list of new species, i.e. the ancestor(s) one(s).
 
 >```{r eval=FALSE}
 initial_abundance = 1
 create_ancestor_species <- function(landscape, config) {
-  range <- c(-180, 180, -90, 90)
+  range <- c(-95, -24, -68, 13)
   co <- landscape$coordinates
   selection <- co[, "x"] >= range[1] &
     co[, "x"] <= range[2] &
     co[, "y"] >= range[3] &
     co[, "y"] <= range[4]
-  initial_cells <- rownames(co)[selection]
-  new_species <- create_species(initial_cells, config)
-  #set local adaptation to max optimal temp equals local temp
-  new_species$traits[ , "temp"] <- landscape$environment[,"temp"]
-  new_species$traits[ , "dispersal"] <- 1
-  return(list(new_species))
+  new_species <- list()
+  for(i in 1:10){
+    initial_cells <- rownames(co)[selection]
+    initial_cells <- sample(initial_cells, 1)
+    new_species[[i]] <- create_species(initial_cells, config)
+    #set local adaptation to max optimal temp equals local temp
+    new_species[[i]]$traits[ , "temp"] <- landscape$environment[initial_cells,"temp"]
+    new_species[[i]]$traits[ , "dispersal"] <- 1 
+    plot_species_presence(landscape, species=new_species[[i]])
+  }
+  return(new_species)
 }
 ```
 
 ### ***Core Processes***
 
 #### ***Dispersal***
-The dispersal function iterates over all species populations and determines the connectivity between sites and the colonization of new sites in the grid cell. In our example, the dispersal of all species is the same and is stochastic, following a weibull distribution with shape 6 and scale 999. For different dispersal between species, the dispersal trait should be used. Note that dispersal can be made deterministic by making the function return a fix value. 
+The dispersal function iterates over all species populations and determines the connectivity between sites and the colonization of new sites in the grid cell. In our example, the dispersal of all species is the same and is stochastic, following a weibull distribution with shape 1.5 and scale 133. For different dispersal between species, the dispersal trait should be used. Note that dispersal can be made deterministic by making the function return a fix value. 
 
 >```{r eval=FALSE}
 get_dispersal_values <- function(n, species, landscape, config) {
-  values <- rweibull(n, shape = 6, scale = 999)
-  return(values) }
+  values <- rweibull(n, shape = 1.5, scale = 133)
+  return(values) 
+}
 ```
 
 The histogram of 100 draws from the dispersal function used above.
 
->```{r eval=FALSE, fig.width=6, fig.height=3.2}
+>```{r eval=T, fig.width=6, fig.height=3.2}
 n <- 100
 hist(rweibull(n, shape = 6, scale = 999), col="black")
 ```
 
 ### ***Speciation***
-The speciation iterates over every species separately, registers populations’ geographic occupancy (species range), and determines when geographic isolation between population clusters is higher than a user-defined threshold, triggering a lineage splitting event of cladogenesis. The clustering of occupied sites is based on the species’ dispersal capacity and the landscape connection costs. Over time, disconnected clusters gradually accumulate incompatibility, analogous to genetic differentiation. When the divergence between clusters is above the speciation threshold, those clusters become two or more distinct species, and a divergence matrix reset follows. On the other hand, if geographic clusters come into secondary contact before the speciation occurs, they coalesce and incompatibilities are gradually reduced to zero. In our example, speciation takes place after 12 time-steps of isolation and the divergence increase is the same for all species as indicated by *get_divergence_threshold*.
+The speciation iterates over every species separately, registers populations’ geographic occupancy (species range), and determines when geographic isolation between population clusters is higher than a user-defined threshold, triggering a lineage splitting event of cladogenesis. The clustering of occupied sites is based on the species’ dispersal capacity and the landscape connection costs. Over time, disconnected clusters gradually accumulate incompatibility, analogous to genetic differentiation. When the divergence between clusters is above the speciation threshold, those clusters become two or more distinct species, and a divergence matrix reset follows. On the other hand, if geographic clusters come into secondary contact before the speciation occurs, they coalesce and incompatibilities are gradually reduced to zero. In our example, speciation takes place after 2 time-steps of isolation and the divergence increase is the same for all species as indicated by *get_divergence_threshold*.
+
 >```{r eval=FALSE}
-divergence_threshold = 12 #this is 2Myrs
+divergence_threshold = 2 #this is 2Myrs
 get_divergence_factor <- function(species, cluster_indices, landscape, config) {
-  return(1) }
+  return(1) 
+  }
 ```
 
 ### ***Evolution***
@@ -308,15 +317,32 @@ apply_ecology <- function(abundance, traits, landscape, config) {
 
 ## 3. Modify a config {#modify}
 
-A configuration object can be modified by editing a file or the config object in R. Here we will load the *config_southamerica.R* as an R object and modify it's random seed.
+A configuration object can be modified by editing a file or the config object in R. Here we will load the *config_southamerica.R* as an R object and modify the initialization of species. Instead of having multiple species that occupy one cell each, we will now initialize one species that occurs in all habitable cells.
 
 ```{r eval=T}
 # get data path
 datapath <- system.file(file.path("extdata", "SouthAmerica"), package="gen3sis")
 # creates config object from config file
 config_object <- create_input_config(file.path(datapath, "config/config_southamerica.R"))
-# modify random seed
-config_object$gen3sis$general$random_seed <- 2020
+
+# modify the initialization function
+config_object$gen3sis$initialization$create_ancestor_species <- function(landscape, config) {
+  range <- c(-95, -24, -68, 13)
+  co <- landscape$coordinates
+  selection <- co[, "x"] >= range[1] &
+    co[, "x"] <= range[2] &
+    co[, "y"] >= range[3] &
+    co[, "y"] <= range[4]
+
+  initial_cells <- rownames(co)[selection]
+  new_species <- create_species(initial_cells, config)
+  #set local adaptation to max optimal temp equals local temp
+  new_species$traits[ , "temp"] <- landscape$environment[initial_cells,"temp"]
+  new_species$traits[ , "dispersal"] <- 1
+  plot_species_presence(landscape, species=new_species)
+
+  return(list(new_species))
+}
 ```
 
 Like so, functions and parameters can be conveniently changed and simulated in gen3sis. Remember that *run_simulation* works either with a path to a config file or config object, so we can run the old and the new modified config.
@@ -327,15 +353,16 @@ Before using a new config, you can test if it is a valid one. If the function *v
 verify_config(config_object)
 ```
 
-```{r eval=T}
+```{r eval=F}
 # run simulation by indicating config file path
 sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica.R"), 
                landscape = file.path(datapath, "landscape"),
-               output_directory=tempdir())
+               output_directory=file.path(datapath, "output"))
+               #output_directory=tempdir())
 
 # run simulation by indicating config object
 sim_new <- run_simulation(config = config_object, 
                landscape = file.path(datapath, "landscape"),
-               output_directory=tempdir())
+               output_directory=file.path(datapath, "output2"))
 
 ```

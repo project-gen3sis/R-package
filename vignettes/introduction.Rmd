@@ -62,14 +62,14 @@ print(paste("gen3sis version:", packageVersion("gen3sis")))
 
 
 
-All *gen3sis* simulations need a **landscape** object which define the abiotic environment over which the simulation will take place and a **configuration** object which defines the mechanisms of speciation, dispersal, trait evolution and ecological interactions. Here we will use a published example[^1]. We cropped at the Earth center, with a time spam between 150Ma and 100Ma and aggregated to a 4&deg; resolution to make the simulations fast and the data small (252 KB). 
+All *gen3sis* simulations need a **landscape** object which define the abiotic environment over which the simulation will take place and a **configuration** object which defines the mechanisms of speciation, dispersal, trait evolution and ecological interactions. Here we will use a published example[^1]. We will consider the continent of South America with a time span from 65Ma to 0Ma and a spatial resolution of 1&deg;.
 
 All the data we will use here (i.e. the **landscape** and the **configuration** object) is available with the package. So you can just get the path to the data inside the package to work on here. If you want more information about these input data, please check the associated metadata. For the landscape input this is a METADATA.txt file in the same folder, and for the config input it is stored as a comment in the beginning of the config R script.
 
 To access this dataset, you first need to define the path to the data contained inside the package.
 
 ```{r eval=TRUE}
-datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
+datapath <- system.file(file.path("extdata", "SouthAmerica"), package="gen3sis")
 ```
 
 The full [landscape](https://github.com/project-Gen3sis) can be downloaded and stored locally for running the experiment. An experiment folder should look like this:
@@ -87,25 +87,25 @@ The full [landscape](https://github.com/project-Gen3sis) can be downloaded and s
 
 
 ### Landscape
-The **landscape** is the virtual environment in which the processes of speciation, dispersal, evolution and ecology take place (e.g. temperature and aridity data that might be spatially and temporally dynamic).Landscape objects used in *gen3sis* are generated based on temporal sequences of landscapes in the form of raster files, which are summarized in the form of two classes. 
+The **landscape** is the virtual environment in which the processes of speciation, dispersal, evolution and ecology take place (e.g. temperature and aridity data that might be spatially and temporally dynamic). Landscape objects used in *gen3sis* are generated based on temporal sequences of landscapes in the form of raster files, which are summarized in the form of two classes. 
 
-The first landscape class contains: (i) the geographic coordinates of the landscape site, (ii) the corresponding information on which sites are generally suitable for the organisms modeled (e.g. land or ocean), and (iii) the environmental conditions relevant for the species’ ecology (e.g. temperature and precipitation). The landscape may be simplified into a single geographic axis for theoretical experiments, or it may consider realistic configurations aimed at reproducing real local or global landscapes. 
+The first landscape class contains: (i) the geographic coordinates of the landscape site, (ii) the corresponding information on which sites are generally suitable for the organisms modeled (e.g. land or ocean), and (iii) the environmental conditions relevant for the species’ ecology (e.g. temperature and aridity). The landscape may be simplified into a single geographic axis for theoretical experiments, or it may consider realistic configurations aimed at reproducing real local or global landscapes. 
 
 The second landscape class defines the permeability of the landscape for species movement between sites via dispersal. Connection cost between sites is computed for each time step from the gridded landscape data based on harvesine geographic distances modified by a user-defined cost function and stored as sparse distance matrices. Distance matrices, containing the connection costs, are provided at every time step as either: (i) a pre-computed full distance matrix, containing all habitable sites in the landscape (faster simulations but more storage required); or (ii) a local distance matrix, computed from neighboring site distances up to a user-defined range limit (slower simulations but less storage required).
 
 
-**NOTE** the *gen3sis* landscape contains several files. The landscape.rds file contains the landscape changing over time with it's environmental variables. The distances folder stores the information on how the landscape is connected (connections costs) which will interact with the disperal hability of the modeled organisms. To see how to create a landscape object, refer to [**design_landscape vignette**](design_landscape.html) and [**create_input_landscape vignette**](create_input_landscape.html).
+**NOTE** the *gen3sis* landscape contains several files. The landscape.rds file contains the landscape changing over time with its environmental variables. The distances folder stores the information on how the landscape is connected (connections costs) which will interact with the disperal hability of the modeled organisms. To see how to create a landscape object, refer to [**design_landscape vignette**](design_landscape.html) and [**create_input_landscape vignette**](create_input_landscape.html).
 
 
-This is how the landscape we will use looks like at 150, 125 and 100Ma, below are the plots of temperature and aridity.
+This is how the landscape we will use looks like at 65, 30 and 0Ma, below are the plots of temperature and aridity.
 
 ```{r eval=T, fig.width=7, fig.height=3.2, message=F, echo=F, warning=T, results='hide'}
 library(raster)
 # read landscapes.rds
 landscapes <- readRDS(file.path(datapath, "landscape/landscapes.rds"))
 # create rasters for each timestep
-temp_300 <- rasterFromXYZ(landscapes$temp[, c(1,2,303)])
-temp_150 <- rasterFromXYZ(landscapes$temp[, c(1,2,153)])
+temp_65 <- rasterFromXYZ(landscapes$temp[, c(1,2,68)])
+temp_30 <- rasterFromXYZ(landscapes$temp[, c(1,2,33)])
 temp_0 <- rasterFromXYZ(landscapes$temp[, c(1,2,3)])   
 
 # TEMPERATURE
@@ -113,14 +113,14 @@ par(mar=c(1,2,3,1), oma=c(0,0,3,0))
 layout(matrix(c(1,1,1,4,
                 2,2,2,4,
                 3,3,3,4), ncol=3))
-maxtemp <- 30
-mintemp <- 0
+maxtemp <- 33
+mintemp <- -27
 temp_breaks <- seq(mintemp, maxtemp, by=1)
 temp_colors <- rev(heat.colors(length(temp_breaks)-1))
-image(temp_300, col=temp_colors, breaks=temp_breaks, main='150 Ma')
-image(temp_150, col=temp_colors, breaks=temp_breaks, main='125 Ma')
+image(temp_65, col=temp_colors, breaks=temp_breaks, main='65 Ma')
+image(temp_30, col=temp_colors, breaks=temp_breaks, main='30 Ma')
 title(main=expression('Temperature [\u00B0C]'), line=1, outer=T, cex.main=2)
-image(temp_0, col=temp_colors, breaks=temp_breaks, main='100 Ma')
+image(temp_0, col=temp_colors, breaks=temp_breaks, main='0 Ma')
 
 plot.new()
 legend_df <- as.data.frame(cbind(seq(0, length(temp_breaks)-1, length.out=(length(temp_breaks))), rep(0.25, (length(temp_breaks))), temp_breaks))
@@ -129,8 +129,8 @@ plot(legend_image, legend.only=T, col=temp_colors, horizontal=T, smallplot=c(0.2
    axis.args=list(at=seq(mintemp, maxtemp, 5),labels=seq(mintemp, maxtemp, 5)))
 
 # ARIDITY
-arid_300 <- rasterFromXYZ(landscapes$prec[, c(1,2,303)])
-arid_150 <- rasterFromXYZ(landscapes$prec[, c(1,2,153)])
+arid_300 <- rasterFromXYZ(landscapes$prec[, c(1,2,68)])
+arid_65 <- rasterFromXYZ(landscapes$prec[, c(1,2,33)])
 arid_0 <- rasterFromXYZ(landscapes$prec[, c(1,2,3)])   
 
 par(mar=c(1,2,3,1), oma=c(0,0,3,0))
@@ -141,10 +141,10 @@ maxarid <- 1
 minarid <- 0
 arid_breaks <- seq(minarid, maxarid, by=0.01)
 arid_colors <- colorRampPalette(blues9[-(1:2)])(length(arid_breaks)-1)
-image(arid_300, col=arid_colors, breaks=arid_breaks, main='150 Ma')
-image(arid_150, col=arid_colors, breaks=arid_breaks, main='125 Ma')
+image(arid_300, col=arid_colors, breaks=arid_breaks, main='65 Ma')
+image(arid_65, col=arid_colors, breaks=arid_breaks, main='30 Ma')
 title(main=expression('Aridity [index]'), line=1, outer=T, cex.main=2)
-image(arid_0, col=arid_colors, breaks=arid_breaks, main='100 Ma')
+image(arid_0, col=arid_colors, breaks=arid_breaks, main='0 Ma')
 
 plot.new()
 legend_df <- as.data.frame(cbind(seq(0, length(arid_breaks)-1, length.out=(length(arid_breaks))), rep(0.25, (length(arid_breaks))), arid_breaks))
@@ -153,8 +153,8 @@ plot(legend_image, legend.only=T, col=arid_colors, horizontal=T, smallplot=c(0.2
 axis.args=list(at=seq(minarid, maxarid, 0.2),labels=seq(minarid, maxarid, 0.2)))
 
 # # AREA
-# area_300 <- rasterFromXYZ(landscapes$area[, c(1,2,303)])
-# area_150 <- rasterFromXYZ(landscapes$area[, c(1,2,153)])
+# area_300 <- rasterFromXYZ(landscapes$area[, c(1,2,68)])
+# area_65 <- rasterFromXYZ(landscapes$area[, c(1,2,38)])
 # area_0 <- rasterFromXYZ(landscapes$area[, c(1,2,3)])   
 # 
 # par(mar=c(1,2,3,1), oma=c(0,0,3,0))
@@ -165,10 +165,10 @@ axis.args=list(at=seq(minarid, maxarid, 0.2),labels=seq(minarid, maxarid, 0.2)))
 # minarea <- 151000
 # area_breaks <- seq(minarea, maxarea, by=1000)
 # area_colors <- rev(gray(seq(0.05, 0.9, length.out=length(area_breaks)-1)))
-# image(area_300, col=area_colors, breaks=area_breaks, main='150 Ma')
-# image(area_150, col=area_colors, breaks=area_breaks, main='125 Ma')
+# image(area_300, col=area_colors, breaks=area_breaks, main='65 Ma')
+# image(area_65, col=area_colors, breaks=area_breaks, main='30 Ma')
 # title(main=expression('Area [' ~km^2~ ']'), line=1, outer=T, cex.main=2)
-# image(area_0, col=area_colors, breaks=area_breaks, main='100 Ma')
+# image(area_0, col=area_colors, breaks=area_breaks, main='0 Ma')
 #  
 # plot.new()
 # legend_df <- as.data.frame(cbind(seq(0, length(area_breaks)-1, length.out=(length(area_breaks))), rep(0.25, (length(area_breaks))), area_breaks))
@@ -181,16 +181,15 @@ axis.args=list(at=seq(minarid, maxarid, 0.2),labels=seq(minarid, maxarid, 0.2)))
 ### Configuration
 The **configuration** are the rules of our virtual planet, it is where we define all the ecological and evolutionary equations and parameters.
 
-The configuration object includes information on the model initialization, the observer function and the biological functions, namely speciation, dispersal, evolution, and ecology. The possibility of the user to customize these functions confers the flexibility and generality of *gen3sis*. The initialization function creates the ancestor species at the start of the simulation. Users can define the number of species, their distribution within the landscape and their trait values. The observer function allows recording any abiotic or biotic information of the virtual world as it changes by defining the outputs that are saved at specified time-steps. The configuration further allows to define the *speciation* function, the *dispersal* function, the *evolution* function and the *ecological* function, which are defined in the section on core processes below. Altogether, those six functions are specified in the configuration object and interact with a set of core objects defined in the simulation engine. The configuration object further lists the ecological traits considered in the simulation, sets a random seed allowing simulation reproducibility, start and end times of the simulation, as well as simulation aborting rules including the limits for a total or local number of species.
+The configuration object includes information on the model initialization, the observer function and the biological functions, namely speciation, dispersal, evolution, and ecology. The possibility of the user to customize these functions confers the flexibility and generality of *gen3sis*. The *initialization* function creates the ancestor species at the start of the simulation. Users can define the number of species, their distribution within the landscape and their trait values. The *observer* function allows recording any abiotic or biotic information of the virtual world as it changes by defining the outputs that are saved at specified time-steps. The configuration further allows to define the *speciation* function, the *dispersal* function, the *evolution* function and the *ecology* function, which are defined in the section on core processes below. Altogether, those six functions are specified in the configuration object and interact with a set of core objects defined in the simulation engine. The configuration object further lists the ecological traits considered in the simulation, sets a random seed allowing simulation reproducibility, start and end times of the simulation, as well as simulation aborting rules including the limits for a total or local number of species.
 
-In our example, we start our simulation with the first available time-step and end it a the latest available time-step at the landscape, i.e. 150 and 100Ma. We set one single ancestor species spread across the entire land available with initial optimum temperature equal to the local temperature of the site. The dispersal of all species is the same and stochastic, following a Weibull distribution with shape 6 and scale 999. Speciation takes place after 12 time-steps (2 Myr) of isolation. Clustered populations (exchanging genes) had their trait homogenized and weighted by abundance, meaning that a temperature optimum of populations that are doing well in a site will contribute more to the average trait of a cluster. Temperature optimum evolves based on a normal distribution with standard deviation 0.001, possibly increasing or decreasing species optimum temperature. Abundances in a site are based on how close the species population optimum temperature is to the site temperature. We scale the values to avoid small numbers and apply a carrying capacity based on aridity and temperature corrected by the area. If abundances are below 1, species are considered extinct, if total abundance in a site (sum of all species in a site) is above the carrying capacity, small abundances are removed progressively and randomly distributed across the present species until total abundance is smaller or equal to the carrying capacity. For more details regarding the configuration used here and how to modify it, please refer to [**create_config vignette**](create_config.html).
+In our example, we start our simulation with the 40$^{th}$ time-step and end it a the latest available time-step of the landscape, i.e. 40 and 0Ma. We set ten different ancestor species, each colonizing one random cell in the landscape, with initial optimum temperature equal to the local temperature of the site. The dispersal of all species is the same and stochastic, following a Weibull distribution with shape 1.5 and scale 133. Speciation takes place after every second time-step (2 Myr) of isolation. Clustered populations (exchanging genes) had their trait homogenized and weighted by abundance, meaning that a temperature optimum of populations that are doing well in a site will contribute more to the average trait of a cluster. Temperature optimum evolves based on a normal distribution with standard deviation 0.001, possibly increasing or decreasing species optimum temperature. Abundances in a site are based on how close the species population optimum temperature is to the site temperature. We scale the values to avoid small numbers and apply a carrying capacity based on aridity and temperature corrected by the area. If abundances are below 1, species are considered extinct, if total abundance in a site (sum of all species in a site) is above the carrying capacity, small abundances are removed progressively and randomly distributed across the present species until total abundance is smaller or equal to the carrying capacity. For more details regarding the configuration used here and how to modify it, please refer to [**create_config vignette**](create_config.html).
 
 
 [^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
 
 
 ## 2. Run {#run}
-
 
 
 Now that we have set up the general folder structure and loaded the input data and configuration file, we can run a simulation using the *run_simulation* function. This function will:
@@ -201,16 +200,16 @@ Now that we have set up the general folder structure and loaded the input data a
 
 3) At the end of every time-step, if desired, the simulation saves the species, landscapes, species richness patterns, etc... by calling the *end_of_timestep_observer* from the user config. In this function the user can implement customized observer functions, for example calculating summary statistics or creating species patterns plots.
 
-4) When the simulation reaches the end, a phylogeny, runtime_information, the world starting conditions and the used config are saved at the output folder, which is not specified is deduced from the landscape location. The function will return a summary object. In this vignette we will save it as *sim*.
+4) When the simulation reaches the end, a phylogeny, runtime_information, the world starting conditions and the used config are saved at the output folder. If the output folder is not specified, it is deduced from the location of the landscape object. The function will return a summary object. In this vignette we will save it as *sim*.
 
-Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plottings. Moreover, all functions are accessible  to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analyzed. 
+Additionally to the main functions, the package provides several convenience functions to generate input data, configuration files, and plots. Moreover, all functions are accessible to the observer functions, which requests the variables for calculation during the model runs. This allows to transform the output of the simulation model into a format that can be readily analyzed. 
 
 
-To launch a simulation you need to call the *run_simulation* function. We only store one intermediate step between the starting and end time-steps by setting "call_observer=1", this means one time-step equally distributed between the starting and ending time-steps. Like so we will have a look at our virtual world at 150, 125 and 100 Ma. 
+To launch a simulation you need to call the *run_simulation* function. We only store one intermediate step between the starting and end time-steps by setting "call_observer=1", this means one time-step equally distributed between the starting and ending time-steps. By doing so, we will have a look at our virtual world at 40, 20 and 0 Ma. 
 
 ```{r eval=FALSE, echo=TRUE}
 #we set verbose to 0 to avoid a large console outputs of how the simulation is developing
-sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
+sim <- run_simulation(config = file.path(datapath, "config/config_southamerica.R"), 
                landscape = file.path(datapath, "landscape"),
                output_directory = tempdir(),
                call_observer = 1,
@@ -219,7 +218,7 @@ sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"
 
 
 ```{r eval=T, echo=F}
-sim <- readRDS(file.path(datapath, "output/config_worldcenter/sgen3sis.rds"))
+sim <- readRDS(file.path(datapath, "output/config_southamerica/sgen3sis.rds"))
 ```
 
 After the simulation is finished, a plot is created inside the WorldCenter folder to show the state of the initial world. They are automatically stored in a sub folder called **output** inside our WorldCenter folder and inside another folder named after our configuration file (i.e. config). It should look like this:
@@ -232,14 +231,14 @@ After the simulation is finished, a plot is created inside the WorldCenter folde
 
 ## 3. Visualize {#visualize}
 
-After having run the simulation, we can load and plot the species richness at different time-steps. Here, we will load them at the time-steps 300, 150 and 0. Since we have six time-steps within this time frame, this corresponds to 150, 125 and 100 Ma, respectively.
+After having run the simulation, we can load and plot the species richness at different time-steps. Here, we will load them at the time-steps 40, 20 and 0. Since we have six time-steps within this time frame, this corresponds to 40, 20 and 0 Ma, respectively.
 
 ```{r eval=T, echo=T, fig.width=7, fig.height=2}
-timesteps <- c(300, 150, 0)
+timesteps <- c(40, 20, 0)
 par(mfrow=c(1,3))
 for(i in timesteps){
-  landscape_i <- readRDS(file.path(datapath, paste0('output/config_worldcenter/landscapes/landscape_t_', i ,'.rds')))
-  species_i <- readRDS(file.path(datapath, paste0('output/config_worldcenter/species/species_t_', i ,'.rds')))
+  landscape_i <- readRDS(file.path(datapath, paste0('output/config_southamerica/landscapes/landscape_t_', i ,'.rds')))
+  species_i <- readRDS(file.path(datapath, paste0('output/config_southamerica/species/species_t_', i ,'.rds')))
   plot_richness(species_i, landscape_i)
 }
 ```
@@ -261,7 +260,7 @@ There are a few visualization tools already included in the package, but you are
 
 ## 4. Analyze {#analyze}
 
-Now that we have run the simulation, we are ready to perform some analysis to investigate model behavior. Because we set a limit to the total abundances lower in colder and in more arid environments, we expect that the number of species that can co-exist also decreases in those environments.
+Now that we have run the simulation, we are ready to perform some analysis to investigate the model behavior. Because we set a limit to the total abundances lower in colder and in more arid environments, we expect that the number of species that can co-exist also decreases in those environments.
 We will perform a few statistical analyses to investigate those patterns based on the species richness pattern that emerged at the end of the simulation. To do so, we first load the landscape and combine it with the simulated species richness.
 
 ```{r eval=TRUE, fig.width=8, fig.height=5, fig.retina=2}
