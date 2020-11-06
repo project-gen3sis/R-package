@@ -3,19 +3,19 @@ Version:
 1.0
 
 Author:
-
+Oskar Hagen
 
 Date: 
 30.08.2020
 
 Spatial extent: 
-   (e.g.: Theoretical Island 4-81 sites; Global; America; Japan; World latitude [-40;40] longitude [-80;80])
+South America
 
 Spatial resolution: 
    (e.g.: none; 4 degrees)
 
 Temporal extent: 
-   (e.g.: 140-0Ma; 40Ma-40fMyr)
+   (e.g.: 140-0Ma; 1myrs per )
 
 Temporal resolution: 
    (e.g. 1 time-step = 1Myr; 1 time-step = 1Myr/6 ~ 170000kyrs)
