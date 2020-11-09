@@ -186,6 +186,7 @@ plot_richness <- function(species_list, landscape) {
 #' @example inst/examples/plot_ranges_help.R
 #' @export
 plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
+  disturb=abs(disturb)
   max_sps <- abs(max_sps)
   #plot landscape
   par(xpd = FALSE)
@@ -214,12 +215,12 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   for (sp_i in 1:n_species){
     img <- cbind(landscape[["coordinates"]], species_list[[sp_i]]$id)
     df <- as.data.frame(img)
-    plot_diturbance <- sample(seq(0, disturb, by=0.01), 1)
+    plot_diturbance <- sample(seq(-disturb, disturb, by=0.01), 1)
     points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
   }
-  # plotted sp
+  # legend plotted species
 
-  legend("topright", inset=c(-0.2,0), title=paste(n_species, "species", paste0("\n[", omitted, ' omitted]')), legend=1:n_species, pch=pchs, col=cols, bty="n")
+  legend("topright", inset=c(-0.15,0), title=paste(n_species, "species", paste0("\n[", omitted, ' omitted]')), legend=1:n_species, pch=pchs, col=cols, bty="n")
 }
 
 
