@@ -177,7 +177,6 @@ plot_richness <- function(species_list, landscape) {
 
 
 
-#### WIP #####
 #' Plot species ranges of the given list of species on a landscape
 #'
 #' @param species_list a list of species to use in the richness calculation
@@ -187,13 +186,19 @@ plot_richness <- function(species_list, landscape) {
 #' @example inst/examples/plot_ranges_help.R
 #' @export
 plot_ranges <- function(species_list, landscape, distrurbance=0, max_sps=10) {
-  max_sp_plot <- abs(max_sp_plot)
+  max_sps <- abs(max_sps)
   #plot landscape
   par(xpd = FALSE)
   plot_raster_single(1, landscape, "species ranges", col="navajowhite3", legend=FALSE)
   n_species <- length(species_list)
   #visual combinations
-  sp_cols <- rainbow(20) #FIX
+  sp_cols <- c("#FF0000", "#FF4D00", "#FFE500", 
+               "#CCFF00", "#80FF00", "#33FF00", 
+               "#00FF19", "#00FF66", "#00FFB2", 
+               "#00FFFF", "#00B3FF", "#0066FF", 
+               "#001AFF", "#3300FF", "#7F00FF", 
+               "#CC00FF", "#FF00E6", "#FF0099", 
+               "#FF004D") #FIX
   sp_pchs <- 1:6 #FIX
   
   #limit plot
@@ -216,7 +221,7 @@ plot_ranges <- function(species_list, landscape, distrurbance=0, max_sps=10) {
 
   legend("topright", inset=c(-0.2,0), title=paste(n_species, "species", paste0("\n[", omitted, ' omitted]')), legend=1:n_species, pch=pchs, col=cols, bty="n")
 }
-##### END WIP ########
+
 
 #' Save plots if called from within a simulation run, display as well if run interactively
 #'
@@ -250,7 +255,8 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
 #' @param landscape a landscape to plot the values onto
 #' @param title a title string for resulting plot, the time information will be taken and appended from the landscape id
 #' @param no_data what value should be used for missing values in values
-#' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors handled by raster::plot  
+#' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
+#' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
 #' @example inst/examples/plot_raster_single_help.R
 #' @export
 plot_raster_single <- function(values, landscape, title, no_data = 0, col, legend=TRUE) {
