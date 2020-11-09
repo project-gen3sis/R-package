@@ -176,6 +176,48 @@ plot_richness <- function(species_list, landscape) {
 }
 
 
+
+#### WIP #####
+#' Plot species ranges of the given list of species on a landscape
+#'
+#' @param species_list a list of species to use in the richness calculation
+#' @param landscape a corresponding landscape object
+#' @param distrurbance value randomly added to shift each species symbol. Useful to enhance visualization in case of multiple species overlaps  
+#' @param max_sps maximum number of plotted species, not recommended above 20
+#' @example inst/examples/plot_ranges_help.R
+#' @export
+plot_ranges <- function(species_list, landscape, distrurbance=0, max_sps=10) {
+  max_sp_plot <- abs(max_sp_plot)
+  #plot landscape
+  par(xpd = FALSE)
+  plot_raster_single(1, landscape, "species ranges", col="navajowhite3", legend=FALSE)
+  n_species <- length(species_list)
+  #visual combinations
+  sp_cols <- rainbow(20) #FIX
+  sp_pchs <- 1:6 #FIX
+  
+  #limit plot
+  omitted <- 0
+  if (n_species>max_sps){
+    omitted <- n_species-max_sps
+    n_species <- max_sps
+  }
+  # set to case
+  cols <- rep(sp_cols, length.out=n_species)
+  pchs <- rep(sp_pchs, length.out=n_species)
+  par(xpd = TRUE)
+  for (sp_i in 1:n_species){
+    img <- cbind(landscape[["coordinates"]], species_list[[sp_i]]$id)
+    df <- as.data.frame(img)
+    plot_diturbance <- rnorm(1, sd=distrurbance)
+    points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i], alpha=0.5)
+  }
+  # plotted sp
+
+  legend("topright", inset=c(-0.2,0), title=paste(n_species, "species", paste0("\n[", omitted, ' omitted]')), legend=1:n_species, pch=pchs, col=cols, bty="n")
+}
+##### END WIP ########
+
 #' Save plots if called from within a simulation run, display as well if run interactively
 #'
 #' @param title folder and file name
@@ -211,12 +253,12 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
 #' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors handled by raster::plot  
 #' @example inst/examples/plot_raster_single_help.R
 #' @export
-plot_raster_single <- function(values, landscape, title, no_data = 0, col) {
+plot_raster_single <- function(values, landscape, title, no_data = 0, col, legend=TRUE) {
   img <- cbind(landscape[["coordinates"]], no_data)
   img[names(values), 3] <- values
   ras <- rasterFromXYZ(img)
   ras <- extend(ras, landscape[["extent"]])
-  raster::plot(ras, main=paste0(title, ", t: ", landscape[["id"]]), col=col)
+  raster::plot(ras, main=paste0(title, ", t: ", landscape[["id"]]), col=col, legend=legend)
 }
 
 
