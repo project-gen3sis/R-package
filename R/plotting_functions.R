@@ -181,11 +181,11 @@ plot_richness <- function(species_list, landscape) {
 #'
 #' @param species_list a list of species to use in the richness calculation
 #' @param landscape a corresponding landscape object
-#' @param distrurbance value randomly added to shift each species symbol. Useful to enhance visualization in case of multiple species overlaps  
+#' @param disturb value randomly added to shift each species symbol. Useful to enhance visualization in case of multiple species overlaps  
 #' @param max_sps maximum number of plotted species, not recommended above 20
 #' @example inst/examples/plot_ranges_help.R
 #' @export
-plot_ranges <- function(species_list, landscape, distrurbance=0, max_sps=10) {
+plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   max_sps <- abs(max_sps)
   #plot landscape
   par(xpd = FALSE)
@@ -214,7 +214,7 @@ plot_ranges <- function(species_list, landscape, distrurbance=0, max_sps=10) {
   for (sp_i in 1:n_species){
     img <- cbind(landscape[["coordinates"]], species_list[[sp_i]]$id)
     df <- as.data.frame(img)
-    plot_diturbance <- sample(seq(0, 1, by=0.01), 1)
+    plot_diturbance <- sample(seq(0, disturb, by=0.01), 1)
     points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
   }
   # plotted sp
