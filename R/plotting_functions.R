@@ -221,12 +221,16 @@ plot_richness <- function(species_list, landscape) {
 #' @example inst/examples/plot_ranges_help.R
 #' @export
 plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
+
+  browser()
   disturb=abs(disturb)
   max_sps <- abs(max_sps)
   #plot landscape
   par(xpd = FALSE)
   plot_raster_single(1, landscape, "species ranges", col="navajowhite3", legend=FALSE)
   n_species <- length(species_list)
+  alive <- unlist(lapply(species_list, function(x){length(x$abundance)}))
+  alive <- alive>0
   #visual combinations
   sp_cols <- c("#FF0000", "#FF4D00", "#FFE500", 
                "#CCFF00", "#80FF00", "#33FF00", 
@@ -239,24 +243,23 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   
   #limit plot
   omitted <- 0
-  if (n_species>max_sps){
-    omitted <- n_species-max_sps
-    n_species <- max_sps
+  n_sps_max <- sum(alive)
+  if (n_sps_max>max_sps){
+    omitted <- n_sps_max-max_sps
+    n_sps_max <- max_sps
   }
   # set to case
-  cols <- rep(sp_cols, length.out=n_species)
-  pchs <- rep(sp_pchs, length.out=n_species)
+  cols <- rep(sp_cols, length.out=n_sps_max)
+  pchs <- rep(sp_pchs, length.out=n_sps_max)
   par(xpd = TRUE)
-  for (sp_i in 1:n_species){
-    
+  for (sp_i in (1:n_species)[alive][1:n_sps_max]){
     img <- cbind(landscape[["coordinates"]][names(species_list[[sp_i]]$abundance),,drop=FALSE], species_list[[sp_i]]$id)
     df <- as.data.frame(img)
     plot_diturbance <- sample(seq(-disturb, disturb, by=0.01), 1)
     points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
   }
   # legend plotted species
-
-  legend("topright", inset=c(-0.15,0), title=paste(n_species, "species", paste0("\n[", omitted, ' omitted]')), legend=1:n_species, pch=pchs, col=cols, bty="n")
+  legend("topright", inset=c(-0.15,0), title=paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]')), legend=(1:n_sps_max)[alive], pch=pchs[alive], col=cols[alive], bty="n")
 }
 
 
