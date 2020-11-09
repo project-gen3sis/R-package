@@ -40,7 +40,7 @@ landscape_t_150 <- readRDS(file.path(datapath,
                                      "output/config_worldcenter/landscapes/landscape_t_150.rds"))
 
 # plot ranges at intermediate time-step
-plot_ranges(species_t_150, landscape_t_150, disturb = 1, max_sps = 4)
+plot_ranges(species_t_150, landscape_t_150, disturb = 2, max_sps = 5)
 
 
 
