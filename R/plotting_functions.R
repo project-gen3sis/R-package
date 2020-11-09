@@ -221,8 +221,6 @@ plot_richness <- function(species_list, landscape) {
 #' @example inst/examples/plot_ranges_help.R
 #' @export
 plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
-
-  browser()
   disturb=abs(disturb)
   max_sps <- abs(max_sps)
   #plot landscape
@@ -249,17 +247,17 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
     n_sps_max <- max_sps
   }
   # set to case
-  cols <- rep(sp_cols, length.out=n_sps_max)
-  pchs <- rep(sp_pchs, length.out=n_sps_max)
+  cols <- rep(sp_cols, length.out=n_species)
+  pchs <- rep(sp_pchs, length.out=n_species)
   par(xpd = TRUE)
   for (sp_i in (1:n_species)[alive][1:n_sps_max]){
     img <- cbind(landscape[["coordinates"]][names(species_list[[sp_i]]$abundance),,drop=FALSE], species_list[[sp_i]]$id)
     df <- as.data.frame(img)
     plot_diturbance <- sample(seq(-disturb, disturb, by=0.01), 1)
-    points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
+    points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max])
   }
   # legend plotted species
-  legend("topright", inset=c(-0.15,0), title=paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]')), legend=(1:n_sps_max)[alive], pch=pchs[alive], col=cols[alive], bty="n")
+  legend("topright", inset=c(-0.15,0), title=paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]')), legend=(1:n_species)[alive][1:n_sps_max], pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max], bty="n")
 }
 
 
