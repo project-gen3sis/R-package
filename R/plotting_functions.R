@@ -120,7 +120,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
       paste("speciation", 
             paste0(round((col_sum["speciations"]-phylo["initial", "total"])/phylo["0", "total"]*100, 0),"%"), sep=": "),
       paste("extinction", 
-            paste0(round((col_sum["extinctions"]-phylo["initial", "total"])/phylo["0", "total"]*100, 0),"%"), sep=": "),
+            paste0(round((col_sum["extinctions"])/phylo["0", "total"]*100, 0),"%"), sep=": "),
       paste(names(output$system)[1], 
             round(output$system$`runtime-hours`,2), sep=": "),
       sep="\n")
@@ -152,8 +152,24 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   mtext(side=1, text="Time steps", line=2.5, cex=1.1)
   
   # richness map
+  #attribute collor
   ras <- rasterFromXYZ(output$summary$`richness-final`)
-  rc <- color_richness(max(ras@data@values, na.rm=TRUE) + 1)
+  max_ras <- max(ras@data@values, na.rm=TRUE)
+  min_ras <- min(ras@data@values, na.rm=TRUE)
+  # rc <- color_richness(max(ras@data@values, na.rm=TRUE) + 1)
+  #terrain color
+  zerorichness_col <- "navajowhite3"
+  if (max_ras==0){ #if all extinct
+    rc <-  zerorichness_col
+  } else {
+    rc <- color_richness(max_ras)
+    if (min_ras==0){ #if there is zero-richness (i.e. inhabited sites)
+      rc <- c(zerorichness_col, rc)
+    }
+  }
+  
+  
+  
   image(ras, col=rc, bty = "o", xlab = "", ylab = "", las=1)
   mtext(4, text="Final \u03B1 richness", line=1, cex=1.2)
   raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=TRUE, add=TRUE,col=rc)
