@@ -233,7 +233,7 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   par(xpd = TRUE)
   for (sp_i in 1:n_species){
     
-    img <- cbind(landscape[["coordinates"]][names(species_list[[sp_i]]$abundance),], species_list[[sp_i]]$id)
+    img <- cbind(landscape[["coordinates"]][names(species_list[[sp_i]]$abundance),,drop=FALSE], species_list[[sp_i]]$id)
     df <- as.data.frame(img)
     plot_diturbance <- sample(seq(-disturb, disturb, by=0.01), 1)
     points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
