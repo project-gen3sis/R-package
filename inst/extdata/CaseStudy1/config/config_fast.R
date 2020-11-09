@@ -133,7 +133,6 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 # mutate the traits of a species and return the new traits matrix
 apply_evolution <- function(species, cluster_indices, landscape, config) {
   traits <- species[["traits"]]
-  # browser()
 ####  HERE CHANGES BETWEEN CONFIGS #####
   traits[, "temp"] <- traits[, "temp"] + rnorm(length(traits[, "temp"]), mean = 0, sd = 0.5) # sd value: control = 0.5; less phylo constraint=0.7; higher phylo constraint=0.3 
   traits[, "prec"] <- traits[, "prec"] + rnorm(length(traits[, "prec"]), mean = 0, sd = 50)  # sd value: control = 50; less phylo constraint=70; higher phylo constraint=30
