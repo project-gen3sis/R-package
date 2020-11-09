@@ -4,14 +4,14 @@
 \alias{plot_ranges}
 \title{Plot species ranges of the given list of species on a landscape}
 \usage{
-plot_ranges(species_list, landscape, distrurbance = 0, max_sps = 10)
+plot_ranges(species_list, landscape, disturb = 0, max_sps = 10)
 }
 \arguments{
 \item{species_list}{a list of species to use in the richness calculation}
 
 \item{landscape}{a corresponding landscape object}
 
-\item{distrurbance}{value randomly added to shift each species symbol. Useful to enhance visualization in case of multiple species overlaps}
+\item{disturb}{value randomly added to shift each species symbol. Useful to enhance visualization in case of multiple species overlaps}
 
 \item{max_sps}{maximum number of plotted species, not recommended above 20}
 }
@@ -40,7 +40,7 @@ landscape_t_150 <- readRDS(file.path(datapath,
                                      "output/config_worldcenter/landscapes/landscape_t_150.rds"))
 
 # plot ranges at intermediate time-step
-plot_ranges(species_t_150, landscape_t_150, distrurbance = 1.5, max_sps = 9)
+plot_ranges(species_t_150, landscape_t_150, disturb = 1, max_sps = 4)
 
 
 
