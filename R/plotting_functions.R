@@ -210,7 +210,7 @@ plot_ranges <- function(species_list, landscape, distrurbance=0, max_sps=10) {
     img <- cbind(landscape[["coordinates"]], species_list[[sp_i]]$id)
     df <- as.data.frame(img)
     plot_diturbance <- rnorm(1, sd=distrurbance)
-    points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i], alpha=0.5)
+    points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
   }
   # plotted sp
 
