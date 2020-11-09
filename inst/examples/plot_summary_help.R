@@ -4,6 +4,8 @@ output <- readRDS(file.path(datapath, "output/config_worldcenter/sgen3sis.rds"))
 # plot output summary
 plot_summary(output)
 
+plot_summary(output, summary_title="Example")
+
 \donttest{
 ## run simulation and plot summary
 # get path or correct input objects

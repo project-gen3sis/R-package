@@ -90,26 +90,45 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   #summary title
   if (is.null(summary_title)){
     summary_title <- str_split(output$parameters$directories$input, "/")[[1]]
-    summary_title <- paste(summary_title, collapse = ">")
-    summary_title <- str_remove(summary_title, "..>")
-    summary_title <- str_remove(summary_title, ".>")
-    summary_title <- str_remove(summary_title, ".")
-    summary_title <- paste0("[",summary_title,"]")
+    summary_title <- paste(tail(summary_title,2)[1], collapse = ">")
+    #summary_title <- str_remove(summary_title, "..>")
+    #summary_title <- str_remove(summary_title, ".>")
+    #summary_title <- str_remove(summary_title, ".")
   }
   #summary text
   if (is.null(summary_legend)){
+    sum_names <- names(output$parameters$gen3sis$general)
+    sumss <- output$parameters$gen3sis$general
+    sumar <- output$summary
+    phylo <- sumar$phylo_summary[c(1,nrow(sumar$phylo_summary)),]
+    col_sum <- colSums(sumar$phylo_summary)
     summary_legend=paste(
-      paste(names(output$parameters$gen3sis$general[2]), output$parameters$gen3sis$general[2], sep=": "),
-      paste(names(output$parameters$gen3sis$general[3]), output$parameters$gen3sis$general[3], sep=": "),
-      paste(names(output$system)[1], round(output$system$`runtime-hours`,3), sep=": "),
-      paste("world_habited_present", paste0(round(output$summary$occupancy[length(output$summary$occupancy)],1)*100,"%"), sep=": "),
-      paste("cumulative_richness", output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"], sep=": "),
-      paste("extinction", paste0(round(((output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"]-output$summary$phylo_summary[nrow(output$summary$phylo_summary),"alive"])/output$summary$phylo_summary[nrow(output$summary$phylo_summary),"total"])*100,0),"%"), sep=": "),
+      paste(sum_names[2], 
+            sumss[2], sep=": "),
+      paste(sum_names[3], 
+            sumss[3], sep=": "),
+      paste("traits", 
+            paste0(sumss[7][[1]], collapse = ","), sep=": "),
+      paste("world_habited_present", 
+            paste0(round(sumar$occupancy[length(sumar$occupancy)],1)*100,"%"), sep=": "),
+      paste("initial_richness", 
+            phylo[1,"total"], sep=": "),
+      paste("cumulative_richness", 
+            phylo[2,"total"], sep=": "),
+      paste("richness_present", 
+            phylo[2,"alive"], sep=": "),
+      paste("speciation", 
+            paste0(round((col_sum["speciations"]-phylo["initial", "total"])/phylo["0", "total"]*100, 0),"%"), sep=": "),
+      paste("extinction", 
+            paste0(round((col_sum["extinctions"]-phylo["initial", "total"])/phylo["0", "total"]*100, 0),"%"), sep=": "),
+      paste(names(output$system)[1], 
+            round(output$system$`runtime-hours`,2), sep=": "),
       sep="\n")
   }
   #plot summary legend
   par(xpd=TRUE)
-  legend("topleft", inset=c(-0.3,-0.3), title=summary_title, legend=summary_legend, bty="n")
+  
+  legend("topleft", inset=c(-0.2,-0.3), title=paste0("Summary [",summary_title,"]"), legend=summary_legend, bty="n", title.adj=0)
 
   #plot time behavior
   d <- output$summary$phylo_summary[-1,-1]
