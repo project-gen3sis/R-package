@@ -3,61 +3,37 @@ Version:
 1.0
 
 Author:
-Oskar Hagen
+
 
 Date: 
 30.08.2020
 
 Spatial extent: 
-South America
+   (e.g.: Theoretical Island 4-81 sites; Global; America; Japan; World latitude [-40;40] longitude [-80;80])
 
 Spatial resolution: 
-1 degree
+   (e.g.: none; 4 degrees)
 
 Temporal extent: 
-65-0Ma
+   (e.g.: 140-0Ma; 40Ma-40fMyr)
 
 Temporal resolution: 
-1 time-step = 1Myr
+   (e.g. 1 time-step = 1Myr; 1 time-step = 1Myr/6 ~ 170000kyrs)
 
 Environmental variables: 
-temp=Temperature (degrees Celcius) 
-prec=Aridity (index)
-area=Area (Km2)
+   (e.g.: - Temperature (degrees Celcius) 
+          - Precipitation (mm/year) )
 
 Cost function: 
-- 1 land
-- 2 to water
+   (e.g.:  1 to all sites 
+           or:
+           - 1 land
+           - 2 to water )
 
-Source Data:
-
-reference elevation:
--Straume E.O., Gaina C., Medvedev S., Nisancioglu K.H. 2020. Global cenozoic paleobathymetry with a focus on the northern hemisphere oceanic gateways. Gondwana Research 86:126-143, doi:10.1016/j.gr.2020.05.011.
-
-reference temperatures:
--Hodell D.A., Holbourn A.E., Kroon D., Lauretano V., Littler K., Lourens L.J., Lyle M., Pälike H., Röhl U., Tian J., Wilkens R.H., Wilson P.A., Zachos J.C. 2020. An astronomically dated record of earth’s climate and its predictability over the last 66 million years. Science 369:1383-1387, doi:10.1126/science.aba6853. 
-
-reference present temperature:
--Fick SE., Hijmans RJ. WorldClim 2: new 1-km spatial resolution climate surfaces for global land areas. International Journal of Climatology. 2017;37(12):4302-15. PubMed PMID: WOS:000412095400006.
-
-reference koppen bands:
--Hagen O., Vaterlaus L., Albouy C., Brown A., Leugger F., Onstein R.E., Santana C.N., Scotese C.R., Pellissier L. 2019. Mountain building, climate cooling and the richness of cold‐adapted plants in the northern hemisphere. J. Biogeogr., doi:10.1111/jbi.13653.
-
-reference lgm maps:
--Annan J.D., Hargreaves J.C. 2012. A new global reconstruction of temperature changes at the last glacial maximum. Climate of the Past 9:367-376, doi:10.5194/cp-9-367-2013.
-
-reference paleo LTG:
--Cramwinckel M.J., Huber M., Kocken I.J., Agnini C., Bijl P.K., Bohaty S.M., Frieling J., Goldner A., Hilgen F.J., Kip E.L., Peterse F., van der Ploeg R., Rohl U., Schouten S., Sluijs A. 2018. Synchronous tropical and polar temperature evolution in the eocene. Nature 559:382-386, doi:10.1038/s41586-018-0272-2.
--Evans D., Sagoo N., Renema W., Cotton L.J., Muller W., Todd J.A., Saraswati P.K., Stassen P., Ziegler M., Pearson P.N., Valdes P.J., Affek H.P. 2018. Eocene greenhouse climate revealed by coupled clumped isotope-mg/ca thermometry. Proc Natl Acad Sci U S A 115:1174-1179, doi:10.1073/pnas.1714744115.
--Hollis C.J., Dunkley Jones T., Anagnostou E., Bijl P.K., Cramwinckel M.J., Cui Y., Dickens G.R., Edgar K.M., Eley Y., Evans D., Foster G.L., Frieling J., Inglis G.N., Kennedy E.M., Kozdon R., Lauretano V., Lear C.H., Littler K., Lourens L., Meckler A.N., Naafs B.D.A., Pälike H., Pancost R.D., Pearson P.N., -Röhl U., Royer D.L., Salzmann U., Schubert B.A., Seebeck H., Sluijs A., Speijer R.P., Stassen P., Tierney J., Tripati A., Wade B., Westerhold T., Witkowski C., Zachos J.C., Zhang Y.G., Huber M., Lunt D.J. 2019. The deepmip contribution to pmip4: Methodologies for selection, compilation and analysis of latest paleocene and early eocene climate proxy data, incorporating version 0.1 of the deepmip database. Geoscientific Model Development 12:3149-3206, doi:10.5194/gmd-12-3149-2019.
--Hutchinson D.K., de Boer A.M., Coxall H.K., Caballero R., Nilsson J., Baatsen M. 2018. Climate sensitivity and meridional overturning circulation in the late eocene using gfdl cm2.1. Climate of the Past 14:789-810, doi:10.5194/cp-14-789-2018.
-Keating-Bitonti C.R., Ivany L.C., Affek H.P., Douglas P., Samson S.D. 2011. Warm, not super-hot, temperatures in the early eocene subtropics. Geology 39:771-774, doi:10.1130/g32054.1.
--Sijp W.P., von der Heydt A.S., Dijkstra H.A., Flögel S., Douglas P.M.J., Bijl P.K. 2014. The role of ocean gateways on cooling climate on long time scales. Global Planet. Change 119:1-22, doi:10.1016/j.gloplacha.2014.04.004.
--Zhang L., Hay W.W., Wang C., Gu X. 2019. The evolution of latitudinal temperature gradients from the latest cretaceous through the present. Earth-Sci. Rev. 189:147-158, doi:10.1016/j.earscirev.2019.01.025.
-
+Source Data: 
 
 Publications: 
-Hagen et. al 2020/2021 gen3sis
 
 Description: 
-Temperatures on current koppen bands were extracted for each Koppen band (5Ma resolution)(Hagen et al. 2019) and had a focal mean applied at a strength that mimics empirical present temperature(WorldClim2 2018) spread for the koppen zones. These were first interpolated at a resolution of 1Ma. Lapse rates for each zones (Hagen et al. 2019) were applied to the respective elevation maps (Straume et al. 2020) also available at a resolution of 1Ma. Air surface temperatures were then interpolated at a ~17ky resolution. In order to account for the Quaternary climatic oscillations, for the first 2.5Ma, every second time-step had an Last Glacial Maximum (LGM) surface air temperature anomaly applied (Annan and Hargreaves 2012). From 2.5-65 Ma, a latitudinal temperature gradient (LTG) function was used to correct for paleo LTG generalizing several studies (Keating-Bitonti et al. 2011, Sijp et al. 2014, Cramwinckel et al. 2018, Evans et al. 2018, Hutchinson et al. 2018, Hollis et al. 2019, Zhang et al. 2019). LGM and LTG had strength corrected to match reference global air surface temperature maps (Westerhold et al. 2020). Global temperature differences were calculated using entire koppen band to account for sea surface temperature (Westerhold et al. 2020). For more details see (Hagen et al 2020/2021).
+    (e.g.: landmasses with water as NA; full description of methods here)
+

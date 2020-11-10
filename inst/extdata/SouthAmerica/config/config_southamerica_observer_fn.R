@@ -59,8 +59,9 @@ end_of_timestep_observer = function(data, vars, config){
     # plot(0,type='n',axes=FALSE,ann=FALSE)
     # mtext("STATUS",1)
   # example 2 plot over simulations saving plots
-    # plot_richness(data$all_species, data$landscape)
-    # plot_landscape(data$landscape)
+     plot_richness(data$all_species, data$landscape)
+     plot_landscape(data$landscape)
+     plot_species_presence(data$all_species, data$landscape)
   
 }
 

@@ -73,10 +73,10 @@ To create the input landscape for *gen3sis*, all environmental variables have to
 We will now create a list that contains all of the layers of our raster bricks for temperature, aridity and area.
 
 ```{r eval=TRUE}
-landscapes_list <- list(temp=NULL, prec=NULL, area=NULL)
+landscapes_list <- list(temp=NULL, arid=NULL, area=NULL)
 for(i in 1:nlayers(temperature_brick)){
   landscapes_list$temp <- c(landscapes_list$temp, temperature_brick[[i]])
-  landscapes_list$prec <- c(landscapes_list$prec, aridity_brick[[i]])
+  landscapes_list$arid <- c(landscapes_list$arid, aridity_brick[[i]])
   landscapes_list$area <- c(landscapes_list$area, area_brick[[i]])
 }
 ```
@@ -85,7 +85,7 @@ for(i in 1:nlayers(temperature_brick)){
 ## Defining a cost function 
 The second argument we need to define is a *cost function*. This function should define the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
 
-First, let’s look at a very simple case, where no additional cost is added to the geographical distances, meaning that connections costs equal distance in  grid cell units multiplied by the raster resolution. For landscapes with a coordinate system (*crs*) the cost is defined in meters, since the coordinate system is in meters. We can define a simple cost function in which the dispersal is not penalized: 
+First, let’s look at a very simple case, where no additional cost is added to the geographical distances, meaning that connections costs equal distance in  grid cell units multiplied by the raster resolution. For landscapes with a coordinate system (*crs*) the cost is defined in meters, since the coordinate system is in meters. By dividing the cost function by 1000 we get the cost of travelling for 1 km. We can define a simple cost function in which the dispersal is not penalized: 
 
 ```{r eval=TRUE}
 cost_function_null <- function(source, habitable_src, dest, habitable_dest) {
@@ -99,7 +99,7 @@ landscapes_list_t0$temp <- c(landscapes_list_t0$temp, temperature_brick[[1]])
 
 create_input_landscape(landscapes = landscapes_list_t0,
                                cost_function = cost_function_null,
-                               output_directory =  "CostFunctionExamples/cost_function_null",# a directory name to save the files in
+                               output_directory =  "CostFunctionExamples/cost_function_null", # a directory name to save the files in
                                directions = 8, # all surrounding sites from a focus site
                                calculate_full_distance_matrices = TRUE,  # full distance matrix
                                overwrite_output = T,
@@ -115,7 +115,7 @@ landscapes_null_t0 <- na.omit(landscapes_null$temp[, c('x', 'y', '0')])
 dist_null_t0_mat <- cbind(landscapes_null_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_null_t0[,1300]))
 dist_null_t0 <- rasterFromXYZ(dist_null_t0_mat)
 
-maxcost <- 10000
+maxcost <- 6200
 mincost <- 0
 cost_breaks <- seq(mincost, maxcost, by=20)
 cost_colors <- rev(gray(seq(0.03, 0.9, length.out=length(cost_breaks)-1)))
@@ -170,7 +170,7 @@ landscapes_water_t0 <- na.omit(landscapes_water$temp[, c('x', 'y', '0')])
 dist_water_t0_mat <- cbind(landscapes_water_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_water_t0[,1300]))
 dist_water_t0 <- rasterFromXYZ(dist_water_t0_mat)
 
-maxcost <- 10000
+maxcost <- 6200
 mincost <- 0
 cost_breaks <- seq(mincost, maxcost, by=20)
 cost_colors <- rev(gray(seq(0.03, 0.9, length.out=length(cost_breaks)-1)))
@@ -204,7 +204,8 @@ The argument 'timesteps' requires a vector of strings and is used to name the fi
 
 The argument 'calculate_full_distance_matrices' defines whether the *create_input_landscape* function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neighboring sites specified in 'directions' around each suitable site (calculate_full_distance_matrices=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each time-step during a simulation run. 
 
-The real geographic coordinate system can be provided which allows for the global spherical distance correction. For real landscapes with valide coordinate system (e.g. *crs="+proj=longlat +datum=WGS84"*), the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [**design_landscape vignette**](design_landscape.html), geographic distance would be measured in units of sites multiplied by the grid cell resolution.
+The real geographic coordinate system can be provided which allows for the global spherical distance correction. The reference system can be set by using the 'crs' argument of the *create_input_landscape* function. Here we are using the world geodetic system (WGS84) but providing a projected coordinate reference system is also possible. If you want to ensure that all cells have the same area you might consider an equal-area projection, such as the Lambert azimuthal equal-area projection.
+For real landscapes with valid coordinate systems (e.g. *crs="+proj=longlat +datum=WGS84"*), the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [**design_landscape vignette**](design_landscape.html), geographic distance would be measured in units of sites multiplied by the grid cell resolution.
 
 ## Create input files 
 
@@ -213,9 +214,9 @@ The *create_input_landscape* function creates *.rds* files that will be used as 
 create_input_landscape(landscapes = landscapes_list,
              cost_function = cost_function_water,
              directions=8,
-             #output_directory = "SouthAmerica",
              output_directory = file.path(tempdir(), "SouthAmerica"),
              timesteps = paste0(seq(65, 0, by=-1), "Ma"),
+             crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
              calculate_full_distance_matrices = F)
 ```
 
@@ -223,4 +224,4 @@ Finally, don't forget to specify the important metadata for the landscape you ju
 Once the input landscape is ready, the *run_simulation* function can start the simulation using the path of the new landscape.
 
 
-[^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
+[^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in review)

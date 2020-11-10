@@ -151,7 +151,7 @@ The connection cost between sites is defined as the distance between these sites
 
 
 
-[^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
+[^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in review)
 [^2]: R.J. Whittaker, K.A. Triantis, R.J. Ladle. (2008). A general dynamic theory of oceanic island biogeography. Journal of Biogeography, 35: 977-994. \doi{10.1111/j.1365-2699.2008.01892.x}.
 
 
