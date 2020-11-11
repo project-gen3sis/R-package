@@ -5,7 +5,7 @@
 #
 # Author: Oskar Hagen
 #
-# Date: 26.10.2020
+# Date: 10.11.2020
 #
 # Landscape: SouthAmerica
 #
@@ -48,7 +48,7 @@ environmental_ranges = list("temp" = c(-45, 55), "area"=c(2361.5, 12923.4), "ari
 # a place to inspect the internal state of the simulation and collect additional information if desired
 end_of_timestep_observer = function(data, vars, config){
   save_species()
-  plot_richness(data$all_species, data$landscape)
+  #plot_richness(data$all_species, data$landscape)
   # example 1 plot over simulation
     # par(mfrow=c(2,3))
     # plot_raster_single(data$landscape$environment[,"temp"], data$landscape, "temp", NA)
@@ -59,9 +59,9 @@ end_of_timestep_observer = function(data, vars, config){
     # plot(0,type='n',axes=FALSE,ann=FALSE)
     # mtext("STATUS",1)
   # example 2 plot over simulations saving plots
-     plot_richness(data$all_species, data$landscape)
-     plot_landscape(data$landscape)
-     plot_species_presence(data$all_species, data$landscape)
+    #par(mfrow=c(1,2))
+    plot_richness(data$all_species, data$landscape)
+    plot_ranges(data$all_species, data$landscape, disturb=3, max_sps=10)
   
 }
 
@@ -91,7 +91,7 @@ create_ancestor_species <- function(landscape, config) {
     #set local adaptation to max optimal temp equals local temp
     new_species[[i]]$traits[ , "temp"] <- landscape$environment[initial_cells,"temp"]
     new_species[[i]]$traits[ , "dispersal"] <- 1 
-    plot_species_presence(landscape, species=new_species[[i]])
+    #plot_species_presence(landscape, species=new_species[[i]])
   }
   
   return(new_species)

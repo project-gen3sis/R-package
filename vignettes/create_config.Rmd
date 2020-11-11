@@ -369,11 +369,13 @@ Before using a new config, you can test if it is a valid one. If the function *v
 verify_config(config_object)
 ```
 
-```{r eval=T}
+```{r eval=T, fig.width=7, fig.height=7}
 # run simulation by indicating config file path
-sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica_observer_fn.R"), 
+sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica_observer.R"), 
                landscape = file.path(datapath, "landscape"),
-               output_directory=file.path(datapath, "output"))
+               output_directory=file.path(datapath, "output"),
+               call_observer = NA,
+               verbose=0) # no progress printed
                #output_directory=tempdir())
 
 # run simulation by indicating config object
