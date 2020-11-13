@@ -346,7 +346,9 @@ config_object$gen3sis$initialization$create_ancestor_species <- function(landsca
 }
 ```
 
-Additionally, we will now implement a simpler ecology function in our config_object. Here we define a abundance_scale that limits the number of individuals that can co-exist in one cell. This value can only be reached if the population is perfectly adapted to the niche, i.e. when the temperature trait of the population matches exactly the mean temperature of the niche. The abundance_threshold parameter defines the niche width. The higher the value, the smaller is the temperature range of the niche.
+Additionally, we will now implement a simpler ecology function in our config_object. 
+Abundances in a site are defined by how close the species population optimum temperature is to the site temperature.
+The abundance_threshold parameter defines the niche width. The higher the value, the smaller is the temperature range of the niche.
 
 ```{r eval=T}
 # modify the ecology function
@@ -369,12 +371,12 @@ Before using a new config, you can test if it is a valid one. If the function *v
 verify_config(config_object)
 ```
 
-```{r eval=T, fig.width=7, fig.height=7}
+```{r eval=T, fig.width=7, fig.height=3}
 # run simulation by indicating config file path
 sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica_observer.R"), 
                landscape = file.path(datapath, "landscape"),
                output_directory=file.path(datapath, "output"),
-               call_observer = NA,
+               call_observer = 6,
                verbose=0) # no progress printed
                #output_directory=tempdir())
 

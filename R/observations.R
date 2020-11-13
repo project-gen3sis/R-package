@@ -11,7 +11,9 @@
 #'
 #' @noRd
 call_main_observer <- function(data, vars, config) {
+  end_of_timestep_seed <- .GlobalEnv$.Random.seed
   config$gen3sis$general$end_of_timestep_observer(data, vars, config)
+  .GlobalEnv$.Random.seed <- end_of_timestep_seed 
 }
 
 

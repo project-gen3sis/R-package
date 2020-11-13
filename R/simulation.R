@@ -121,13 +121,15 @@ init_attribute_ancestor_distribution <- function(config, data, vars) {
   par(mfrow=c(1,1))
   plot_richness(all_species, data$landscape)
   grDevices::dev.off()
-  #plot_richness(all_species, data$landscape)
   
   #plot starting_ranges
   grDevices::pdf(file=file.path(config$directories$output, "starting_ranges.pdf"), width=10, height=6)
   par(mfrow=c(1,1))
   plot_ranges(all_species, data$landscape)
   grDevices::dev.off()
+  
+ # par(mfrow=c(1,2))
+ # plot_richness(all_species, data$landscape)
  # plot_ranges(all_species, data$landscape)
   
   # n_sp <- ncol(geo_sp_ti)
