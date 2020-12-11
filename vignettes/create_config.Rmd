@@ -1,5 +1,5 @@
 ---
-title: "Creating input configurations in gen3sis"
+title: "3. Creating an input configurations"
 output: rmarkdown::html_vignette
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 vignette: >
