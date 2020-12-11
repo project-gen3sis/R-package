@@ -3,7 +3,7 @@ title: "1. Introducing gen3sis"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introducing gen3sis}
+  %\VignetteIndexEntry{1. Introducing gen3sis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
