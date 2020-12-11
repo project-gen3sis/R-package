@@ -318,7 +318,7 @@ apply_ecology <- function(abundance, traits, landscape, config) {
 
 ## 3. Modify a config {#modify}
 
-A configuration object can be modified by editing a file or the config object in R. Here we will load the *config_southamerica.R* as an R object and modify the initialization of species. Instead of having multiple species that occupy one cell each, we will now initialize one species that occurs in all habitable cells. 
+A configuration object can be modified by editing a file or the config object in R. Here we will load the *config_southamerica.R* as an R object and modify the initialization of species. Instead of having multiple species that occupy one site each, we will now initialize one species that occurs in all habitable sites 
 
 ```{r eval=T}
 # get data path
@@ -348,7 +348,7 @@ config_object$gen3sis$initialization$create_ancestor_species <- function(landsca
 
 Additionally, we will now implement a simpler ecology function in our config_object. 
 Abundances in a site are defined by how close the species population optimum temperature is to the site temperature.
-The abundance_threshold parameter defines the niche width. The higher the value, the smaller is the temperature range of the niche.
+The abundance_threshold parameter defines the niche width cutoff. The higher the value, the narrower is the temperature range of the niche.
 
 ```{r eval=T}
 # modify the ecology function
@@ -373,16 +373,16 @@ verify_config(config_object)
 
 ```{r eval=T, fig.width=7, fig.height=3}
 # run simulation by indicating config file path
-sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica_observer.R"), 
-               landscape = file.path(datapath, "landscape"),
-               output_directory=file.path(datapath, "output"),
-               call_observer = 6,
-               verbose=0) # no progress printed
-               #output_directory=tempdir())
-
+# sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica_observer.R"), 
+#                landscape = file.path(datapath, "landscape"),
+#                #output_directory=file.path(datapath, "output"),
+#                call_observer = 6,
+#                verbose=0, # no progress printed
+#                output_directory=tempdir())
+# 
 # run simulation by indicating config object
-#sim_new <- run_simulation(config = config_object, 
+# sim_new <- run_simulation(config = config_object,
 #               landscape = file.path(datapath, "landscape"),
 #               output_directory=file.path(datapath, "output2"))
-#
+
 ```
