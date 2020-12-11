@@ -52,7 +52,7 @@ library(gen3sis)
 ```
 
 
-From now on, if you run into problems, refer to gen3sis the for the full help documentation.
+From now on, if you run into problems, refer to *gen3sis* the for the full help documentation.
 
 Let's check the version of the *gen3sis* package we are using
 
@@ -192,7 +192,7 @@ In our example, we start our simulation with the 40$^{th}$ time-step and end it 
 ## 2. Run {#run}
 
 
-Now that we have set up the general folder structure and loaded the input data and configuration file, we can run a simulation using the *run_simulation* function. This function will:
+Now that we have set up the general folder structure, the input data and configuration file, we can run a simulation using the *run_simulation* function. This function will:
 
 1) Read in the config and prepare the output directories, initial landscape and call *create_ancestor_species* from the user config to create the initial species for the simulation.
 
@@ -231,7 +231,7 @@ After the simulation is finished, a plot is created inside the SouthAmerica fold
 
 ## 3. Visualize {#visualize}
 
-After having run the simulation, we can load and plot the species richness at different time-steps. Here, we will load them at the time-steps 40, 20 and 0. Since we have six time-steps within this time frame, this corresponds to 40, 20 and 0 Ma, respectively.
+After having run the simulation, we can load and plot the species richness at different time-steps. Here, we will load them at the time-steps 40, 20 and 0 corresponding to 40, 20 and 0 Ma (1 time-step = 1 myr).
 
 ```{r eval=T, echo=T, fig.width=7, fig.height=2}
 timesteps <- c(40, 20, 0)
@@ -244,12 +244,11 @@ for(i in timesteps){
 ```
 
 
-*Gen3sis* also creates a summary object at the end of the simulation storing some default summary functions and important simulation data. These summaries document the changes of the world over time.
+*gen3sis* also returns a summary object at the end of the simulation storing default summary statistics and important data over time. One of the default observer summaries is the species richness over time. 
 **NOTE** You can also create your own observer function. 
 
-One default observer function is the collection of the richness over time. Remember that we stored the summary object (sgen3sis class) as *sim*.
 We can quickly visualize some main results using the *plot_summary function*.
-
+Here we stored the summary object (sgen3sis class) as *sim*.
 
 ```{r eval=TRUE, fig.width=7, fig.height=7}
 plot_summary(sim)
@@ -272,7 +271,7 @@ landscape_t0 <- na.omit(landscape_t0)
 
 
 
-Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and investigate the relationship between richness and environmental variables at the at the final time-step of the simulation. For this, we will fit two univariate models, where each explains the relationship between species richness and one of the environmental variables.
+Much is possible here, from looking at phylogenies to spatial correlations. For this introduction we will keep things simple and investigate the relationship between richness and environmental variables at the final time-step of the simulation. For this, we will fit two univariate models, where each explains the relationship between species richness and one of the environmental variables.
 
 For this, we first fit a generalized linear model between richness and temperature.
 ```{r eval=TRUE, echo=TRUE}
@@ -297,7 +296,7 @@ legend(-20,30, col=c(rgb(0.5,0.5,0.5,0.4), 'red'), legend=c(n, 'model fit'), pch
 ```
 
 
-By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, indicating that species richness is highest at intermediate temperature levels. First the higher richness found above 10° is consistent with the ecological rule that we imposed. At higher temperature, we have a higher energy and capacity facilitating coexist. This is consistent with our model expectations. Moreover, we can observe a large spread of the points at high temperature. This is likely because high temperature regions frequently have high aridity. Thus let's investigate the association of aridity and species richness by fitting a generalized linear model between richness and aridity.
+By looking at the model fit of the generalized linear model we can see that the relationship between the two variables is rather hump-shaped, indicating that species richness is highest at intermediate temperature levels. First the higher richness found above 10° is consistent with the ecological rule that we imposed. At higher temperature, we have a higher energy and capacity facilitating coexist. This is consistent with our model expectations. Moreover, we can observe a large spread of the points at high temperature. This is likely because high temperature regions frequently have high aridity. Thus we will next investigate the association of aridity and species richness by fitting a generalized linear model between richness and aridity.
 
 
 ```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, results='hide', echo=F}
@@ -325,6 +324,6 @@ richness_model <- glm(rich ~ poly(temp, 2) + poly(arid, 2), family='quasipoisson
 summary(richness_model)$coefficients
 ```
 
-Above we report the explained deviance of the glm model on richness considering temperature and aridity. The explained deviance of this relationship is D2=`r round((richness_model$null.deviance - richness_model$deviance) / richness_model$null.deviance,3)`. This explained deviance will not be total since there are other effects including dispersal limitations, that are not considered in this statistical summary. It's important to consider as well that we have now only been analyzing the species richness at one time-step, namely the last one. The emerged patterns are more likely not only to be explained by the environmental conditions of that time but also dependent on historical conditions which gen3sis used as input. 
+Above, we report the explained deviance of the glm model on richness considering temperature and aridity. The explained deviance of this relationship is D2=`r round((richness_model$null.deviance - richness_model$deviance) / richness_model$null.deviance,3)`. This explained deviance will not be total since there are other effects including dispersal limitations, that are not considered in this statistical summary. It is important to consider that we have now only been analyzing the species richness at one time-step, namely the last one (0 Ma). The emerged patterns are more likely not only to be explained by the environmental conditions of that time but also dependent on historical conditions and multiple processes interactions tackled by *gen3sis*. 
 
 For more details on how to create a landscape and prepare it to use in *gen3sis* see [**design_landscape vignette**](design_landscape.html) and [**create_input_landscape vignette**](create_input_landscape.html). For more details on how to create or modify a configuration object see [**create_config vignette**](create_config.html). It's now up to you to explore the "virtual" world.
