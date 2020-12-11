@@ -1,5 +1,5 @@
 ---
-title: "Introducing gen3sis"
+title: "1. Introducing gen3sis"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
