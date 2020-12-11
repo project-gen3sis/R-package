@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 knitr::include_graphics("../inst/logo/gen3sis_logo.png")
 ```
 
-In this vignette you will be introduced to *gen3sis*, an engine for simulating various spatial eco-evolutionary models. Here will create a virtual planet, biodiversify it and examine some brand new virtual species.
+In this vignette you will be introduced to *gen3sis*, an engine for simulating various spatial eco-evolutionary models. Here will create a virtual planet, biodiversify it and examine virtual species.
 
 
 In particular, we will go through the following steps: 
@@ -46,7 +46,7 @@ The first step for running a simulation consists of setting up the folder struct
 
 
 ## 1. Set-up {#setup}
-First of all, we need to load the *gen3sis* package. 
+First of all, load the *gen3sis* package. 
 ```{r setup, message=F}
 library(gen3sis)
 ```
