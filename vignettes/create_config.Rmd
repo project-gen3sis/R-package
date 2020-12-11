@@ -205,9 +205,9 @@ end_of_timestep_observer = function(data, vars, config){
 ```
 
 ### ***Initialization***
-The initialization function creates the ancestor species at the start of the simulation. Users can define the number of ancestor species, their distribution within the paleo landscape and their trait values.
-In our example, the initial abundance of the ancestor species as well as the abundance of species on newly colonized sites is 1. We restrict the region of colonization to roughly to South America by limiting the range to a spatial extent of *c(-95, -24, -68, 13)*. We then create ten different species, each of which is randomly inhabiting on of the cells of the continent. Thereby all of the cells have an equal probability of being inhabited by a species in the beginning of the simulation. However since the cells vary in their size, the habitation probability per area is not the same for all regions. If you want to achieve that, consider using an equal area transformation of your coordinates. 
-We set the **temp** trait of each population of the initial species to the environmental temperature. This means, that each population is adapted to the local conditions, as we will see later on the ecology function. Dispersal is set to one, since it is not ranging. The function *create_ancestor_species* is expected to return a list of new species, i.e. the ancestor(s) one(s).
+The initialization function creates the ancestor species at the start of the simulation. Users can define the number of ancestor from a single to multiple species, their distribution within the paleolandscape and their trait values.
+In our example, the initial abundance of the 10 ancestor species, as well as the abundance of species on newly colonized sites is 1. We restrict the region of colonization to South America by limiting the range to a spatial extent of *c(-95, -24, -68, 13)*. We then create ten different species, each of which is randomly inhabiting one of the sites of the continent. Thereby all of the sites have an equal probability of being inhabited by a species in the beginning of the simulation. However since the sites vary in their size, the habitation probability per area is not the same for all regions. If you want to correct for that you can consider using an equal area transformation of your coordinates or tweeking sampling functions to account for area correction.
+We set the optimum temperature trait **temp** of each population of the initial species to the environmental temperature. This means, that each population is adapted to the local conditions, as we will see later again at the ecology function. Dispersal is set to one, since it is not allowed to evolve, we use it's maximum value. The function *create_ancestor_species* is expected to return a list of new species, i.e. the ancestor(s) one(s).
 
 >```{r eval=FALSE}
 initial_abundance = 1
@@ -235,7 +235,7 @@ create_ancestor_species <- function(landscape, config) {
 ### ***Core Processes***
 
 #### ***Dispersal***
-The dispersal function iterates over all species populations and determines the connectivity between sites and the colonization of new sites in the grid cell. In our example, the dispersal of all species is the same and is stochastic, following a weibull distribution with shape 1.5 and scale 133. For different dispersal between species, the dispersal trait should be used. Note that dispersal can be made deterministic by making the function return a fix value. 
+The dispersal function iterates over all species populations and determines the connectivity between sites and the colonization of new sites in the grid cell. In our example, species dispersal between time-steps is stochastic and similar to all species. It follows a Weibull distribution with shape 1.5 and scale 133. For different dispersal between species, the dispersal trait should be used. Note that dispersal can be made deterministic by making the function return a fix value. 
 
 >```{r eval=FALSE}
 get_dispersal_values <- function(n, species, landscape, config) {
