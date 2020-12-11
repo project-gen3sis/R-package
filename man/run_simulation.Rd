@@ -4,16 +4,9 @@
 \alias{run_simulation}
 \title{Run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder}
 \usage{
-run_simulation(
-  config = NA,
-  landscape = NA,
-  output_directory = NA,
-  timestep_restart = NA,
-  save_state = NA,
-  call_observer = "all",
-  enable_gc = FALSE,
-  verbose = 1
-)
+run_simulation(config = NA, landscape = NA, output_directory = NA,
+  timestep_restart = NA, save_state = NA, call_observer = "all",
+  enable_gc = FALSE, verbose = 1)
 }
 \arguments{
 \item{config}{configuration file for the simulation or configuration object derived from a config file}

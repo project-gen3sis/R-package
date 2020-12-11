@@ -3,6 +3,7 @@
 \docType{package}
 \name{gen3sis}
 \alias{gen3sis}
+\alias{gen3sis-package}
 \title{gen3sis: General Engine for Eco-Evolutionary Simulations}
 \description{
 Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes on biodiversity patterns as a general term.

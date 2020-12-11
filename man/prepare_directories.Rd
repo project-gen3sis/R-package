@@ -4,11 +4,8 @@
 \alias{prepare_directories}
 \title{Checks if the necessary directories exist, and otherwise creates them}
 \usage{
-prepare_directories(
-  config_file = NA,
-  input_directory = NA,
-  output_directory = NA
-)
+prepare_directories(config_file = NA, input_directory = NA,
+  output_directory = NA)
 }
 \arguments{
 \item{config_file}{path to the config file, if NA the default config will be used}
