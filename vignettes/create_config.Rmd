@@ -235,7 +235,7 @@ create_ancestor_species <- function(landscape, config) {
 ### ***Core Processes***
 
 #### ***Dispersal***
-The dispersal function iterates over all species populations and determines the connectivity between sites and the colonization of new sites in the grid cell. In our example, species dispersal between time-steps is stochastic and similar to all species. It follows a Weibull distribution with shape 1.5 and scale 133. For different dispersal between species, the dispersal trait should be used. Note that dispersal can be made deterministic by making the function return a fix value. 
+The dispersal function iterates over all species populations and determines the connectivity between sites and the colonization of new sites in the grid cell. In our example, species dispersal between time-steps is stochastic and similar to all species. It follows a Weibull distribution with shape 1.5 and scale 133. For different dispersal between species, the dispersal trait should be defined. Note that dispersal can be made deterministic by making the function return a fix value. 
 
 >```{r eval=FALSE}
 get_dispersal_values <- function(n, species, landscape, config) {
@@ -252,7 +252,7 @@ hist(rweibull(n, shape = 1.5, scale = 133), col="black")
 ```
 
 ### ***Speciation***
-The speciation iterates over every species separately, registers populations’ geographic occupancy (species range), and determines when geographic isolation between population clusters is higher than a user-defined threshold, triggering a lineage splitting event of cladogenesis. The clustering of occupied sites is based on the species’ dispersal capacity and the landscape connection costs. Over time, disconnected clusters gradually accumulate incompatibility, analogous to genetic differentiation. When the divergence between clusters is above the speciation threshold, those clusters become two or more distinct species, and a divergence matrix reset follows. On the other hand, if geographic clusters come into secondary contact before the speciation occurs, they coalesce and incompatibilities are gradually reduced to zero. In our example, speciation takes place after 2 time-steps of isolation and the divergence increase is the same for all species as indicated by *get_divergence_threshold*. Since our landscape consists of 1 million year steps, these 2 time-steps correspond to a span of 2 million years.
+The speciation iterates over every species separately, registers populations’ geographic occupancy (species range), and determines when geographic isolation between population clusters is higher than a user-defined threshold, triggering a lineage splitting event of cladogenesis. The clustering of occupied sites is based on the species’ dispersal capacity and the landscape connection costs. Over time, disconnected clusters gradually accumulate incompatibility, analogous to genetic differentiation. When the divergence between clusters is above the speciation threshold, those clusters become two or more distinct species, and a divergence matrix reset follows. On the other hand, if geographic clusters come into secondary contact before the speciation occurs, they coalesce and incompatibilities are gradually reduced to zero. In our example, speciation takes place after 2 time-steps of isolation and the divergence increase is the same for all species as indicated by *get_divergence_threshold*. Since our landscape consists of 1 myr time-steps, these 2 time-steps correspond to a span of 2 myr.
 
 >```{r eval=FALSE}
 divergence_threshold = 2 
@@ -263,7 +263,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 
 ### ***Evolution***
 
-In the function bellow, clustered populations (exchanging genes) had their trait homogenized and weighted by abundance, meaning that a trait of a population that is doing well in a site, as dictated by the ecology function, will contribute more to the average trait of a cluster. Later, populations mutate based on a normal distribution with standard deviation 0.001, possibly increasing or decreasing species optimum temperature.
+In the evolution function, clustered populations (exchanging genes) had their trait homogenized and weighted by abundance, meaning that a trait of a population that is doing well in a site, as dictated by the ecology function, will contribute more to the average trait of a cluster. Later, populations mutate based on a normal distribution with standard deviation 0.001, possibly increasing or decreasing species optimum temperature.
 
 >```{r eval=FALSE}
 # mutate the traits of a species and return the new traits matrix
