@@ -1,5 +1,5 @@
 ---
-title: "4. Designing Landscapes"
+title: "4. Example designing landscapes"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
