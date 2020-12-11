@@ -14,10 +14,10 @@ Spatial resolution:
 4 degrees
 
 Temporal extent: 
-150-100Ma
+150-100 Ma
 
 Temporal resolution: 
-1 time-step = 1Myr/6 ~ 170'000kyrs
+1 time-step = 1 myr/6 ~ 170 kyrs
 
 Environmental variables: 
 - Temperature (MAT in degrees Celsius)
@@ -25,8 +25,8 @@ Environmental variables:
 - Area (grid cell area in Km2)
 
 Cost function: 
-- 1 land
-- 2 to water.
+- 1/1000 land
+- 2/1000 to water.
 
 Source Data: 
 Hagen et al. 2019; R-package gen3sis

@@ -2,6 +2,8 @@
 
 # DO NOT USE ' IN THIS LANDSCAPE META DATA
 skeleton_landscape_metadata <- paste0(c('
+gen3sis landscape
+
 Version: 
 1.0
 
@@ -16,10 +18,10 @@ Spatial resolution:
    (e.g.: none; 4 degrees)
 
 Temporal extent: 
-   (e.g.: 140-0Ma; 40Ma-40fMyr)
+   (e.g.: 140-0Ma; 120-0 kyra)
 
 Temporal resolution: 
-   (e.g. 1 time-step = 1Myr; 1 time-step = 1Myr/6 ~ 170000kyrs)
+   (e.g. 1 time-step = 1 myr; 1 time-step = 1 myr/6 ~ 170 kyr)
 
 Environmental variables: 
    (e.g.: - Temperature (degrees Celcius) 
