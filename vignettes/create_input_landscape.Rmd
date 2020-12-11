@@ -83,9 +83,9 @@ for(i in 1:nlayers(temperature_brick)){
 
 
 ## Defining a cost function 
-The second argument we need to define is a *cost function*. This function should define the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
+Additionally, we need to define a *cost function* which defines the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
 
-First, let’s look at a very simple case, where no additional cost is added to the geographical distances, meaning that connections costs equal distance in  grid cell units multiplied by the raster resolution. For landscapes with a coordinate system (*crs*) the cost is defined in meters, since the coordinate system is in meters. By dividing the cost function by 1000 we get the cost of travelling for 1 km. We can define a simple cost function in which the dispersal is not penalized: 
+First, we will look at a very simple case, where no additional cost is added to the geographical distances, meaning that connections costs equal distance in  grid cell units multiplied by the raster resolution. For landscapes with a coordinate system (*crs*) the cost is defined in meters, as defined by the coordinate system. By dividing the cost function by 1000 we get the cost of traveling for 1 km. We can define a simple cost function in which the dispersal is not penalized: 
 
 ```{r eval=TRUE}
 cost_function_null <- function(source, habitable_src, dest, habitable_dest) {
@@ -139,7 +139,7 @@ plot(legend_image, legend.only=T, col=cost_colors, horizontal=T, smallplot=c(0.2
 
 
 
-Now, let's look at a slightly more sophisticated cost function. Only sites which have environmental values (no NAs) are considered habitable. Here, suitable terrestrial sites should have a cost penalty of one (1), but dispersal over water sites should double (2) the cost of dispersal. 
+For a slightly more sophisticated cost function, where only sites which have environmental values (no NAs) are considered habitable and suitable terrestrial sites should have a cost penalty of one (x1), but dispersal over water sites should double (x2) the cost of dispersal. 
 
 ```{r eval=TRUE}
 cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
@@ -220,7 +220,7 @@ create_input_landscape(landscapes = landscapes_list,
              calculate_full_distance_matrices = F)
 ```
 
-Finally, don't forget to specify the important metadata for the landscape you just created. We recommend storing it in form of a METADATA.txt file within the landscape folder.A template is automatically created by the functions *create_input_landscape*.
+Finally, do not forget to specify the landscape metadata you just created. We recommend storing it in form of a METADATA.txt file within the landscape folder. A template is automatically created by the functions *create_input_landscape* at the correct location.
 Once the input landscape is ready, the *run_simulation* function can start the simulation using the path of the new landscape.
 
 
