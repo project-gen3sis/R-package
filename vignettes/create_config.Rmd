@@ -3,7 +3,7 @@ title: "3. Creating configurations (gen3sis input)"
 output: rmarkdown::html_vignette
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 vignette: >
-  %\VignetteIndexEntry{Creating Configuration}
+  %\VignetteIndexEntry{3. Creating configurations (gen3sis input)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
