@@ -1,5 +1,5 @@
 ---
-title: "2. Creating an input landscapes"
+title: "2. Creating landscapes (gen3sis input)"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
