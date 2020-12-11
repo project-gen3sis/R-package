@@ -4,10 +4,17 @@
 \alias{create_input_landscape}
 \title{create an landscape input from a named list of rasters or raster files}
 \usage{
-create_input_landscape(landscapes, cost_function, directions,
-  output_directory, timesteps = NULL,
-  calculate_full_distance_matrices = FALSE, crs = NULL,
-  overwrite_output = FALSE, verbose = FALSE)
+create_input_landscape(
+  landscapes,
+  cost_function,
+  directions,
+  output_directory,
+  timesteps = NULL,
+  calculate_full_distance_matrices = FALSE,
+  crs = NULL,
+  overwrite_output = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{landscapes}{list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past.
