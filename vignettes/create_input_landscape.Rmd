@@ -3,7 +3,7 @@ title: "2. Creating landscapes (gen3sis input)"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Creating input landscape for gen3sis}
+  %\VignetteIndexEntry{2. Creating landscapes (gen3sis input)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
