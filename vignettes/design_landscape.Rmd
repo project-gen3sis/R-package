@@ -3,7 +3,7 @@ title: "4. Example designing landscapes"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Designing Landscapes}
+  %\VignetteIndexEntry{4. Example designing landscapes}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
