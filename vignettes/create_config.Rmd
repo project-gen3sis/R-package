@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The configuration object defines the core processes of the system modeled and define some run settings. It is essential to define the model to be simulated.
+The configuration object defines the core processes of the system modeled. By defining some run settings the configuration object is essential to define the model to be simulated and facilitates formalization of eco-evolutionary models.
 
 - Core processes:  include a custom initialization, observer, speciation, dispersal, evolution and ecology functions. Altogether, these six functions are applied as defined in the simulation engine. The possibility to customize these functions confers the high flexibility and generality of *gen3sis* in terms of including a wide range of theoretical knowledge.
 - Settings: include the ecological traits considered in the simulation: whether a random seed is used; allowing simulation reproducibility; start and end times of the simulation; and rules about aborting the simulation, including the maximum global or local species number permitted.
