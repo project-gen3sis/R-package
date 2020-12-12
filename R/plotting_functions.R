@@ -263,7 +263,9 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
     points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
   }
   # legend plotted species
-  plot.new()
+  # empty plot
+  plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
+  # legend
   legend("top", inset=c(-0.15,0), title=paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]')), legend=(1:n_species)[alive][1:n_sps_max], pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max], bty="n")
 }
 
