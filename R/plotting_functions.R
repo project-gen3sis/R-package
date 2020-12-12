@@ -230,7 +230,7 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   #layout.show(2)
   #par(mar=c(4,3,3,7), oma=c(0.1,0.8,0.3,0.8))
   par(xpd = FALSE)
-  image(raster::rasterFromXYZ(cbind(landscape$coordinates,1)), main="species ranges", col="navajowhite3", legend=FALSE, asp = 1)
+  raster::image(raster::rasterFromXYZ(cbind(landscape$coordinates,1)), main="species ranges", col="navajowhite3", asp = 1)
   n_species <- length(species_list)
   alive <- unlist(lapply(species_list, function(x){length(x$abundance)}))
   alive <- alive>0
