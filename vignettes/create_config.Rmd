@@ -318,7 +318,7 @@ apply_ecology <- function(abundance, traits, landscape, config) {
 
 ## 3. Modify a config {#modify}
 
-A configuration object can be modified by editing a file or the config object in R. Here we will load the *config_southamerica.R* as an R object and modify the initialization of species. Instead of having multiple species that occupy one site each, we will now initialize one species that occurs in all habitable sites 
+A configuration object can be modified by editing a file or the config object in R. Here we will load the *config_southamerica.R* as an R object and modify the initialization of species. Instead of having multiple species that occupy one site each, we will now initialize one species that occurs in all habitable sites and starts with abundance 10.
 
 ```{r eval=T}
 # get data path
@@ -340,9 +340,8 @@ config_object$gen3sis$initialization$create_ancestor_species <- function(landsca
   #set local adaptation to max optimal temp equals local temp
   new_species$traits[ , "temp"] <- landscape$environment[initial_cells,"temp"]
   new_species$traits[ , "dispersal"] <- 1
-  new_species$abundance <- rep(10, length(initial_cells))
+  new_species$abundance <- new_species$abundance*10
   plot_species_presence(landscape, species=new_species)
-
   return(list(new_species))
 }
 ```
@@ -353,8 +352,7 @@ The abundance_threshold parameter defines the niche width cutoff. The higher the
 
 ```{r eval=T}
 # modify the ecology function
-config_object$gen3sis$ecology$apply_ecology <- function(abundance, traits, landscape, config, abundance_scale = 10, abundance_threshold = 6) {
-  browser()
+config_object$gen3sis$ecology$apply_ecology <- function(abundance, traits, landscape, config, abundance_scale = 10, abundance_threshold = 8) {
   #abundance threshold
   abundance <- as.numeric(!abundance<abundance_threshold)
   abundance <- (( 1-abs( traits[, "temp"] - landscape[, "temp"]))*abundance_scale)*abundance
@@ -375,13 +373,27 @@ verify_config(config_object)
 
 ```{r eval=T, fig.width=7, fig.height=3}
 # run simulation by indicating config file path
-# sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica_observer.R"), 
-#                landscape = file.path(datapath, "landscape"),
-#                #output_directory=file.path(datapath, "output"),
-#                call_observer = 6,
-#                verbose=0, # no progress printed
-#                output_directory=tempdir())
+sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica.R"),
+               landscape = file.path(datapath, "landscape"),
+               #output_directory=file.path(datapath, "output"),
+               call_observer = 6,
+               # verbose=0, # no progress printed
+               output_directory=tempdir())
 # 
+
+
+c_sa <- create_input_config(file.path(datapath, "config/config_southamerica.R"))
+c_sa$gen3sis$general$end_of_timestep_observer <- function(data, vars, config){
+  save_species()
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  par(mfrow=c(1,2))
+  browser()
+  plot_richness(data$all_species, data$landscape)
+  plot_ranges(data$all_species, data$landscape, disturb=0, max_sps=10)
+}
+run_simulation(c_sa, landscape = file.path(datapath, "landscape"), output_directory=tempdir())
+
 
 #run simulation by indicating config object
 sim_new <- run_simulation(config = config_object,
