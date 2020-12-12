@@ -170,7 +170,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   
   
   
-  image(ras, col=rc, bty = "o", xlab = "", ylab = "", las=1)
+  image(ras, col=rc, bty = "o", xlab = "", ylab = "", las=1, asp = 1)
   mtext(4, text="Final \u03B1 richness", line=1, cex=1.2)
   raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=TRUE, add=TRUE,col=rc)
   }
@@ -226,8 +226,11 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   #plot landscape
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
+  layout( matrix(c(1,1,2),nrow=1, byrow =TRUE)  )
+  #layout.show(2)
+  #par(mar=c(4,3,3,7), oma=c(0.1,0.8,0.3,0.8))
   par(xpd = FALSE)
-  plot_raster_single(1, landscape, "species ranges", col="navajowhite3", legend=FALSE)
+  image(raster::rasterFromXYZ(cbind(landscape$coordinates,1)), main="species ranges", col="navajowhite3", legend=FALSE, asp = 1)
   n_species <- length(species_list)
   alive <- unlist(lapply(species_list, function(x){length(x$abundance)}))
   alive <- alive>0
@@ -260,7 +263,8 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
     points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
   }
   # legend plotted species
-  legend("topright", inset=c(-0.15,0), title=paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]')), legend=(1:n_species)[alive][1:n_sps_max], pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max], bty="n")
+  plot.new()
+  legend("top", inset=c(-0.15,0), title=paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]')), legend=(1:n_species)[alive][1:n_sps_max], pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max], bty="n")
 }
 
 
