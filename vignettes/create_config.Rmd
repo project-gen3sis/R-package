@@ -365,7 +365,29 @@ config_object$gen3sis$ecology$apply_ecology <- function(abundance, traits, lands
 
 Like so, functions and parameters can be conveniently changed and simulated in gen3sis. Remember that *run_simulation* works either with a path to a config file or config object, so we can run the old and the new modified config.
 
-Before using a new config, you can test if it is a valid one. If the function *verify_config* returns TRUE, you are good to go.
+To compare the initial modified config, we will load the old config and set the old and the new config to run only for 3 time-steps and plot species ranges *plot_ranges* 
+
+```{r eval=T, fig.width=7, fig.height=3}
+config_object_old <- create_input_config(file.path(datapath, "config/config_southamerica.R"))
+
+# define observer
+config_object_old$gen3sis$general$end_of_timestep_observer <- function(data, vars, config){
+  save_species()
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  #par(mfrow=c(1,2))
+  #plot_richness(data$all_species, data$landscape)
+  plot_ranges(data$all_species, data$landscape, disturb=0, max_sps=10)
+}
+
+# define only 3 time-steps
+config_object_old$gen3sis$general$end_time <- 38
+
+run_simulation(config_object_old, landscape = file.path(datapath, "landscape"), output_directory=tempdir())
+
+```
+
+Before using the modified configs, test if it is valid. If the function *verify_config* returns TRUE, you are good to go.
 
 ```{r}
 verify_config(config_object)
@@ -382,17 +404,7 @@ sim_old <- run_simulation(config = file.path(datapath, "config/config_southameri
 # 
 
 
-c_sa <- create_input_config(file.path(datapath, "config/config_southamerica.R"))
-c_sa$gen3sis$general$end_of_timestep_observer <- function(data, vars, config){
-  save_species()
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
-  par(mfrow=c(1,2))
-  browser()
-  plot_richness(data$all_species, data$landscape)
-  plot_ranges(data$all_species, data$landscape, disturb=0, max_sps=10)
-}
-run_simulation(c_sa, landscape = file.path(datapath, "landscape"), output_directory=tempdir())
+
 
 
 #run simulation by indicating config object
