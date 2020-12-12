@@ -372,57 +372,38 @@ config_object_old <- create_input_config(file.path(datapath, "config/config_sout
 
 # define observer
 config_object_old$gen3sis$general$end_of_timestep_observer <- function(data, vars, config){
-  save_species()
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
-  #par(mfrow=c(1,2))
-  #plot_richness(data$all_species, data$landscape)
   plot_ranges(data$all_species, data$landscape, disturb=0, max_sps=10)
 }
 
+config_object$gen3sis$general$end_of_timestep_observer <- config_object_old$gen3sis$general$end_of_timestep_observer 
+
 # define only 3 time-steps
 config_object_old$gen3sis$general$end_time <- 38
-
-run_simulation(config_object_old, landscape = file.path(datapath, "landscape"), output_directory=tempdir())
+config_object$gen3sis$general$end_of_timestep_observer <- 38
 
 ```
 
 Before using the modified configs, test if it is valid. If the function *verify_config* returns TRUE, you are good to go.
 
 ```{r}
+verify_config(config_object_old)
 verify_config(config_object)
 ```
 
+Run the modified old config
+
 ```{r eval=T, fig.width=7, fig.height=3}
-# run simulation by indicating config file path
-sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica.R"),
+sim_old <- run_simulation(config = config_object_old,
                landscape = file.path(datapath, "landscape"),
-               #output_directory=file.path(datapath, "output"),
-               call_observer = 6,
-               # verbose=0, # no progress printed
+               verbose=0, # no progress printed
                output_directory=tempdir())
-# 
+```
 
+And run the modified new config
 
-
-
-
-#run simulation by indicating config object
+```{r eval=T, fig.width=7, fig.height=3}
 sim_new <- run_simulation(config = config_object,
                           landscape = file.path(datapath, "landscape"),
-                          call_observer = "all",
+                          verbose=0, # no progress printed
                           output_directory=tempdir())
-
-
-config_object$gen3sis$general$end_of_timestep_observer <- function(data, vars, config){
-  save_species()
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
-  par(mfrow=c(1,2))
-  plot_richness(data$all_species, data$landscape)
-  # browser()
-  plot_ranges(data$all_species, data$landscape, disturb=0, max_sps=10)
-}
-
-
 ```
