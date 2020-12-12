@@ -224,6 +224,8 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   disturb=abs(disturb)
   max_sps <- abs(max_sps)
   #plot landscape
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   par(xpd = FALSE)
   plot_raster_single(1, landscape, "species ranges", col="navajowhite3", legend=FALSE)
   n_species <- length(species_list)
@@ -250,11 +252,12 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   cols <- rep(sp_cols, length.out=n_species)
   pchs <- rep(sp_pchs, length.out=n_species)
   par(xpd = TRUE)
-  for (sp_i in (1:n_species)[alive][1:n_sps_max]){
+  for (i in 1:n_sps_max){
+    sp_i <- (1:n_species)[alive][i]
     img <- cbind(landscape[["coordinates"]][names(species_list[[sp_i]]$abundance),,drop=FALSE], species_list[[sp_i]]$id)
     df <- as.data.frame(img)
     plot_diturbance <- sample(seq(-disturb, disturb, by=0.01), 1)
-    points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max])
+    points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
   }
   # legend plotted species
   legend("topright", inset=c(-0.15,0), title=paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]')), legend=(1:n_species)[alive][1:n_sps_max], pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max], bty="n")

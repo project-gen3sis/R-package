@@ -354,6 +354,7 @@ The abundance_threshold parameter defines the niche width cutoff. The higher the
 ```{r eval=T}
 # modify the ecology function
 config_object$gen3sis$ecology$apply_ecology <- function(abundance, traits, landscape, config, abundance_scale = 10, abundance_threshold = 6) {
+  browser()
   #abundance threshold
   abundance <- as.numeric(!abundance<abundance_threshold)
   abundance <- (( 1-abs( traits[, "temp"] - landscape[, "temp"]))*abundance_scale)*abundance
@@ -385,7 +386,7 @@ verify_config(config_object)
 #run simulation by indicating config object
 sim_new <- run_simulation(config = config_object,
                           landscape = file.path(datapath, "landscape"),
-                          call_observer = 6,
+                          call_observer = "all",
                           output_directory=tempdir())
 
 
@@ -395,7 +396,7 @@ config_object$gen3sis$general$end_of_timestep_observer <- function(data, vars, c
   on.exit(par(oldpar))
   par(mfrow=c(1,2))
   plot_richness(data$all_species, data$landscape)
-  browser()
+  # browser()
   plot_ranges(data$all_species, data$landscape, disturb=0, max_sps=10)
 }
 
