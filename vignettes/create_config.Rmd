@@ -379,7 +379,7 @@ config_object$gen3sis$general$end_of_timestep_observer <- config_object_old$gen3
 
 # define only 3 time-steps
 config_object_old$gen3sis$general$end_time <- 38
-config_object$gen3sis$general$end_of_timestep_observer <- 38
+config_object$gen3sis$general$end_time <- 38
 
 ```
 
