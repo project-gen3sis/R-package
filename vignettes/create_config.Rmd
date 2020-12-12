@@ -340,6 +340,7 @@ config_object$gen3sis$initialization$create_ancestor_species <- function(landsca
   #set local adaptation to max optimal temp equals local temp
   new_species$traits[ , "temp"] <- landscape$environment[initial_cells,"temp"]
   new_species$traits[ , "dispersal"] <- 1
+  new_species$abundance <- rep(10, length(initial_cells))
   plot_species_presence(landscape, species=new_species)
 
   return(list(new_species))
