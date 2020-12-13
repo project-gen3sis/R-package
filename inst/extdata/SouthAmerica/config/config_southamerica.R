@@ -90,7 +90,7 @@ create_ancestor_species <- function(landscape, config) {
     #set local adaptation to max optimal temp equals local temp
     new_species[[i]]$traits[ , "temp"] <- landscape$environment[initial_cells,"temp"]
     new_species[[i]]$traits[ , "dispersal"] <- 1 
-    plot_species_presence(landscape, species=new_species[[i]])
+    #plot_species_presence(landscape, species=new_species[[i]])
   }
   
   return(new_species)
