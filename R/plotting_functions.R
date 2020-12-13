@@ -128,7 +128,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   #plot summary legend
   par(xpd=TRUE)
   
-  legend("topleft", inset=c(0,-0.5), title=paste0("Summary [",summary_title,"]"), legend=summary_legend, bty="n", title.adj=0)
+  legend("topleft", inset=c(0,-0.4), title=paste0("Summary [",summary_title,"]"), legend=summary_legend, bty="n", title.adj=0)
 
   #plot time behavior
   d <- output$summary$phylo_summary[-1,-1]
