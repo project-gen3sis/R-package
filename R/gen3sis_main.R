@@ -131,6 +131,8 @@ run_simulation <- function(config = NA,
   val <- setup_inputs(val$config, val$data, val$vars)
   val <- setup_variables(val$config, val$data, val$vars)
   val <- setup_landscape(val$config, val$data, val$vars)
+  # conceptually the result of the initialization is the "end" of a previous timestep
+  val$data$landscape$id <- val$data$landscape$id + 1
   val <- init_attribute_ancestor_distribution(val$config, val$data, val$vars)
 
   # #---------------------------------------------------#
@@ -148,7 +150,7 @@ run_simulation <- function(config = NA,
   ######## Call observer to plot or save #######
   #--------------------------------------------#
 
-  ### call observer
+  ### when to call the observer
   if (is.na(call_observer)){
     save_steps <- c(val$config$gen3sis$general$start_time,val$config$gen3sis$general$end_time)
   } else if (call_observer=="all"){
@@ -270,7 +272,6 @@ run_simulation <- function(config = NA,
       print("max number of coexisting species reached, breaking loop")
       break
     }
-    
   }# close loop steps
   #
   if(verbose>=0 & val$vars$flag=="OK"){
