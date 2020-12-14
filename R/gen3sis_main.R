@@ -274,7 +274,11 @@ run_simulation <- function(config = NA,
   }# close loop steps
   #
   if(verbose>=0 & val$vars$flag=="OK"){
-    cat("Simulation finish. All OK \n")
+    cat("Simulation finished. All OK \n")
+  } else if(verbose>=0 & val$vars$flag=="max_number_species") {
+    cat("Simulation finished. Early abort due to exceeding max number of species")
+  } else if (verbose>=0 & val$vars$flag=="max_number_coexisting_species") {
+    cat("Simulation finished. Early abort due to exceeding max number of co-occuring species")
   }
 
   # #------------------------------------------------------------------#
