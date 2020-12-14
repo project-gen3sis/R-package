@@ -44,8 +44,6 @@
 #' @import Matrix
 NULL
 
-counting <- new.env(parent = emptyenv())
-assign("dist", -Inf, envir = counting)
 
 #' Run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder 
 #' 
