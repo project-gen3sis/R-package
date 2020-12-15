@@ -241,9 +241,11 @@ for(i in timesteps){
   species_i <- readRDS(file.path(datapath, paste0('output/config_southamerica/species/species_t_', i ,'.rds')))
   plot_richness(species_i, landscape_i)
 }
-#OFFLINE PLOT
 ```
 
+```{r eval=T, echo=F, fig.width=7, fig.height=2}
+knitr::include_graphics("../inst/extdata/SouthAmerica/images/introduction_richness.png")
+```
 
 *gen3sis* also returns a summary object at the end of the simulation storing default summary statistics and important data over time. One of the default observer summaries is the species richness over time. 
 **NOTE** You can also create your own observer function. 
