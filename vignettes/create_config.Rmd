@@ -376,7 +376,7 @@ verify_config(config_object)
 sim_old <- run_simulation(config = file.path(datapath, "config/config_southamerica_observer.R"), 
                landscape = file.path(datapath, "landscape"),
                output_directory=file.path(datapath, "output"),
-               call_observer = 6,
+               call_observer = 4,
                verbose=0) # no progress printed
                #output_directory=tempdir())
 
