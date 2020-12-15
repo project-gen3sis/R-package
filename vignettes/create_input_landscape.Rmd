@@ -45,10 +45,10 @@ library(raster)
 #next we set the working directory to the downloaded data  
 datapath <- "data_from_project_gen3sis_simulations"
 ```
-All the data we will use here (i.e. the **landscape** and the **configuration** object) is available in the [simulation repository] (https://github.com/project-gen3sis/Simulations), so you need to download the data (i.e. landscape, configs and outputs) and set the correct *datapath*. For more information about these input data, please check the associated metadata.This is stored in the *METADATA.txt* file inside the landscape folder and,  for the configuration, as a comment in the beginning of the config R script.
+
 ```{r echo=FALSE, message=F, results='hide'}
 #knitr::opts_knit$set(root.dir = '../inst/extdata/')
-getwd()
+# getwd()
 library(gen3sis)
 library(raster)
 ```
