@@ -105,8 +105,9 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
     summary_legend=paste(
       paste(sum_names[2], 
             sumss[2], sep=": "),
-      paste(sum_names[3], 
-            sumss[3], sep=": "),
+      #paste(sum_names[3],
+      #      sumss[3], sep=": "),
+      paste('end_time;', tail(names(sumar$occupancy), 1)),
       paste("traits", 
             paste0(sumss[7][[1]], collapse = ","), sep=": "),
       paste("world_habited_present", 
@@ -118,9 +119,9 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
       paste("richness_present", 
             phylo[2,"alive"], sep=": "),
       paste("speciation", 
-            paste0(round((col_sum["speciations"]-phylo["initial", "total"])/phylo["0", "total"]*100, 0),"%"), sep=": "),
+            paste0(round((col_sum["speciations"]-phylo["initial", "total"])/phylo[1, "total"]*100, 0),"%"), sep=": "),
       paste("extinction", 
-            paste0(round((col_sum["extinctions"])/phylo["0", "total"]*100, 0),"%"), sep=": "),
+            paste0(round((col_sum["extinctions"])/phylo[1, "total"]*100, 0),"%"), sep=": "),
       paste(names(output$system)[1], 
             round(output$system$`runtime-hours`,2), sep=": "),
       sep="\n")
@@ -148,7 +149,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
          lwd=c(4,NA,NA),
          bty = "n")
   axis_lab <- seq(from=1, to=nrow(d), length.out = max((nrow(d)/20),2))
-  axis(1, at=rev(as.numeric(rownames(d)))[axis_lab], labels = rownames(d)[axis_lab])
+  axis(1, at=axis_lab, labels = rownames(d)[axis_lab])
   mtext(side=1, text="Time steps", line=2.5, cex=1.1)
   
   # richness map

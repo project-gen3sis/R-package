@@ -80,7 +80,7 @@ make_summary <- function(config, data, vars, total_runtime, save_file=TRUE){
   sgen3sis <- list("summary"= list(), "flag"=list(), "system"= list(), "parameters" = list())
   
   #summary
-  sgen3sis$summary <- c(data$summaries, list("richness-final"=data$geo_richness[,c(1,2,ncol(data$geo_richness))]))
+  sgen3sis$summary <- c(data$summaries, list("richness-final"=data$geo_richness[,c('x','y',as.character(vars$ti))]))
   
   #flag
   sgen3sis$flag <- vars$flag

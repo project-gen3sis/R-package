@@ -44,8 +44,6 @@
 #' @import Matrix
 NULL
 
-counting <- new.env(parent = emptyenv())
-assign("dist", -Inf, envir = counting)
 
 #' Run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder 
 #' 
@@ -133,6 +131,8 @@ run_simulation <- function(config = NA,
   val <- setup_inputs(val$config, val$data, val$vars)
   val <- setup_variables(val$config, val$data, val$vars)
   val <- setup_landscape(val$config, val$data, val$vars)
+  # conceptually the result of the initialization is the "end" of a previous timestep
+  val$data$landscape$id <- val$data$landscape$id + 1
   val <- init_attribute_ancestor_distribution(val$config, val$data, val$vars)
 
   # #---------------------------------------------------#
@@ -150,7 +150,7 @@ run_simulation <- function(config = NA,
   ######## Call observer to plot or save #######
   #--------------------------------------------#
 
-  ### call observer
+  ### when to call the observer
   if (is.na(call_observer)){
     save_steps <- c(val$config$gen3sis$general$start_time,val$config$gen3sis$general$end_time)
   } else if (call_observer=="all"){
@@ -179,16 +179,7 @@ run_simulation <- function(config = NA,
     val$vars$n_sp_added_ti <- 0
     # update ti inside val$vars
     val$vars$ti <- ti
-    #
-    #
-    #
-    if( val$vars$n_sp_alive >= val$config$gen3sis$general$max_number_of_species ) {
-      val$vars$flag <- "max_number_species"
-      print("max number of species reached, breaking loop")
-      break
-    }
-    #
-    #
+
     #     #----------------------------------------#
     #     ######## loop setup (simulation.R) #######
     #     #----------------------------------------#
@@ -238,13 +229,7 @@ run_simulation <- function(config = NA,
     if(verbose>=2){
       cat("ecology \n")
     }
-    val <- loop_ecology(val$config, val$data, val$vars)
-    if( val$vars$flag == "max_number_coexisting_species") {
-      print("max number of coexisting species reached, breaking loop")
-      break
-    }
-    
-    
+
     # #     #-------------------------------------------------------------------#
     # #     ######## end of time-step loop variable update (simulation.R) #######
     # #     #-------------------------------------------------------------------#
@@ -276,10 +261,25 @@ run_simulation <- function(config = NA,
       cat('step =', ti, ', species alive =', val$vars$n_sp_alive, ', species total =', val$vars$n_sp, '\n')  
     }
     
+    # abort conditions
+    if( val$vars$n_sp_alive >= val$config$gen3sis$general$max_number_of_species ) {
+      val$vars$flag <- "max_number_species"
+      print("max number of species reached, breaking loop")
+      break
+    }
+    val <- loop_ecology(val$config, val$data, val$vars)
+    if( val$vars$flag == "max_number_coexisting_species") {
+      print("max number of coexisting species reached, breaking loop")
+      break
+    }
   }# close loop steps
   #
   if(verbose>=0 & val$vars$flag=="OK"){
-    cat("Simulation finish. All OK \n")
+    cat("Simulation finished. All OK \n")
+  } else if(verbose>=0 & val$vars$flag=="max_number_species") {
+    cat("Simulation finished. Early abort due to exceeding max number of species")
+  } else if (verbose>=0 & val$vars$flag=="max_number_coexisting_species") {
+    cat("Simulation finished. Early abort due to exceeding max number of co-occuring species")
   }
 
   # #------------------------------------------------------------------#
