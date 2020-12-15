@@ -37,7 +37,7 @@ Below, we will generate the R objects required by the function *create_input_lan
 
 First, load the necessary packages and set the working directory:
 
-```{r setup, message=F, eval=F, results='hide'}
+```{r setup, message=F, eval=FALSE, results='hide'}
 #first we load the required packages
 library(gen3sis)
 library(raster)
@@ -210,7 +210,7 @@ For real landscapes with valid coordinate systems (e.g. *crs="+proj=longlat +dat
 ## Create input files 
 
 The *create_input_landscape* function creates *.rds* files that will be used as input for *gen3sis*. The file path where the landscapes and the distance matrices of all time steps should be stored can be specified within the function.
-```{r eval=F}
+```{r eval=FALSE}
 create_input_landscape(landscapes = landscapes_list,
              cost_function = cost_function_water,
              directions=8,
