@@ -17,7 +17,7 @@ Temporal extent:
 150-100 Ma
 
 Temporal resolution: 
-1 time-step = 1 myr/6 ~ 170 kyrs
+1 time-step = 1 myr
 
 Environmental variables: 
 - Temperature (MAT in degrees Celsius)
