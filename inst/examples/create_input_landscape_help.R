@@ -3,12 +3,12 @@
 library(raster)
 
 # get path containing example rasters
-datapath <- system.file(file.path("extdata", "InputRasters"), package="gen3sis")
+datapath <- system.file(file.path("extdata", "WorldCenter"), package="gen3sis")
 
 # create raster bricks
-temperature_brick <- brick(file.path(datapath, "WorldCenter/temp_rasters.grd"))
-aridity_brick <-  brick(file.path(datapath, "WorldCenter/arid_rasters.grd"))
-area_brick <-  brick(file.path(datapath, "WorldCenter/area_rasters.grd"))
+temperature_brick <- brick(file.path(datapath, "input_rasters/temp_rasters.grd"))
+aridity_brick <-  brick(file.path(datapath, "input_rasters/arid_rasters.grd"))
+area_brick <-  brick(file.path(datapath, "input_rasters/area_rasters.grd"))
 
 # create sub-list of environmental variables for fast example 
 # (i.e. 4 time-steps)
