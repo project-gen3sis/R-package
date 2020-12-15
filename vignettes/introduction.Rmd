@@ -233,7 +233,7 @@ After the simulation is finished, a plot is created inside the SouthAmerica fold
 
 After having run the simulation, we can load and plot the species richness at different time-steps. Here, we will load them at the time-steps 40, 20 and 0 corresponding to 40, 20 and 0 Ma (1 time-step = 1 myr).
 
-```{r eval=T, echo=T, fig.width=7, fig.height=2}
+```{r eval=F, echo=T, fig.width=7, fig.height=2}
 timesteps <- c(40, 20, 0)
 par(mfrow=c(1,3))
 for(i in timesteps){
@@ -241,6 +241,7 @@ for(i in timesteps){
   species_i <- readRDS(file.path(datapath, paste0('output/config_southamerica/species/species_t_', i ,'.rds')))
   plot_richness(species_i, landscape_i)
 }
+#OFFLINE PLOT
 ```
 
 
