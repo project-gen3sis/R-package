@@ -105,8 +105,9 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
     summary_legend=paste(
       paste(sum_names[2], 
             sumss[2], sep=": "),
-      paste(sum_names[3], 
-            sumss[3], sep=": "),
+      #paste(sum_names[3],
+      #      sumss[3], sep=": "),
+      paste('end_time;', tail(names(sumar$occupancy), 1)),
       paste("traits", 
             paste0(sumss[7][[1]], collapse = ","), sep=": "),
       paste("world_habited_present", 
@@ -118,9 +119,9 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
       paste("richness_present", 
             phylo[2,"alive"], sep=": "),
       paste("speciation", 
-            paste0(round((col_sum["speciations"]-phylo["initial", "total"])/phylo["0", "total"]*100, 0),"%"), sep=": "),
+            paste0(round((col_sum["speciations"]-phylo["initial", "total"])/phylo[1, "total"]*100, 0),"%"), sep=": "),
       paste("extinction", 
-            paste0(round((col_sum["extinctions"])/phylo["0", "total"]*100, 0),"%"), sep=": "),
+            paste0(round((col_sum["extinctions"])/phylo[1, "total"]*100, 0),"%"), sep=": "),
       paste(names(output$system)[1], 
             round(output$system$`runtime-hours`,2), sep=": "),
       sep="\n")
@@ -128,7 +129,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   #plot summary legend
   par(xpd=TRUE)
   
-  legend("topleft", inset=c(-0.2,-0.3), title=paste0("Summary [",summary_title,"]"), legend=summary_legend, bty="n", title.adj=0)
+  legend("topleft", inset=c(0,-0.4), title=paste0("Summary [",summary_title,"]"), legend=summary_legend, bty="n", title.adj=0)
 
   #plot time behavior
   d <- output$summary$phylo_summary[-1,-1]
@@ -148,7 +149,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
          lwd=c(4,NA,NA),
          bty = "n")
   axis_lab <- seq(from=1, to=nrow(d), length.out = max((nrow(d)/20),2))
-  axis(1, at=rev(as.numeric(rownames(d)))[axis_lab], labels = rownames(d)[axis_lab])
+  axis(1, at=axis_lab, labels = rownames(d)[axis_lab])
   mtext(side=1, text="Time steps", line=2.5, cex=1.1)
   
   # richness map
@@ -170,7 +171,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   
   
   
-  image(ras, col=rc, bty = "o", xlab = "", ylab = "", las=1)
+  image(ras, col=rc, bty = "o", xlab = "", ylab = "", las=1, asp = 1)
   mtext(4, text="Final \u03B1 richness", line=1, cex=1.2)
   raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=TRUE, add=TRUE,col=rc)
   }
@@ -224,8 +225,13 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   disturb=abs(disturb)
   max_sps <- abs(max_sps)
   #plot landscape
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  layout( matrix(c(1,1,2),nrow=1, byrow =TRUE)  )
+  #layout.show(2)
+  #par(mar=c(4,3,3,7), oma=c(0.1,0.8,0.3,0.8))
   par(xpd = FALSE)
-  plot_raster_single(1, landscape, "species ranges", col="navajowhite3", legend=FALSE)
+  raster::image(raster::rasterFromXYZ(cbind(landscape$coordinates,1)), main="species ranges", col="navajowhite3", asp = 1)
   n_species <- length(species_list)
   alive <- unlist(lapply(species_list, function(x){length(x$abundance)}))
   alive <- alive>0
@@ -250,14 +256,19 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   cols <- rep(sp_cols, length.out=n_species)
   pchs <- rep(sp_pchs, length.out=n_species)
   par(xpd = TRUE)
-  for (sp_i in (1:n_species)[alive][1:n_sps_max]){
+  for (i in 1:n_sps_max){
+    sp_i <- (1:n_species)[alive][i]
     img <- cbind(landscape[["coordinates"]][names(species_list[[sp_i]]$abundance),,drop=FALSE], species_list[[sp_i]]$id)
     df <- as.data.frame(img)
     plot_diturbance <- sample(seq(-disturb, disturb, by=0.01), 1)
-    points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max])
+    points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
   }
   # legend plotted species
-  legend("topright", inset=c(-0.15,0), title=paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]')), legend=(1:n_species)[alive][1:n_sps_max], pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max], bty="n")
+  # empty plot
+  plot(1, type="n", xlab="", ylab="", xlim=c(0, 10), ylim=c(0, 10), axes=FALSE, ann=FALSE)
+  # legend
+  par(xpd=TRUE)
+  legend("top", inset=c(-0.15,0), title=paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]')), legend=(1:n_species)[alive][1:n_sps_max], pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max], bty="n")
 }
 
 

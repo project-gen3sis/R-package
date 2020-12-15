@@ -21,7 +21,7 @@
 ######################################
 
 # set the random seed for the simulation
-random_seed = 666
+random_seed = 001
 
 # set the starting time step or leave NA to use the earliest/highest time-step
 start_time = NA
@@ -39,7 +39,7 @@ max_number_of_coexisting_species = 10000
 trait_names = c("temp",  "dispersal")
 
 # ranges to scale the input environments with:
-environmental_ranges = list("temp" = c(-45, 55), "area"=c(101067, 196949), "prec"=c(1,0.5))
+environmental_ranges = list("temp" = c(-45, 55), "area"=c(101067, 196949), "arid"=c(1,0.5))
 
 ######################################
 ###            Observer            ###
@@ -95,7 +95,7 @@ create_ancestor_species <- function(landscape, config) {
 
 # returns n dispersal values
 get_dispersal_values <- function(n, species, landscape, config) {
-  values <- rweibull(n, shape = 6, scale = 999)
+  values <- rweibull(n, shape = 3, scale = 999)
   
   return(values)
 }
@@ -105,7 +105,7 @@ get_dispersal_values <- function(n, species, landscape, config) {
 ######################################
 
 # threshold for genetic distance after which a speciation event takes place
-divergence_threshold = 12 #this is 2Myrs
+divergence_threshold = 6 #this is 2Myrs
 
 # factor by which the divergence is increased between geographically isolated population
 # can also be a matrix between the different population clusters
@@ -157,7 +157,7 @@ apply_ecology <- function(abundance, traits, landscape, config) {
   abundance <- (( 1-abs( traits[, "temp"] - landscape[, "temp"]))*abundance_scale)*as.numeric(survive)
   #abundance threshold
   abundance[abundance<abundance_threshold] <- 0
-  k <- ((landscape[,"area"]*(landscape[,"prec"]+0.1)*(landscape[,"temp"]+0.1))*abundance_scale^2)
+  k <- ((landscape[,"area"]*(landscape[,"arid"]+0.1)*(landscape[,"temp"]+0.1))*abundance_scale^2)
   total_ab <- sum(abundance)
   subtract <- total_ab-k
   if (subtract > 0) {
