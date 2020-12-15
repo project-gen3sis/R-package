@@ -109,8 +109,8 @@ create_input_landscape(landscapes = landscapes_list_t0,
 ```
 
 ```{r, echo=FALSE, fig.width=4, fig.height=7, fig.cap='This figure shows the connection costs from one site in the middle of South America to all other sites. To travel to the site of Antarctica that is indicated with the arrow, the travelling cost is 3790. The distance matrix was computed using the very simple cost function that has been introduced before and is not adding any penalty.', fig.align='center'}
-dist_matrix_null_t0 <- readRDS('SouthAmerica/landscape/distances_full/cost_function_null/distances_full/distances_full_0.rds')
-landscapes_null <- readRDS('SouthAmerica/landscape/distances_full/cost_function_null/landscapes.rds')
+dist_matrix_null_t0 <- readRDS('inst/extdata/SouthAmerica/landscape/distances_full/cost_function_null/distances_full/distances_full_0.rds')
+landscapes_null <- readRDS('inst/extdata/SouthAmerica/landscape/distances_full/cost_function_null/landscapes.rds')
 landscapes_null_t0 <- na.omit(landscapes_null$temp[, c('x', 'y', '0')])
 dist_null_t0_mat <- cbind(landscapes_null_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_null_t0[,1300]))
 dist_null_t0 <- rasterFromXYZ(dist_null_t0_mat)
@@ -164,8 +164,8 @@ create_input_landscape(landscapes = landscapes_list_t0,
 ```
 
 ```{r, echo=FALSE, fig.width=4, fig.height=7, fig.align='center', fig.cap='By using a cost function which penalises the crossing of water, the cost of travelling from our cell in the middle of South America to Antarctica increases to 5204.'}
-dist_matrix_water_t0 <- readRDS('SouthAmerica/landscape/distances_full/cost_function_water/distances_full/distances_full_0.rds')
-landscapes_water <- readRDS('SouthAmerica/landscape/distances_full/cost_function_water/landscapes.rds')
+dist_matrix_water_t0 <- readRDS('inst/extdata/SouthAmerica/landscape/distances_full/cost_function_water/distances_full/distances_full_0.rds')
+landscapes_water <- readRDS('inst/extdata/SouthAmerica/landscape/distances_full/cost_function_water/landscapes.rds')
 landscapes_water_t0 <- na.omit(landscapes_water$temp[, c('x', 'y', '0')])
 dist_water_t0_mat <- cbind(landscapes_water_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_water_t0[,1300]))
 dist_water_t0 <- rasterFromXYZ(dist_water_t0_mat)
