@@ -1,4 +1,4 @@
-runtime: 0.1927334 hours
+runtime: 0.0149063 hours
 
 
  R Version Information:
@@ -24,7 +24,7 @@ nickname       Arbor Day
 
 R version 4.0.0 (2020-04-24)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
-Running under: Windows 10 x64 (build 17134)
+Running under: Windows 10 x64 (build 18363)
 
 Matrix products: default
 
@@ -33,18 +33,18 @@ locale:
 [4] LC_NUMERIC=C                           LC_TIME=English_United States.1252    
 
 attached base packages:
-[1] tools     stats     graphics  grDevices utils     datasets  methods   base     
+[1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] knitr_1.28     gen3sis_0.9.99 stringr_1.4.0  Rcpp_1.0.4.6   raster_3.1-5   sp_1.4-2       Matrix_1.2-18 
+[1] raster_3.1-5   sp_1.4-2       gen3sis_1.2    testthat_2.3.2
 
 loaded via a namespace (and not attached):
- [1] compiler_4.0.0    prettyunits_1.1.1 remotes_2.1.1     testthat_2.3.2    digest_0.6.25     pkgbuild_1.0.8    pkgload_1.0.2    
- [8] memoise_1.1.0     evaluate_0.14     gdistance_1.3-1   lattice_0.20-41   pkgconfig_2.0.3   rlang_0.4.6       igraph_1.2.5     
-[15] cli_2.0.2         rstudioapi_0.11   rgdal_1.5-8       yaml_2.2.1        xfun_0.14         xml2_1.3.2        roxygen2_7.1.0   
-[22] withr_2.2.0       desc_1.2.0        fs_1.4.1          devtools_2.3.0    rprojroot_1.3-2   grid_4.0.0        glue_1.4.1       
-[29] R6_2.4.1          BH_1.72.0-3       processx_3.4.2    fansi_0.4.1       rmarkdown_2.1     sessioninfo_1.1.1 purrr_0.3.4      
-[36] callr_3.4.3       magrittr_1.5      codetools_0.2-16  backports_1.1.7   ps_1.3.3          ellipsis_0.3.1    htmltools_0.4.0  
+ [1] Rcpp_1.0.4.6      compiler_4.0.0    prettyunits_1.1.1 remotes_2.1.1     tools_4.0.0       digest_0.6.25     pkgbuild_1.0.8   
+ [8] pkgload_1.0.2     gdistance_1.3-1   memoise_1.1.0     evaluate_0.14     lattice_0.20-41   pkgconfig_2.0.3   rlang_0.4.6      
+[15] igraph_1.2.5      Matrix_1.2-18     cli_2.0.2         rstudioapi_0.11   rgdal_1.5-8       yaml_2.2.1        xfun_0.14        
+[22] stringr_1.4.0     withr_2.2.0       knitr_1.28        desc_1.2.0        fs_1.4.1          devtools_2.3.0    rprojroot_1.3-2  
+[29] grid_4.0.0        glue_1.4.1        R6_2.4.1          processx_3.4.2    fansi_0.4.1       rmarkdown_2.1     sessioninfo_1.1.1
+[36] callr_3.4.3       magrittr_1.5      backports_1.1.7   ps_1.3.3          codetools_0.2-16  ellipsis_0.3.1    htmltools_0.5.0  
 [43] usethis_1.6.1     assertthat_0.2.1  stringi_1.4.6     crayon_1.3.4     
 
 

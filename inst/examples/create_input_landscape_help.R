@@ -22,9 +22,9 @@ for(i in 1:4){
 # define cost function, crossing water as double as land sites
 cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
   if(!all(habitable_src, habitable_dest)) {
-    return(2/100)
+    return(2/1000)
   } else {
-    return(1/100)
+    return(1/1000)
   }
 }
 
@@ -53,7 +53,7 @@ for(i in 1:nlayers(temperature_brick)){
 create_input_landscape(
   landscapes = landscapes_list,
   cost_function = cost_function_water,
-  output_directory = file.path(tempdir(), "landscape_WorldCenter_4"),
+  output_directory = file.path(tempdir(), "landscape_WorldCenter_5"),
   directions = 8, # surrounding sites for each site
   timesteps = paste0(round(150:100,2), "Ma"),
   crs="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
