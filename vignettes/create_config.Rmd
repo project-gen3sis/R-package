@@ -391,7 +391,7 @@ verify_config(config_object)
 
 Run the modified old config
 
-```{r eval=T, fig.width=7, fig.height=3}
+```{r eval=FALSE, fig.width=7, fig.height=3}
 sim_old <- run_simulation(config = config_object_old,
                landscape = file.path(datapath, "landscape"),
                verbose=0, # no progress printed
@@ -400,7 +400,7 @@ sim_old <- run_simulation(config = config_object_old,
 
 And run the modified new config
 
-```{r eval=T, fig.width=7, fig.height=3}
+```{r eval=FALSE, fig.width=7, fig.height=3}
 sim_new <- run_simulation(config = config_object,
                           landscape = file.path(datapath, "landscape"),
                           verbose=0, # no progress printed
