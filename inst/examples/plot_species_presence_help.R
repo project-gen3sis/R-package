@@ -7,8 +7,8 @@ landscape_t_0 <- readRDS(
 species_t_0 <- readRDS(
   file.path(datapath, "output/config_worldcenter", "species", "species_t_0.rds"))
 
-# plot species 21 range
-plot_species_presence(species_t_0[[21]], landscape_t_0)
+# plot species 13 range
+plot_species_presence(species_t_0[[13]], landscape_t_0)
 # oh, a South American one!
 
 # plot ranges of 3 species (i.e. 1, 21 and 32)
