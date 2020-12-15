@@ -21,7 +21,7 @@
 ######################################
 
 # set the random seed for the simulation
-random_seed = 666
+random_seed = 001
 
 # set the starting time step or leave NA to use the earliest/highest time-step
 start_time = NA
@@ -105,7 +105,7 @@ get_dispersal_values <- function(n, species, landscape, config) {
 ######################################
 
 # threshold for genetic distance after which a speciation event takes place
-divergence_threshold = 12 #this is 2Myrs
+divergence_threshold = 6 #this is 2Myrs
 
 # factor by which the divergence is increased between geographically isolated population
 # can also be a matrix between the different population clusters
