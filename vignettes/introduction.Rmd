@@ -241,6 +241,7 @@ for(i in timesteps){
   species_i <- readRDS(file.path(datapath, paste0('output/config_southamerica/species/species_t_', i ,'.rds')))
   plot_richness(species_i, landscape_i)
 }
+#OFFLINE PLOT
 ```
 
 ```{r eval=T, echo=F, fig.width=7, fig.height=2}

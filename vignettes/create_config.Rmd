@@ -394,6 +394,18 @@ Run the modified old config
 ```{r eval=FALSE, fig.width=7, fig.height=3}
 sim_old <- run_simulation(config = config_object_old,
                landscape = file.path(datapath, "landscape"),
+<<<<<<< HEAD
+               output_directory=file.path(datapath, "output"),
+               call_observer = 4,
+               verbose=0) # no progress printed
+               #output_directory=tempdir())
+
+# run simulation by indicating config object
+#sim_new <- run_simulation(config = config_object, 
+#               landscape = file.path(datapath, "landscape"),
+#               output_directory=file.path(datapath, "output2"))
+#
+=======
                verbose=0, # no progress printed
                output_directory=tempdir())
 ```
@@ -405,4 +417,5 @@ sim_new <- run_simulation(config = config_object,
                           landscape = file.path(datapath, "landscape"),
                           verbose=0, # no progress printed
                           output_directory=tempdir())
+>>>>>>> 5ffae2ea43a2e79bac8e95db5f20b6aa862bf05c
 ```
