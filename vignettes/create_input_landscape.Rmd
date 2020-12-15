@@ -33,7 +33,7 @@ To create these files, we use the function *create_input_landscape* which requir
 
 - a cost function defining how dispersal between particular types of sites is penalized (to be used for the calculation of the distance matrices). 
 
-Below, we will generate the R objects required by the function *create_input_landscape* step by step. For this exercise, we will use the landscape of South America that we used in the [**introduction vignette**](introduction.html) and is a small piece of the global landscape used at the case study of the main package manuscript[^1]. The landscape data as well as the input rasters are available at the  [simulation repository] (https://github.com/project-gen3sis/Simulations). Download these and define the correct path to it in order to continue.
+Below, we will generate the R objects required by the function *create_input_landscape* step by step. For this exercise, we will use the landscape of South America that we used in the [**introduction vignette**](introduction.html) and is a small piece of the global landscape used at the case study of the main package manuscript[^1]. The landscape data as well as the input rasters are available at the  [simulation repository](https://github.com/project-gen3sis/Simulations). Download these and define the correct path to it in order to continue.
 
 First, load the necessary packages and set the working directory:
 
