@@ -64,15 +64,15 @@ print(paste("gen3sis version:", packageVersion("gen3sis")))
 
 All *gen3sis* simulations need a **landscape** object which define the environment over which the simulation will take place and a **configuration** object which defines the mechanisms of speciation, dispersal, trait evolution and ecological interactions. Here we will use a published example[^1]. We will consider the continent of South America with a time span from 65Ma to 0Ma (1 time-step = 1 myr) and a spatial resolution of 1&deg;.
 
-All the data we will use here (i.e. the **landscape** and the **configuration** object) is available with the package, so you only will need a path to the data. For more information about these input data, please check the associated metadata.This is stored in the *METADATA.txt* file inside the landscape folder and,  for the configuration, as a comment in the beginning of the config R script.
+All the data we will use here (i.e. the **landscape** and the **configuration** object) is available in the [simulation repository](https://github.com/project-gen3sis/Simulations), so you need to download the data (i.e. landscape, configs and outputs) and set the correct *datapath*. For more information about these input data, please check the associated metadata.This is stored in the *METADATA.txt* file inside the landscape folder and,  for the configuration, as a comment in the beginning of the config R script.
 
 To access this dataset, define the path to the data contained inside the package.
 
-```{r eval=TRUE}
+```{r eval=TRUE, echo=FALSE}
 datapath <- system.file(file.path("extdata", "SouthAmerica"), package="gen3sis")
 ```
 
-The full [landscape](https://github.com/project-Gen3sis) can be downloaded and stored locally for running the experiment. An experiment folder should look like this:
+The full [landscape](https://github.com/project-Gen3sis/Simulations) can be downloaded and stored locally for running the experiment. An experiment folder should look like this:
 
 |>EXPERIMENT_FOLDER     |
 |:-------------------------|
@@ -243,6 +243,7 @@ for(i in timesteps){
 }
 ```
 
+<<<<<<< HEAD
 
 ```{r eval=F, echo=F, fig.width=7, fig.height=2}
 #GENERATE OFFLINE PLOT
@@ -263,6 +264,12 @@ knitr::include_graphics("../inst/logo/richness_plot.png")
 ```
 
 
+=======
+```{r eval=T, echo=F, fig.width=7, fig.height=2}
+knitr::include_graphics("../inst/extdata/SouthAmerica/images/introduction_richness.png")
+```
+
+>>>>>>> 101c1e3b4096f4cf61c18ff27a04bbd604404e79
 *gen3sis* also returns a summary object at the end of the simulation storing default summary statistics and important data over time. One of the default observer summaries is the species richness over time. 
 **NOTE** You can also create your own observer function. 
 
