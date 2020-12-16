@@ -243,7 +243,6 @@ for(i in timesteps){
 }
 ```
 
-<<<<<<< HEAD
 
 ```{r eval=F, echo=F, fig.width=7, fig.height=2}
 #GENERATE OFFLINE PLOT
@@ -264,12 +263,6 @@ knitr::include_graphics("../inst/logo/richness_plot.png")
 ```
 
 
-=======
-```{r eval=T, echo=F, fig.width=7, fig.height=2}
-knitr::include_graphics("../inst/extdata/SouthAmerica/images/introduction_richness.png")
-```
-
->>>>>>> 101c1e3b4096f4cf61c18ff27a04bbd604404e79
 *gen3sis* also returns a summary object at the end of the simulation storing default summary statistics and important data over time. One of the default observer summaries is the species richness over time. 
 **NOTE** You can also create your own observer function. 
 
