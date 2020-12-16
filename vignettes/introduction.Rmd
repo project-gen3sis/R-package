@@ -243,13 +243,9 @@ for(i in timesteps){
 }
 ```
 
-```{r eval=T, echo=F, out.width='700px', height='200px'}
-#OFFLINE PLOT
-knitr::include_graphics("../inst/logo/richness_plot.png")
-```
 
 ```{r eval=F, echo=F, fig.width=7, fig.height=2}
-#to generate the offline plot
+#GENERATE OFFLINE PLOT
 timesteps <- c(40, 20, 0)
 png("../inst/logo/richness_plot.png", height=500, width=1750, pointsize=28)
 par(mfrow=c(1,3))
@@ -259,7 +255,11 @@ for(i in timesteps){
   plot_richness(species_i, landscape_i)
 }
 dev.off()
-#OFFLINE PLOT
+```
+
+```{r eval=T, echo=F, out.width='700px', height='200px'}
+#PLOT OFFLINE PLOT
+knitr::include_graphics("../inst/logo/richness_plot.png")
 ```
 
 
@@ -299,7 +299,7 @@ cor(landscape_t0$temp, landscape_t0$rich)
 ```
 
 Second, we plot the response curve.
-```{r eval=TRUE, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
+```{r eval=T, fig.width=7, fig.height=6, fig.retina=2, message=F, results='hide'}
 # prepare data with temperature and predicted richness from our model
 data_plot <- data.frame(cbind(landscape_t0$temp, predict(glm.uni,type = "response")))
 # sort data for plotting and ommit NA's
