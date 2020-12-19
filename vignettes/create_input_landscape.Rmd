@@ -57,6 +57,7 @@ library(raster)
 Second, create the rasterbricks containing the spatio-temporal distribution of the environmental variables of interest. Here, we will use the temperature, aridity and area rasters of the 1d example of South America that has been used in the [**introduction vignette**](introduction.html). We first load the three corresponding raster bricks from the hard drive.
 
 ```{r eval=FALSE, message=F}
+setwd(datapath)
 temperature_brick <- brick('InputRasters/SouthAmerica/temperature_rasters.grd')
 aridity_brick <- brick('InputRasters/SouthAmerica/aridity_rasters.grd')
 area_brick <- brick('InputRasters/SouthAmerica/area_rasters.grd')
