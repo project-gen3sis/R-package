@@ -197,9 +197,9 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
     habitable_j <- habitable_mask[ind_j]
 
     # IMPORTANT
-    # We want efficient itrerations over sparse matrices
+    # We want efficient iterations over sparse matrices
     # sparse matrices are column compressed, We therefore flip the indices and local distances are
-    # indexed local_distance[dest, src].
+    # indexed as local_distance[dest, src].
     cost <- cost_function(cell_j, as.logical(habitable_j), cell_i, as.logical(habitable_i))
     if(cost == Inf){
       cost <- 0
