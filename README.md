@@ -61,4 +61,4 @@ Make sure you have the latest gen3sis version
 paste("gen3sis version:", packageVersion("gen3sis"))
 ```
 
-Package mantined by Oskar Hagen [(oskar@hagen.bio)](https://www.hagen.bio)
+Package maintained by Oskar Hagen [(oskar@hagen.bio)](https://www.hagen.bio)
