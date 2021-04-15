@@ -7,6 +7,8 @@ This is the repository for the R-package of the gen3sis engine.
 
 gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modular implementation. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes.
 
+For more details see [gen3sis methods](https://doi.org/10.1101/2021.03.24.436109)
+
 gen3sis is licensed under a [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html) ETHZ 2020 <doi.org/10.5905/ethz-1007-251>
 
 Package authorship according to: http://epub.wu.ac.at/3269/1/Report114.pdf
