@@ -229,7 +229,8 @@ run_simulation <- function(config = NA,
     if(verbose>=2){
       cat("ecology \n")
     }
-
+    val <- loop_ecology(val$config, val$data, val$vars)
+    
     # #     #-------------------------------------------------------------------#
     # #     ######## end of time-step loop variable update (simulation.R) #######
     # #     #-------------------------------------------------------------------#
@@ -267,7 +268,7 @@ run_simulation <- function(config = NA,
       print("max number of species reached, breaking loop")
       break
     }
-    val <- loop_ecology(val$config, val$data, val$vars)
+    
     if( val$vars$flag == "max_number_coexisting_species") {
       print("max number of coexisting species reached, breaking loop")
       break
