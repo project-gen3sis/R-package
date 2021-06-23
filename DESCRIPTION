@@ -22,6 +22,7 @@ Depends: R (>= 3.5.0)
 Imports: Rcpp (>= 0.12.16), Matrix, methods, utils, raster, gdistance, sp, stringr, tools, grDevices
 Suggests: 
     knitr,
+    markdown,
     testthat (>= 2.1.0),
     rmarkdown,
     formatR
