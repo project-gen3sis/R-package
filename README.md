@@ -27,10 +27,13 @@ you can also install the latest development release from GitHub via
 devtools::install_github(repo = "project-gen3sis/R-package/", 
   dependencies = TRUE, build_vignettes = TRUE)
 ```
-Below the status of the automatic Git CI tests on the master branch
+Below the status of the automatic Git CI R-CMD-check tests
 
-[![Build Actions Status](https://github.com/project-gen3sis/R-package/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/project-gen3sis/R-package/actions)
+development branch:
+[![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=development)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
 
+master branch:
+[![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=master)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
 ### How to run one simple simulation
 
 Load and run a simulation with the desired config and landscapes. Exemple data is provided with the package
