@@ -29,9 +29,7 @@ devtools::install_github(repo = "project-gen3sis/R-package/",
 ```
 Below the status of the automatic Git CI tests on the master branch
 
-[![Build Actions Status](https://github.com/ohagen/project-gen3sis/R-package/workflows/R-CMD-check/badge.svg)](https://github.com/ohagen/project-gen3sis/R-package/actions)
-
-R-CMD-check
+[![Build Actions Status](https://github.com/project-gen3sis/R-package/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/project-gen3sis/R-package/actions)
 
 ### How to run one simple simulation
 
