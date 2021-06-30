@@ -29,9 +29,9 @@ devtools::install_github(repo = "project-gen3sis/R-package/",
 ```
 Below the status of the automatic Git CI R-CMD-check tests
 
-[![development-R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=development)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
+DEVELOPMENT [![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=development)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
 
-[![master-R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=master)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
+MASTER [![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=master)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
 ### How to run one simple simulation
 
 Load and run a simulation with the desired config and landscapes. Exemple data is provided with the package
