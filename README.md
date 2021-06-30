@@ -27,7 +27,7 @@ you can also install the latest development release from GitHub via
 devtools::install_github(repo = "project-gen3sis/R-package/", 
   dependencies = TRUE, build_vignettes = TRUE)
 ```
-Below the status of the automatic Git CI R-CMD-check tests
+Below the status of the automatic CI R-CMD-check tests
 
 DEVELOPMENT [![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=development)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
 
