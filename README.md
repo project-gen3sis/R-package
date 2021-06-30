@@ -27,9 +27,11 @@ you can also install the latest development release from GitHub via
 devtools::install_github(repo = "project-gen3sis/R-package/", 
   dependencies = TRUE, build_vignettes = TRUE)
 ```
-Below the status of the automatic Travis CI tests on the master branch
+Below the status of the automatic Git CI tests on the master branch
 
-[![Build Status](https://travis-ci.com/project-gen3sis/R-package.svg?branch=master)](https://travis-ci.com/project-gen3sis/R-package)
+[![Build Actions Status](https://github.com/ohagen/project-gen3sis/R-package/workflows/R-CMD-check/badge.svg)](https://github.com/ohagen/project-gen3sis/R-package/actions)
+
+R-CMD-check
 
 ### How to run one simple simulation
 
