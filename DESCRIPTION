@@ -17,7 +17,7 @@ Authors@R: c(
 Description: Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes on biodiversity patterns as a general term.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Depends: R (>= 3.5.0)
 Imports: Rcpp (>= 0.12.16), Matrix, methods, utils, raster, gdistance, sp, stringr, tools, grDevices
 Suggests: 
