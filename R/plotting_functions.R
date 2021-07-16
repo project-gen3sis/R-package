@@ -26,12 +26,12 @@ plot_species_presence <- function(species, landscape) {
 #' @export
 plot_species_abundance <- function(species, landscape) {
   presence <- species[["abundance"]]
-  conditional_plot(paste0("species_presence_", species$id),
+  conditional_plot(paste0("species_abundance_", species$id),
                    landscape,
                    plot_raster_single,
                    presence,
                    landscape,
-                   paste("Species", species[["id"]]))
+                   paste("Abundance Species", species[["id"]]))
 }
 
 
