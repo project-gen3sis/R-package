@@ -10,7 +10,7 @@ gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modula
 gen3sis is licensed under a [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html) deriving from ETHZ 2020 <doi.org/10.5905/ethz-1007-251> and has package authorship according to: http://epub.wu.ac.at/3269/1/Report114.pdf
 
 ### The main methods are described here:
-* O Hagen, B Flueck, F Fopp, JS Cabral, F Hartig, M Pontarp, TF Rangel, L Pellissier (2021) gen3sis: the general engine for eco-evolutionary simulations on the origins of biodiversity. bioRxiv. [doi:10.1101/2021.03.24.436109](https://doi.org/10.1101/2021.03.24.436109)
+* O Hagen, B Flueck, F Fopp, JS Cabral, F Hartig, M Pontarp, TF Rangel, L Pellissier (2021) gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth’s biodiversity. PLOS Biology. [doi:10.1371/journal.pbio.3001340](https://doi.org/10.1371/journal.pbio.3001340)
 
 
 ### How to install gen3sis
