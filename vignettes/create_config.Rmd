@@ -69,7 +69,7 @@ This is how the *config_empty.R* looks like. We present them by main areas and e
 # Landscape:
 # Publications:
 # Description:
-```
+>```
 >***Settings***
 >```{r eval=FALSE}
 # set the random seed for the simulation.
@@ -90,14 +90,14 @@ trait_names = c("dispersal")
 # listed, set to NA:           env. variable will be scaled from [min, max] to [0, 1]
 # listed with a given range r: env. variable will be scaled from [r1, r2] to [0, 1]
 environmental_ranges = list( )
-```
+>```
 >***Observer***
 >```{r eval=FALSE}
 end_of_timestep_observer = function(data, vars, config){
   # the list of all species can be found in data$all_species.
   # the current landscape can be found in data$landscape.
 }
-```
+>```
 >***Initialization***
 >```{r eval=FALSE}
 # the initial abundance of a newly colonized cell, both during setup and later when 
@@ -107,7 +107,7 @@ initial_abundance = 1
 create_ancestor_species <- function(landscape, config) {
  stop("create the initial species here")
 }
-```
+>```
 >***Core Processes***
 >```{r eval=FALSE}
 ### Dispersal
@@ -137,7 +137,7 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
 apply_ecology <- function(abundance, traits, environment, config) {
   stop("calculate species abundances and deaths here")
 }
-```
+>```
 :::
 
 Note that the main core functions have stop warnings by default, this forces the configuration to be edited according to the rules and assumptions (model) that is to be created. You can do this from scratch or by modifying an existing config.
@@ -161,7 +161,7 @@ The first section of the config file contains metadata. It informs the user when
 # Publications: R-package gen3sis
 # Description: Example config used at the introduction vignette and similar to case study global configs in Hagen et al. 2020.
 # O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. gen3sis: the general engine for eco-evolutionary simulations on the origins of biodiversity.
-```
+>```
 
 
 ### ***Settings***
@@ -176,7 +176,7 @@ max_number_of_coexisting_species = 10000
 trait_names = c("temp",  "dispersal")
 environmental_ranges = list("temp" = c(-45, 55), "area"=c(2361.5, 12923.4), 
     "arid"=c(1,0.5))
-```
+>```
 
 ### ***Observer***
 With the observer function, changes over time in any abiotic or biotic information of the virtual world can be recorded by defining the outputs that are saved at specified time steps, and results can be saved and plotted in real-time as the model runs. 
@@ -187,7 +187,7 @@ end_of_timestep_observer = function(data, vars, config){
   save_species()
   plot_richness(data$all_species, data$landscape)
 }
-```
+>```
 
 Combined plots can be generated inside the observer function as for example:
 
@@ -202,7 +202,7 @@ end_of_timestep_observer = function(data, vars, config){
     plot(0,type='n',axes=FALSE,ann=FALSE)
     mtext("STATUS",1)
 }
-```
+>```
 
 ### ***Initialization***
 The initialization function creates the ancestor species at the start of the simulation. Users can define the number of ancestor from a single to multiple species, their distribution within the paleolandscape and their trait values.
@@ -230,7 +230,7 @@ create_ancestor_species <- function(landscape, config) {
   }
   return(new_species)
 }
-```
+>```
 
 ### ***Core Processes***
 
@@ -242,14 +242,14 @@ get_dispersal_values <- function(n, species, landscape, config) {
   values <- rweibull(n, shape = 1.5, scale = 133)
   return(values) 
 }
-```
+>```
 
 The histogram of 100 draws from the dispersal function used above.
 
 >```{r eval=T, fig.width=6, fig.height=3.2}
 n <- 100
 hist(rweibull(n, shape = 1.5, scale = 133), col="black")
-```
+>```
 
 ### ***Speciation***
 The speciation iterates over every species separately, registers populations’ geographic occupancy (species range), and determines when geographic isolation between population clusters is higher than a user-defined threshold, triggering a lineage splitting event of cladogenesis. The clustering of occupied sites is based on the species’ dispersal capacity and the landscape connection costs. Over time, disconnected clusters gradually accumulate incompatibility, analogous to genetic differentiation. When the divergence between clusters is above the speciation threshold, those clusters become two or more distinct species, and a divergence matrix reset follows. On the other hand, if geographic clusters come into secondary contact before the speciation occurs, they coalesce and incompatibilities are gradually reduced to zero. In our example, speciation takes place after 2 time-steps of isolation and the divergence increase is the same for all species as indicated by *get_divergence_threshold*. Since our landscape consists of 1 myr time-steps, these 2 time-steps correspond to a span of 2 myr.
@@ -259,7 +259,7 @@ divergence_threshold = 2
 get_divergence_factor <- function(species, cluster_indices, landscape, config) {
   return(1) 
   }
-```
+>```
 
 ### ***Evolution***
 
@@ -283,7 +283,7 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
   traits[, "temp"] <- traits[, "temp"] + mutation_deltas
   return(traits)
 }
-```
+>```
 
 ###  ***Ecology***
 The ecology function determines the abundance or presence of the populations in occupied sites of each species. The function iterates over all occupied sites and updates the species population abundances or presences on the basis of local environmental values, updated co-occurrence patterns and species traits. The function takes as input the species abundance, species trait, species divergence and clusters, and the landscape values. In our example, we calculate abundances in a site based on how close the species is to the site temperature. We scale the values to avoid small numbers and apply a carrying capacity based on aridity and temperature corrected by the area of a site. If abundances are below 1, species are considered extinct, if total abundance in a site is above the carrying capacity, small abundances are removed progressively and randomly distributed across the present species until total abundance is smaller or equal to the carrying capacity.
@@ -314,7 +314,7 @@ apply_ecology <- function(abundance, traits, landscape, config) {
   }
   return(abundance)
 }
-```
+>```
 
 ## 3. Modify a config {#modify}
 
