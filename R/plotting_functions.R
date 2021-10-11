@@ -18,6 +18,25 @@ plot_species_presence <- function(species, landscape) {
 }
 
 
+#' Plot a species' abundance on a given landscape
+#'
+#' @param species a single species object
+#' @param landscape a landscape object
+#' @example inst/examples/plot_species_abundance_help.R
+#' @export
+plot_species_abundance <- function(species, landscape) {
+  presence <- species[["abundance"]]
+  conditional_plot(paste0("species_abundance_", species$id),
+                   landscape,
+                   plot_raster_single,
+                   presence,
+                   landscape,
+                   paste("Abundance Species", species[["id"]]))
+}
+
+
+
+
 #' Plot the environment variable of a given landscape
 #'
 #' @param landscape the landscape to plot the environment from
