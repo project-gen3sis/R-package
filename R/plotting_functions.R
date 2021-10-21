@@ -356,6 +356,7 @@ plot_raster_single <- function(values, landscape, title, no_data = 0, col, legen
 #' this will result in ncol(values) raster plots.
 #' @param landscape a landscape to plot the values onto
 #' @param no_data what value should be used for missing data present in the values parameter
+#' @return no return value, called for plot
 #'
 #' @export
 plot_raster_multiple <- function(values, landscape, no_data = 0) {
