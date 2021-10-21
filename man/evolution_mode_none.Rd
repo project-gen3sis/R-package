@@ -15,6 +15,9 @@ evolution_mode_none(species, cluster_indices, landscape, config)
 
 \item{config}{the general config}
 }
+\value{
+returns an invisible empty species traits when no evolution is considered
+}
 \description{
 No evolution considered
 }
