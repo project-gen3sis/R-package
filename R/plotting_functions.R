@@ -5,6 +5,8 @@
 #' @param species a single species object
 #' @param landscape a landscape object
 #' @example inst/examples/plot_species_presence_help.R
+#' @return no return value, called for plot
+#' 
 #' @export
 plot_species_presence <- function(species, landscape) {
   presence <- species[["abundance"]]
@@ -23,6 +25,8 @@ plot_species_presence <- function(species, landscape) {
 #' @param species a single species object
 #' @param landscape a landscape object
 #' @example inst/examples/plot_species_abundance_help.R
+#' @return no return value, called for plot
+#' 
 #' @export
 plot_species_abundance <- function(species, landscape) {
   presence <- species[["abundance"]]
@@ -40,6 +44,7 @@ plot_species_abundance <- function(species, landscape) {
 #' Plot the environment variable of a given landscape
 #'
 #' @param landscape the landscape to plot the environment from
+#' @return no return value, called for plot
 #'
 #' @export
 plot_landscape <- function(landscape) {
@@ -56,6 +61,7 @@ plot_landscape <- function(landscape) {
 #' @param landscape the input landscape to be plotted
 #' @param slices the amount of slices though time between start and end (default value is 2).
 #' @param start_end_times the stating and ending times of the simulation (default is NULL, takes the oldest and most recent available)
+#' @return no return value, called for plot
 #'
 #' @export
 plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
@@ -86,6 +92,8 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 #' @importFrom graphics layout legend axis mtext points
 #' @importFrom grDevices rgb colorRampPalette
 #' @importFrom stringr str_split str_remove
+#' @return no return value, called for plot
+#' 
 #' @export
 plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   oldpar <- par(no.readonly = TRUE)
