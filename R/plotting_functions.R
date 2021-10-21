@@ -249,6 +249,8 @@ plot_richness <- function(species_list, landscape) {
 #' @param disturb value randomly added to shift each species symbol. Useful to enhance visualization in case of multiple species overlaps  
 #' @param max_sps maximum number of plotted species, not recommended above 20
 #' @example inst/examples/plot_ranges_help.R
+#' @return no return value, called for plot
+#' 
 #' @export
 plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   disturb=abs(disturb)
@@ -336,6 +338,8 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
 #' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
 #' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
 #' @example inst/examples/plot_raster_single_help.R
+#' @return no return value, called for plot
+#' 
 #' @export
 plot_raster_single <- function(values, landscape, title, no_data = 0, col, legend=TRUE) {
   img <- cbind(landscape[["coordinates"]], no_data)
