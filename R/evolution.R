@@ -62,6 +62,7 @@ evolve <- function(species, landscape, distance_matrix, config){
 #' @param cluster_indices indices to assign cells to geographic clusters
 #' @param landscape the current landscape
 #' @param config the general config
+#' @return returns an invisible empty species traits when no evolution is considered
 #'
 #' @export
 evolution_mode_none <- function(species, cluster_indices, landscape, config){
