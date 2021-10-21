@@ -14,7 +14,7 @@ Authors@R: c(
   person(c("Thiago", "F."), "Rangel", email = "rangel.tf@gmail.com", role = c("aut"), comment = "Department of Ecology, Universidade Federal de Goiás, Goiás, Brazil"),
   person("Theo", "Gaboriau", email = "theo.gaboriau@unil.ch", role = c("ctb"), comment = "Depatment of Computational Biology, Lausanne University, Switzerland"),
   person("Loïc", "Pellissier", email = "loic.pellissier@usys.ethz.ch", role = c("aut","ths"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"))
-Description: Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes on biodiversity patterns as a general term.
+Description: Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes on biodiversity patterns as a general term. Reference: Oskar Hagen, Benjamin Flueck, Fabian Fopp, Juliano S. Cabral, Florian Hartig, Mikael Pontarp, Thiago F. Rangel, Loïc Pellissier (2021) "gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth's biodiversity" <doi:10.1371/journal.pbio.3001340>
 License: GPL-3
 Encoding: UTF-8
 LazyData: false
