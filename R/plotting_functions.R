@@ -212,6 +212,8 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
 #' @param species_list a list of species to use in the richness calculation
 #' @param landscape a corresponding landscape object
 #' @example inst/examples/plot_richness_help.R
+#' @return no return value, called for plot
+#' 
 #' @export
 plot_richness <- function(species_list, landscape) {
   richness <- get_geo_richness(species_list, landscape)
