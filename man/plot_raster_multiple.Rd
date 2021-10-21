@@ -14,6 +14,9 @@ this will result in ncol(values) raster plots.}
 
 \item{no_data}{what value should be used for missing data present in the values parameter}
 }
+\value{
+no return value, called for plot
+}
 \description{
 Plot a set of values onto a given landscape
 }

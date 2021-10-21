@@ -11,6 +11,9 @@ plot_species_abundance(species, landscape)
 
 \item{landscape}{a landscape object}
 }
+\value{
+no return value, called for plot
+}
 \description{
 Plot a species' abundance on a given landscape
 }

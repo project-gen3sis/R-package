@@ -19,6 +19,9 @@ plot_raster_single(values, landscape, title, no_data = 0, col, legend = TRUE)
 
 \item{legend}{corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot}
 }
+\value{
+no return value, called for plot
+}
 \description{
 Plot a single set of values onto a given landscape
 }

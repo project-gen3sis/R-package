@@ -13,6 +13,9 @@ plot_landscape_overview(landscape, slices = 2, start_end_times = NULL)
 
 \item{start_end_times}{the stating and ending times of the simulation (default is NULL, takes the oldest and most recent available)}
 }
+\value{
+no return value, called for plot
+}
 \description{
 Plot the outline of a given landscape over time
 }

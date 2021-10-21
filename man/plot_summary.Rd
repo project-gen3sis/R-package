@@ -13,6 +13,9 @@ plot_summary(output, summary_title = NULL, summary_legend = NULL)
 
 \item{summary_legend}{either a staring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.}
 }
+\value{
+no return value, called for plot
+}
 \description{
 Plot simulation default summary object
 }

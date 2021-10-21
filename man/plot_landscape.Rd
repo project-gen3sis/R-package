@@ -9,6 +9,9 @@ plot_landscape(landscape)
 \arguments{
 \item{landscape}{the landscape to plot the environment from}
 }
+\value{
+no return value, called for plot
+}
 \description{
 Plot the environment variable of a given landscape
 }

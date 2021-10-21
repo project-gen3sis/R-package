@@ -15,6 +15,9 @@ plot_ranges(species_list, landscape, disturb = 0, max_sps = 10)
 
 \item{max_sps}{maximum number of plotted species, not recommended above 20}
 }
+\value{
+no return value, called for plot
+}
 \description{
 Plot species ranges of the given list of species on a landscape
 }

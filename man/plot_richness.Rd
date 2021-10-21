@@ -11,6 +11,9 @@ plot_richness(species_list, landscape)
 
 \item{landscape}{a corresponding landscape object}
 }
+\value{
+no return value, called for plot
+}
 \description{
 Plot the richness of the given list of species on a landscape
 }
