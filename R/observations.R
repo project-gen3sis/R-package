@@ -18,6 +18,7 @@ call_main_observer <- function(data, vars, config) {
 
 
 #' This function can be called within the observer function to save the current occupancy pattern
+#' @return no return value, called for side effects
 #' 
 #' @example inst/examples/save_occupancy_help.R
 #' @export
@@ -35,6 +36,7 @@ save_occupancy <- function() {
 
 
 #' This function can be called within the observer function to save the current richness pattern
+#' @return no return value, called for side effects
 #' 
 #' @seealso \code{\link{save_species}}   
 #' @example inst/examples/save_richness_help.R
@@ -52,6 +54,7 @@ save_richness <- function() {
 
 
 #' This function can be called within the observer function to save the current phylogeny.
+#' @return no return value, called for side effects
 #' 
 #' @example inst/examples/save_phylogeny_help.R
 #' @export
@@ -69,6 +72,7 @@ save_phylogeny <- function(){
 
 
 #' This function can be called within the observer function to save the full species list.
+#' @return no return value, called for side effects
 #' 
 #' @seealso \code{\link{save_landscape}}   
 #' @example inst/examples/save_species_help.R
@@ -88,7 +92,8 @@ save_species <- function() {
 #' This function can be called within the observer function to save 
 #' the current landscape, can be called independently by the user and is called by 
 #' other observer functions relying on the landscape to be present (e.g. save_species)
-#'
+#' @return no return value, called for side effects
+#' 
 #' @seealso \code{\link{save_species}}   
 #' @example inst/examples/save_landscape_help.R
 #' @export
@@ -106,6 +111,7 @@ save_landscape <- function() {
 
 
 #' This function can be called within the observer function to save the species abundances.
+#' @return no return value, called for side effects
 #' 
 #' @seealso \code{\link{save_species}}   
 #' @example inst/examples/save_abundance_help.R
@@ -116,6 +122,7 @@ save_abundance <- function() {
 
 
 #' This function can be called within the observer function to save the species traits.
+#' @return no return value, called for side effects
 #' 
 #' @seealso \code{\link{save_species}}   
 #' @example inst/examples/save_traits_help.R
@@ -126,6 +133,7 @@ save_traits <- function() {
 
 
 #' This function can be called within the observer function to save the compressed species divergence.
+#' @return no return value, called for side effects
 #' 
 #' @seealso \code{\link{save_species}}   
 #' @example inst/examples/save_divergence_help.R

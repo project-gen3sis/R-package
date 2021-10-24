@@ -6,6 +6,9 @@
 \usage{
 save_divergence()
 }
+\value{
+no return value, called for side effects
+}
 \description{
 This function can be called within the observer function to save the compressed species divergence.
 }

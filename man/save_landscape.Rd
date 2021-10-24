@@ -8,6 +8,9 @@ other observer functions relying on the landscape to be present (e.g. save_speci
 \usage{
 save_landscape()
 }
+\value{
+no return value, called for side effects
+}
 \description{
 This function can be called within the observer function to save 
 the current landscape, can be called independently by the user and is called by 

@@ -6,6 +6,9 @@
 \usage{
 save_traits()
 }
+\value{
+no return value, called for side effects
+}
 \description{
 This function can be called within the observer function to save the species traits.
 }
