@@ -109,6 +109,7 @@ temp_30 <- rasterFromXYZ(landscapes$temp[, c(1,2,33)])
 temp_0 <- rasterFromXYZ(landscapes$temp[, c(1,2,3)])   
 
 # TEMPERATURE
+oldpar <- par(no.readonly = TRUE)
 par(mar=c(1,2,3,1), oma=c(0,0,3,0))
 layout(matrix(c(1,1,1,4,
                 2,2,2,4,
@@ -151,7 +152,7 @@ legend_df <- as.data.frame(cbind(seq(0, length(arid_breaks)-1, length.out=(lengt
 legend_image <- rasterFromXYZ(legend_df, res=0.01)
 plot(legend_image, legend.only=T, col=arid_colors, horizontal=T, smallplot=c(0.2, 0.8, 0.55, 0.7), 
 axis.args=list(at=seq(minarid, maxarid, 0.2),labels=seq(minarid, maxarid, 0.2)))
-
+par(oldpar)
 # # AREA
 # area_300 <- rasterFromXYZ(landscapes$area[, c(1,2,68)])
 # area_65 <- rasterFromXYZ(landscapes$area[, c(1,2,38)])
@@ -235,12 +236,14 @@ After having run the simulation, we can load and plot the species richness at di
 
 ```{r eval=F, echo=T, fig.width=7, fig.height=2}
 timesteps <- c(40, 20, 0)
+oldpar <- par(no.readonly = TRUE)
 par(mfrow=c(1,3))
 for(i in timesteps){
   landscape_i <- readRDS(file.path(datapath, paste0('output/config_southamerica/landscapes/landscape_t_', i ,'.rds')))
   species_i <- readRDS(file.path(datapath, paste0('output/config_southamerica/species/species_t_', i ,'.rds')))
   plot_richness(species_i, landscape_i)
 }
+par(oldpar)
 ```
 
 
@@ -248,12 +251,14 @@ for(i in timesteps){
 #GENERATE OFFLINE PLOT
 timesteps <- c(40, 20, 0)
 png("../inst/logo/richness_plot.png", height=500, width=1750, pointsize=28)
+oldpar <- par(no.readonly = TRUE)
 par(mfrow=c(1,3))
 for(i in timesteps){
   landscape_i <- readRDS(file.path(datapath, paste0('output/config_southamerica/landscapes/landscape_t_', i ,'.rds')))
   species_i <- readRDS(file.path(datapath, paste0('output/config_southamerica/species/species_t_', i ,'.rds')))
   plot_richness(species_i, landscape_i)
 }
+par(oldpar)
 dev.off()
 ```
 
