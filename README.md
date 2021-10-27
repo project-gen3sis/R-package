@@ -86,7 +86,7 @@ The gen3sis workflow is inspired by the RevBayes workflow: https://revbayes.gith
 
 - fix bracket compatibilities with new R version
 - added new abundance plotting function 
-- 
+
 10.2021 - v.1.4 release
 
 - fix comb phylogeny
