@@ -75,4 +75,13 @@ The branch hotfix-development exists for small (one commit only) changes that ar
 New features should never be merged directly into master. Only hotfixes to the current release may be merged into master. For hotfixes, create a separate branch from master, make the fix and verify it, and then merge the hotfix branch into master and development. Similarly to above, the hotfix-master branch exists for small (one commit only) bugfixes to the current release. A pull request can then be created to merge those changes into master and development.
 The gen3sis workflow is inspired by the RevBayes workflow: https://revbayes.github.io/developer
 
-
+### Version history
+06.2020 - v.1.0 release
+08.2020 - v.1.1 release	 
+12.2020 - v.1.2 release	 
+07.2021 - v.1.3 release	 
+- fix bracket compatibilities with new R version
+- added new abundance plotting function 
+10.2021 - v.1.4 release
+- fix comb phylogeny
+- color deficient, blind and B&W safe colours
