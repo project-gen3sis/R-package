@@ -374,11 +374,21 @@ plot_raster_multiple <- function(values, landscape, no_data = 0) {
 }
 
 
-#' Define gen3sis richness color scale
+#' Define gen3sis richness color scale which is colour-vision deficient and colour-blind people safe based on scientific colour maps by Fabio Crameri
 #' @param n corresponds to the \link{colorRampPalette} parameter 
 #' @return returns a \link{colorRampPalette} function with the gen3sis richness colors
 #' @export
 color_richness <- colorRampPalette(
+  c("#B2F2FD", "#81EEEA", "#61E5C9", "#63DAA0", "#73CE79", "#85BF51", "#94AD2F", "#9B951B",
+    "#9C7E1F", "#9A692B", "#985538", "#944444", "#933251", "#901F61", "#8C0172")
+)
+
+
+#' Define gen3sis richness color scale for non colour-vision deficient and colour-blind people
+#' @param n corresponds to the \link{colorRampPalette} parameter 
+#' @return returns a \link{colorRampPalette} function with the gen3sis richness colors
+#' @export
+color_richness_non_CVDCBP <- colorRampPalette(
   c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
     "#6DCD59FF", "#B4DE2CFF", "#FDE725FF", "#FFA500",   "#FF2900",   "#C40000",   "#8B0000", "#8B0000")
 )
