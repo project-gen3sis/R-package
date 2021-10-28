@@ -95,12 +95,21 @@ The gen3sis workflow is inspired by the RevBayes workflow: https://revbayes.gith
 ### Dependencies and Credits
 
 **Rcpp** Dirk Eddelbuettel and James Joseph Balamuta (2018). Extending R with C++: A Brief Introduction to Rcpp. The American Statistician. 72(1). URL https://doi.org/10.1080/00031305.2017.1375990.
+
 **BH** Dirk Eddelbuettel, John W. Emerson and Michael J. Kane (2021). BH: Boost C++ Header Files. R package. https://CRAN.R-project.org/package=BH
+
 **Matrix** Douglas Bates and Martin Maechler (2019). Matrix: Sparse and Dense Matrix Classes and Methods. R package. https://CRAN.R-project.org/package=Matrix
+
 **raster** Robert J. Hijmans (2021). raster: Geographic Data Analysis and Modeling. R package. https://CRAN.R-project.org/package=raster
+
 **gdistance** van Etten, J. (2017). R package gdistance: Distances and routes on geographical grids. Journal of Statistical Software, 76(1), 1–21. https://doi.org/10.18637/jss.v076.i13
+
 **sp** Roger S. Bivand, Edzer Pebesma, Virgilio Gomez-Rubio, 2013. Applied spatial data analysis with R, Second edition. Springer, NY. https://asdar-book.org/
+
 **stringr** Hadley Wickham (2019). stringr: Simple, Consistent Wrappers for Common String Operations. R package. https://CRAN.R-project.org/package=stringr
+
 **testthat** Hadley Wickham (2011). testthat: Get Started with Testing. The R Journal, vol. 3, no. 1, pp. 5--10, https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf
+
 **formatR** Yihui Xie (2021). formatR: Format R Code Automatically. R package. https://CRAN.R-project.org/package=formatR
+
 **scico** Crameri, F. (2018). Scientific colour maps. Zenodo. http://doi.org/10.5281/zenodo.1243862 & Crameri, F., G.E. Shephard, and P.J. Heron (2020). The misuse of colour in science communication, Nature Communications, 11, 5444. doi:10.1038/s41467-020-19160-7
