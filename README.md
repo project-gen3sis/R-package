@@ -24,7 +24,7 @@ install.packages("gen3sis")
 you can also install the latest development release from GitHub via 
 
 ```{r}
-devtools::install_github(repo = "project-gen3sis/R-package/", 
+devtools::install_github(repo = "project-gen3sis/R-package", 
   dependencies = TRUE, build_vignettes = TRUE)
 ```
 Below the status of the automatic CI R-CMD-check tests
