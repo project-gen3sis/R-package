@@ -94,6 +94,7 @@ The gen3sis workflow is inspired by the RevBayes workflow: https://revbayes.gith
 
 
 ### Credits
+We thank the developers of the following methods and dependencies:
 
 - **Rcpp** Dirk Eddelbuettel and James Joseph Balamuta (2018). Extending R with C++: A Brief Introduction to Rcpp. The American Statistician. 72(1). URL https://doi.org/10.1080/00031305.2017.1375990.
 
