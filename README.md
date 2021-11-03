@@ -55,7 +55,7 @@ Plot the summary statistics of a simulation
 plot_summary(sim)
 ```
 
-# Check package version
+#### Check package version
 
 Make sure you have the latest gen3sis version
 
