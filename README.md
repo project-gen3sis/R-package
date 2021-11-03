@@ -3,7 +3,7 @@
 
 # General Engine for Eco-Evolutionary Simulations
 
-This is the repository for the R-package of the gen3sis engine.
+This is the repository for the R-package of the gen3sis engine [project-gen3sis git](https://github.com/project-gen3sis/R-package).
 
 gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modular implementation. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes.
 
