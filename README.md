@@ -9,7 +9,7 @@ gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modula
 
 gen3sis is licensed under a [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html) deriving from ETHZ 2020 <doi.org/10.5905/ethz-1007-251> and has package authorship according to: http://epub.wu.ac.at/3269/1/Report114.pdf
 
-### The main methods are described here:
+### How to cite gen3sis:
 * O Hagen, B Flueck, F Fopp, JS Cabral, F Hartig, M Pontarp, TF Rangel, L Pellissier (2021) gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth’s biodiversity. PLOS Biology. [doi:10.1371/journal.pbio.3001340](https://doi.org/10.1371/journal.pbio.3001340)
 
 
@@ -32,7 +32,7 @@ Below the status of the automatic CI R-CMD-check tests
 DEVELOPMENT [![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=development)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
 
 MASTER [![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=master)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
-### How to run one simple simulation
+### How to run one simulation
 
 Load and run a simulation with the desired config and landscapes. Exemple data is provided with the package
 ```{r}
@@ -55,7 +55,7 @@ Plot the summary statistics of a simulation
 plot_summary(sim)
 ```
 
-### Check package version
+# Check package version
 
 Make sure you have the latest gen3sis version
 
@@ -64,7 +64,7 @@ Make sure you have the latest gen3sis version
 paste("gen3sis version:", packageVersion("gen3sis"))
 ```
 
-### Contribution process
+### How to contribute
 The main branches of the gen3sis repo are:
 *	master
 *	development
