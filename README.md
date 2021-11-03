@@ -65,7 +65,7 @@ paste("gen3sis version:", packageVersion("gen3sis"))
 ```
 
 ### Version history
-- 06.2020 - v.1.0 release
+- v.1.0 release 06.2020
 
 - v.1.1 release	08.2020 
 
