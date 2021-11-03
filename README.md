@@ -9,11 +9,11 @@ gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modula
 
 gen3sis is licensed under a [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html) deriving from ETHZ 2020 <doi.org/10.5905/ethz-1007-251> and has package authorship according to: http://epub.wu.ac.at/3269/1/Report114.pdf
 
-### How to cite gen3sis:
+### How to cite
 * O Hagen, B Flueck, F Fopp, JS Cabral, F Hartig, M Pontarp, TF Rangel, L Pellissier (2021) gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth’s biodiversity. PLOS Biology. [doi:10.1371/journal.pbio.3001340](https://doi.org/10.1371/journal.pbio.3001340)
 
 
-### How to install gen3sis
+### How to install
 
 gen3sis is avabaile on [CRAN](https://CRAN.R-project.org/package=gen3sis). You can install the latest CRAN release via
 
@@ -64,17 +64,6 @@ Make sure you have the latest gen3sis version
 paste("gen3sis version:", packageVersion("gen3sis"))
 ```
 
-### How to contribute
-The main branches of the gen3sis repo are:
-*	master
-*	development
-
-The master branch should always reflect the state of the current release of gen3sis on CRAN. The development branch contains the working additions/changes to the code that are to be included in the next release.
-You should not work on either of these branches directly. Rather, to make changes or work on a new feature, you should create a separate branch off the development branch. While working on your branch, frequently merge changes from development to stay up to date. Once your work is ready, and before you merge your branch into development, make sure to merge any changes from development and verify the code is compiling and tests are passing. Once these checks have been done, create a pull request to merge your branch into development. You can request reviewers for your pull request directly via GitHub. After your pull request is approved, or if it has not been reviewed within 30 days, it will be merged into development. 
-The branch hotfix-development exists for small (one commit only) changes that are not worth creating a new branch for (for instance, small bugfixes, readme or help files edits, etc.). A pull request can then be created to merge those changes into development.
-New features should never be merged directly into master. Only hotfixes to the current release may be merged into master. For hotfixes, create a separate branch from master, make the fix and verify it, and then merge the hotfix branch into master and development. Similarly to above, the hotfix-master branch exists for small (one commit only) bugfixes to the current release. A pull request can then be created to merge those changes into master and development.
-The gen3sis workflow is inspired by the RevBayes workflow: https://revbayes.github.io/developer
-
 ### Version history
 06.2020 - v.1.0 release
 
@@ -92,7 +81,19 @@ The gen3sis workflow is inspired by the RevBayes workflow: https://revbayes.gith
 - fix comb phylogeny
 - color deficient, blind and B&W safe colours
 
-### Dependencies and Credits
+### How to contribute
+The main branches of the gen3sis repo are:
+*	master
+*	development
+
+The master branch should always reflect the state of the current release of gen3sis on CRAN. The development branch contains the working additions/changes to the code that are to be included in the next release.
+You should not work on either of these branches directly. Rather, to make changes or work on a new feature, you should create a separate branch off the development branch. While working on your branch, frequently merge changes from development to stay up to date. Once your work is ready, and before you merge your branch into development, make sure to merge any changes from development and verify the code is compiling and tests are passing. Once these checks have been done, create a pull request to merge your branch into development. You can request reviewers for your pull request directly via GitHub. After your pull request is approved, or if it has not been reviewed within 30 days, it will be merged into development. 
+The branch hotfix-development exists for small (one commit only) changes that are not worth creating a new branch for (for instance, small bugfixes, readme or help files edits, etc.). A pull request can then be created to merge those changes into development.
+New features should never be merged directly into master. Only hotfixes to the current release may be merged into master. For hotfixes, create a separate branch from master, make the fix and verify it, and then merge the hotfix branch into master and development. Similarly to above, the hotfix-master branch exists for small (one commit only) bugfixes to the current release. A pull request can then be created to merge those changes into master and development.
+The gen3sis workflow is inspired by the RevBayes workflow: https://revbayes.github.io/developer
+
+
+### Credits
 
 **Rcpp** Dirk Eddelbuettel and James Joseph Balamuta (2018). Extending R with C++: A Brief Introduction to Rcpp. The American Statistician. 72(1). URL https://doi.org/10.1080/00031305.2017.1375990.
 
