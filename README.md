@@ -32,7 +32,9 @@ Below the status of the automatic CI R-CMD-check tests
 DEVELOPMENT [![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=development)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
 
 MASTER [![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=master)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
-### How to run one simulation
+### How to use
+
+#### Run one simulation
 
 Load and run a simulation with the desired config and landscapes. Exemple data is provided with the package
 ```{r}
@@ -47,18 +49,16 @@ sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"
 ```
 A summary statistics is stored at 'sim' more data can be save using the oberver function
 
-### How to visualize a simulation
+####  Visualize a simulation
 
 Plot the summary statistics of a simulation
-
 ```{r}
 plot_summary(sim)
 ```
 
-#### Check package version
+#### Check installed version
 
 Make sure you have the latest gen3sis version
-
 ```{r}
 #print package version
 paste("gen3sis version:", packageVersion("gen3sis"))
