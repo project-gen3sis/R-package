@@ -67,17 +67,17 @@ paste("gen3sis version:", packageVersion("gen3sis"))
 ### Version history
 - 06.2020 - v.1.0 release
 
-- 08.2020 - v.1.1 release	 
+- v.1.1 release	08.2020 
 
-- 12.2020 - v.1.2 release	 
+- v.1.2 release	12.2020 
 
-- 07.2021 - v.1.3 release	 
-
+- v.1.3 release 07.2021
+	 
+- v.1.4 release 10.2021
   - fix bracket compatibilities with new R version
   - added new abundance plotting function 
 
-- 10.2021 - v.1.4 release
-
+- v.1.5 beta
   - fix comb phylogeny
   - color deficient, blind and B&W safe colours
 
