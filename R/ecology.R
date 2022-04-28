@@ -99,12 +99,10 @@ loop_ecology <- function(config, data, vars) {
       chars <- as.character(die_sure)
     } #end of check if any die_sure
   } #end loop over ids with at least one species...
-  species_list <- list()
-  for (species in data$all_species) {
-    cells <- names(species[["abundance"]])[species[["abundance"]] != 0]
-    updated_species <- limit_species_to_cells(species, cells)
-    species_list <- append(species_list, list(updated_species))
-  }
+
+  species_list <- vector(mode = "list", length = length(data$all_species))
+
+  species_list <- lapply(data$all_species, function(i){limit_species_to_cells(i, names(i[["abundance"]])[i[["abundance"]] != 0])})
   data$all_species <- species_list
 
   if(config$gen3sis$general$verbose>=3){
