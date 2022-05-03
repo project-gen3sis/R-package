@@ -77,9 +77,10 @@ paste("gen3sis version:", packageVersion("gen3sis"))
   - fix bracket compatibilities with new R version
   - added new abundance plotting function 
 
-- v.1.5 beta
+- v.1.5 beta - current dev
   - fix comb phylogeny
   - color deficient, blind and B&W safe colours
+  - speed-up of loop_ecology function
 
 ### How to contribute
 The main branches of the gen3sis repo are:
