@@ -100,7 +100,7 @@ loop_ecology <- function(config, data, vars) {
     } #end of check if any die_sure
   } #end loop over ids with at least one species...
 
-  # loop over all species and keep only abundances above different than zero. Possibly use >0?
+  # loop over all species and keep only abundances above different than zero.
   # bellow the for loop implemented now as lapply
     ##  species_list <- list()
     ##for (species in data$all_species) {
