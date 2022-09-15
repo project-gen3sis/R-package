@@ -138,11 +138,11 @@ init_attribute_ancestor_distribution <- function(config, data, vars) {
   vars$n_sp_alive <- n_sp
 
   data$phy <- data.frame(
-    "Ancestor" = c(1:n_sp),
+    "Ancestor" = rep(1, n_sp), # c(1:n_sp),
     "Descendent" = c(1:n_sp),
     "Speciation.Time" = config$gen3sis$general$start_time,
     "Extinction.Time" = rep(config$gen3sis$general$start_time, n_sp),
-    "Speciation.Type" = "ROOT"
+    "Speciation.Type" = c("ROOT", rep("GENETIC", n_sp -1)) # "ROOT"
   )
   return(list(config = config, data = data, vars = vars))
   
