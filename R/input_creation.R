@@ -178,7 +178,7 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
   correction <- gdistance::geoCorrection(transition_index, type = "c", multpl=TRUE)
   correction@transitionMatrix@x <- 1 / correction@transitionMatrix@x
 
-  transition_matrix <- as(transition_index@transitionMatrix, "dgCMatrix")
+  transition_matrix <- transition_index@transitionMatrix
   transition_cells <- summary(transition_matrix)
 
   tmp_cost <- numeric(nrow(transition_cells))
