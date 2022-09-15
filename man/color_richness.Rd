@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting_functions.R
 \name{color_richness}
 \alias{color_richness}
-\title{Define gen3sis richness color scale}
+\title{Define gen3sis richness color scale which is colour-vision deficient and colour-blind people safe based on scientific colour maps by Fabio Crameri}
 \usage{
 color_richness(n)
 }
@@ -13,5 +13,5 @@ color_richness(n)
 returns a \link{colorRampPalette} function with the gen3sis richness colors
 }
 \description{
-Define gen3sis richness color scale
+Define gen3sis richness color scale which is colour-vision deficient and colour-blind people safe based on scientific colour maps by Fabio Crameri
 }

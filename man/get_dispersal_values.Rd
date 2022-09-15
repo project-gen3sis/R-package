@@ -2,7 +2,7 @@
 % Please edit documentation in R/dispersal.R
 \name{get_dispersal_values}
 \alias{get_dispersal_values}
-\title{Allows the user to generates dispersal value(s) for a given species. The simulation request the user 
+\title{Allows the user to generate dispersal value(s) for a given species. The simulation request the user 
 to return a vector of dispersal values with length specified by the num_draws parameter}
 \usage{
 get_dispersal_values(num_draws, species, landscape, config)
@@ -20,7 +20,7 @@ get_dispersal_values(num_draws, species, landscape, config)
 a numerical vector of length num_draws with dispersal values
 }
 \description{
-Allows the user to generates dispersal value(s) for a given species. The simulation request the user 
+Allows the user to generate dispersal value(s) for a given species. The simulation request the user 
 to return a vector of dispersal values with length specified by the num_draws parameter
 }
 \details{

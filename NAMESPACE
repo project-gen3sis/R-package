@@ -3,6 +3,7 @@
 export(apply_ecology)
 export(apply_evolution)
 export(color_richness)
+export(color_richness_non_CVDCBP)
 export(create_ancestor_species)
 export(create_input_config)
 export(create_input_landscape)
