@@ -143,7 +143,7 @@ write_nex <- function(phy, label="sp", output_file){
     }
 
 
-    String_final <- paste("tree = ", String, ";", sep="")
+    String_final <- paste("Tree tree = ", String, ";", sep="")
     String_final <- (paste("#NEXUS",
                            "begin trees;",
                            String_final,
