@@ -64,6 +64,7 @@ get_geo_richness <- function(species_list, landscape){
 write_nex <- function(phy, label="sp", output_file){
 
   #    phy <- sgen3sis$phy  phy <- duplo  phy <- simples
+  val <-  dynGet("val")
 
   #check if we start with more than one ancestor, i.e. more than one root.
   rootphy <- phy$Speciation.Type=="ROOT"

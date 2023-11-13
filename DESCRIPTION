@@ -1,7 +1,7 @@
 Package: gen3sis
 Type: Package
 Title: General Engine for Eco-Evolutionary Simulations
-Version: 1.5.7
+Version: 1.5.8
 Authors@R: c(
   person("ETH Zürich", role=c("cph")),
   person("Oskar", "Hagen", email = "oskar@hagen.bio", role = c("aut", "cre"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"),
