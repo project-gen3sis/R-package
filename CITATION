@@ -1,6 +1,6 @@
 citEntry(
   entry = "Article",
-  author = {Oskar Hagen and Benjamin Flueck and Fabian Fopp and Juliano S. Cabral and Florian Hartig and Mikael Pontarp and Thiago F. Rangel and Loïc Pellissier},
+  author = {"Oskar Hagen and Benjamin Flueck and Fabian Fopp and Juliano S. Cabral and Florian Hartig and Mikael Pontarp and Thiago F. Rangel and Loïc Pellissier"},
   title = "gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth’s biodiversity",
   doi = "10.1371/journal.pbio.3001340",
   year = 2021,
