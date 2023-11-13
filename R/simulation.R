@@ -299,9 +299,9 @@ setup_distance_matrix <- function(config, data, vars) {
 }
 
 #-------------------------------------------#
-######## -> UPDATE LOOP STEPS VARIABLE  #######
-#--------------------------------------------#
-#' Updates the geo_richness, turnover and eco_by_sp objects
+######## -> UPDATE Extinction Times  #######
+#-------------------------------------------#
+#' Updates the extinction times 
 #'
 #' @param config the current config
 #' @param data the current data
@@ -309,22 +309,20 @@ setup_distance_matrix <- function(config, data, vars) {
 #'
 #' @return the general vals(config, data, vars) list
 #' @noRd
-update_loop_steps_variable <- function(config, data, vars) {
+update_extinction_times <- function(config, data, vars) {
   for (sp in data$all_species) {
     if(length(sp[["abundance"]])) {
       data$phy$"Extinction.Time"[as.integer(sp[["id"]])] <- vars$ti
     }
   }
-
+  return(list(config = config, data = data, vars = vars))
   # update turnover
-  data$turnover[toString(vars$ti),] <- c(vars$n_new_sp_ti, sum(data$phy$"Extinction.Time"==(vars$ti+1)), vars$n_sp_alive)
+  #data$turnover[toString(vars$ti),] <- c(vars$n_new_sp_ti, sum(data$phy$"Extinction.Time"==(vars$ti+1)), vars$n_sp_alive)
 
   # update geo_richness
-  data$geo_richness[rownames(data[["landscape"]][["coordinates"]]), as.character(vars$ti)] <- get_geo_richness(data$all_species, data[["landscape"]])
+  #data$geo_richness[rownames(data[["landscape"]][["coordinates"]]), as.character(vars$ti)] <- get_geo_richness(data$all_species, data[["landscape"]])
   # data$geo_richness <- update.geo.richness(geo_sp_ti=data$geo_sp_ti, ti=vars$ti, geo_richness = data$geo_richness )
-  data[["eco_by_sp"]] <- get_eco_by_sp(data$all_species)
-
-  return(list(config = config, data = data, vars = vars))
+  #data[["eco_by_sp"]] <- get_eco_by_sp(data$all_species)
 }
 
 #--------------------------------#

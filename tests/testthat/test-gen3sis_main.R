@@ -11,7 +11,10 @@ test_that("run_simulation works", {
   config$gen3sis$general$start_time <- 5
   #re-set call of observer
   config$gen3sis$general$end_of_timestep_observer <- function(data, vars, config){}
+  tmp_output <- tempdir()
   s <- run_simulation(config = config, 
-                      landscape = file.path(datapath,"landscape"), output_directory = tempdir())
-  expect_true(!is.null(s))
+                      landscape = file.path(datapath,"landscape"), output_directory = tmp_output)
+  ref_summary <- readRDS(file.path(datapath, "reference_saves", "sgen3sis_summary.rds"))
+  expect_true(all.equal(ref_summary, s$summary))
+  expect_true(tools::md5sum(file.path(s$parameters$directories$output, "phy.nex")) == tools::md5sum(file.path(datapath, "reference_saves", "phy.nex")))
 })

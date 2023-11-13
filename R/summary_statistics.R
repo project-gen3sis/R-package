@@ -80,7 +80,11 @@ make_summary <- function(config, data, vars, total_runtime, save_file=TRUE){
   sgen3sis <- list("summary"= list(), "flag"=list(), "system"= list(), "parameters" = list())
   
   #summary
-  sgen3sis$summary <- c(data$summaries, list("richness-final"=data$geo_richness[,c('x','y',as.character(vars$ti))]))
+  final_richness <- cbind(data[["inputs"]][["coordinates"]], rep(0, nrow(data[["inputs"]][["coordinates"]])))
+  colnames(final_richness) <- append(colnames(data[["inputs"]][["coordinates"]]), toString(vars$ti))
+  richness <- get_geo_richness(data$all_species, data$landscape)
+  final_richness[as.integer(names(richness)), ncol(final_richness)] <- richness
+  sgen3sis$summary <- c(data$summaries, list("richness-final"= final_richness))
   
   #flag
   sgen3sis$flag <- vars$flag

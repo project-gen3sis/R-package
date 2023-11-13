@@ -6,6 +6,7 @@
 #' 
 #' @return compiled string
 #' @noRd
+
 skeleton_config <- function(){
 paste0(c('
 ######################################

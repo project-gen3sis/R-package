@@ -247,7 +247,7 @@ run_simulation <- function(config = NA,
     val$vars$n_sp_alive <- sum(sapply(val$data$all_species, function(sp){ifelse(length(sp[["abundance"]]), 1, 0) }))
     val$vars$n_sp <- length(val$data$all_species)
 
-    val <- update_loop_steps_variable(val$config, val$data, val$vars)
+    val <- update_extinction_times(val$config, val$data, val$vars)
 
     if (verbose>=1){
       cat('step =', ti, ', species alive =', val$vars$n_sp_alive, ', species total =', val$vars$n_sp, '\n')  
