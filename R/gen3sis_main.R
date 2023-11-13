@@ -249,7 +249,10 @@ run_simulation <- function(config = NA,
 
     val <- update_loop_steps_variable(val$config, val$data, val$vars)
 
-
+    if (verbose>=1){
+      cat('step =', ti, ', species alive =', val$vars$n_sp_alive, ', species total =', val$vars$n_sp, '\n')  
+    }
+    
     if(val$vars$ti %in% val$vars$save_steps){
       call_main_observer(val$data, val$vars, val$config)
     }
@@ -257,10 +260,6 @@ run_simulation <- function(config = NA,
     val <- update_summary_statistics(val$data, val$vars, val$config)
     
     save_val(val, save_state)
-    
-    if (verbose>=1){
-      cat('step =', ti, ', species alive =', val$vars$n_sp_alive, ', species total =', val$vars$n_sp, '\n')  
-    }
     
     # abort conditions
     if( val$vars$n_sp_alive >= val$config$gen3sis$general$max_number_of_species ) {
