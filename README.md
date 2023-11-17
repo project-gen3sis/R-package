@@ -64,24 +64,6 @@ Make sure you have the latest gen3sis version
 paste("gen3sis version:", packageVersion("gen3sis"))
 ```
 
-### Version history
-- v.1.0 release 06.2020
-
-- v.1.1 release	08.2020 
-
-- v.1.2 release	12.2020 
-
-- v.1.3 release 07.2021
-	 
-- v.1.4 release 10.2021
-  - fix bracket compatibilities with new R version
-  - added new abundance plotting function 
-
-- v.1.5 beta - current dev
-  - fix comb phylogeny
-  - color deficient, blind and B&W safe colours
-  - speed-up of loop_ecology function
-
 ### How to contribute
 The main branches of the gen3sis repo are:
 *	master
