@@ -99,7 +99,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
   
-  if (class(output)!="gen3sis_output"){
+  if (!is(output, "gen3sis_output")){
     stop("this is not  a gen3sis_output object")
   }
   

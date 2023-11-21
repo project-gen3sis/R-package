@@ -101,9 +101,9 @@ run_simulation <- function(config = NA,
 
   if(is.na(config)[1]){
     stop("please provide either a config file or a config object")
-  } else if (class(config)=="gen3sis_config"){
+  } else if (is(config, "gen3sis_config")){
     config[["directories"]] <- directories
-  } else if (class(config)=="character"){
+  } else if (is(config, "character")){
     file.copy(config, directories$output)
     config <- create_input_config(config_file = config)
     config[["directories"]] <- directories
