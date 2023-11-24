@@ -19,7 +19,7 @@ prepare_directories <- function(config_file = NA,
   #no default config, config file must be given
   if(is.na(config_file)[1]) {
     stop("no config file provided!")
-  } else if (class(config_file)=="gen3sis_config"){
+  } else if (is(config_file,"gen3sis_config")){
     print("config found: using config object")
   } else if(!file.exists(config_file)){
     stop("config file does not exist!")
@@ -40,11 +40,11 @@ prepare_directories <- function(config_file = NA,
   print(paste("landscape found:", input_directory))
 
   if(is.na(output_directory)) {
-    if (class(config_file)=="gen3sis_config"){
+    if (is(config_file, "gen3sis_config")){
       path <- strsplit(input_dir, "/")[[1]]
       path <- paste(path[1:(length(path)-1)], collapse="/")
       output_dir <- sub("[lL]andscape", "output", path) 
-    } else if (class(config_file)=="character") {
+    } else if (is(config_file, "character")) {
       path <- strsplit(config_file, "/")[[1]]
       path <- paste(path[1:(length(path)-1)], collapse="/")
       output_dir <- sub("[cC]onfig", "output", path)
@@ -59,7 +59,7 @@ prepare_directories <- function(config_file = NA,
   dir$input <- input_dir
 
   #output folders
-  if(is.na(config_file)[1]|class(config_file)=="gen3sis_config") {
+  if(is.na(config_file)[1]|is(config_file, "gen3sis_config")) {
     config_name <- file.path("default_config", paste0(format(Sys.time(), "%Y%m%d%H%m"), "-", formatC(sample(1:9999,1), digits=4, flag="0")))
   } else {
     config_name <- tools::file_path_sans_ext(basename(config_file))

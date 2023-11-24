@@ -86,7 +86,7 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 #'
 #' @param output a sgen3sis output object resulting from a gen3sis simulation (i.e. run_simulation)
 #' @param summary_title summary plot title as character. If NULL, title is computed from input name.
-#' @param summary_legend either a staring with _\_n for new lines or NULL. If NULL, provides default summary and simulation information.
+#' @param summary_legend either a string using \\n for new lines or NULL. If NULL, provides default summary and simulation information.
 #' @seealso \code{\link{run_simulation}}   
 #' @example inst/examples/plot_summary_help.R
 #' @importFrom graphics layout legend axis mtext points
@@ -99,7 +99,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
   
-  if (class(output)!="gen3sis_output"){
+  if (!is(output, "gen3sis_output")){
     stop("this is not  a gen3sis_output object")
   }
   
@@ -162,7 +162,7 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   d <- output$summary$phylo_summary[-1,-1]
   plot( d[,"alive"],  xlab="", ylab="", type='l', col="black", lwd=4, frame.plot = FALSE, xaxt='n', yaxt='n')
   axis(4,line=-1, cex=1, cex.axis=1, col="black")
-  mtext(side = 4, text = "\u03B3 richness", col = "black", line = 2, cex=1.1)
+  mtext(side = 4, text = paste("gamma", "richness"), col = "black", line = 2, cex=1.1)
   par(new=TRUE)
   plot( d[,"speciations"],  pch=3, col=rgb(0,0,1, 0.5), xlab="", ylab="", type='b',frame.plot = FALSE, xaxt='n', yaxt='n', ylim=range(d[,c("speciations", "extinctions")]))
   points(d[,"extinctions"], pch=4, col=rgb(1,0,0, 0.5), type="b")
@@ -196,10 +196,8 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
     }
   }
   
-  
-  
   image(ras, col=rc, bty = "o", xlab = "", ylab = "", las=1, asp = 1)
-  mtext(4, text="Final \u03B1 richness", line=1, cex=1.2)
+  mtext(4, text=paste("Final", "alpha", "richness"), line=1, cex=1.2)
   raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=TRUE, add=TRUE,col=rc)
   }
 }

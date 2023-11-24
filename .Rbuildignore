@@ -26,6 +26,7 @@
 ^gen3sis-Ex_x64\\.Rout$
 ^tests_i386$
 ^tests_x64$
+tests/testthat/Rplots.pdf
 #----------------------------
 # Vignettes
 #----------------------------

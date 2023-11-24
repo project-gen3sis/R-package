@@ -41,15 +41,15 @@ get_geo_richness <- function(species_list, landscape){
 
 
 #' calculate the individual average traits for all given species
+#' currently deprecated
+# @param species_list a list
 #'
-#' @param species_list a list
-#'
-#' @return a matrix filled with average traits vs all species
-#' @noRd
-get_eco_by_sp <- function(species_list) {
-  averages <- t(sapply(species_list, function(sp) {colMeans(sp[["traits"]])} ))
-  return(invisible(averages))
-}
+# @return a matrix filled with average traits vs all species
+# @noRd
+#get_eco_by_sp <- function(species_list) {
+#  averages <- t(sapply(species_list, function(sp) {colMeans(sp[["traits"]])} ))
+#  return(invisible(averages))
+#}
 
 
 #' saves the current phylogeny in nex format(?)
@@ -64,6 +64,7 @@ get_eco_by_sp <- function(species_list) {
 write_nex <- function(phy, label="sp", output_file){
 
   #    phy <- sgen3sis$phy  phy <- duplo  phy <- simples
+  val <-  dynGet("val")
 
   #check if we start with more than one ancestor, i.e. more than one root.
   rootphy <- phy$Speciation.Type=="ROOT"
@@ -72,7 +73,7 @@ write_nex <- function(phy, label="sp", output_file){
     phy$Ancestor[rootphy] <- 0
     phy$Speciation.Type <- as.character(phy$Speciation.Type)
     phy$Speciation.Type[rootphy] <- "COMB"
-    addroot <- c("0","0",phy$Speciation.Time[1],0, "ROOT")
+    addroot <- c("0","0",phy$Speciation.Time[1],val$config$gen3sis$general$end_time - 1, "ROOT")
     names(addroot) <- colnames(phy)
     phy <- rbind(addroot, phy)
     phy$Ancestor <- as.integer(phy$Ancestor)
@@ -90,7 +91,7 @@ write_nex <- function(phy, label="sp", output_file){
 
   if (nrow(phy_no_root)==0){
     #following TreeSimGM and TreeSim convertion
-    if (phy[1,"Extinction.Time"]==0){
+    if (phy[1,"Extinction.Time"]==val$config$gen3sis$general$end_time - 1){
       String_final <- "1" # tree with only root
     } else {
       String_final <- "0" # tree with only root that got extinct
@@ -143,12 +144,12 @@ write_nex <- function(phy, label="sp", output_file){
     }
 
 
-    String_final <- paste("tree = ", String, ";", sep="")
+    String_final <- paste("Tree tree = ", String, ";", sep="")
     String_final <- (paste("#NEXUS",
                            "begin trees;",
                            String_final,
                            "end;",
-                           "[!Tree generated with the General Allele Simulation Model (GaSM), following convention of TreeSim and TreeSimGM r-packages]",
+                           "[!Tree generated with the gen3sis R package, following convention of TreeSim and TreeSimGM r-packages]",
                            sep="\n"))
   } #end test if there is a tree
 

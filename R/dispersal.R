@@ -1,6 +1,6 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' Allows the user to generates dispersal value(s) for a given species. The simulation request the user 
+#' Allows the user to generate dispersal value(s) for a given species. The simulation request the user 
 #' to return a vector of dispersal values with length specified by the num_draws parameter
 #'
 #' @details Dispersal values are used for two different operations. 

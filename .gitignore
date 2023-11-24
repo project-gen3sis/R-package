@@ -13,3 +13,5 @@ inst/doc/
 inst/extdata/WorldCenter/output/config_worldcenter/runtime_information/runtime_information.txt
 inst/extdata/WorldCenter/output/config_worldcenter/runtime_information/StartingConditions.pdf
 inst/extdata/WorldCenter/output/config_worldcenter/runtime_information/config_worldcenter.R
+
+tests/testthat/Rplots.pdf

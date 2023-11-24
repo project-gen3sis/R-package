@@ -3,7 +3,7 @@
 #' @title gen3sis: General Engine for Eco-Evolutionary Simulations
 #' @name gen3sis
 #' @description Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes on biodiversity patterns as a general term.
-#' @references O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). gen3sis: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
+#' @references O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2021). gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology
 #' @details Gen3sis is implemented in a mix of R and C++ code, and wrapped into an R-package. All high-level functions that the user may interact with are written in R, and are documented via the standard R / Roxygen help files for R-packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. Additionally, the package provides several convenience functions to generate input data, configuration files and plots, as well as tutorials in the form of vignettes that illustrate how to declare models and run simulations.
 #' @seealso \code{\link{create_input_config}}   \code{\link{create_input_landscape}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
 #' @keywords programming IO iteration methods utilities
@@ -101,9 +101,9 @@ run_simulation <- function(config = NA,
 
   if(is.na(config)[1]){
     stop("please provide either a config file or a config object")
-  } else if (class(config)=="gen3sis_config"){
+  } else if (is(config, "gen3sis_config")){
     config[["directories"]] <- directories
-  } else if (class(config)=="character"){
+  } else if (is(config, "character")){
     file.copy(config, directories$output)
     config <- create_input_config(config_file = config)
     config[["directories"]] <- directories
@@ -247,9 +247,12 @@ run_simulation <- function(config = NA,
     val$vars$n_sp_alive <- sum(sapply(val$data$all_species, function(sp){ifelse(length(sp[["abundance"]]), 1, 0) }))
     val$vars$n_sp <- length(val$data$all_species)
 
-    val <- update_loop_steps_variable(val$config, val$data, val$vars)
+    val <- update_extinction_times(val$config, val$data, val$vars)
 
-
+    if (verbose>=1){
+      cat('step =', ti, ', species alive =', val$vars$n_sp_alive, ', species total =', val$vars$n_sp, '\n')  
+    }
+    
     if(val$vars$ti %in% val$vars$save_steps){
       call_main_observer(val$data, val$vars, val$config)
     }
@@ -257,10 +260,6 @@ run_simulation <- function(config = NA,
     val <- update_summary_statistics(val$data, val$vars, val$config)
     
     save_val(val, save_state)
-    
-    if (verbose>=1){
-      cat('step =', ti, ', species alive =', val$vars$n_sp_alive, ', species total =', val$vars$n_sp, '\n')  
-    }
     
     # abort conditions
     if( val$vars$n_sp_alive >= val$config$gen3sis$general$max_number_of_species ) {

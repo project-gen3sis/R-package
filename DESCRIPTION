@@ -1,11 +1,12 @@
 Package: gen3sis
 Type: Package
 Title: General Engine for Eco-Evolutionary Simulations
-Version: 1.4
+Version: 1.5.11
+Date: 2023-11-21
 Authors@R: c(
   person("ETH Zürich", role=c("cph")),
   person("Oskar", "Hagen", email = "oskar@hagen.bio", role = c("aut", "cre"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"),
-  person("Benjamin", "Flueck", email="benjamin.flueck@alumni.ethz.ch", role = c("aut"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"),
+  person("Benjamin", "Flück", email="benjamin.flueck@alumni.ethz.ch", role = c("aut"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"),
   person("Fabian", "Fopp", email="fabian.fopp@usys.ethz.ch", role = c("aut"), comment = "Landscape Ecology, WSL and ETH Zürich, Switzerland"),
   person(c("Juliano","S."), "Cabral", email = "juliano.sarmento_cabral@uni-wuerzburg.de", role = c("aut"), comment = "Ecosystem Modeling, Center for Computational and Theoretical Biology, University of Würzburg, Würzburg, Germany"),
   person("Florian", "Hartig", email = "florian.hartig@biologie.uni-regensburg.de", role = c("aut"), comment = "Theoretical Ecology, University of Regensburg, Regensburg, Germany"), 
@@ -19,7 +20,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: false
 Depends: R (>= 3.5.0)
-Imports: Rcpp (>= 0.12.16), Matrix, methods, utils, raster, gdistance, sp, stringr, tools, grDevices
+Imports: Rcpp (>= 0.12.16), Matrix, methods, utils, raster, gdistance, stringr, tools, grDevices
 Suggests: 
     knitr,
     markdown,
@@ -29,6 +30,5 @@ Suggests:
 LinkingTo: Rcpp, BH
 URL: https://github.com/project-Gen3sis/R-package
 BugReports: https://github.com/project-Gen3sis/R-package/issues
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
-SystemRequirements: C++11
