@@ -19,8 +19,6 @@ jobs:
       - name: Install gdal 
         run: |
           brew install proj
-          brew install gdal
-          brew install geos
       - name: Install dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
