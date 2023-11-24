@@ -1,12 +1,12 @@
 # dev
 
-# v.1.5.11
+# v.1.5.11 release 11.2023
   - fix comb phylogeny
   - color deficient, blind and B&W safe colours
   - speed-up of loop_ecology function
   - fix nexus phylo file format
   - fix accounting of extinctions times 
-  - fix phylo checks if simulation didn't end at t=0
+  - fix phylo checks if simulation did not end at t=0
   - fix package build notes citation and class comparisons
 
 # v.1.4 release 10.2021
