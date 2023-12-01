@@ -117,8 +117,8 @@ for (timestep in 1:Ntimesteps){ # temporal loop
         prec_dataframe[counting,1]<-x
         prec_dataframe[counting,2]<-y
       }
-      temp_dataframe[counting,2+timestep]<-temp_dataframe[x,y,timestep]
-      prec_dataframe[counting,2+timestep]<-prec_dataframe[x,y,timestep]
+      temp_dataframe[counting,2+timestep]<-temp_matrix[x,y,timestep]
+      prec_dataframe[counting,2+timestep]<-prec_matrix[x,y,timestep]
       counting<-counting+1
     }
   }
