@@ -2,30 +2,30 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 getEntities <- function(ma) {
-    .Call(`_gen3sis_getEntities`, ma)
+    .Call(`_gen3sis2_getEntities`, ma)
 }
 
 epsN <- function(LP, d1) {
-    .Call(`_gen3sis_epsN`, LP, d1)
+    .Call(`_gen3sis2_epsN`, LP, d1)
 }
 
 conc <- function(x, y) {
-    .Call(`_gen3sis_conc`, x, y)
+    .Call(`_gen3sis2_conc`, x, y)
 }
 
 is_any_f <- function(x) {
-    .Call(`_gen3sis_is_any_f`, x)
+    .Call(`_gen3sis2_is_any_f`, x)
 }
 
 Tdbscan <- function(D, d1, minPts) {
-    .Call(`_gen3sis_Tdbscan`, D, d1, minPts)
+    .Call(`_gen3sis2_Tdbscan`, D, d1, minPts)
 }
 
 Tdbscan_variable <- function(D, distances, minPts) {
-    .Call(`_gen3sis_Tdbscan_variable`, D, distances, minPts)
+    .Call(`_gen3sis2_Tdbscan_variable`, D, distances, minPts)
 }
 
 get_distance_matrix <- function(habitable_cells, num_cells, dist_p, dist_i, dist_x, max_distance) {
-    .Call(`_gen3sis_get_distance_matrix`, habitable_cells, num_cells, dist_p, dist_i, dist_x, max_distance)
+    .Call(`_gen3sis2_get_distance_matrix`, habitable_cells, num_cells, dist_p, dist_i, dist_x, max_distance)
 }
 

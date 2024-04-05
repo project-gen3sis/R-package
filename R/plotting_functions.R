@@ -305,7 +305,7 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
 #'
 #' @param title folder and file name
 #' @param landscape current landscape
-#' @param plot_fun plotting function to use (single or multiple rasters)
+#' @param plot_fun plotting function to use (single or multiple)
 #' @param ... arguments for plot_fun
 #'
 #' @importFrom grDevices png

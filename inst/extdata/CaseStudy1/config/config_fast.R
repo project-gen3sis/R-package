@@ -130,7 +130,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 ###            Evolution           ###
 ######################################
 
-# mutate the traits of a species and return the new traits matrix
+# mutate the traits of populations of each species and return the new traits matrix
 apply_evolution <- function(species, cluster_indices, landscape, config) {
   traits <- species[["traits"]]
 ####  HERE CHANGES BETWEEN CONFIGS #####

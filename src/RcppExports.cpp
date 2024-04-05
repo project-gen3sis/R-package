@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // getEntities
 IntegerVector getEntities(NumericMatrix ma);
-RcppExport SEXP _gen3sis_getEntities(SEXP maSEXP) {
+RcppExport SEXP _gen3sis2_getEntities(SEXP maSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,7 +23,7 @@ END_RCPP
 }
 // epsN
 IntegerVector epsN(NumericVector LP, double d1);
-RcppExport SEXP _gen3sis_epsN(SEXP LPSEXP, SEXP d1SEXP) {
+RcppExport SEXP _gen3sis2_epsN(SEXP LPSEXP, SEXP d1SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,7 +35,7 @@ END_RCPP
 }
 // conc
 IntegerVector conc(IntegerVector x, IntegerVector y);
-RcppExport SEXP _gen3sis_conc(SEXP xSEXP, SEXP ySEXP) {
+RcppExport SEXP _gen3sis2_conc(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -47,7 +47,7 @@ END_RCPP
 }
 // is_any_f
 bool is_any_f(LogicalVector x);
-RcppExport SEXP _gen3sis_is_any_f(SEXP xSEXP) {
+RcppExport SEXP _gen3sis2_is_any_f(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -58,7 +58,7 @@ END_RCPP
 }
 // Tdbscan
 IntegerVector Tdbscan(NumericMatrix D, double d1, double minPts);
-RcppExport SEXP _gen3sis_Tdbscan(SEXP DSEXP, SEXP d1SEXP, SEXP minPtsSEXP) {
+RcppExport SEXP _gen3sis2_Tdbscan(SEXP DSEXP, SEXP d1SEXP, SEXP minPtsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -71,7 +71,7 @@ END_RCPP
 }
 // Tdbscan_variable
 IntegerVector Tdbscan_variable(NumericMatrix D, NumericVector distances, double minPts);
-RcppExport SEXP _gen3sis_Tdbscan_variable(SEXP DSEXP, SEXP distancesSEXP, SEXP minPtsSEXP) {
+RcppExport SEXP _gen3sis2_Tdbscan_variable(SEXP DSEXP, SEXP distancesSEXP, SEXP minPtsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -84,7 +84,7 @@ END_RCPP
 }
 // get_distance_matrix
 Rcpp::NumericMatrix get_distance_matrix(const IntegerVector habitable_cells, const int num_cells, const IntegerVector dist_p, const IntegerVector dist_i, const NumericVector dist_x, const double max_distance);
-RcppExport SEXP _gen3sis_get_distance_matrix(SEXP habitable_cellsSEXP, SEXP num_cellsSEXP, SEXP dist_pSEXP, SEXP dist_iSEXP, SEXP dist_xSEXP, SEXP max_distanceSEXP) {
+RcppExport SEXP _gen3sis2_get_distance_matrix(SEXP habitable_cellsSEXP, SEXP num_cellsSEXP, SEXP dist_pSEXP, SEXP dist_iSEXP, SEXP dist_xSEXP, SEXP max_distanceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -100,17 +100,17 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_gen3sis_getEntities", (DL_FUNC) &_gen3sis_getEntities, 1},
-    {"_gen3sis_epsN", (DL_FUNC) &_gen3sis_epsN, 2},
-    {"_gen3sis_conc", (DL_FUNC) &_gen3sis_conc, 2},
-    {"_gen3sis_is_any_f", (DL_FUNC) &_gen3sis_is_any_f, 1},
-    {"_gen3sis_Tdbscan", (DL_FUNC) &_gen3sis_Tdbscan, 3},
-    {"_gen3sis_Tdbscan_variable", (DL_FUNC) &_gen3sis_Tdbscan_variable, 3},
-    {"_gen3sis_get_distance_matrix", (DL_FUNC) &_gen3sis_get_distance_matrix, 6},
+    {"_gen3sis2_getEntities", (DL_FUNC) &_gen3sis2_getEntities, 1},
+    {"_gen3sis2_epsN", (DL_FUNC) &_gen3sis2_epsN, 2},
+    {"_gen3sis2_conc", (DL_FUNC) &_gen3sis2_conc, 2},
+    {"_gen3sis2_is_any_f", (DL_FUNC) &_gen3sis2_is_any_f, 1},
+    {"_gen3sis2_Tdbscan", (DL_FUNC) &_gen3sis2_Tdbscan, 3},
+    {"_gen3sis2_Tdbscan_variable", (DL_FUNC) &_gen3sis2_Tdbscan_variable, 3},
+    {"_gen3sis2_get_distance_matrix", (DL_FUNC) &_gen3sis2_get_distance_matrix, 6},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_gen3sis(DllInfo *dll) {
+RcppExport void R_init_gen3sis2(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

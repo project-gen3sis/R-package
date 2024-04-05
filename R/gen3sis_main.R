@@ -5,7 +5,7 @@
 #' @description Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes on biodiversity patterns as a general term.
 #' @references O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2021). gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology
 #' @details Gen3sis is implemented in a mix of R and C++ code, and wrapped into an R-package. All high-level functions that the user may interact with are written in R, and are documented via the standard R / Roxygen help files for R-packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. Additionally, the package provides several convenience functions to generate input data, configuration files and plots, as well as tutorials in the form of vignettes that illustrate how to declare models and run simulations.
-#' @seealso \code{\link{create_input_config}}   \code{\link{create_input_landscape}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
+#' @seealso \code{\link{create_input_config}}   \code{\link{create_spaces_raster}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
 #' @keywords programming IO iteration methods utilities
 #' @concept gen3sis modeling eco-evolutionary macroevolution macroecology mechanisms
 #' @examples
@@ -39,7 +39,7 @@
 #'
 #' }
 #' @docType package
-#' @useDynLib gen3sis, .registration = TRUE
+#' @useDynLib gen3sis2, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @import Matrix
 NULL
@@ -78,7 +78,7 @@ NULL
 #' @importFrom utils packageVersion write.table
 #' 
 #' @example inst/examples/run_simulation_help.R
-#' @seealso \code{\link{plot_summary}}   \code{\link{create_input_config}}   \code{\link{create_input_landscape}} 
+#' @seealso \code{\link{plot_summary}}   \code{\link{create_input_config}}   \code{\link{create_spaces_raster}} 
 #' @export
 run_simulation <- function(config = NA,
                           landscape = NA,

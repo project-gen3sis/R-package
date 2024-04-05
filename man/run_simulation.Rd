@@ -72,5 +72,5 @@ plot_summary(sim)
 }
 }
 \seealso{
-\code{\link{plot_summary}}   \code{\link{create_input_config}}   \code{\link{create_input_landscape}}
+\code{\link{plot_summary}}   \code{\link{create_input_config}}   \code{\link{create_spaces_raster}}
 }

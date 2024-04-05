@@ -4,7 +4,7 @@
 #'
 #' @param val the internal state
 #' @param save_val a tri-state flag: NA to not save, "all" to save the current state,
-#' "last" to remove any previous save state after saving the current state
+#' "last" save the current state and remove any previous save state 
 #'
 #' @noRd
 save_val <- function(val, save_val = NA){

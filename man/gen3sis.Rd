@@ -42,10 +42,10 @@ plot_richness(species_t_150, landscape_t_150)
 }
 }
 \references{
-O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). gen3sis: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
+O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2021). gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology
 }
 \seealso{
-\code{\link{create_input_config}}   \code{\link{create_input_landscape}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
+\code{\link{create_input_config}}   \code{\link{create_spaces_raster}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
 }
 \concept{gen3sis modeling eco-evolutionary macroevolution macroecology mechanisms}
 \keyword{IO}

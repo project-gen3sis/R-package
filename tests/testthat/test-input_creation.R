@@ -124,16 +124,16 @@ test_that("get_local_distances works", {
 
   # the gdistance transition is in transition[src, dest] format
   # for efficiency reasons the local distances are in distnace_local[dest, src] format
-  # for the comparison we transpose the transistion matrix
-  # we take the reciprocal of the transition amtrix as it contains conductance values
+  # for the comparison we transpose the transition matrix
+  # we take the reciprocal of the transition matrix as it contains conductance values
   # while we use cost/resistance values in the local distances
   local_tr <- t((tr*co)@transitionMatrix)
   local_tr@x <- 1 / local_tr@x
 
-  # correct input is produced
+  # correct input is produced?
   expect_true(isTRUE(all.equal(unname(distance_local), local_tr)))
 
-  # check row/colnames
+  # check row/colnames, are they identical?
   expect_true(identical(rownames(distance_local), as.character(1:(d*d))))
   expect_true(identical(colnames(distance_local), as.character(1:(d*d))))
 })

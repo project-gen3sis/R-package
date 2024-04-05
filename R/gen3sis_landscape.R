@@ -3,7 +3,7 @@
 #' Creates an object representing the current landscape for a given time-step
 #'
 #' @details This function generates the internal representation of a given landscape. It 
-#' consists of an identifier for the input time step, an environmental matrix containing the environmental 
+#' consists of an identifier for the input time-step, an environmental matrix containing the environmental 
 #' conditions for each suitable site, and a coordinates matrix containing the site cell center coordinates of 
 #' all suitable sites
 #'

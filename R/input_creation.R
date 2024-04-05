@@ -1,10 +1,10 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' create an landscape input from a named list of rasters or raster files
+#' create an spaces input from a named list of rasters or raster files and user defined cost function
 #' 
-#' @details This function creates the input landscapes files needed by the run_simulation function. 
-#' It uses as input the dynamic landscape rasters and user defined geodesimal corrections as well as rules to define the connection costs between sites
-#' @param landscapes list of named list(s) of raster(s) or raster file(s) name(s). Starting from the present towards the past.
+#' @details This function creates the input spaces.rds files needed by the run_simulation function. 
+#' It uses as input the dynamic rasters and user defined geodesimal corrections as well as rules to define the connection costs between sites
+#' @param raster_list list of named list(s) of raster(s) or raster file(s) name(s). Starting from the past towards the present.
 #' NOTE: the list names are important since these are the environmental names
 #' @param cost_function function that returns a cost value between a pair of sites (neighbors) that should have the following signature:
 #'  \code{cost_function <- 
@@ -19,29 +19,39 @@
 #' @param output_directory path for storing the gen3sis ready landscape (i.e. landscape.rds, metadata.txt and full- and/or local_distance folders) 
 #' @param timesteps vector of names for every time-step to represent the time-step at gen3sis ready landscape. 
 #' If timesteps=NULL (default), time-steps are sequentially numbered from 0 to the latest time-step.
-#' @param calculate_full_distance_matrices should a full distance matrix be calculated? TRUE or FALSE? 
+#' @param full_dists should a full distance matrix be calculated? TRUE or FALSE? Default is FALSE.
 #' If TRUE calculates the entire distance matrix for every time-step and between all habitable cells 
 #' (faster CPU time, higher storage required). 
 #' If FALSE (default), only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)
-#' @param crs the coordinate reference system in crs format (see raster::crs)
+#' @param crs the coordinate reference system in crs format (see raster::crs). Default is defined by \code{\link{create_spaces}}
 #' @param overwrite_output TRUE or FALSE
 #' @param verbose print distance calculation progress (default: FALSE)
-#'
+#' @param duration list with from, to, by and unit. Default is from -latest time to zero by 1 Ma
+#' @param area.unit area.unit, either in m2 or km2, see \code{?create_spaces} only unit necessary, rest is calculated.
+#' @param geo_dynamic True or False, if the landscape is dynamic (e.g. sea-level change) or static. Default is NULL, 
+#' i.e. deciding final value based on the input data.
+#' @param author author of the space, see \code{?create_spaces}
+#' @param source source of the space, see \code{?create_spaces}
+#' @param description list with env and methods, see \code{?create_spaces}
+#' @param ... additional arguments to be passed to the \code{\link{create_spaces}} function
 #' @return no return object. This function saves the landscape input files for gen3sis at the output_directory
 #' @importFrom gdistance transition costDistance
-#' @example inst/examples/create_input_landscape_help.R
+#' @example inst/examples/create_spaces_raster_help.R
 #' @seealso \code{\link{run_simulation}} 
 #' @export
 
-create_input_landscape <- function( landscapes,
+# old create_input_landscape
+create_spaces_raster <- function(raster_list, # old landscapes
                           cost_function,
-                          directions,
+                          directions=8,
                           output_directory,
-                          timesteps = NULL,
-                          calculate_full_distance_matrices = FALSE,
-                          crs = NULL,
+                          # timesteps = NULL,
+                          full_dists = FALSE,
                           overwrite_output = FALSE,
-                          verbose = FALSE) {
+                          verbose = FALSE,
+                          duration=list(from=NA, to=NA, by=NA, unit="Ma"),
+                          area.unit="km2",
+                          ...) {
   # # in case outpu_directory is NULL, use the same directory as the input
   # if (is.null(output_directory)){
   #   output_directory <- dirname(path)
@@ -55,38 +65,69 @@ create_input_landscape <- function( landscapes,
   
   
   # prepare directories
-  create_directories(output_directory, overwrite_output, calculate_full_distance_matrices)
-
-  if(is.null(timesteps)){
-    timesteps <- 0:(length(landscapes[[1]]) - 1)
+  create_directories(output_directory, overwrite_output, full_dists)
+  
+  if (any(is.na(duration))) {
+    warning("Duration is ideally informed as a list with from, to, by and unit. 
+            Assuning default duration from -latest time to zero by 1 Ma")
+    timesteps <-(length(raster_list[[1]]) - 1):0
+  } else {
+    timesteps <- paste0(seq(duration$from, duration$to, by = duration$by), duration$unit)
   }
+  
+  # if(is.null(timesteps)){
+  #   timesteps <- (length(raster_list[[1]]) - 1):0
+  # }
 
-  # prepare and save landscapes (formerly all_go_hab)
-  compiled_landscapes <- compile_landscapes(landscapes,
+  # prepare and save spaces
+  
+  compiled_env <- gen3sis:::compile_landscapes(raster_list,
                                             timesteps,
                                             habitability_masks)
-  saveRDS(compiled_landscapes, file.path(output_directory, "landscapes.rds"))
+  gs <- create_spaces(env=compiled_env,
+                     type="raster",
+                     duration=duration,
+                     area=list(total_area=NA,
+                               n_sites=NA,
+                               unit=area.unit),
+                     cost_function = list(cost_function),
+                     ...
+  )
+  ex_r <- terra::rast(compiled_env[[1]][,1:3], type="xyz") # get latest time-step as example raster
+  # check if raster has coordinate reference system, if not use default from create_spaces
+  if (crs(ex_r)==""){
+    crs(ex_r) <- gs$meta$crs
+  }
+  total_area <- measurements::conv_unit(sum(terra::cellSize(ex_r, unit="km")[]), "km2", area.unit)
+  n_sites <- ncol(ex_r)*nrow(ex_r)
+  gs$meta$area$total_area <- total_area
+  gs$meta$area$n_sites <- n_sites
+  check_spaces(gs)
+  
+  saveRDS(gs, file.path(output_directory, "spaces.rds"))
   
   
   # save METADATA.txt a empty landscape template @skeleteon_landscape_metadata.R
-  write.table(skeleton_landscape_metadata, file = file.path(output_directory, "METADATA.txt"), 
-              sep="\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+  # write.table(skeleton_landscape_metadata, file = file.path(output_directory, "METADATA.txt"), 
+  #             sep="\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
   # create local distances
   # iterate over times-teps
-  for( step in 1:length(timesteps) ) {
+  # number of time-steps
+  nts <- length(timesteps)
+  for( step in 1:nts ) {
     if (verbose){
       cat(paste("starting distance calculations for timestep", step, '\n'))
     }
-    landscape_stack <- stack_landscapes(landscapes, step)
+    landscape_stack <- stack_landscapes(raster_list, step)
     habitable_mask <- get_habitable_mask(habitability_masks, landscape_stack, step)
 
     distance_local <- get_local_distances(landscape_stack, habitable_mask, cost_function, directions, crs)
 
-    file_name <- paste0("distances_local_", as.character(step-1), ".rds")
+    file_name <- paste0("distances_local_", as.character(nts-step), ".rds")
     saveRDS(distance_local, file = file.path(output_directory, "distances_local", file_name))
 
-    if(calculate_full_distance_matrices){
+    if(full_dists){
       # transpose to preserve src/dest relation for efficent local traversal in get_distance_matrices function
       distance_local <- t(distance_local)
 
@@ -98,7 +139,7 @@ create_input_landscape <- function( landscapes,
                                          distance_local@i,
                                          distance_local@x,
                                          Inf)
-      file_name <- paste0("distances_full_", as.character(step-1), ".rds")
+      file_name <- paste0("distances_full_", as.character(nts-step), ".rds")
       saveRDS(dist_matrix, file = file.path(output_directory, "distances_full", file_name))
       rm(dist_matrix)
       gc()
@@ -107,7 +148,8 @@ create_input_landscape <- function( landscapes,
 }
 
 
-#' compile the landscapes for storing
+#' compile the landscapes for storing. I.e. create a list of data.frames with 
+#' the coordinates and the environmental values over time-steps
 #'
 #' @param landscapes full list of landscape over all time-steps
 #' @param timesteps given names / identifiers for time-steps
@@ -254,12 +296,13 @@ stack_landscapes <- function(landscapes, i) {
   all_names <- names(landscapes)
   new_stack <- stack()
   for( landscape in landscapes){
+    # landscape <- landscapes[[1]]
     if(is.character(landscape[i])) {
       ras <- raster(landscape[i])
-    } else if( "RasterLayer" %in% class(landscape[[i]])) {
+    } else if(is(landscape[[i]],"RasterLayer")) {
       ras <- landscape[i]
     } else {
-      stop("unknown landscapes; it has to be a named list of list of either rasters or raster files")
+      stop("unknown landscape; it has to be a named list of list of either rasters or raster files")
     }
     new_stack <- addLayer(new_stack, ras)
   }

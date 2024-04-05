@@ -44,7 +44,7 @@ end_time = NA
 # maximum total number of species in the simulation before it is aborted.
 max_number_of_species = 25000
 
-# maximum number of species within one cell before the simulation is aborted.
+# maximum number of species within one site before the simulation is aborted.
 max_number_of_coexisting_species = 2500
 
 # a list of traits to include with each species
@@ -89,8 +89,8 @@ end_of_timestep_observer = function(data, vars, config){
 ###         Initialization         ###
 ######################################
 
-# the initial abundance of a newly colonized cell, both during setup and later when 
-# colonizing a cell during the dispersal.
+# the initial abundance of a newly colonized site, both during setup and later when 
+# colonizing a site during the dispersal.
 initial_abundance = 1
 
 # place species in the landscape:
@@ -130,7 +130,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 ###            Evolution           ###
 ######################################
 
-# mutate the traits of a species and return the new traits matrix.
+# mutate the traits of populations of each species and return the new traits matrix
 apply_evolution <- function(species, cluster_indices, landscape, config) {
   stop("mutate species traits here")
 }
@@ -140,7 +140,7 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
 ###             Ecology            ###
 ######################################
 
-# called for every cell with all occurring species, this function calculates abundances and/or 
+# called for every site with all occurring species, this function calculates abundances and/or 
 # who survives for each sites.
 # returns a vector of abundances.
 # set the abundance to 0 for every species supposed to die.
