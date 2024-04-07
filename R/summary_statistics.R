@@ -92,7 +92,7 @@ make_summary <- function(config, data, vars, total_runtime, save_file=TRUE){
   #system
   sgen3sis$system <- list(
     "runtime-hours"=total_runtime,
-    "gen3sis-version"=packageVersion("gen3sis"),
+    "gen3sis-version"=packageVersion("gen3sis2"),
     "R-version"=version,
     "OS"=Sys.info()["sysname"],
     "session-information"=sessionInfo()

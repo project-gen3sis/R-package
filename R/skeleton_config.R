@@ -1,17 +1,11 @@
 # Copyright (c) 2020, ETH Zurich
 
 # DO NOT USE ' IN THIS CONFIG
-
-#' empty skeleton config
-#' 
-#' @return compiled string
-#' @noRd
-
 skeleton_config <- function(){
 paste0(c('
-######################################
-###            METADATA            ###
-######################################
+#--------------------------------------#
+####            METADATA            ####
+#--------------------------------------#
 # gen3sis configuration
 #
 # Version: 1.0
@@ -25,12 +19,12 @@ paste0(c('
 #
 # Description: 
 #
-######################################
+#--------------------------------------#
 
 
-######################################
-###         General settings       ###
-######################################
+#------------------------#
+#### General settings ####
+#------------------------#
 
 # set the random seed for the simulation.
 random_seed = NA
@@ -58,9 +52,9 @@ trait_names = c("dispersal")
 environmental_ranges = list( )
 
 
-######################################
-###            Observer            ###
-######################################
+#-------------------------#
+#### Observer Function ####
+#-------------------------#
 
 # a place to inspect the internal state of the simulation and collect additional information if desired.
 end_of_timestep_observer = function(data, vars, config){
@@ -85,9 +79,9 @@ end_of_timestep_observer = function(data, vars, config){
 }
 
 
-######################################
-###         Initialization         ###
-######################################
+#----------------------#
+#### Initialization ####
+#----------------------#
 
 # the initial abundance of a newly colonized site, both during setup and later when 
 # colonizing a site during the dispersal.
@@ -99,9 +93,9 @@ create_ancestor_species <- function(landscape, config) {
 }
 
 
-######################################
-###             Dispersal          ###
-######################################
+#-----------------#
+#### Dispersal ####
+#-----------------#
 
 # the maximum range to consider when calculating the distances from local distance inputs.
 max_dispersal <- Inf
@@ -112,9 +106,9 @@ get_dispersal_values <- function(n, species, landscape, config) {
 }
 
 
-######################################
-###          Speciation            ###
-######################################
+#------------------#
+#### Speciation ####
+#------------------#
 
 # threshold for genetic distance after which a speciation event takes place.
 divergence_threshold = NULL
@@ -126,9 +120,9 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 }
 
 
-######################################
-###            Evolution           ###
-######################################
+#-----------------------#
+#### Trait Evolution ####
+#-----------------------#
 
 # mutate the traits of populations of each species and return the new traits matrix
 apply_evolution <- function(species, cluster_indices, landscape, config) {
@@ -136,9 +130,9 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
 }
 
 
-######################################
-###             Ecology            ###
-######################################
+#----------------------------------------------------------#
+#### Ecology: Environmental and Ecological Interactions ####
+#----------------------------------------------------------#
 
 # called for every site with all occurring species, this function calculates abundances and/or 
 # who survives for each sites.
@@ -150,3 +144,8 @@ apply_ecology <- function(abundance, traits, environment, config) {
 
 ')) # DO NOT REMOVE THIS ->'<-. IT IS IMPORTANT
 }
+
+#' empty skeleton config
+#' 
+#' @return compiled string
+#' @noRd

@@ -33,7 +33,7 @@
 #' @return an informal and empty gen3sis_spaces object
 #' @export
 #'
-#' @examples
+#' @examples print("TODO")
 create_spaces <- function(env=list(NA),
                          type="raster",
                          duration=list(from=NA, to=NA, by=NA, unit="Ma"),
@@ -85,7 +85,7 @@ create_spaces <- function(env=list(NA),
 #' according to \code{check_spaces()}
 #' @export
 #'
-#' @examples
+#' @examples print("TODO")
 check_spaces <- function(spaces=NULL){
 
   accepted <- list()
@@ -180,7 +180,7 @@ check_names <- function(reference, datags, error_report=NULL){
 #' @param dir_output "path to dir_output"
 #' @return no value is returned
 #' @noRd
-#' @examples
+#' @examples print("TODO")
 prepare_dirs <- function(dir_input, dir_output){
   if(!dir.exists(dir_input)){
     stop(paste("Input directory does not exist:", dir_input))

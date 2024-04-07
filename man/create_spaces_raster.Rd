@@ -147,22 +147,18 @@ LGM and LTG had strength corrected to match reference global air surface tempera
 Global temperature differences were calculated using entire koppen band to account for sea surface temperature
 (Westerhold et al. 2020). For more details see (Hagen et al 2020/2021)."
   
-create_space_raster <- function(raster_list, # old landscapes
-                                  cost_function,
-                                  directions,
-                                  output_directory,
-                                  full_dists = TRUE,
-                                  #crs = "+proj=longlat +datum=WGS84 +no_defs",
-                                  overwrite_output = TRUE,
-                                  #verbose = FALSE,
-                                  duration=list(from=-60, to=0, by=10, unit="Ma"),
-                                  area.unit="km2",
-                                  author="Oskar Hagen",
-                                  source="10.1371/journal.pbio.3001340",
-                                  description=list(env="temperature in degree celcius;
+create_spaces_raster(raster_list= landscapes_sub_list, # old landscapes
+                                cost_function = cost_function_water,
+                                output_directory = file.path("C:/temp/test_spaces", "spaceS3"), 
+                                full_dists = TRUE,
+                                overwrite_output = TRUE,
+                                duration=list(from=-60, to=-30, by=10, unit="Ma"),
+                                area.unit="km2",
+                                author="Oskar Hagen",
+                                source="10.1371/journal.pbio.3001340",
+                                description=list(env="temperature in degree celcius;
                                     humidity proxy from zero to one (respectively dry and arid)",
-                                                   methods=my_description)
-)
+                                                   methods=my_description))
   
   
 create_space_raster(env = landscapes_sub_list,

@@ -122,7 +122,7 @@ create_spaces_raster <- function(raster_list, # old landscapes
     landscape_stack <- stack_landscapes(raster_list, step)
     habitable_mask <- get_habitable_mask(habitability_masks, landscape_stack, step)
 
-    distance_local <- get_local_distances(landscape_stack, habitable_mask, cost_function, directions, crs)
+    distance_local <- get_local_distances(landscape_stack, habitable_mask, cost_function, directions, crs=gs$meta$crs)
 
     file_name <- paste0("distances_local_", as.character(nts-step), ".rds")
     saveRDS(distance_local, file = file.path(output_directory, "distances_local", file_name))

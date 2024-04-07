@@ -61,3 +61,6 @@ an informal and empty gen3sis_spaces object
 \description{
 create empty gen3sis_spaces
 }
+\examples{
+print("TODO")
+}

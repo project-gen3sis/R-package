@@ -121,6 +121,7 @@ divergence_threshold = 10 #runif(1,min=5, max=5.5) ### Arbitrary value to ensure
 
 # factor by which the divergence is increased between geographicaly isolated population
 # can also be a matrix between the different population clusters
+divergence_threshold = 10 
 get_divergence_factor <- function(species, cluster_indices, landscape, config) {
   return(1)
 }

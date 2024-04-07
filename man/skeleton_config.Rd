@@ -2,13 +2,10 @@
 % Please edit documentation in R/skeleton_config.R
 \name{skeleton_config}
 \alias{skeleton_config}
-\title{empty skeleton config}
+\title{, paste0("# Date: ", format(Sys.Date(), format="%d.%m.%Y")),}
 \usage{
 skeleton_config()
 }
-\value{
-compiled string
-}
 \description{
-empty skeleton config
+, paste0("# Date: ", format(Sys.Date(), format="%d.%m.%Y")),
 }
