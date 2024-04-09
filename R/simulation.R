@@ -14,7 +14,8 @@
 #' @noRd
 setup_inputs <- function(config, data, vars) {
   data[["inputs"]] <- list()
-  landscapes <- readRDS(file.path(config$directories$input, "landscapes.rds"))
+  spaces <- readRDS(file.path(config$directories$input, "spaces.rds"))
+  landscapes <- spaces$env # TODO correct cascade of names... attention to s i.e. space is contained in spaces
   landscape_names <- names(landscapes)
 
   # environmental matrices
@@ -203,7 +204,8 @@ init_simulation <- function(config, data, vars) {
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_landscape <- function(config, data, vars) {
-  index <- vars$ti + 1
+  steps <- config$gen3sis$general$start_time:config$gen3sis$general$end_time
+  index <- which(steps==vars$ti) #gen3sis v1 : vars$ti + 1
   habitable_cells <- data$inputs$environments[[1]][, index, drop=FALSE]
   habitable_cells <- habitable_cells[which(!is.na(habitable_cells)), , drop=FALSE]
   habitable_cells <- rownames(habitable_cells)
