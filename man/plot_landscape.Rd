@@ -7,7 +7,7 @@
 plot_landscape(landscape)
 }
 \arguments{
-\item{landscape}{the landscape to plot the environment from}
+\item{landscape}{the gen3sis_space to plot the environment from}
 }
 \value{
 no return value, called for plot

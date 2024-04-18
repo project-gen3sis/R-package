@@ -6,14 +6,12 @@ species_t_0 <- readRDS(file.path(datapath,
 # get landscape at t0
 landscape_t_0 <- readRDS(file.path(datapath, 
                           "output/config_worldcenter/landscapes/landscape_t_0.rds"))
-# get geo richness
+
+# plot richness
+plot_richness(species_t_0, landscape_t_0)
+
+# get geo richness, i.e. richness per sites
 richness_t_0 <- get_geo_richness(species_t_0, landscape_t_0)
 
 # histogram of richness at t0
 hist(richness_t_0)
-
-## plot richness using raster and gen3sis color_richness (see plot_richness for alternative)
-# combine richness and geographical coordinates
-geo_richness_t_0 <- cbind(landscape_t_0$coordinates, richness_t_0)
-library(raster)
-plot(rasterFromXYZ(geo_richness_t_0), col=color_richness(20))

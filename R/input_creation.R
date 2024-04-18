@@ -43,7 +43,7 @@
 # old create_input_landscape
 create_spaces_raster <- function(raster_list, # old landscapes
                           cost_function,
-                          directions=8,
+                          directions=16,
                           output_directory,
                           # timesteps = NULL,
                           full_dists = FALSE,
@@ -81,20 +81,24 @@ create_spaces_raster <- function(raster_list, # old landscapes
 
   # prepare and save spaces
   
-  compiled_env <- gen3sis:::compile_landscapes(raster_list,
+  compiled_env <- compile_landscapes(raster_list,
                                             timesteps,
                                             habitability_masks)
+  
+  # get 1 col full of ones as example raster
+  ex_r <- terra::rast(cbind(compiled_env[[1]][,1:2],1), type="xyz") 
+  
   gs <- create_spaces(env=compiled_env,
                      type="raster",
                      duration=duration,
-                     area=list(total_area=NA,
+                     area=list(extent=NA,
+                               total_area=NA,
                                n_sites=NA,
                                unit=area.unit),
                      cost_function = list(cost_function),
                      ...
   )
-  ex_r <- terra::rast(compiled_env[[1]][,1:3], type="xyz") # get latest time-step as example raster
-  # check if raster has coordinate reference system, if not use default from create_spaces
+    # check if raster has coordinate reference system, if not use default from create_spaces
   if (crs(ex_r)==""){
     crs(ex_r) <- gs$meta$crs
   }
@@ -102,6 +106,7 @@ create_spaces_raster <- function(raster_list, # old landscapes
   n_sites <- ncol(ex_r)*nrow(ex_r)
   gs$meta$area$total_area <- total_area
   gs$meta$area$n_sites <- n_sites
+  gs$meta$area$extent <- terra::ext(ex_r)[]
   check_spaces(gs)
   
   saveRDS(gs, file.path(output_directory, "spaces.rds"))

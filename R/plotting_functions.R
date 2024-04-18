@@ -9,14 +9,20 @@
 #' 
 #' @export
 plot_species_presence <- function(species, landscape) {
-  presence <- species[["abundance"]]
-  presence[] <- 1
+  #presence <- species[["abundance"]]
+  #presence[] <- 1
+  #get all locations
+  all_presence <- landscape[["coordinates"]][,1, drop=T]
+  all_presence[] <- 0
+  all_presence[names(species[["abundance"]])] <- 1
+  rc <- set_color(all_presence, type=landscape$`type`)
   conditional_plot(paste0("species_presence_", species$id),
                    landscape,
-                   plot_raster_single,
-                   presence,
+                   plot_single,
+                   all_presence,
                    landscape,
-                   paste("Species", species[["id"]]))
+                   paste("Species", species[["id"]]),
+                   col=rc)
 }
 
 
@@ -29,10 +35,13 @@ plot_species_presence <- function(species, landscape) {
 #' 
 #' @export
 plot_species_abundance <- function(species, landscape) {
-  presence <- species[["abundance"]]
+  all_presence <- landscape[["coordinates"]][,1, drop=T]
+  all_presence[] <- 0
+  all_presence[names(species[["abundance"]])] <- species[["abundance"]]
+  rc <- set_color(all_presence, type=landscape$`type`)
   conditional_plot(paste0("species_abundance_", species$id),
                    landscape,
-                   plot_raster_single,
+                   plot_single,
                    presence,
                    landscape,
                    paste("Abundance Species", species[["id"]]))
@@ -43,14 +52,14 @@ plot_species_abundance <- function(species, landscape) {
 
 #' Plot the environment variable of a given landscape
 #'
-#' @param landscape the landscape to plot the environment from
+#' @param landscape the gen3sis_space to plot the environment from
 #' @return no return value, called for plot
 #'
 #' @export
 plot_landscape <- function(landscape) {
   conditional_plot(title = "landscape",
                    landscape = landscape,
-                   plot_fun = plot_raster_multiple,
+                   plot_fun = plot_multiple,
                    landscape[["environment"]],
                    landscape)
 }
@@ -215,29 +224,46 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
 #' @export
 plot_richness <- function(species_list, landscape) {
   richness <- get_geo_richness(species_list, landscape)
-  max_richness <- max(richness, na.rm=TRUE)
-  min_richnes <- min(richness, na.rm=TRUE)
-  
-  # attribute proper color scale
-  zerorichness_col <- "navajowhite3"
-  if (max_richness==0){ #if all extinct
-    rc <-  zerorichness_col
-  } else {
-    rc <- color_richness(max_richness)
-    if (min_richnes==0){ #if there is zero-richness (i.e. inhabited sites)
-      rc <- c(zerorichness_col, rc)
-    }
-  }
-  
-  conditional_plot("richness",
+  #attribute color
+  rc <- set_color(richness, type=landscape$`type`)
+  conditional_plot("Richness",
                    landscape,
-                   plot_raster_single,
+                   plot_single,
                    richness,
                    landscape,
                    "richness",
                    col=rc)
 }
 
+
+#' Set the color scale for plots, adding zero_col if zero values are present
+#' @param values a vector of values
+#' @param colfun a color function to use, default is color_richness, 
+#' consider using color_richness_CVDCBP for color-blind safe colors
+#' @param zero_col a color to use for zero values, default is "navajowhite3"
+#' @param type a string, see \code{\link{check_spaces}} for options or use \code{check_spaces()$type}
+#' @return if type is "raster" the function returns a color scale, if type is "points" the function returns a vector of colors
+#' @export
+#' @example inst/examples/set_color_help.R
+set_color <- function(values, colfun=color_richness, zero_col="navajowhite3", type="raster"){
+  max_val <- max(values, na.rm=TRUE)
+  min_val <- min(values, na.rm=TRUE)
+  if (max_val==0){
+    rc <- zero_col
+  } else {
+    rc <- colfun(max_val)
+    if (min_val==0){
+      rc <- c(zero_col, rc)
+    }
+  }
+  if (type%in%c("raster")){
+    return(rc)
+  } else {
+    cols_cut <- cut(values,length(rc))
+    colors <- rc[cols_cut]
+    return(colors)
+  }
+}
 
 
 #' Plot species ranges of the given list of species on a landscape
@@ -260,7 +286,8 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   #layout.show(2)
   #par(mar=c(4,3,3,7), oma=c(0.1,0.8,0.3,0.8))
   par(xpd = FALSE)
-  raster::image(raster::rasterFromXYZ(cbind(landscape$coordinates,1)), main="species ranges", col="navajowhite3", asp = 1)
+  plot_points_single(1, landscape, title, no_data = 0, col="navajowhite3", title="species ranges")
+  # plot_points(, main="species ranges", col=, asp = 1))
   n_species <- length(species_list)
   alive <- unlist(lapply(species_list, function(x){length(x$abundance)}))
   alive <- alive>0
@@ -327,6 +354,41 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
 }
 
 
+
+# Generic plot single function
+plot_single <- function(x, ...) {
+  # Convert '...' to a list to access additional arguments
+  args <- list(...)
+  check_args(args)
+  # Dispatch based on the class of the second argument  
+  # Assuming 'x' is the first argument and we need the second for dispatch,
+  # which is the first in 'args'
+  UseMethod("plot_single", args[[1]])
+}
+
+
+#' Plot a single set of values in a given landscape
+#'
+#' @param values a named list of values, the names must correspond to cells in the landscape
+#' @param landscape a landscape to plot the values onto
+#' @param title a title string for resulting plot, the time information will be taken and appended from the landscape id
+#' @param no_data what value should be used for missing values in values
+#' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
+#' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
+#' @example inst/examples/plot_single_help.R
+#' @return no return value, called for plot
+#' 
+#' @export
+plot_single.gen3sis_space_raster <- function(values, landscape, title, no_data = 0, col, legend=TRUE) {
+  img <- cbind(landscape[["coordinates"]], no_data)
+  img[names(values), 3] <- values
+  ras <- terra::rast(img, type="xyz")
+  # extend raster to landscape extent in order to avoid flickering when animating
+  ras <- terra::extend(ras, terra::ext(landscape[["extent"]]), fill=NA)
+  terra::plot(ras, main=paste0(title, " ", landscape$timestep, " ts:", landscape[["id"]]), col=col, legend=legend)
+}
+
+
 #' Plot a single set of values onto a given landscape
 #'
 #' @param values a named list of values, the names must correspond to cells in the landscape
@@ -335,17 +397,39 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
 #' @param no_data what value should be used for missing values in values
 #' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
 #' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
-#' @example inst/examples/plot_raster_single_help.R
+#' @example inst/examples/plot_single_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_raster_single <- function(values, landscape, title, no_data = 0, col, legend=TRUE) {
-  img <- cbind(landscape[["coordinates"]], no_data)
-  img[names(values), 3] <- values
-  ras <- rasterFromXYZ(img)
-  ras <- extend(ras, landscape[["extent"]])
-  raster::plot(ras, main=paste0(title, ", t: ", landscape[["id"]]), col=col, legend=legend)
+plot_single.gen3sis_space_points <- function(values, landscape, title="", no_data = 0, col, legend=TRUE) {
+  plot(landscape[["coordinates"]], 
+       main=paste0(title, " ", landscape$timestep, " ts:", landscape[["id"]]),
+       xlim=landscape[["extent"]][c("xmin","xmax")],
+       ylim=landscape[["extent"]][c("ymin","ymax")],
+       col=col, pch=20)
 }
+
+
+plot_single.gen3sis_space_h3 <- function(values, landscape, title="", no_data = 0, col, legend=TRUE) {
+  polygons <- h3jsr::cell_to_polygon(rownames(landscape$environment))
+  # plot
+  plot(polygons,
+       main=paste0(title, " ", landscape$timestep, " ts:", landscape[["id"]]),
+       xlim=c(landscape$extent[1], landscape$extent[2]), ylim=c(landscape$extent[3], landscape$extent[4]), 
+       xlab="", ylab="", col=col)
+}
+
+# Generic plot multiple function 
+plot_multiple <- function(x, ...) {
+  # Convert '...' to a list to access additional arguments
+  args <- list(...)
+  check_args(args)
+  # Dispatch based on the class of the second argument  
+  # Assuming 'x' is the first argument and we need the second for dispatch,
+  # which is the first in 'args'
+  UseMethod("plot_multiple", args[[1]])
+}
+
 
 
 #' Plot a set of values onto a given landscape
@@ -357,7 +441,7 @@ plot_raster_single <- function(values, landscape, title, no_data = 0, col, legen
 #' @return no return value, called for plot
 #'
 #' @export
-plot_raster_multiple <- function(values, landscape, no_data = 0) {
+plot_multiple.gen3sis_space_raster <- function(values, landscape, no_data = 0) {
   img <- matrix(no_data,
                 nrow = nrow(landscape[["coordinates"]]),
                 ncol = ncol(values) + 2,
@@ -367,26 +451,38 @@ plot_raster_multiple <- function(values, landscape, no_data = 0) {
   img[, 1:2] <- landscape[["coordinates"]]
   img[rownames(values), -c(1:2)] <- values
   ras <- rasterFromXYZ(img)
-  ras <- extend(ras, landscape[["extent"]])
-  raster::plot(ras, main=paste0(colnames(values), ", t: ", landscape[["id"]]))
+  #ras <- extend(ras, landscape[["extent"]])
+  terra::plot(ras, main=paste0(colnames(values), " ", landscape$timestep, " ts ", landscape[["id"]]))
 }
 
+#' Ensure there is at least one additional argument provided after 'x'
+#' @param args a list of arguments
+#' @return no return value, called for plot routine
+#' @noRd
+check_args <- function(args){
+  # Ensure there is at least one additional argument provided after 'x'
+  if (length(args) < 1) {
+    stop("No gen3sis_space provided for dispatch as second parameter, please make sure you add one")
+  }
+}
 
-#' Define gen3sis richness color scale which is colour-vision deficient and colour-blind people safe based on scientific colour maps by Fabio Crameri
+#' Define gen3sis richness color scale for non colour-vision deficient
 #' @param n corresponds to the \link{colorRampPalette} parameter 
 #' @return returns a \link{colorRampPalette} function with the gen3sis richness colors
 #' @export
-color_richness <- colorRampPalette(
+#' @noRd
+color_richness_CVDCBP <- colorRampPalette(
   c("#B2F2FD", "#81EEEA", "#61E5C9", "#63DAA0", "#73CE79", "#85BF51", "#94AD2F", "#9B951B",
     "#9C7E1F", "#9A692B", "#985538", "#944444", "#933251", "#901F61", "#8C0172")
 )
 
 
-#' Define gen3sis richness color scale for non colour-vision deficient and colour-blind people
+#' Define richness color scale which is colour-vision deficient and colour-blind people safe based on scientific colour maps by Fabio Crameri
 #' @param n corresponds to the \link{colorRampPalette} parameter 
 #' @return returns a \link{colorRampPalette} function with the gen3sis richness colors
 #' @export
-color_richness_non_CVDCBP <- colorRampPalette(
+#' @noRd
+color_richness <- colorRampPalette(
   c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
     "#6DCD59FF", "#B4DE2CFF", "#FDE725FF", "#FFA500",   "#FF2900",   "#C40000",   "#8B0000", "#8B0000")
 )

@@ -7,7 +7,7 @@
 create_spaces_raster(
   raster_list,
   cost_function,
-  directions = 8,
+  directions = 16,
   output_directory,
   full_dists = FALSE,
   overwrite_output = FALSE,
@@ -131,7 +131,7 @@ cost_function_water <- function(source, habitable_src, dest, habitable_dest) {
   
 create_spaces_raster(raster_list = landscapes_sub_list,
                     cost_function = cost_function_water,
-                    directions = 8, # surrounding sites for each site
+                    directions = 16, # surrounding sites for each site
                     output_directory = file.path("C:/temp/test_spaces", "spaceS2"), 
                     full_dists = TRUE,
                     overwrite_output = TRUE,

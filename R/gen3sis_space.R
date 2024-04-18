@@ -2,7 +2,7 @@
 #'
 #' @param env named list of environmental variables in a with X,Y, and time-steps from
 #' the most recent of future time-step
-#' #' @param type string with type of gen3sis spaces. Accepted values are \code{check_spaces()$type}
+#' @param type string with type of gen3sis spaces. Accepted values are \code{check_spaces()$type}
 #' @param duration list containing information on temporal dimension list(from, to, by, unit)
 #' *from* is the oldest time-step; negative number if starting in the past, zero if starting in the present
 #' *to* CAN ONLY BE smaller than *from*, since *to* is the latest time
@@ -11,12 +11,14 @@
 #' e.g. list(-20, 0, 1, "Ma") has a landscape that covers the last 20 Ma until the present, every 1 Ma.
 #'      list(-800, 300, 10, "mil") has a landscape that covers the last 800 kyra or mil for millions of years
 #'      and goes until the future 300 kya at every 100 mil years.
-#' @param area list containing information on the 2D spacial dimension: list(total_area, n_sites, unit)
-#' *total_area* the covered area by the points
-#' Accepted units are square meter (m2) and square kilometer (km2) \code{check_spaces()$area}
+#' @param area list containing information on the 2D spacial dimension: list(extent, total_area, n_sites, unit)
+#' *extent* is a named vector with (xmin, xmax, ymin, ymax) \code{terra::ext},
+#' *total_area* is the covered area by the points, raster or h3 grid, 
+#' *n_sites* is the number of sites and 
+#' *unit* is theunit  of the area, accepted units are square meter (m2) and square kilometer (km2) 
+#' \code{check_spaces()$area}
 #' @param crs Coordinate Reference Systems, as string and PROJ.4 format. Default is,
 #' WGS 84 -- WGS84 - World Geodetic System 1984 crs="+proj=longlat +datum=WGS84 +no_defs"
-
 #' @param cost_function list of cost_function(s) used to calculate the cost distances between sites.
 #' Depends on type and other methods used to calculate the cost distances.
 #' @param geo_dynamic boolean for if sites change location or disappear over time
@@ -37,7 +39,7 @@
 create_spaces <- function(env=list(NA),
                          type="raster",
                          duration=list(from=NA, to=NA, by=NA, unit="Ma"),
-                         area=list(total_area=NA, n_sites=NA, unit="km2"),
+                         area=list(extent=NA, total_area=NA, n_sites=NA, unit="km2"),
                          crs="+proj=longlat +datum=WGS84 +no_defs",
                          cost_function=list(NA),
                          geo_dynamic=NULL,
@@ -55,7 +57,7 @@ create_spaces <- function(env=list(NA),
   spaces$meta$"cost_function" <- cost_function
   if(is.null(geo_dynamic)&!is.null(dim(env[[1]]))){
     geo_dynamic <- any(unlist(lapply(env, function(x){
-      #  if all lines have either only NA or values though time, then it is not geodynamic
+      #  if all lines have either only NA or values though time, then assume it is not geodynamic and set flag
       r <- any(apply(is.na(x[,-c(1,2)]), 1, all))
       return(r)
     })))
@@ -105,7 +107,7 @@ check_spaces <- function(spaces=NULL){
 
   error_report <- check_names(reference="env", datags=spaces, error_report)
   for (n_i in names(sp_ref$meta)){
-    # n_i <- names(sp_ref$meta)[5]
+    # n_i <- names(sp_ref$meta)[3]
     error_report <- check_names(reference=n_i, datags=spaces$meta, error_report)
     n_sub_e <- names(sp_ref$meta[[n_i]])
     if (length(n_sub_e)>1){

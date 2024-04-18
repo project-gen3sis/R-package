@@ -38,21 +38,17 @@ setup_inputs <- function(config, data, vars) {
     }
     environments[[name]] <- as.matrix(tmp)
   }
+  # environments
   data[["inputs"]][["environments"]] <- environments
-
   # time-steps
   data[["inputs"]][["timesteps"]] <- colnames(environments[[1]])
-
   # coordinates
-  coords <- as.matrix(landscapes[[1]][, 1:2])
-  data[["inputs"]][["coordinates"]] <- coords
-
-  # extent / resolution
-  env_raster <- rasterFromXYZ(landscapes[[1]][, 1:3])
-  data[["inputs"]][["extent"]] <- extent(env_raster)
-  data[["inputs"]][["resolution"]] <- res(env_raster)
-
-
+  data[["inputs"]][["coordinates"]] <- as.matrix(landscapes[[1]][, 1:2])
+  # type
+  data[["inputs"]][["type"]] <- spaces$meta$type
+  # extent
+  data[["inputs"]][["extent"]] <- spaces$meta$area$extent
+  
   return(list(config = config, data = data, vars = vars))
 }
 
@@ -117,17 +113,19 @@ init_attribute_ancestor_distribution <- function(config, data, vars) {
 
   data$all_species <- all_species
 
-  #plot starting_richness
-  grDevices::pdf(file=file.path(config$directories$output, "starting_richness.pdf"), width=10, height=6)
-  par(mfrow=c(1,1))
-  plot_richness(all_species, data$landscape)
-  grDevices::dev.off()
+  # #plot starting_richness
+  # grDevices::pdf(file=file.path(config$directories$output, "starting_richness.pdf"), width=10, height=6)
+  # par(mfrow=c(1,1))
+  # plot_richness(all_species, data$landscape)
+  # grDevices::dev.off()
+  # 
+  # #plot starting_ranges
+  # grDevices::pdf(file=file.path(config$directories$output, "starting_ranges.pdf"), width=10, height=6)
+  # par(mfrow=c(1,1))
+  # plot_ranges(all_species, data$landscape)
+  # grDevices::dev.off()
   
-  #plot starting_ranges
-  grDevices::pdf(file=file.path(config$directories$output, "starting_ranges.pdf"), width=10, height=6)
-  par(mfrow=c(1,1))
-  plot_ranges(all_species, data$landscape)
-  grDevices::dev.off()
+  
   
  # par(mfrow=c(1,2))
  # plot_richness(all_species, data$landscape)
@@ -216,7 +214,7 @@ setup_landscape <- function(config, data, vars) {
                                 coordinates = data[["inputs"]][["coordinates"]][habitable_cells, ],
                                 timestep = data[["inputs"]][["timesteps"]][index],
                                 extent = data[["inputs"]][["extent"]],
-                                resolution = data[["inputs"]][["resolution"]])
+                                type = data[["inputs"]][["type"]])
 
   data[["landscape"]] <- landscape
 
