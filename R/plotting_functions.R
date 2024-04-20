@@ -385,7 +385,7 @@ plot_single.gen3sis_space_raster <- function(values, landscape, title, no_data =
   ras <- terra::rast(img, type="xyz")
   # extend raster to landscape extent in order to avoid flickering when animating
   ras <- terra::extend(ras, terra::ext(landscape[["extent"]]), fill=NA)
-  terra::plot(ras, main=paste0(title, " ", landscape$timestep, " ts:", landscape[["id"]]), col=col, legend=legend)
+  terra::plot(ras, main=paste0(title, " ", landscape$timestep, " t_", landscape[["id"]]), col=col, legend=legend)
 }
 
 
@@ -403,7 +403,7 @@ plot_single.gen3sis_space_raster <- function(values, landscape, title, no_data =
 #' @export
 plot_single.gen3sis_space_points <- function(values, landscape, title="", no_data = 0, col, legend=TRUE) {
   plot(landscape[["coordinates"]], 
-       main=paste0(title, " ", landscape$timestep, " ts:", landscape[["id"]]),
+       main=paste0(title, " ", landscape$timestep, " t_", landscape[["id"]]),
        xlim=landscape[["extent"]][c("xmin","xmax")],
        ylim=landscape[["extent"]][c("ymin","ymax")],
        col=col, pch=20)
@@ -418,7 +418,7 @@ plot_single.gen3sis_space_h3 <- function(values, landscape, title="", no_data = 
     polygons <- sf::st_wrap_dateline(polygons, options= c('WRAPDATELINE=YES', 'DATELINEOFFSET=180'), quiet=TRUE)
   }
   plot(polygons,
-       main=paste0(title, " ", landscape$timestep, " ts:", landscape[["id"]]),
+       main=paste0(title, " ", landscape$timestep, " t_", landscape[["id"]]),
        xlim=c(landscape$extent[1], landscape$extent[2]), ylim=c(landscape$extent[3], landscape$extent[4]), 
        xlab="", ylab="", col=col)
 }
