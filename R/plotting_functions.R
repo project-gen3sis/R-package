@@ -412,7 +412,11 @@ plot_single.gen3sis_space_points <- function(values, landscape, title="", no_dat
 
 plot_single.gen3sis_space_h3 <- function(values, landscape, title="", no_data = 0, col, legend=TRUE) {
   polygons <- h3jsr::cell_to_polygon(rownames(landscape$environment))
-  # plot
+  # if the extent is global, wrap the dateline
+  if (landscape$extent[["xmin"]] == -180 & landscape$extent[["xmax"]]==180){
+    # wrap dateline
+    polygons <- sf::st_wrap_dateline(polygons, options= c('WRAPDATELINE=YES', 'DATELINEOFFSET=180'), quiet=TRUE)
+  }
   plot(polygons,
        main=paste0(title, " ", landscape$timestep, " ts:", landscape[["id"]]),
        xlim=c(landscape$extent[1], landscape$extent[2]), ylim=c(landscape$extent[3], landscape$extent[4]), 
