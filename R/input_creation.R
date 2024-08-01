@@ -304,9 +304,15 @@ stack_landscapes <- function(landscapes, i) {
     # landscape <- landscapes[[1]]
     if(is.character(landscape[i])) {
       ras <- raster(landscape[i])
+      # WIP
+      print(landscape[[i]])
+      print(class(landscape[[i]]))
     } else if(is(landscape[[i]],"RasterLayer")) {
       ras <- landscape[i]
-    } else {
+    } else if(is(landscape[[i]],"SpatRaster")) {
+      ras <- raster(landscape[[i]])
+    }
+    else {
       stop("unknown landscape; it has to be a named list of list of either rasters or raster files")
     }
     new_stack <- addLayer(new_stack, ras)
