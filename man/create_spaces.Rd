@@ -11,10 +11,11 @@ create_spaces(
   area = list(extent = NA, total_area = NA, n_sites = NA, unit = "km2"),
   crs = "+proj=longlat +datum=WGS84 +no_defs",
   cost_function = list(NA),
-  geo_dynamic = NULL,
+  geodynamic = NULL,
+  type_spec = list(res = NA),
   author = NULL,
   source = "missing",
-  description = list(envar = "missing", methods = "missing")
+  description = list(environment = "missing", methods = "missing")
 )
 }
 \arguments{
@@ -45,9 +46,11 @@ WGS 84 -- WGS84 - World Geodetic System 1984 crs="+proj=longlat +datum=WGS84 +no
 \item{cost_function}{list of cost_function(s) used to calculate the cost distances between sites.
 Depends on type and other methods used to calculate the cost distances.}
 
-\item{geo_dynamic}{boolean for if sites change location or disappear over time
+\item{geodynamic}{boolean for if sites change location or disappear over time
 ,default is NULL and deduces from NA over time. If false, only one cost_distance is calculated and used
 i.e. whencost_distances are the same, i.e. no geodynamic changes in the space}
+
+\item{type_spec}{list containing type specific information, e.g. res (resolution) for raster and h3 spaces}
 
 \item{author}{string with the name of the author. Default is NULL which gives the system user name obtained from \code{Sys.info()["user"]}
 This is far from ideal, but it is better than nothing. Please fill this up and even consider leaving a contact information}

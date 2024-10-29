@@ -58,8 +58,7 @@ create_spaces_raster(raster_list = landscapes_sub_list,
                     output_directory = file.path("C:/temp/test_spaces", "spaceS2"), 
                     full_dists = TRUE,
                     overwrite_output = TRUE,
-                    duration=list(from=-60, to=-30, by=10, unit="Ma"),
-                    area.unit="km2")
+                    duration=list(from=-60, to=-30, by=10, unit="Ma"))
   
   
 my_description <- "Temperatures on current koppen bands were extracted for each Koppen band (5Ma resolution)(Hagen et al. 2019)
@@ -76,7 +75,6 @@ create_spaces_raster(raster_list= landscapes_sub_list, # old landscapes
                                 full_dists = TRUE,
                                 overwrite_output = TRUE,
                                 duration=list(from=-60, to=-30, by=10, unit="Ma"),
-                                area.unit="km2",
                                 author="Oskar Hagen",
                                 source="10.1371/journal.pbio.3001340",
                                 description=list(env="temperature in degree celcius;

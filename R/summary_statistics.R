@@ -83,7 +83,7 @@ make_summary <- function(config, data, vars, total_runtime, save_file=TRUE){
   final_richness <- cbind(data[["inputs"]][["coordinates"]], rep(0, nrow(data[["inputs"]][["coordinates"]])))
   colnames(final_richness) <- append(colnames(data[["inputs"]][["coordinates"]]), toString(vars$ti))
   richness <- get_geo_richness(data$all_species, data$landscape)
-  final_richness[as.integer(names(richness)), ncol(final_richness)] <- richness
+  final_richness[names(richness), ncol(final_richness)] <- richness # removed *as.integer*(names(richness))
   sgen3sis$summary <- c(data$summaries, list("richness-final"= final_richness))
   
   #flag

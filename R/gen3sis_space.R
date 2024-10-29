@@ -21,9 +21,10 @@
 #' WGS 84 -- WGS84 - World Geodetic System 1984 crs="+proj=longlat +datum=WGS84 +no_defs"
 #' @param cost_function list of cost_function(s) used to calculate the cost distances between sites.
 #' Depends on type and other methods used to calculate the cost distances.
-#' @param geo_dynamic boolean for if sites change location or disappear over time
+#' @param geodynamic boolean for if sites change location or disappear over time
 #' ,default is NULL and deduces from NA over time. If false, only one cost_distance is calculated and used
 #' i.e. whencost_distances are the same, i.e. no geodynamic changes in the space
+#' @param type_spec list containing type specific information, e.g. res (resolution) for raster and h3 spaces
 #' @param author string with the name of the author. Default is NULL which gives the system user name obtained from \code{Sys.info()["user"]}
 #' This is far from ideal, but it is better than nothing. Please fill this up and even consider leaving a contact information
 #' @param source string with the source of the data, ideally should contain a publication with DOI and a valid URL
@@ -42,27 +43,25 @@ create_spaces <- function(env=list(NA),
                          area=list(extent=NA, total_area=NA, n_sites=NA, unit="km2"),
                          crs="+proj=longlat +datum=WGS84 +no_defs",
                          cost_function=list(NA),
-                         geo_dynamic=NULL,
+                         geodynamic=NULL,
+                         type_spec=list("res"=NA),
                          author=NULL,
                          source="missing",
-                         description=list(envar="missing", methods="missing")
+                         description=list(environment="missing", methods="missing")
                          ){
   spaces <- list()
   spaces$"env" <- env
   spaces$meta$"type" <- type
+  spaces$meta$"type_spec" <- type_spec
   spaces$meta$"duration" <- duration
   spaces$meta$"area" <- area
   spaces$meta$"crs" <- crs
   # attributes(cost_function) <- NULL
   spaces$meta$"cost_function" <- cost_function
-  if(is.null(geo_dynamic)&!is.null(dim(env[[1]]))){
-    geo_dynamic <- any(unlist(lapply(env, function(x){
-      #  if all lines have either only NA or values though time, then assume it is not geodynamic and set flag
-      r <- any(apply(is.na(x[,-c(1,2)]), 1, all))
-      return(r)
-    })))
+  if(is.null(geodynamic)&!is.null(dim(env[[1]]))){
+    geodynamic <- is_geodynamic(env)
   }
-  spaces$meta$"geo_dynamic" <- geo_dynamic
+  spaces$meta$"geodynamic" <- geodynamic
   if (is.null(author)){
     author <- Sys.info()["user"]
     # remove attributes
@@ -94,8 +93,8 @@ check_spaces <- function(spaces=NULL){
   accepted[["type"]] <- c("raster", "points", "h3")
   dur_units <- c("day", "wk", "mon", "yr", "dec", "cen", "mil", "Ma")
   accepted[["duration_unit"]] <- dur_units[dur_units%in%measurements::conv_unit_options$duration]
-  area_units <- c("m2", "km2", "ha")
-  accepted[["area_unit"]]<- area_units[area_units%in%measurements::conv_unit_options$area]
+  # area_units <- c("m2", "km2", "ha")
+  # accepted[["area_unit"]]<- area_units[area_units%in%measurements::conv_unit_options$area]
 
   if (is.null(spaces)){
     return(accepted)
@@ -192,3 +191,37 @@ prepare_dirs <- function(dir_input, dir_output){
   cat(paste0("Output directory: \n [", dir_output, "] \n"))
 }
 
+
+#' Determine if environmental data is geodynamic
+#'
+#' This function checks whether a set of environmental data contains geodynamic variables.
+#' A dataset is considered geodynamic if it contains at least one row that does not consist entirely of `NA` values
+#' or entirely of non-`NA` values across time.
+#'
+#' @param env A named list of environmental variables, each being a matrix or data frame where the first two columns
+#' represent coordinates (e.g., `x` and `y`), and the remaining columns represent values over time.
+#'
+#' @return A logical value indicating whether the dataset is geodynamic (`TRUE`) or not (`FALSE`).
+#' The dataset is considered geodynamic if at least one row contains a mix of `NA` and non-`NA` values.
+#'
+#' @details
+#' The function iterates over each environmental variable in the `env` list. For each variable, it removes the first two columns
+#' (i.e. `x` and `y` coordinates) and checks if any row in the remaining data has a mix of `NA` and non-`NA` values.
+#' If such a row is found, the dataset is considered geodynamic, and the function returns `TRUE`. Otherwise, it returns `FALSE`.
+#'
+#' @example inst/examples/is_geodynamic_help.R
+is_geodynamic <- function(env){
+  geodynamic <- any(unlist(lapply(env, function(x){
+    # remove the first two columns (x and y)
+    data <- x[,-c(1,2)]
+    # identify rows that are all NA
+    all_na <- apply(data, 1, function(row) all(is.na(row)))
+    # identify rows that have no NA values (i.e., all non-NA)
+    all_non_na <- apply(data, 1, function(row) all(!is.na(row)))
+    # determine if the matrix is geodynamic
+    # r=TRUE, aka it is geodynamic  if there is at least one row that is neither all NA nor all non-NA
+    r <- any(!(all_na | all_non_na))
+    return(r)
+  })))
+  return(geodynamic)
+}

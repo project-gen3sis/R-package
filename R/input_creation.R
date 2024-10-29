@@ -27,9 +27,8 @@
 #' @param overwrite_output TRUE or FALSE
 #' @param verbose print distance calculation progress (default: FALSE)
 #' @param duration list with from, to, by and unit. Default is from -latest time to zero by 1 Ma
-#' @param area.unit area.unit, either in m2 or km2, see \code{?create_spaces} only unit necessary, rest is calculated.
-#' @param geo_dynamic True or False, if the landscape is dynamic (e.g. sea-level change) or static. Default is NULL, 
-#' i.e. deciding final value based on the input data.
+#' @param geodynamic True or False, if the landscape is dynamic (e.g. sea-level change) or static. Default is NULL, 
+#' i.e. deciding final value based on the input data using \code{?is_geodynamic}.
 #' @param author author of the space, see \code{?create_spaces}
 #' @param source source of the space, see \code{?create_spaces}
 #' @param description list with env and methods, see \code{?create_spaces}
@@ -50,7 +49,7 @@ create_spaces_raster <- function(raster_list, # old landscapes
                           overwrite_output = FALSE,
                           verbose = FALSE,
                           duration=list(from=NA, to=NA, by=NA, unit="Ma"),
-                          area.unit="km2",
+                          geodynamic=NULL,
                           ...) {
   # # in case outpu_directory is NULL, use the same directory as the input
   # if (is.null(output_directory)){
@@ -94,7 +93,8 @@ create_spaces_raster <- function(raster_list, # old landscapes
                      area=list(extent=NA,
                                total_area=NA,
                                n_sites=NA,
-                               unit=area.unit),
+                               unit="km2"),
+                     geodynamic=geodynamic,
                      cost_function = list(cost_function),
                      ...
   )
@@ -102,12 +102,24 @@ create_spaces_raster <- function(raster_list, # old landscapes
   if (crs(ex_r)==""){
     crs(ex_r) <- gs$meta$crs
   }
-  total_area <- measurements::conv_unit(sum(terra::cellSize(ex_r, unit="km")[]), "km2", area.unit)
+  total_area <- sum(terra::cellSize(ex_r, unit="km")[])
   n_sites <- ncol(ex_r)*nrow(ex_r)
   gs$meta$area$total_area <- total_area
   gs$meta$area$n_sites <- n_sites
   gs$meta$area$extent <- terra::ext(ex_r)[]
+  gs$meta$type_spec <- list("res"=terra::res(ex_r))
   check_spaces(gs)
+  # in case geodynamic is set to FALSE, double check env matrix
+  if (!geodynamic){
+    # if compiled_env is dynamic, reset it
+    checked_geodym <- is_geodynamic(compiled_env) # get the geodynamic status
+    if (checked_geodym){
+      cat("dynamic is set to FALSE but environment says otherwise. 
+          changing geodynamic to TRUE")
+      geodynamic <- checked_geodym
+      gs$meta$geodynamic <- checked_geodym
+    }
+  }
   
   saveRDS(gs, file.path(output_directory, "spaces.rds"))
   
@@ -119,7 +131,13 @@ create_spaces_raster <- function(raster_list, # old landscapes
   # create local distances
   # iterate over times-teps
   # number of time-steps
-  nts <- length(timesteps)
+  if (geodynamic){
+    nts <- length(timesteps)
+  } else {
+    nts <- 1
+    
+  }
+  
   for( step in 1:nts ) {
     if (verbose){
       cat(paste("starting distance calculations for timestep", step, '\n'))
@@ -304,15 +322,12 @@ stack_landscapes <- function(landscapes, i) {
     # landscape <- landscapes[[1]]
     if(is.character(landscape[i])) {
       ras <- raster(landscape[i])
-      # WIP
-      print(landscape[[i]])
-      print(class(landscape[[i]]))
     } else if(is(landscape[[i]],"RasterLayer")) {
       ras <- landscape[i]
     } else if(is(landscape[[i]],"SpatRaster")) {
-      ras <- raster(landscape[[i]])
-    }
-    else {
+      # convert back to raster for now
+      ras <- raster(terra::subset(landscape[[i]], 1))
+    } else {
       stop("unknown landscape; it has to be a named list of list of either rasters or raster files")
     }
     new_stack <- addLayer(new_stack, ras)

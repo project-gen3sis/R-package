@@ -411,16 +411,23 @@ plot_single.gen3sis_space_points <- function(values, landscape, title="", no_dat
 
 
 plot_single.gen3sis_space_h3 <- function(values, landscape, title="", no_data = 0, col, legend=TRUE) {
-  polygons <- h3jsr::cell_to_polygon(rownames(landscape$environment))
+  spatial_points <- sf::st_as_sf(as.data.frame(landscape$coordinates), coords = c("x", "y"), crs = 4326)
+  # TODO pass crs here, review and standardize crs handling and protocol
+  cells <- h3jsr::point_to_cell(spatial_points, landscape$type_spec_res)
+  polygons <- h3jsr::cell_to_polygon(cells)
+  #polygons <- h3jsr::cell_to_polygon(h3::geo_to_h3(landscape$coordinates, landscape$type_spec_res))
   # if the extent is global, wrap the dateline
   if (landscape$extent[["xmin"]] == -180 & landscape$extent[["xmax"]]==180){
     # wrap dateline
     polygons <- sf::st_wrap_dateline(polygons, options= c('WRAPDATELINE=YES', 'DATELINEOFFSET=180'), quiet=TRUE)
   }
+  # Add the values to the polygons for plotting
+  # polygons$values <- values  # Add the values as an attribute to polygons
   plot(polygons,
        main=paste0(title, " ", landscape$timestep, " t_", landscape[["id"]]),
        xlim=c(landscape$extent[1], landscape$extent[2]), ylim=c(landscape$extent[3], landscape$extent[4]), 
-       xlab="", ylab="", col=col)
+       xlab="", ylab="", col=col, border=NA)
+  
 }
 
 # Generic plot multiple function 

@@ -13,7 +13,7 @@ create_spaces_raster(
   overwrite_output = FALSE,
   verbose = FALSE,
   duration = list(from = NA, to = NA, by = NA, unit = "Ma"),
-  area.unit = "km2",
+  geodynamic = NULL,
   ...
 )
 }
@@ -46,7 +46,8 @@ If FALSE (default), only local distances are calculated (slower CPU time when si
 
 \item{duration}{list with from, to, by and unit. Default is from -latest time to zero by 1 Ma}
 
-\item{area.unit}{area.unit, either in m2 or km2, see \code{?create_spaces} only unit necessary, rest is calculated.}
+\item{geodynamic}{True or False, if the landscape is dynamic (e.g. sea-level change) or static. Default is NULL, 
+i.e. deciding final value based on the input data using \code{?is_geodynamic}.}
 
 \item{...}{additional arguments to be passed to the \code{\link{create_spaces}} function}
 
@@ -54,9 +55,6 @@ If FALSE (default), only local distances are calculated (slower CPU time when si
 If timesteps=NULL (default), time-steps are sequentially numbered from 0 to the latest time-step.}
 
 \item{crs}{the coordinate reference system in crs format (see raster::crs). Default is defined by \code{\link{create_spaces}}}
-
-\item{geo_dynamic}{True or False, if the landscape is dynamic (e.g. sea-level change) or static. Default is NULL, 
-i.e. deciding final value based on the input data.}
 
 \item{author}{author of the space, see \code{?create_spaces}}
 
@@ -135,8 +133,7 @@ create_spaces_raster(raster_list = landscapes_sub_list,
                     output_directory = file.path("C:/temp/test_spaces", "spaceS2"), 
                     full_dists = TRUE,
                     overwrite_output = TRUE,
-                    duration=list(from=-60, to=-30, by=10, unit="Ma"),
-                    area.unit="km2")
+                    duration=list(from=-60, to=-30, by=10, unit="Ma"))
   
   
 my_description <- "Temperatures on current koppen bands were extracted for each Koppen band (5Ma resolution)(Hagen et al. 2019)
@@ -153,7 +150,6 @@ create_spaces_raster(raster_list= landscapes_sub_list, # old landscapes
                                 full_dists = TRUE,
                                 overwrite_output = TRUE,
                                 duration=list(from=-60, to=-30, by=10, unit="Ma"),
-                                area.unit="km2",
                                 author="Oskar Hagen",
                                 source="10.1371/journal.pbio.3001340",
                                 description=list(env="temperature in degree celcius;

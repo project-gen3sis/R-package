@@ -46,8 +46,12 @@ setup_inputs <- function(config, data, vars) {
   data[["inputs"]][["coordinates"]] <- as.matrix(landscapes[[1]][, 1:2])
   # type
   data[["inputs"]][["type"]] <- spaces$meta$type
+  # type_spec_res
+  data[["inputs"]][["type_spec_res"]] <- spaces$meta$type_spec$res
   # extent
   data[["inputs"]][["extent"]] <- spaces$meta$area$extent
+  # geodynamc
+  data[["inputs"]][["geodynamic"]] <- spaces$meta$geodynamic
   
   return(list(config = config, data = data, vars = vars))
 }
@@ -202,8 +206,9 @@ init_simulation <- function(config, data, vars) {
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_landscape <- function(config, data, vars) {
-  steps <- config$gen3sis$general$start_time:config$gen3sis$general$end_time
-  index <- which(steps==vars$ti) #gen3sis v1 : vars$ti + 1
+  n_total_steps <- length(data[["inputs"]][["timesteps"]])
+  total_steps_zerobase <- (n_total_steps-1):0
+  index <- which(total_steps_zerobase==vars$ti) #gen3sis v1 : vars$ti + 1
   habitable_cells <- data$inputs$environments[[1]][, index, drop=FALSE]
   habitable_cells <- habitable_cells[which(!is.na(habitable_cells)), , drop=FALSE]
   habitable_cells <- rownames(habitable_cells)
@@ -214,7 +219,9 @@ setup_landscape <- function(config, data, vars) {
                                 coordinates = data[["inputs"]][["coordinates"]][habitable_cells, ],
                                 timestep = data[["inputs"]][["timesteps"]][index],
                                 extent = data[["inputs"]][["extent"]],
-                                type = data[["inputs"]][["type"]])
+                                geodynamic = data[["inputs"]][["geodynamic"]],
+                                type = data[["inputs"]][["type"]],
+                                type_spec_res=data[["inputs"]][["type_spec_res"]])
 
   data[["landscape"]] <- landscape
 
@@ -273,15 +280,23 @@ loop_setup_geo_dist_m_ti <- function(config, data, vars) {
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_distance_matrix <- function(config, data, vars) {
+  
+  if (data$landscape$geodynamic){
+    tiis <- vars$ti
+  } else {
+    # in case of static landscapes, the distance matrix is always the same
+    tiis <- 0
+  }
+  
   matrix_file <- file.path(config$directories$input,
                           "distances_full",
-                          paste0("distances_full_", vars$ti, ".rds"))
+                          paste0("distances_full_", tiis, ".rds"))
   if(file.exists(matrix_file)) {
     distance_matrix <- readRDS(file = matrix_file)
   } else {
     neighbour_file <- file.path(config$directories$input,
                             "distances_local",
-                            paste0("distances_local_", vars$ti, ".rds"))
+                            paste0("distances_local_", tiis, ".rds"))
     distance_neighbours <- readRDS(neighbour_file)
 
     habitable_cells <- as.integer(rownames(data$landscape$coordinates))
