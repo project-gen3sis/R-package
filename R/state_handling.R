@@ -3,29 +3,47 @@
 #' Internal function that saves the current simulation state
 #'
 #' @param val the internal state
-#' @param save_val a tri-state flag: NA to not save, "all" to save the current state,
-#' "last" save the current state and remove any previous save state 
+#' @param save_state This parameter can take any of the following
+#'   values:
 #'
+#' * NA (default): do not save any internal state of the simulation.
+#'
+#' * "all": save all time steps.
+#'
+#' * "last": save last time step only
+#'
+#' * Numeric vector: save the specified time steps.
+#' 
 #' @noRd
-save_val <- function(val, save_val = NA){
-  ### save current simulation state
-  #save the !!global!! state of the rng
-  if(is.na(save_val)){
-    #save_val not set: don't save anything
-    return()
-  } else if(save_val == "all"){
+save_val <- function(val, save_state = NA){
+  # Check if the simulation will be saved
+  create_save <- identical(save_state, "all") || 
+    identical(save_state, "last") ||
+    val$vars$ti %in% save_state
+  
+  
+  if (create_save) {
+    state_dir <- file.path(val$config$directories$output, "val")
+    if (!dir.exists(state_dir)) { # if the saving directory does not exist
+      dir.create(state_dir, recursive = TRUE) # this line creates it
+    }
+    
+    if (identical(save_state, "last")) {
+      # Previous state file(s) will be removed after the most recent
+      # one has been created
+      prev_files <- list.files(state_dir, full.names = TRUE)
+    }
+    
+    # Save current Random Number Generator (seed) state
     val$config$seed <- .GlobalEnv$.Random.seed
     val$data$distance_matrix <- NULL
-    saveRDS(object = val, file = file.path(val$config$directories$output_val, paste0("val_t_", val$vars$ti, ".rds")))
-  } else if(save_val == "last"){
-    files <- list.files(val$config$directories$output_val, full.names = TRUE)
-    val$config$seed <- .GlobalEnv$.Random.seed
-    val$data$distance_matrix <- NULL
-    saveRDS(object = val, file = file.path(val$config$directories$output_val, paste0("val_t_", val$vars$ti, ".rds")))
-    file.remove(files)
+    state_file <- file.path(state_dir, paste0("val_t_", val$vars$ti, ".rds")) # saving path
+    saveRDS(val, state_file) # save the state
+    if (identical(save_state, "last")) {
+      file.remove(prev_files) # remove previous state file(s)
+    }
   }
 }
-
 
 #' Saves the current species and landscape objects
 #'
@@ -58,10 +76,11 @@ save_ecogengeo <- function(val){
 restore_state <- function(val, restart_timestep){
   ### val contains a populated config, required for directory information
   ### restore previous simulation state
+  state_dir <- file.path(val$config$directories$output, "val")
   if(restart_timestep == "ti"){
     #look for the most recent completed time-step
     regex <- "\\d+"
-    files <- list.files(val$config$directories$output_val)
+    files <- list.files(state_dir)
     if(length(files) == 0){
       print("no val found, starting from the initial time-step")
       return(val)
@@ -73,7 +92,7 @@ restore_state <- function(val, restart_timestep){
     timestep <- as.integer(restart_timestep)
   }
 
-  val <- readRDS(file.path(val$config$directories$output_val, paste0("val_t_", timestep, ".rds")))
+  val <- readRDS(file.path(state_dir, paste0("val_t_", timestep, ".rds")))
   .GlobalEnv$.Random.seed <- val$config$seed
 
   if(timestep > 0){
