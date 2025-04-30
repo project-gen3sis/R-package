@@ -71,25 +71,25 @@ save_ecogengeo <- function(val){
 #' Restores the simulation form a previously saved state
 #'
 #' @param val a semi valid simulation state
-#' @param restart_timestep the time-step to restart from
+#' @param timestep_restart the time-step to restart from
 #' @noRd
-restore_state <- function(val, restart_timestep){
+restore_state <- function(val, timestep_restart){
   ### val contains a populated config, required for directory information
   ### restore previous simulation state
   state_dir <- file.path(val$config$directories$output, "val")
-  if(restart_timestep == "ti"){
+  if(timestep_restart == "ti"){
     #look for the most recent completed time-step
     regex <- "\\d+"
     files <- list.files(state_dir)
     if(length(files) == 0){
-      print("no val found, starting from the initial time-step")
+      message("No val found, starting from the initial time-step")
       return(val)
     }
     numbers <- as.integer(regmatches(files, regexpr(regex, files)))
     timestep <- min(numbers)
 
   } else {
-    timestep <- as.integer(restart_timestep)
+    timestep <- as.integer(timestep_restart)
   }
 
   val <- readRDS(file.path(state_dir, paste0("val_t_", timestep, ".rds")))
@@ -98,11 +98,11 @@ restore_state <- function(val, restart_timestep){
   if(timestep > 0){
     val$vars$save_steps <- (timestep-1):(val$config$gen3sis$general$end_time)
     val$vars$steps <- (timestep-1):(val$config$gen3sis$general$end_time)
-    print(paste("restarting at time-step:", timestep))
+    message(paste("restarting at time-step:", timestep))
   } else {
     val$vars$save_steps <- NULL
     val$vars$steps <- NULL
-    print("simulation already completed")
+    message("Simulation already completed")
   }
 
   return(val)
