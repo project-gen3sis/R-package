@@ -1,13 +1,13 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' @title gen3sis: General Engine for Eco-Evolutionary Simulations
-#' @name gen3sis
+#' @title gen3sis2: General Engine for Eco-Evolutionary Simulations
+#' @name gen3sis2
 #' @description Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes on biodiversity patterns as a general term.
 #' @references O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2021). gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology
-#' @details Gen3sis is implemented in a mix of R and C++ code, and wrapped into an R-package. All high-level functions that the user may interact with are written in R, and are documented via the standard R / Roxygen help files for R-packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. Additionally, the package provides several convenience functions to generate input data, configuration files and plots, as well as tutorials in the form of vignettes that illustrate how to declare models and run simulations.
+#' @details Gen3sis2 is implemented in a mix of R and C++ code, and wrapped into an R-package. All high-level functions that the user may interact with are written in R, and are documented via the standard R / Roxygen help files for R-packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. Additionally, the package provides several convenience functions to generate input data, configuration files and plots, as well as tutorials in the form of vignettes that illustrate how to declare models and run simulations.
 #' @seealso \code{\link{create_input_config}}   \code{\link{create_spaces_raster}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
 #' @keywords programming IO iteration methods utilities
-#' @concept gen3sis modeling eco-evolutionary macroevolution macroecology mechanisms
+#' @concept gen3sis2 modeling eco-evolutionary macroevolution macroecology mechanisms
 #' @examples
 #' \dontrun{
 #' 
@@ -38,7 +38,7 @@
 #' plot_richness(species_t_150, landscape_t_150)   
 #'
 #' }
-#' @docType package
+#' @docType _PACKAGE
 #' @useDynLib gen3sis2, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @import Matrix
@@ -92,16 +92,19 @@ run_simulation <- function(config = NA,
   #----------------------------------------------------#
   ####### User defined variables (config.R) ############
   #----------------------------------------------------#
-
+  
   system_time_start <- Sys.time() #Starting timer
 
+  
   directories <- prepare_directories(config_file = config,
                                      input_directory = landscape,
                                      output_directory = output_directory)
 
-  if(is.na(config)[1]){
+  # TODO rewrite this conditional to enable copying the config file if object is on RAM
+  if(is.na(config)[1]){ # TODO shouldn't this test be before using the config?
     stop("please provide either a config file or a config object")
   } else if (is(config, "gen3sis_config")){
+    file.copy(config$directories$config_path, directories$output)
     config[["directories"]] <- directories
   } else if (is(config, "character")){
     file.copy(config, directories$output)
@@ -110,8 +113,11 @@ run_simulation <- function(config = NA,
   } else {
     stop("this is not a known config, please provide either a config file or a config object")
   }
+  
   if(!verify_config(config)){
     stop("config verification failed")
+  } else {
+    cat("\nUsing config:",config_object$gen3sis$general$config_name,"\n")
   }
 
   val <- list("data" = list(),
@@ -131,25 +137,31 @@ run_simulation <- function(config = NA,
   val <- setup_inputs(val$config, val$data, val$vars)
   val <- setup_variables(val$config, val$data, val$vars)
   val <- setup_landscape(val$config, val$data, val$vars)
+  
   # conceptually the result of the initialization is the "end" of a previous timestep
   val$data$landscape$id <- val$data$landscape$id + 1
+  
+  if (verbose >= 1) {
+    cat("--- Initializing --- \n")
+  }
+  
   val <- init_attribute_ancestor_distribution(val$config, val$data, val$vars)
-
+  
   # #---------------------------------------------------#
   # #####               SIMULATION START            #####
   # #---------------------------------------------------#
   # #---------------------------------------------------#
   # #####               Init simulation             #####
   # #---------------------------------------------------#
+  
   val <- init_simulation(val$config, val$data, val$vars)
   
   val <- init_summary_statistics(val$data, val$vars , val$config)
-  
 
   #--------------------------------------------#
   ######## Call observer to plot or save #######
   #--------------------------------------------#
-
+  
   ### when to call the observer
   if (is.na(call_observer)){
     save_steps <- c(val$config$gen3sis$general$start_time,val$config$gen3sis$general$end_time)
@@ -172,6 +184,10 @@ run_simulation <- function(config = NA,
    val <- restore_state(val, timestep_restart)
   }
 
+  if (verbose >= 1) {
+    cat("--- Running simulation --- \n")
+  }
+  
   for(ti in val$vars$steps){ #loop over time steps
     # set to zero every new time-step!
     val$vars$n_new_sp_ti <- 0
@@ -250,7 +266,8 @@ run_simulation <- function(config = NA,
     val <- update_extinction_times(val$config, val$data, val$vars)
 
     if (verbose>=1){
-      cat('step =', ti, ', species alive =', val$vars$n_sp_alive, ', species total =', val$vars$n_sp, '\n')  
+      cat('step =', ti, ', species alive =', val$vars$n_sp_alive, ', species total =', val$vars$n_sp, '\n')
+      if(verbose>=2){cat("--\n")} 
     }
     
     if(val$vars$ti %in% val$vars$save_steps){
@@ -264,12 +281,12 @@ run_simulation <- function(config = NA,
     # abort conditions
     if( val$vars$n_sp_alive >= val$config$gen3sis$general$max_number_of_species ) {
       val$vars$flag <- "max_number_species"
-      print("max number of species reached, breaking loop")
+      cat("[!] Max number of species reached, breaking loop \n")
       break
     }
     
     if( val$vars$flag == "max_number_coexisting_species") {
-      print("max number of coexisting species reached, breaking loop")
+      cat("[!] Max number of coexisting species reached, breaking loop \n")
       break
     }
   }# close loop steps
@@ -305,7 +322,7 @@ run_simulation <- function(config = NA,
   sgen3sis <- make_summary(val$config, val$data, val$vars, total_runtime, save_file=TRUE)
   
   if(verbose >= 1){
-    cat("Simulation runtime:", total_runtime, "hours\n")
+    cat("Simulation runtime: ", total_runtime, " hours\n")
   }
   return(sgen3sis)
 }

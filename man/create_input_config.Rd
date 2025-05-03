@@ -4,10 +4,12 @@
 \alias{create_input_config}
 \title{Creates either an empty configuration or a pre-filled configuration object from a config file}
 \usage{
-create_input_config(config_file = NA)
+create_input_config(config_file = NA, config_name = NULL)
 }
 \arguments{
 \item{config_file}{the path to a valid configuration file. if NA it creates an empty config}
+
+\item{config_name}{the name of the configuration. if NULL it will be set to a random name, if a empty config is creasted, or use the file name}
 }
 \value{
 list of configuration elements, similar generated from reading a config_file.R. The internal elements 

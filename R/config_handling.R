@@ -20,11 +20,11 @@ prepare_directories <- function(config_file = NA,
   if(is.na(config_file)[1]) {
     stop("no config file provided!")
   } else if (is(config_file,"gen3sis_config")){
-    print("config found: using config object")
+    cat("Config found: using config object \n")
   } else if(!file.exists(config_file)){
-    stop("config file does not exist!")
+    stop("Config file does not exist! \n")
   } else {
-    print(paste("config found:", config_file))
+    cat(paste("config found: ", config_file))
   }
 
   if(is.na(input_directory)) {
@@ -37,7 +37,7 @@ prepare_directories <- function(config_file = NA,
   if(!dir.exists(input_dir)){
     stop(paste("input directory does not exist!:", input_dir))
   }
-  print(paste("landscape found:", input_directory))
+  cat(paste("Landscape found:", input_directory),"\n")
 
   if(is.na(output_directory)) {
     if (is(config_file, "gen3sis_config")){
@@ -59,14 +59,22 @@ prepare_directories <- function(config_file = NA,
   dir$input <- input_dir
 
   #output folders
-  if(is.na(config_file)[1]|is(config_file, "gen3sis_config")) {
-    config_name <- file.path("default_config", paste0(format(Sys.time(), "%Y%m%d%H%m"), "-", formatC(sample(1:9999,1), digits=4, flag="0")))
+  if (is(config_file, "gen3sis_config")) {
+    if (!is.character(config_file$gen3sis$general$config_name)) {
+      stop(
+        "The gen3sis$general$config_name variable needs to be defined ",
+        "in the config object. It should be a string that will be used ",
+        "as the name of the subdirectory where the simulation outputs ",
+        "will be stored."
+      )
+    }
+    config_name <- config_file$gen3sis$general$config_name
   } else {
     config_name <- tools::file_path_sans_ext(basename(config_file))
   }
   dir$output <- file.path(output_dir, config_name)
   dir.create(dir$output, recursive=TRUE, showWarnings = FALSE)
-  print(paste("output directory is:", dir$output))
+  cat(paste("Output directory is:", dir$output),"\n")
 
   #dir$output_species <- file.path(dir$output, "species")
   #dir.create(dir$output_species, recursive=TRUE, showWarnings = FALSE)
@@ -86,21 +94,40 @@ prepare_directories <- function(config_file = NA,
 #' Creates either an empty configuration or a pre-filled configuration object from a config file
 #'
 #' @param config_file the path to a valid configuration file. if NA it creates an empty config
+#' @param config_name the name of the configuration. if NULL it will be set to a random name, if a empty config is creasted, or use the file name
 #' @return list of configuration elements, similar generated from reading a config_file.R. The internal elements 
 #' of this list are: "general", "initialization", "dispersal", "speciation", "mutation" and "ecology"
 #' @example inst/examples/create_input_config_help.R
 #' @export
-create_input_config <- function(config_file = NA) {
+create_input_config <- function(config_file = NA, config_name = NULL) {
   new_config <- create_empty_config()
+  
   if(is.na(config_file)) {
+    # set a name
+    if(is.null(config_name)) {
+      new_config$gen3sis$general$config_name <- paste0(format(Sys.time(), "%Y-%m-%d"), "-", formatC(sample(1:9999,1), digits=4, flag="0"))
+    } else if (is.character(config_name)) {
+      new_config$gen3sis$general$config_name <- config_name
+    } else {
+      stop(paste0("config_name must be 'character' or NULL, '",class(config_name),"' object provided instead."))
+    }
     # return empty config
     return(invisible(new_config))
-  } else if( !file.exists(config_file)){
+  } else if(!file.exists(config_file)){
     # config file does not exist, abort
     stop(paste("config file:", config_file, "does not exist") )
   } else {
     # populate config
     config <- populate_config(new_config, config_file)
+    
+    # Set defined config_name
+    if(!is.null(config_name) & is.character(config_name)) {
+      config$gen3sis$general$config_name <- config_name
+    }
+    
+    # Set config_path parameter
+    config$directories$config_path <- config_file
+    
     return(invisible(config))
   }
 }
@@ -128,6 +155,14 @@ populate_config <- function(config, config_file) {
   for ( category in internal_categories) {
     config[["gen3sis"]][[category]] <- populate_settings_list(config[["gen3sis"]][[category]], user_config_env)
   }
+  
+  # Populate config_name variable from file name if it has not been
+  # set yet
+  if (is.null(config$gen3sis$general$config_name)) {
+    config_name <- tools::file_path_sans_ext(basename(config_file))
+    config$gen3sis$general$config_name <- config_name
+  }
+  
   user_settings <- ls(user_config_env)
   presence <- rep(FALSE, length(user_settings))
   for (category in internal_categories){
@@ -173,25 +208,49 @@ verify_config <- function(config) {
   missing_settings <- list()
   unset_settings <- list()
   reference <- create_empty_config()
+  
+  # check if all categories are present
   for(category in internal_categories) {
     presence <- names(reference[["gen3sis"]][[category]]) %in%  names(config[["gen3sis"]][[category]])
     if( !all( presence ) ) {
-      missing_settings <- append(missing_settings, names(reference[["gen3sis"]][[category]])[presence])
+      setting_name <- list(names(reference[["gen3sis"]][[category]])[!presence])
+      names(setting_name) <- category
+      missing_settings <- append(missing_settings, setting_name)
     }
   }
   if(length(missing_settings)){
-    print(paste("missing settings in the configuration:", paste(missing_settings, collapse = ", ")))
+    message_vector <- c()
+    for (categ in names(missing_settings)){
+      categ_name <- paste0(categ,"\n")
+      categ_message <- c(categ_name,paste0("- ",missing_settings[[categ]],"\n"))
+      message_vector <- append(message_vector, categ_message)
+    }
+    
+    c("Missing settings in the configuration from the following categories:\n",message_vector) %>%
+      message()
     return(FALSE)
   }
+  
+  # check if all required settings are set
   for(category in internal_categories) {
     settings <- names(config[["gen3sis"]][[category]])
     null_settings <- sapply(config[["gen3sis"]][[category]], is.null)
     if( any( as.logical(null_settings) ) ) {
-      unset_settings <- append(unset_settings, settings[null_settings])
+      setting_name <- list(names(null_settings))
+      names(setting_name) <- category
+      unset_settings <- append(unset_settings, setting_name)
     }
   }
   if(length(unset_settings)) {
-    print(paste("these settings must be set in the configuration:", paste(unset_settings, collapse = ", ")))
+    message_vector <- c()
+    for (categ in names(unset_settings)){
+      categ_name <- paste0(categ,"\n")
+      categ_message <- c(categ_name,paste0("- ",unset_settings[[categ]],"\n"))
+      message_vector <- append(message_vector, categ_message)
+    }
+    
+    c("These settings must be set in the configuration:\n",message_vector) %>%
+      message()
     return(FALSE)
   }
   return(TRUE)
@@ -214,7 +273,8 @@ create_empty_config <- function(){
                                               "end_of_timestep_observer" = function(...){},
                                               "trait_names" = list(),
                                               "environmental_ranges" = list(),
-                                              "verbose" = FALSE
+                                              "verbose" = FALSE,
+                                              "config_name" = NULL
                                               ),
                             "initialization" = list( "initial_abundance" = NULL,
                                                      "create_ancestor_species" = NULL
