@@ -310,6 +310,7 @@ setup_distance_matrix <- function(config, data, vars) {
   }
 
   data$distance_matrix <- distance_matrix
+
   return(list(config = config, data = data, vars = vars))
 }
 
