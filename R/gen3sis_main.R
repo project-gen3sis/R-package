@@ -117,7 +117,7 @@ run_simulation <- function(config = NA,
   if(!verify_config(config)){
     stop("config verification failed")
   } else {
-    cat("\nUsing config:",config_object$gen3sis$general$config_name,"\n")
+    cat("\nUsing config:",config$gen3sis$general$config_name,"\n")
   }
 
   val <- list("data" = list(),
