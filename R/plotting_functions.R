@@ -98,6 +98,7 @@ plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
 #' @param summary_legend either a string using \\n for new lines or NULL. If NULL, provides default summary and simulation information.
 #' @seealso \code{\link{run_simulation}}   
 #' @example inst/examples/plot_summary_help.R
+#' @importFrom terra rast values plot
 #' @importFrom graphics layout legend axis mtext points
 #' @importFrom grDevices rgb colorRampPalette
 #' @importFrom stringr str_split str_remove
@@ -190,9 +191,10 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   
   # richness map
   #attribute collor
-  ras <- rasterFromXYZ(output$summary$`richness-final`)
-  max_ras <- max(ras@data@values, na.rm=TRUE)
-  min_ras <- min(ras@data@values, na.rm=TRUE)
+  #ras <- rasterFromXYZ(output$summary$`richness-final`)
+  ras <- terra::rast(output$summary$`richness-final`,type="xyz")
+  max_ras <- max(terra::values(ras), na.rm=TRUE)
+  min_ras <- min(terra::values(ras), na.rm=TRUE)
   # rc <- color_richness(max(ras@data@values, na.rm=TRUE) + 1)
   #terrain color
   zerorichness_col <- "navajowhite3"
@@ -207,7 +209,13 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   
   image(ras, col=rc, bty = "o", xlab = "", ylab = "", las=1, asp = 1)
   mtext(4, text=paste("Final", "alpha", "richness"), line=1, cex=1.2)
-  raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=TRUE, add=TRUE,col=rc)
+
+  par(new=TRUE, fig=c(0.55, 1, 0.45, 0.95), mar=c(0, 0, 0, 0))
+  terra::plot(ras,
+              legend.only=TRUE, add=TRUE, col=rc,
+              type="continuous", range = c(min_ras, max_ras),
+              plg = list(size = c(0.8,0.8)))
+  #raster::plot(rasterFromXYZ(output$summary$`richness-final`), legend.only=TRUE, add=TRUE,col=rc)
   }
 }
 
@@ -388,7 +396,7 @@ plot_single.gen3sis_space_raster <- function(values, landscape, title, no_data =
   terra::plot(ras, main=paste0(title, " ", landscape$timestep, " t_", landscape[["id"]]), col=col, legend=legend)
 }
 
-
+# TODO update documentation
 #' Plot a single set of values onto a given landscape
 #'
 #' @param values a named list of values, the names must correspond to cells in the landscape
@@ -409,7 +417,19 @@ plot_single.gen3sis_space_points <- function(values, landscape, title="", no_dat
        col=col, pch=20)
 }
 
-
+# TODO update documentation
+#' Plot a single set of values onto a given landscape
+#'
+#' @param values a named list of values, the names must correspond to cells in the landscape
+#' @param landscape a landscape to plot the values onto
+#' @param title a title string for resulting plot, the time information will be taken and appended from the landscape id
+#' @param no_data what value should be used for missing values in values
+#' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
+#' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
+#' @example inst/examples/plot_single_help.R
+#' @return no return value, called for plot
+#' 
+#' @export
 plot_single.gen3sis_space_h3 <- function(values, landscape, title="", no_data = 0, col, legend=TRUE) {
   spatial_points <- sf::st_as_sf(as.data.frame(landscape$coordinates), coords = c("x", "y"), crs = 4326)
   # TODO pass crs here, review and standardize crs handling and protocol

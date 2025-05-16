@@ -188,6 +188,11 @@ run_simulation <- function(config = NA,
     cat("--- Running simulation --- \n")
   }
   
+  
+  if(!val$data$landscape$geodynamic){
+    val <- setup_distance_matrix(val$config, val$data, val$vars)
+  }
+  
   for(ti in val$vars$steps){ #loop over time steps
     # set to zero every new time-step!
     val$vars$n_new_sp_ti <- 0
@@ -206,7 +211,11 @@ run_simulation <- function(config = NA,
     val <- restrict_species(val$config, val$data, val$vars)
 
     #val <- loop_setup_geo_dist_m_ti(val$config, val$data, val$vars)
-    val <- setup_distance_matrix(val$config, val$data, val$vars)
+    if(val$data$landscape$geodynamic){
+      val <- setup_distance_matrix(val$config, val$data, val$vars)
+    }
+
+    #val <- setup_distance_matrix(val$config, val$data, val$vars)
 
 
     #     #----------------------------------------------------------#
@@ -215,6 +224,7 @@ run_simulation <- function(config = NA,
     if(verbose>=2){
       cat("speciation \n")
     }
+
     val <- loop_speciation(val$config, val$data, val$vars)
 
     # updates to take into account new species
