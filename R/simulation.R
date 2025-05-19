@@ -280,17 +280,18 @@ loop_setup_geo_dist_m_ti <- function(config, data, vars) {
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_distance_matrix <- function(config, data, vars) {
-  
+  #browser()
   if (data$landscape$geodynamic){
     tiis <- vars$ti
   } else {
     # in case of static landscapes, the distance matrix is always the same
     tiis <- 0
   }
-  
+  #browser()
   matrix_file <- file.path(config$directories$input,
                           "distances_full",
                           paste0("distances_full_", tiis, ".rds"))
+  #browser()
   if(file.exists(matrix_file)) {
     distance_matrix <- readRDS(file = matrix_file)
   } else {
@@ -301,12 +302,14 @@ setup_distance_matrix <- function(config, data, vars) {
 
     habitable_cells <- as.integer(rownames(data$landscape$coordinates))
     num_cells <- nrow(distance_neighbours)
+    #browser()
     distance_matrix <- get_distance_matrix(habitable_cells,
                                            num_cells,
                                            distance_neighbours@p,
                                            distance_neighbours@i,
                                            distance_neighbours@x,
                                            config$gen3sis$dispersal$max_dispersal)
+    #browser()
   }
 
   data$distance_matrix <- distance_matrix

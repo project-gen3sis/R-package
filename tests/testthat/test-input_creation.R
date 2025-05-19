@@ -28,17 +28,27 @@ test_that("create_directories works", {
 
 })
 
-
+# TODO need to convert all to terra
 test_that("stack_landscapes from raster objects works", {
+  
   # create rasters
   r11 <- raster(nrows = 5, ncols = 5, vals = runif(25))
   r12 <- raster(nrows = 5, ncols = 5, vals = runif(25))
   r21 <- raster(nrows = 5, ncols = 5, vals = runif(25))
   r22 <- raster(nrows = 5, ncols = 5, vals = runif(25))
   landscapes = list(l1 = c(r11, r12) , l2 = c(r21, r22))
+  
+  # create rasters
+  # r11 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
+  # r12 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
+  # r21 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
+  # r22 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
+  # 
+  # landscapes = list(l1 = list(r11, r12) , l2 = list(r21, r22))
 
   # check "time-step 1"
   stacked <- stack_landscapes(landscapes, 1)
+  
   expect_true(all(names(stacked) == c("l1", "l2")))
   expect_true(all.equal(r11, stacked[["l1"]]))
   expect_true(all.equal(r21, stacked[["l2"]]))
@@ -50,7 +60,7 @@ test_that("stack_landscapes from raster objects works", {
   expect_true(all.equal(r22, stacked[["l2"]]))
 })
 
-
+# TODO need to convert all to terra
 test_that("habitability_mask works" , {
   r1 <- raster(nrows = 5, ncols = 5, vals = runif(25))
   h1 <- runif(25) > 0.2
@@ -73,7 +83,7 @@ test_that("habitability_mask works" , {
   expect_true(all.equal(mask2[], h1 & h2))
 })
 
-
+# TODO need to convert all to terra
 test_that("compile_landscapes works", {  # create rasters
   r11 <- raster(nrows = 5, ncols = 5, vals = runif(25))
   r12 <- raster(nrows = 5, ncols = 5, vals = runif(25))
@@ -99,7 +109,7 @@ test_that("compile_landscapes works", {  # create rasters
                         as.character(1:25)))
 })
 
-
+# TODO need to convert all to terra
 test_that("get_local_distances works", {
   crs <- NULL
   directions <- 8

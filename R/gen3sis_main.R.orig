@@ -211,10 +211,19 @@ run_simulation <- function(config = NA,
     val <- restrict_species(val$config, val$data, val$vars)
 
     #val <- loop_setup_geo_dist_m_ti(val$config, val$data, val$vars)
+<<<<<<< Updated upstream
     if(val$data$landscape$geodynamic){
       val <- setup_distance_matrix(val$config, val$data, val$vars)
     }
+
     #val <- setup_distance_matrix(val$config, val$data, val$vars)
+
+=======
+    #browser() 
+    val <- setup_distance_matrix(val$config, val$data, val$vars)
+    #browser()
+  
+>>>>>>> Stashed changes
 
     #     #----------------------------------------------------------#
     #     ######## loop speciation (simulation.R) #######
@@ -222,7 +231,11 @@ run_simulation <- function(config = NA,
     if(verbose>=2){
       cat("speciation \n")
     }
+<<<<<<< Updated upstream
 
+=======
+    #browser()
+>>>>>>> Stashed changes
     val <- loop_speciation(val$config, val$data, val$vars)
     #browser()
 
