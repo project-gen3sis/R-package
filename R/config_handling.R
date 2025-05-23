@@ -226,7 +226,7 @@ verify_config <- function(config) {
       message_vector <- append(message_vector, categ_message)
     }
     
-    c("Missing settings in the configuration from the following categories:\n",message_vector) %>%
+    c("Missing settings in the configuration from the following categories:\n",message_vector) |>
       message()
     return(FALSE)
   }
@@ -249,7 +249,7 @@ verify_config <- function(config) {
       message_vector <- append(message_vector, categ_message)
     }
     
-    c("These settings must be set in the configuration:\n",message_vector) %>%
+    c("These settings must be set in the configuration:\n",message_vector) |>
       message()
     return(FALSE)
   }
