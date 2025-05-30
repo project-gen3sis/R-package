@@ -100,6 +100,18 @@ prepare_directories <- function(config_file = NA,
 #' @example inst/examples/create_input_config_help.R
 #' @export
 create_input_config <- function(config_file = NA, config_name = NULL) {
+  
+  # Verify config name
+  if (!is.null(config_name)) {
+    if (length(config_name) != 1) {
+      stop(sprintf("config_name must be length 1 or NULL, length %d provided instead.", length(config_name)))
+    }
+    
+    if (!is.character(config_name)) {
+      stop(sprintf("config_name must be 'character' or NULL, '%s' object provided instead.", class(config_name)))
+    }
+  }
+  
   new_config <- create_empty_config()
   
   if(is.na(config_file)) {
@@ -121,8 +133,8 @@ create_input_config <- function(config_file = NA, config_name = NULL) {
     config <- populate_config(new_config, config_file)
     
     # Set defined config_name
-    if(!is.null(config_name) & is.character(config_name)) {
-      config$gen3sis$general$config_name <- config_name
+    if(!is.null(config_name)){
+      config$gen3sis$general$config_name <- config_name    
     }
     
     # Set config_path parameter
@@ -226,7 +238,7 @@ verify_config <- function(config) {
       message_vector <- append(message_vector, categ_message)
     }
     
-    c("Missing settings in the configuration from the following categories:\n",message_vector) %>%
+    c("Missing settings in the configuration from the following categories:\n",message_vector) |>
       message()
     return(FALSE)
   }
@@ -249,7 +261,7 @@ verify_config <- function(config) {
       message_vector <- append(message_vector, categ_message)
     }
     
-    c("These settings must be set in the configuration:\n",message_vector) %>%
+    c("These settings must be set in the configuration:\n",message_vector) |>
       message()
     return(FALSE)
   }
@@ -327,8 +339,18 @@ complete_config <- function(config) {
 #' @example inst/examples/write_config_skeleton_help.R
 #' @export
 write_config_skeleton <- function(file_path = "./config_skeleton.R", overwrite = FALSE) {
+  # Check arguments
+  if(!is.character(file_path) || length(file_path) != 1) {
+    stop("file_path must be a character string containing the path to write the skeleton.")
+  } else if (!is.logical(overwrite) || length(overwrite) != 1) {
+    stop("overwrite must be a logical value.")
+  } else if (!tools::file_ext(file_path)=="R") {
+    stop("File path must end with .R")
+  }
+  
+  # Writes the file
   if( file.exists(file_path) & !overwrite) {
-    warning(file_path, "exists, file not written")
+    warning(file_path, " exists, file not written.")
     return(FALSE)
   } else {
     new_file <- file(file_path, open = "w")

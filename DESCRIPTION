@@ -10,9 +10,19 @@ Encoding: UTF-8
 LazyData: false
 Depends: R (>= 3.5.0)
 Imports: Rcpp (>= 0.12.16), Matrix, methods, utils, raster, gdistance, stringr, tools, grDevices, terra, measurements
-Suggests: knitr, markdown, testthat (>= 2.1.0), rmarkdown, formatR, h3jsr
+Suggests: 
+    knitr,
+    markdown,
+    testthat (>= 3.0.0),
+    rmarkdown,
+    formatR,
+    h3jsr,
+    withr,
+    mockery,
+    vdiffr
 LinkingTo: Rcpp, BH
 URL: https://github.com/project-Gen3sis/R-package
 BugReports: https://github.com/project-Gen3sis/R-package/issues
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
+Config/testthat/edition: 3

@@ -37,7 +37,6 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config){
 #' @return an expanded species list including all newly created species
 #' @noRd
 loop_speciation <- function(config, data, vars) {
-  #browser()
   if(config$gen3sis$general$verbose>=3){
     cat(paste("entering speciation module \n"))
   }
@@ -58,7 +57,6 @@ loop_speciation <- function(config, data, vars) {
       distances <- config$gen3sis$dispersal$get_dispersal_values(length(species_presence), species, data$landscape, config)
 
       permutation <- sample(1:length(species_presence), length(species_presence))
-
       clu_geo_spi_ti <- Tdbscan_variable(data$distance_matrix[species_presence[permutation],species_presence[permutation],
                                                             drop=FALSE], distances, 1)
       clu_geo_spi_ti <- clu_geo_spi_ti[order(permutation)]
@@ -142,7 +140,6 @@ loop_speciation <- function(config, data, vars) {
   if(config$gen3sis$general$verbose>=3 && vars$n_sp_added_ti > 0){
     cat(paste(vars$n_sp_added_ti,"new species created \n"))
   }
-  #browser()
   return(list(config = config, data = data, vars = vars))
 }
 

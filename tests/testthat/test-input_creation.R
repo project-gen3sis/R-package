@@ -1,3 +1,177 @@
+# create_spaces_raster
+## Tests for general workink
+test_that("create_spaces_raster works properly",{
+  # create a 3 layers temp raster
+  r <- rep(terra::rast(nrows = 5, 
+                       ncols = 5,
+                       xmin = 0,
+                       xmax = 5,
+                       ymin = 0,
+                       ymax = 5,
+                       vals = runif(25)),3)
+  
+  # define a cost function
+  cf <- function(source,
+                 habitable_src,
+                 dest,
+                 habitable_dest) {
+    if (!all(habitable_src, habitable_dest)) {
+      return(2 / 1000)
+    } else {
+      return(1 / 1000)
+    }
+  }
+  
+  # test core
+  # Geostatic
+  withr::with_tempdir({
+    create_spaces_raster(
+      raster_list = list(some_var = r),
+      cost_function = cf,
+      directions=4,
+      output_directory = file.path(getwd(), "output"),
+      full_dists = TRUE,
+      overwrite_output = TRUE,
+      verbose = FALSE,
+      duration=list(from=100, to=0, by=-50, unit="Ma"),
+      geodynamic=FALSE
+    )
+    
+    files_created <- list.files(file.path(getwd(), "output"), recursive = T)
+    files_expected <- c("distances_full/distances_full_0.rds","distances_local/distances_local_0.rds","spaces.rds")
+    expect_true(all(files_created %in% files_expected))
+  })
+  
+  # Geodynamic
+  
+  # modify the raster
+  values(r[[2]])[13,1] <- NA
+  values(r[[3]])[12,1] <- NA
+  values(r[[3]])[13,1] <- NA
+  values(r[[3]])[14,1] <- NA
+  
+  withr::with_tempdir({
+    create_spaces_raster(
+      raster_list = list(some_var = r),
+      cost_function = cf,
+      directions=4,
+      output_directory = file.path(getwd(), "output"),
+      full_dists = TRUE,
+      overwrite_output = TRUE,
+      verbose = FALSE,
+      duration=list(from=100, to=0, by=-50, unit="Ma"),
+      geodynamic=TRUE
+    )
+    
+    files_created <- list.files(file.path(getwd(), "output"), recursive = T)
+    files_expected <- c("distances_full/distances_full_0.rds"
+                        ,"distances_full/distances_full_1.rds"  
+                        ,"distances_full/distances_full_2.rds"
+                        ,"distances_local/distances_local_0.rds"
+                        ,"distances_local/distances_local_1.rds"
+                        ,"distances_local/distances_local_2.rds"
+                        ,"spaces.rds")
+    expect_true(all(files_created %in% files_expected))
+  })
+})
+
+## Tests for wrong usage
+test_that("NA duration in create_spaces_raster",{
+  # create a 3 layers temp raster
+  r <- rep(terra::rast(nrows = 5, 
+                       ncols = 5,
+                       xmin = 0,
+                       xmax = 5,
+                       ymin = 0,
+                       ymax = 5,
+                       vals = runif(25)),3)
+  
+  # define a cost function
+  cf <- function(source,
+                 habitable_src,
+                 dest,
+                 habitable_dest) {
+    if (!all(habitable_src, habitable_dest)) {
+      return(2 / 1000)
+    } else {
+      return(1 / 1000)
+    }
+  }
+  
+  # test core
+  # Geostatic
+  withr::with_tempdir({
+    expect_warning(
+      create_spaces_raster(
+        raster_list = list(some_var = r),
+        cost_function = cf,
+        directions=4,
+        output_directory = file.path(getwd(), "output"),
+        full_dists = TRUE,
+        overwrite_output = TRUE,
+        verbose = FALSE,
+        duration=NA,
+        geodynamic=FALSE
+      ), "Duration is ideally informed as a list with from, to, by and unit. 
+            Assuning default duration from -latest time to zero by 1 Ma")
+  })
+})
+
+## test if it recognizes geodynamic landscapes
+test_that("geodynamic is FALSE but environment says otherwise", {
+  # create a 3 layers temp raster
+  r <- rep(terra::rast(
+    nrows = 5,
+    ncols = 5,
+    xmin = 0,
+    xmax = 5,
+    ymin = 0,
+    ymax = 5,
+    vals = runif(25)
+  ),
+  3)
+  
+  values(r[[2]])[13, 1] <- NA
+  values(r[[3]])[12, 1] <- NA
+  values(r[[3]])[13, 1] <- NA
+  values(r[[3]])[14, 1] <- NA
+  
+  # define a cost function
+  cf <- function(source,
+                 habitable_src,
+                 dest,
+                 habitable_dest) {
+    if (!all(habitable_src, habitable_dest)) {
+      return(2 / 1000)
+    } else {
+      return(1 / 1000)
+    }
+  }
+  
+  withr::with_tempdir({
+      create_spaces_raster(
+        raster_list = list(some_var = r),
+        cost_function = cf,
+        directions = 4,
+        output_directory = file.path(getwd(), "output"),
+        full_dists = TRUE,
+        overwrite_output = TRUE,
+        verbose = FALSE,
+        duration = list(
+          from = 100,
+          to = 0,
+          by = -50,
+          unit = "Ma"
+        ),
+        geodynamic = FALSE
+      ) |> capture_warnings() -> warned
+    
+    expect_equal("geodynamic is set to FALSE but environment says otherwise. \n          changing geodynamic to TRUE",
+                 warned) # TODO for some reason, expect_warning was not working here, need to try again
+  })
+})
+
+# Old tests
 test_that("create_directories overwrite protection works", {
   skip("can't mock file.exists")
   # mocking base functions is no longer feasible, overwrite is not tested as it calls "unlink"
@@ -8,7 +182,6 @@ test_that("create_directories overwrite protection works", {
   expect_error(create_directories("test", overwrite = FALSE, full_matrices = FALSE),
                "output directory already exists", fixed = TRUE)
 })
-
 
 test_that("create_directories works", {
   # mocking base functions is no longer feasible, overwrite is not tested as it calls "unlink"

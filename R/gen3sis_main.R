@@ -38,10 +38,10 @@
 #' plot_richness(species_t_150, landscape_t_150)   
 #'
 #' }
-#' @docType _PACKAGE
 #' @useDynLib gen3sis2, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @import Matrix
+"_PACKAGE"
 NULL
 
 
@@ -88,13 +88,22 @@ run_simulation <- function(config = NA,
                           call_observer = "all",
                           enable_gc = FALSE,
                           verbose = 1){
-  
   #----------------------------------------------------#
   ####### User defined variables (config.R) ############
   #----------------------------------------------------#
   
   system_time_start <- Sys.time() #Starting timer
 
+  # Checking save_states
+  recognized_save_states <- c("all", "last")
+  if(!all(is.na(save_state)) && 
+     !is.numeric(save_state) && 
+     !any(save_state %in% recognized_save_states)){
+    warning("save_state must be either NA, 'all', 'last' or a numeric vector.")
+  } else if (is.numeric(save_state) && any(save_state < 0)){
+    warning("save_state negative timesteps are meaningless, simulation will not save.")
+  }
+  #
   
   directories <- prepare_directories(config_file = config,
                                      input_directory = landscape,
@@ -137,14 +146,12 @@ run_simulation <- function(config = NA,
   val <- setup_inputs(val$config, val$data, val$vars)
   val <- setup_variables(val$config, val$data, val$vars)
   val <- setup_landscape(val$config, val$data, val$vars)
-  
   # conceptually the result of the initialization is the "end" of a previous timestep
   val$data$landscape$id <- val$data$landscape$id + 1
   
   if (verbose >= 1) {
     cat("--- Initializing --- \n")
   }
-  
   val <- init_attribute_ancestor_distribution(val$config, val$data, val$vars)
   
   # #---------------------------------------------------#
@@ -188,7 +195,6 @@ run_simulation <- function(config = NA,
     cat("--- Running simulation --- \n")
   }
   
-  
   if(!val$data$landscape$geodynamic){
     val <- setup_distance_matrix(val$config, val$data, val$vars)
   }
@@ -200,7 +206,6 @@ run_simulation <- function(config = NA,
     val$vars$n_sp_added_ti <- 0
     # update ti inside val$vars
     val$vars$ti <- ti
-
     #     #----------------------------------------#
     #     ######## loop setup (simulation.R) #######
     #     #----------------------------------------#
@@ -224,7 +229,6 @@ run_simulation <- function(config = NA,
     }
 
     val <- loop_speciation(val$config, val$data, val$vars)
-    #browser()
 
     # updates to take into account new species
     val <- update1.n_sp.all_geo_sp_ti(val$config, val$data, val$vars)
