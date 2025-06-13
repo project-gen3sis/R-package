@@ -61,16 +61,18 @@ create_spaces_raster <- function(raster_list, # old landscapes
   # @param habitability_masks either (1) a list of files or rasters starting from the present indicating the habitability of cell at that timestep.
   # #' or (2) NULL, every cell with at least one NA as envvalue(s) will be considered inhabitable 
   
-  #browser()
   # prepare directories
   create_directories(output_directory, overwrite_output, full_dists)
-  
   if (any(is.na(duration))) {
     warning("Duration is ideally informed as a list with from, to, by and unit. 
             Assuning default duration from -latest time to zero by 1 Ma")
     #timesteps <- (length(raster_list[[1]]) - 1):0
     timesteps <- (terra::nlyr(raster_list[[1]]) - 1):0
-    duration <- list(from=timesteps[1], to=0, by=-1, unit=duration$unit)
+    if(is.list(duration)) {
+      duration <- list(from=timesteps[1], to=0, by=-1, unit=duration$unit)
+    } else {
+      duration <- list(from=timesteps[1], to=0, by=-1, unit="Ma")
+    }
   } else {
     timesteps <- paste0(seq(duration$from, duration$to, by = duration$by), duration$unit)
   }
@@ -227,7 +229,6 @@ compile_landscapes <-  function(landscapes, timesteps, habitability_masks) {
 #' @importFrom methods as
 #' @noRd
 get_local_distances <- function(landscape_stack, habitable_mask, cost_function, directions, crs) {
-  #browser()
   # ext <- extent(landscape_stack)
   # rs <- res(landscape_stack)
   ext <- terra::ext(landscape_stack)
@@ -323,7 +324,7 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
                              coordinates = coords_i,
                              value = cell_i,
                              habitable = habitable_i)
-    
+
     cost <- cost_function(source_cell, destination_cell)
     
     if(cost == Inf){
@@ -383,7 +384,6 @@ get_habitable_mask <- function(habitability_masks, landscape_stack, i) {
 #' @return a raster stack containing the i-th landscapes
 #' @noRd
 stack_landscapes <- function(landscapes, i) {
-  #browser()
   all_names <- names(landscapes)
   # new_stack <- stack()
   new_stack <- terra::rast()
@@ -445,7 +445,6 @@ create_directories <- function(directory, overwrite, full_matrices) {
 #' 
 #' @noRd
 get_transition_correction <- function(x, tr_fun, dir) {
-  #browser()
   # BUILDS THE TRANSITION MATRIX
   raster_points <- terra::as.points(x)
   coords <- terra::geom(raster_points)[, c("x", "y")]
