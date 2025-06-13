@@ -70,7 +70,7 @@ create_spaces_raster <- function(raster_list, # old landscapes
             Assuning default duration from -latest time to zero by 1 Ma")
     #timesteps <- (length(raster_list[[1]]) - 1):0
     timesteps <- (terra::nlyr(raster_list[[1]]) - 1):0
-    duration <- list(from=timesteps[1], to=0, by=-1, unit="Ma")
+    duration <- list(from=timesteps[1], to=0, by=-1, unit=duration$unit)
   } else {
     timesteps <- paste0(seq(duration$from, duration$to, by = duration$by), duration$unit)
   }
