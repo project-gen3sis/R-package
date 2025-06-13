@@ -42,9 +42,10 @@ plot_species_abundance <- function(species, landscape) {
   conditional_plot(paste0("species_abundance_", species$id),
                    landscape,
                    plot_single,
-                   presence,
+                   all_presence,
                    landscape,
-                   paste("Abundance Species", species[["id"]]))
+                   paste("Abundance Species", species[["id"]]),
+                   col=rc)
 }
 
 
@@ -294,7 +295,8 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   #layout.show(2)
   #par(mar=c(4,3,3,7), oma=c(0.1,0.8,0.3,0.8))
   par(xpd = FALSE)
-  plot_points_single(1, landscape, title, no_data = 0, col="navajowhite3", title="species ranges")
+  plot_single(1,landscape, title, no_data=0, col="navajowhite3", title="species ranges")
+  # plot_points_single(1, landscape, title, no_data = 0, col="navajowhite3", title="species ranges")
   # plot_points(, main="species ranges", col=, asp = 1))
   n_species <- length(species_list)
   alive <- unlist(lapply(species_list, function(x){length(x$abundance)}))
@@ -443,6 +445,7 @@ plot_single.gen3sis_space_h3 <- function(values, landscape, title="", no_data = 
   }
   # Add the values to the polygons for plotting
   # polygons$values <- values  # Add the values as an attribute to polygons
+  
   plot(polygons,
        main=paste0(title, " ", landscape$timestep, " t_", landscape[["id"]]),
        xlim=c(landscape$extent[1], landscape$extent[2]), ylim=c(landscape$extent[3], landscape$extent[4]), 
@@ -497,7 +500,7 @@ plot_multiple.gen3sis_space_raster <- function(values, landscape, no_data = 0) {
 #' @return no return value, called for plot
 #'
 #' @export
-plot_multiple.gen3sis_space_h3 <- function(values, landscape, no_data = 0) {
+plot_multiple.gen3sis_space_h3 <- function(values, landscape, no_data = NA) {
   # Creates a matrix with coordinates and values  
   env_mtx <- cbind(landscape$coordinates, values)
   
@@ -536,7 +539,42 @@ plot_multiple.gen3sis_space_h3 <- function(values, landscape, no_data = 0) {
 
   # creates the final h3 and plot
   combined_h3 <- sf::st_sf(full_values, geometry = full_hexagons)
-  plot(combined_h3)
+  
+  for (variable in colnames(values)) {
+    plot(combined_h3[variable], main = paste0(variable, " ", landscape$timestep, " ts ", landscape[["id"]]))
+  }
+}
+
+#' Plot a set of values onto a given landscape
+#'
+#' @param values a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
+#' this will result in ncol(values) raster plots.
+#' @param landscape a landscape to plot the values onto
+#' @param no_data what value should be used for missing data present in the values parameter
+#' @return no return value, called for plot
+#'
+#' @export
+plot_multiple.gen3sis_space_points <- function(values, landscape, no_data = NA) {
+  # Creates a matrix with coordinates and values  
+  env_mtx <- cbind(landscape$coordinates, values)
+  
+  # Convert to points
+  env_points <- sf::st_as_sf(env_mtx |> as.data.frame(), coords = c("x", "y"), crs = 4326)
+  
+  x_cat <- landscape$extent[[2]] - landscape$extent[[1]]
+  y_cat <- landscape$extent[[4]] - landscape$extent[[3]]
+  
+  auto_cex <- round(sqrt((x_cat**2)+(y_cat**2))/nrow(values))+1
+  
+  for (variable in colnames(values)) {
+    plot(env_points, 
+         main=paste0(variable, " ", landscape$timestep, " t_", landscape[["id"]]),
+         xlim=landscape[["extent"]][c("xmin","xmax")],
+         ylim=landscape[["extent"]][c("ymin","ymax")],
+         pch=20,
+         key.pos = 4,
+         cex = auto_cex)
+  }
 }
 
 #' Ensure there is at least one additional argument provided after 'x'

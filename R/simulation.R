@@ -238,7 +238,7 @@ setup_landscape <- function(config, data, vars) {
 #' @return the general vals(config, data, vars) list
 #' @noRd
 restrict_species <- function(config, data, vars) {
-  points_coordinates <- data[["landscape"]][["coordinates"]]
+  points_coordinates <- data[["landscape"]][["coordinates"]] # TODO replace loop to reduce code
   if(is.vector(points_coordinates)){
     points_coordinates <- matrix(points_coordinates, nrow=1)
     colnames(points_coordinates) <- names(data[["landscape"]][["coordinates"]])

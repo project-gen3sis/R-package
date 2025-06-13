@@ -1,11 +1,14 @@
 # dev
 
 ## In development
--   [tests_rebuild] Added test references, spacescapes and config files.
--   [tests_rebuild] gen3sis_main tests improved and expanded (92.11% covered).
--   [tests_rebuild] all exported functions of config_handling have tests now (94.34% covered).
--   [tests_rebuild] started to write plotting functions tests. 
 
+# v.1.6.2
+-   Added test references, spacescapes and config files.
+-   gen3sis_main tests improved and expanded (92.11% covered).
+-   all exported functions of config_handling have tests now (94.34% covered).
+-   started to write plotting functions tests. 
+-   added gen3sis_space_points for plot_multiple
+-   test coverage improved to 80.53%
 
 # v.1.6.1
 -   Changed run_simulation() [genesis_main.R] code to only load the distance matrix
