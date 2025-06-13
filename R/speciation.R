@@ -57,9 +57,6 @@ loop_speciation <- function(config, data, vars) {
       distances <- config$gen3sis$dispersal$get_dispersal_values(length(species_presence), species, data$landscape, config)
 
       permutation <- sample(1:length(species_presence), length(species_presence))
-      
-
-      
       clu_geo_spi_ti <- Tdbscan_variable(data$distance_matrix[species_presence[permutation],species_presence[permutation],
                                                             drop=FALSE], distances, 1)
       clu_geo_spi_ti <- clu_geo_spi_ti[order(permutation)]

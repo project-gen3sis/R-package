@@ -481,9 +481,62 @@ plot_multiple.gen3sis_space_raster <- function(values, landscape, no_data = 0) {
                                   colnames(values))))
   img[, 1:2] <- landscape[["coordinates"]]
   img[rownames(values), -c(1:2)] <- values
-  ras <- rasterFromXYZ(img)
-  #ras <- extend(ras, landscape[["extent"]])
+  
+  ras <- terra::rast(img, type="xyz")
+  terra::ext(ras) <- landscape$extent
+  #terra::res(ras) <- landscape$type_spec_res
   terra::plot(ras, main=paste0(colnames(values), " ", landscape$timestep, " ts ", landscape[["id"]]))
+}
+
+#' Plot a set of values onto a given landscape
+#'
+#' @param values a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
+#' this will result in ncol(values) raster plots.
+#' @param landscape a landscape to plot the values onto
+#' @param no_data what value should be used for missing data present in the values parameter
+#' @return no return value, called for plot
+#'
+#' @export
+plot_multiple.gen3sis_space_h3 <- function(values, landscape, no_data = 0) {
+  # Creates a matrix with coordinates and values  
+  env_mtx <- cbind(landscape$coordinates, values)
+  
+  # Convert to points
+  env_points <- sf::st_as_sf(env_mtx |> as.data.frame(), coords = c("x", "y"), crs = 4326)
+  
+  # and extract the h3 cell indexes
+  env_cells <- h3jsr::point_to_cell(env_points,landscape$type_spec_res)
+  
+  # Creates a base for the plot
+  base_hexagons <- h3jsr::cell_to_polygon(env_cells) |>
+    sf::st_union() |>
+    sf::st_convex_hull() |>
+    h3jsr::polygon_to_cells(res = landscape$type_spec_res)
+  
+  # Creates the polygons
+  base_hexagons <- unlist(base_hexagons)[!unlist(base_hexagons)%in%env_cells] |>
+    h3jsr::cell_to_polygon()
+  
+  env_hexagons <- h3jsr::cell_to_polygon(env_cells)
+  
+  envar_name <- colnames(values)
+  
+  # unite values and polygons
+  full_hexagons <- c(env_hexagons, base_hexagons)
+  
+  base_values <- matrix(
+    data = no_data,
+    nrow = length(base_hexagons),
+    ncol = ncol(values)
+  )
+  
+  colnames(base_values) <- colnames(values)
+  
+  full_values <- rbind(values, base_values)
+
+  # creates the final h3 and plot
+  combined_h3 <- sf::st_sf(full_values, geometry = full_hexagons)
+  plot(combined_h3)
 }
 
 #' Ensure there is at least one additional argument provided after 'x'

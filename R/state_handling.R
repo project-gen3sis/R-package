@@ -98,11 +98,11 @@ restore_state <- function(val, timestep_restart){
   if(timestep > 0){
     val$vars$save_steps <- (timestep-1):(val$config$gen3sis$general$end_time)
     val$vars$steps <- (timestep-1):(val$config$gen3sis$general$end_time)
-    message(paste("restarting at time-step:", timestep))
+    message(paste("[!] Restarting at time-step:", timestep))
   } else {
     val$vars$save_steps <- NULL
     val$vars$steps <- NULL
-    message("Simulation already completed")
+    message("[!] Simulation already completed")
   }
 
   return(val)
