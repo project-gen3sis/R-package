@@ -1,6 +1,9 @@
 # dev
 
 ## In development
+-   [trans_matrix_rebuild] input_creation.R is officially raster free 🎉
+-   [trans_matrix_rebuild] asymmetrical transition matrices were implemented.
+-   [trans_matrix_rebuild] gdistance package dependencies were replaced by internal gen3sis2 implementations.
 
 # v.1.6.2
 -   Added test references, spacescapes and config files.
