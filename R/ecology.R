@@ -80,7 +80,6 @@ loop_ecology <- function(config, data, vars) {
 
     #species <- traits[, c("abd", config$gen3sis$general$trait_names), drop = FALSE]
   
-
     NEW_abd <- config$gen3sis$ecology$apply_ecology(abundance, traits, local_environment, config)
 
     # colnames(NEW_abd) <- coo_sp_ti_idi

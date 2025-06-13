@@ -1,10 +1,17 @@
 # dev
 
 ## In development
--   [geodyn_test] Changed run_simulation() [genesis_main.R] code to only load the distance matrix
+-   [tests_rebuild] Added test references, spacescapes and config files.
+-   [tests_rebuild] gen3sis_main tests improved and expanded (92.11% covered).
+-   [tests_rebuild] all exported functions of config_handling have tests now (94.34% covered).
+-   [tests_rebuild] started to write plotting functions tests. 
+
+
+# v.1.6.1
+-   Changed run_simulation() [genesis_main.R] code to only load the distance matrix
     every timestep if needed, i.e., if the spacescape is geodynamic. If it is not,
     the function will only load the distance matrix once at the beginning of the simulation.
--   [geodyn_test] Substituted the raster package functions with terra package functions in
+-   Substituted the raster package functions with terra package functions in
     the plot_summary() [plotting_functions.R] code. The raster package is deprecated and
     the terra package is the new standard for working with spatial data in R.
 

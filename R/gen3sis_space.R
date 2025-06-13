@@ -88,7 +88,6 @@ create_spaces <- function(env=list(NA),
 #'
 #' @examples print("TODO")
 check_spaces <- function(spaces=NULL){
-
   accepted <- list()
   accepted[["type"]] <- c("raster", "points", "h3")
   dur_units <- c("day", "wk", "mon", "yr", "dec", "cen", "mil", "Ma")

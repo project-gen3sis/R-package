@@ -69,7 +69,9 @@ create_spaces_raster <- function(raster_list, # old landscapes
   if (any(is.na(duration))) {
     warning("Duration is ideally informed as a list with from, to, by and unit. 
             Assuning default duration from -latest time to zero by 1 Ma")
-    timesteps <-(length(raster_list[[1]]) - 1):0
+    #timesteps <- (length(raster_list[[1]]) - 1):0
+    timesteps <- (terra::nlyr(raster_list[[1]]) - 1):0
+    duration <- list(from=timesteps[1], to=0, by=-1, unit="Ma")
   } else {
     timesteps <- paste0(seq(duration$from, duration$to, by = duration$by), duration$unit)
   }
@@ -79,13 +81,11 @@ create_spaces_raster <- function(raster_list, # old landscapes
   # }
 
   # prepare and save spaces
-  
   compiled_env <- compile_landscapes(raster_list,
                                             timesteps,
                                             habitability_masks)
-  
   # get 1 col full of ones as example raster
-  ex_r <- terra::rast(cbind(compiled_env[[1]][,1:2],1), type="xyz") 
+  ex_r <- terra::rast(cbind(compiled_env[[1]][,1:2],1), type="xyz")
   
   gs <- create_spaces(env=compiled_env,
                      type="raster",
@@ -114,7 +114,7 @@ create_spaces_raster <- function(raster_list, # old landscapes
     # if compiled_env is dynamic, reset it
     checked_geodym <- is_geodynamic(compiled_env) # get the geodynamic status
     if (checked_geodym){
-      cat("dynamic is set to FALSE but environment says otherwise. 
+      warning("geodynamic is set to FALSE but environment says otherwise. 
           changing geodynamic to TRUE")
       geodynamic <- checked_geodym
       gs$meta$geodynamic <- checked_geodym
