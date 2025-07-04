@@ -290,7 +290,6 @@ run_simulation <- function(config = NA,
     val <- update_summary_statistics(val$data, val$vars, val$config)
     
     save_val(val, save_state)
-    
     # abort conditions
     if( val$vars$n_sp_alive >= val$config$gen3sis$general$max_number_of_species ) {
       val$vars$flag <- "max_number_species"
