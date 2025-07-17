@@ -13,3 +13,5 @@ inst/extdata/WorldCenter/output/config_worldcenter/runtime_information/StartingC
 inst/extdata/WorldCenter/output/config_worldcenter/runtime_information/config_worldcenter.R
 tests/testthat/Rplots.pdf
 Gen3sis.Rproj
+/doc/
+/Meta/

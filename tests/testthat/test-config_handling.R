@@ -54,7 +54,7 @@ test_that("derive input/output directories from config path", {
 test_that("prepare_directories: config, input-, and output- directory given", {
   config_file <- file.path(base_dir,"TestConfig.R")
   
-  input_directory <- gsub("TestConfigs","TestSpacescapes/geodynamic_spaces/raster",base_dir)
+  input_directory <- gsub("TestConfigs","TestSpaces/geodynamic_spaces/raster",base_dir)
   output_directory <- file.path(tempdir(),"output")
   
   dirs <- evaluate_promise(prepare_directories(config_file = config_file,

@@ -55,7 +55,6 @@ create_spaces_raster <- function(raster_list, # old landscapes
   # if (is.null(output_directory)){
   #   output_directory <- dirname(path)
   # }
-  #browser()
   # habitability masks removed for now.. assumin NA's from input data as non-habitable (applies if only one env. variable has NA in the cell)!
   habitability_masks = NULL
   # @param habitability_masks either (1) a list of files or rasters starting from the present indicating the habitability of cell at that timestep.
@@ -146,7 +145,6 @@ create_spaces_raster <- function(raster_list, # old landscapes
     landscape_stack <- stack_landscapes(raster_list, step)
     habitable_mask <- get_habitable_mask(habitability_masks, landscape_stack, step)
 
-    #browser()
     distance_local <- get_local_distances(landscape_stack, habitable_mask, cost_function, directions, crs=gs$meta$crs)
 
     file_name <- paste0("distances_local_", as.character(nts-step), ".rds")
@@ -183,7 +181,6 @@ create_spaces_raster <- function(raster_list, # old landscapes
 #' @return a list of compiled landscapes ready to be saved
 #' @noRd
 compile_landscapes <-  function(landscapes, timesteps, habitability_masks) {
-  #browser()
   compiled <- list()
   landscape_stack <- stack_landscapes(landscapes, 1)
 
@@ -333,7 +330,6 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
     tmp_cost[k] <- cost
   }
 
-  #browser()
   transition_matrix <- sparseMatrix(i = transition_cells[, "i"],
                                     j = transition_cells[, "j"],
                                     x = tmp_cost)
@@ -358,7 +354,6 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
 #' @return returns a logical raster indicating which cells are habitable
 #' @noRd
 get_habitable_mask <- function(habitability_masks, landscape_stack, i) {
-  #browser()
   if(is.null(habitability_masks)) {
     #habitable_mask <- calc(landscape_stack, fun = function(x, na.rm) { !any(is.na(x)) } )
     habitable_mask <- !any(is.na(landscape_stack)) # TODO is this the best solution?
