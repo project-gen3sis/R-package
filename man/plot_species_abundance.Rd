@@ -2,20 +2,20 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_species_abundance}
 \alias{plot_species_abundance}
-\title{Plot a species' abundance on a given landscape}
+\title{Plot a species' abundance on a given space}
 \usage{
-plot_species_abundance(species, landscape)
+plot_species_abundance(species, space)
 }
 \arguments{
 \item{species}{a single species object}
 
-\item{landscape}{a landscape object}
+\item{space}{a space object}
 }
 \value{
 no return value, called for plot
 }
 \description{
-Plot a species' abundance on a given landscape
+Plot a species' abundance on a given space
 }
 \examples{
 \dontshow{
@@ -26,22 +26,22 @@ Plot a species' abundance on a given landscape
   # get path to output objects
   datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
   
-  # load landscape and species at time step zero
-  landscape_t_0 <- readRDS(
-    file.path(datapath, "output/config_worldcenter", "landscapes", "landscape_t_0.rds"))
+  # load space and species at time step zero
+  space_t_0 <- readRDS(
+    file.path(datapath, "output/config_worldcenter", "spaces", "space_t_0.rds"))
   species_t_0 <- readRDS(
     file.path(datapath, "output/config_worldcenter", "species", "species_t_0.rds"))
   
   # plot species 13 range and abundances
-  plot_species_abundance(species_t_0[[13]], landscape_t_0)
+  plot_species_abundance(species_t_0[[13]], space_t_0)
   # oh, a South American one!
   
   # plot ranges and abundances of 3 species (i.e. 1, 21 and 32)
   oldpar <- par(no.readonly = TRUE)
   par(mfrow=c(1,3))
-  plot_species_abundance(species_t_0[[1]], landscape_t_0)
-  plot_species_abundance(species_t_0[[7]], landscape_t_0)
-  plot_species_abundance(species_t_0[[11]], landscape_t_0)
+  plot_species_abundance(species_t_0[[1]], space_t_0)
+  plot_species_abundance(species_t_0[[7]], space_t_0)
+  plot_species_abundance(species_t_0[[11]], space_t_0)
   par(oldpar)
   
 }

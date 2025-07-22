@@ -1,8 +1,8 @@
 # Copyright (c) 2020, ETH Zurich
 
-# DO NOT USE ' IN THIS LANDSCAPE META DATA
-skeleton_landscape_metadata <- paste0(c('
-gen3sis landscape
+# DO NOT USE ' IN THIS space META DATA
+skeleton_space_metadata <- paste0(c('
+gen3sis space
 
 Version: 
 1.0

@@ -2,20 +2,20 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_richness}
 \alias{plot_richness}
-\title{Plot the richness of the given list of species on a landscape}
+\title{Plot the richness of the given list of species on a space}
 \usage{
-plot_richness(species_list, landscape)
+plot_richness(species_list, space)
 }
 \arguments{
 \item{species_list}{a list of species to use in the richness calculation}
 
-\item{landscape}{a corresponding landscape object}
+\item{space}{a corresponding space object}
 }
 \value{
 no return value, called for plot
 }
 \description{
-Plot the richness of the given list of species on a landscape
+Plot the richness of the given list of species on a space
 }
 \examples{
 \dontshow{
@@ -29,16 +29,16 @@ Plot the richness of the given list of species on a landscape
   # get species at t0
   species_t_0 <- readRDS(file.path(datapath, 
                                    "output/config_worldcenter/species/species_t_0.rds"))
-  # get landscape at t0
-  landscape_t_0 <- readRDS(file.path(datapath, 
-                                     "output/config_worldcenter/landscapes/landscape_t_0.rds"))
+  # get space at t0
+  space_t_0 <- readRDS(file.path(datapath, 
+                                     "output/config_worldcenter/spaces/space_t_0.rds"))
   # plot richness
-  plot_richness(species_t_0, landscape_t_0)
+  plot_richness(species_t_0, space_t_0)
   
   
   ## plot from within observer
   # call plot_richness from inside the end_of_timestep_observer function 
   # at the config file:
-  plot_richness(data$all_species, data$landscape)
+  plot_richness(data$all_species, data$space)
 }
 }

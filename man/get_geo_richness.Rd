@@ -2,20 +2,20 @@
 % Please edit documentation in R/internal_functions.R
 \name{get_geo_richness}
 \alias{get_geo_richness}
-\title{calculate the richness of a list of species over a given landscape}
+\title{calculate the richness of a list of species over a given space}
 \usage{
-get_geo_richness(species_list, landscape)
+get_geo_richness(species_list, space)
 }
 \arguments{
 \item{species_list}{a list of species to include in the richness calculations}
 
-\item{landscape}{the landscape to calculate the richnness over}
+\item{space}{the space to calculate the richnness over}
 }
 \value{
-a vector with the richness for every cell in the input landscape
+a vector with the richness for every cell in the input space
 }
 \description{
-calculate the richness of a list of species over a given landscape
+calculate the richness of a list of species over a given space
 }
 \examples{
 \dontshow{
@@ -28,15 +28,15 @@ calculate the richness of a list of species over a given landscape
   # get species at t0
   species_t_0 <- readRDS(file.path(datapath, 
                                    "output/config_worldcenter/species/species_t_0.rds"))
-  # get landscape at t0
-  landscape_t_0 <- readRDS(file.path(datapath, 
-                                     "output/config_worldcenter/landscapes/landscape_t_0.rds"))
+  # get space at t0
+  space_t_0 <- readRDS(file.path(datapath, 
+                                     "output/config_worldcenter/spaces/space_t_0.rds"))
   
   # plot richness
-  plot_richness(species_t_0, landscape_t_0)
+  plot_richness(species_t_0, space_t_0)
   
   # get geo richness, i.e. richness per sites
-  richness_t_0 <- get_geo_richness(species_t_0, landscape_t_0)
+  richness_t_0 <- get_geo_richness(species_t_0, space_t_0)
   
   # histogram of richness at t0
   hist(richness_t_0)

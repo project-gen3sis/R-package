@@ -34,7 +34,7 @@ config_object$gen3sis$general$random_seed <- 2025
 # run the model for config_object
 \donttest{
   sim <- run_simulation(config = config_object, 
-                        landscape = file.path(datapath, "raster"), 
+                        space = file.path(datapath, "raster"), 
                         output_directory = tempdir())
 }
 }

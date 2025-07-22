@@ -8,8 +8,8 @@
 #' *to* CAN ONLY BE smaller than *from*, since *to* is the latest time
 #' *by* is the time interval increment. Note that this is constant and can only be positive;
 #' *unit* is the time unit used. Accepted units are \code{check_spaces()$duration}
-#' e.g. list(-20, 0, 1, "Ma") has a landscape that covers the last 20 Ma until the present, every 1 Ma.
-#'      list(-800, 300, 10, "mil") has a landscape that covers the last 800 kyra or mil for millions of years
+#' e.g. list(-20, 0, 1, "Ma") has a space that covers the last 20 Ma until the present, every 1 Ma.
+#'      list(-800, 300, 10, "mil") has a space that covers the last 800 kyra or mil for millions of years
 #'      and goes until the future 300 kya at every 100 mil years.
 #' @param area list containing information on the 2D spacial dimension: list(extent, total_area, n_sites, unit)
 #' *extent* is a named vector with (xmin, xmax, ymin, ymax) \code{terra::ext},

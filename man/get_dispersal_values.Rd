@@ -5,14 +5,14 @@
 \title{Allows the user to generate dispersal value(s) for a given species. The simulation request the user 
 to return a vector of dispersal values with length specified by the num_draws parameter}
 \usage{
-get_dispersal_values(num_draws, species, landscape, config)
+get_dispersal_values(num_draws, species, space, config)
 }
 \arguments{
 \item{num_draws}{the number of dispersal values drawn}
 
 \item{species}{the species for which the values are to be produced}
 
-\item{landscape}{the landscape of the current time step}
+\item{space}{the space of the current time step}
 
 \item{config}{the config of the simulation}
 }

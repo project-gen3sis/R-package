@@ -5,7 +5,7 @@ config_file <- system.file(file.path("extdata", "TestConfigs","TestConfig.R"), p
 # run simulation and store summary obejct to sim
 sim <- run_simulation(
   config = config_file, 
-  landscape = spaces,
+  space = spaces,
   output_directory = tempdir()
 )
 

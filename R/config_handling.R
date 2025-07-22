@@ -37,7 +37,7 @@ prepare_directories <- function(config_file = NA,
   if(!dir.exists(input_dir)){
     stop(paste("input directory does not exist!:", input_dir))
   }
-  cat(paste("Landscape found:", input_directory),"\n")
+  cat(paste("space found:", input_directory),"\n")
 
   if(is.na(output_directory)) {
     if (is(config_file, "gen3sis_config")){
@@ -78,8 +78,8 @@ prepare_directories <- function(config_file = NA,
 
   #dir$output_species <- file.path(dir$output, "species")
   #dir.create(dir$output_species, recursive=TRUE, showWarnings = FALSE)
-  #dir$output_landscapes <- file.path(dir$output, "landscapes")
-  #dir.create(dir$output_landscapes, recursive=TRUE, showWarnings = FALSE)
+  #dir$output_spaces <- file.path(dir$output, "spaces")
+  #dir.create(dir$output_spaces, recursive=TRUE, showWarnings = FALSE)
   dir$output_plots <- file.path(dir$output, "plots")
   dir.create(dir$output_plots, recursive=TRUE, showWarnings = FALSE)
   #dir$output_val <- file.path(dir$output, "val")

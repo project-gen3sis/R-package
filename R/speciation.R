@@ -12,19 +12,19 @@
 #' cluster x cluster, in which case the divergence values will be increased according to the cluster membership of any cell pairs.
 #'
 #' For every time step, the divergence between geographic clusters can increase by a defined number. The divergence values can be 
-#' scaled optionally using the species or landscape information. For instance, the divergence between clusters could be higher under
+#' scaled optionally using the species or space information. For instance, the divergence between clusters could be higher under
 #' warmer temperature, or difference in ecological traits could promote faster divergence between clusters.
 #' 
 #' Oppositely, for every time-step, if cluster are merged their divergence is reduced by one (1). 
 #'
 #' @param species the species of the current time step
 #' @param cluster_indices an index vector indicating the cluster every occupied site is part of
-#' @param landscape the landscape of the current time step
+#' @param space the space of the current time step
 #' @param config the config of the simulation
 #'
 #' @return a single value or a matrix of divergences between all clusters occurring in clusters_indices
 #' @export
-get_divergence_factor <- function(species, cluster_indices, landscape, config){
+get_divergence_factor <- function(species, cluster_indices, space, config){
   stop("this function documents the user function interface only, do not use it!")
 }
 
@@ -54,7 +54,7 @@ loop_speciation <- function(config, data, vars) {
     if ( length(species_presence)==1 ){#check if only one cell is occupied
       clu_geo_spi_ti <- 1
     }else{
-      distances <- config$gen3sis$dispersal$get_dispersal_values(length(species_presence), species, data$landscape, config)
+      distances <- config$gen3sis$dispersal$get_dispersal_values(length(species_presence), species, data$space, config)
 
       permutation <- sample(1:length(species_presence), length(species_presence))
       clu_geo_spi_ti <- Tdbscan_variable(data$distance_matrix[species_presence[permutation],species_presence[permutation],
@@ -64,7 +64,7 @@ loop_speciation <- function(config, data, vars) {
 
     gen_dist_spi <- decompress_divergence(species[["divergence"]])
     # update genetic distances
-    ifactor <- config$gen3sis$speciation$get_divergence_factor(species, clu_geo_spi_ti, data[["landscape"]], config)
+    ifactor <- config$gen3sis$speciation$get_divergence_factor(species, clu_geo_spi_ti, data[["space"]], config)
     gen_dist_spi <- update_divergence(gen_dist_spi, clu_geo_spi_ti, ifactor = ifactor )
 
     gen_dist_spi <- compress_divergence(gen_dist_spi)

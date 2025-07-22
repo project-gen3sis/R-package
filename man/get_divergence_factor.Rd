@@ -5,14 +5,14 @@
 \title{Allows the user to define the rate at which geographic clusters accumulate differentiation
 with each other.}
 \usage{
-get_divergence_factor(species, cluster_indices, landscape, config)
+get_divergence_factor(species, cluster_indices, space, config)
 }
 \arguments{
 \item{species}{the species of the current time step}
 
 \item{cluster_indices}{an index vector indicating the cluster every occupied site is part of}
 
-\item{landscape}{the landscape of the current time step}
+\item{space}{the space of the current time step}
 
 \item{config}{the config of the simulation}
 }
@@ -33,7 +33,7 @@ to increment divergence between any given distinct cluster pairs. If a matrix is
 cluster x cluster, in which case the divergence values will be increased according to the cluster membership of any cell pairs.
 
 For every time step, the divergence between geographic clusters can increase by a defined number. The divergence values can be 
-scaled optionally using the species or landscape information. For instance, the divergence between clusters could be higher under
+scaled optionally using the species or space information. For instance, the divergence between clusters could be higher under
 warmer temperature, or difference in ecological traits could promote faster divergence between clusters.
 
 Oppositely, for every time-step, if cluster are merged their divergence is reduced by one (1).

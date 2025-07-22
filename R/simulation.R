@@ -4,7 +4,7 @@
 ######## START OF INITIALIZATION ########
 #---------------------------------------#
 
-#' Initializes the landscape inputs
+#' Initializes the space inputs
 #'
 #' @param config the current config
 #' @param data the current data
@@ -13,15 +13,16 @@
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_inputs <- function(config, data, vars) {
+  # browser()
   data[["inputs"]] <- list()
-  spaces <- readRDS(file.path(config$directories$input, "spaces.rds"))
-  landscapes <- spaces$env # TODO correct cascade of names... attention to s i.e. space is contained in spaces
-  landscape_names <- names(landscapes)
+  spaces_rds <- readRDS(file.path(config$directories$input, "spaces.rds"))
+  spaces <- spaces_rds$env # TODO correct cascade of names... attention to s i.e. space is contained in spaces
+  space_names <- names(spaces)
 
   # environmental matrices
   environments <- list()
-  for (name in landscape_names){
-    tmp <- as.matrix(landscapes[[name]][, -c(1:2)])
+  for (name in space_names){
+    tmp <- as.matrix(spaces[[name]][, -c(1:2)])
     # scaling
     if (name %in% names(config[["gen3sis"]][["general"]][["environmental_ranges"]]) ) {
       range <- config[["gen3sis"]][["general"]][["environmental_ranges"]][[name]]
@@ -43,15 +44,15 @@ setup_inputs <- function(config, data, vars) {
   # time-steps
   data[["inputs"]][["timesteps"]] <- colnames(environments[[1]])
   # coordinates
-  data[["inputs"]][["coordinates"]] <- as.matrix(landscapes[[1]][, 1:2])
+  data[["inputs"]][["coordinates"]] <- as.matrix(spaces[[1]][, 1:2])
   # type
-  data[["inputs"]][["type"]] <- spaces$meta$type
+  data[["inputs"]][["type"]] <- spaces_rds$meta$type
   # type_spec_res
-  data[["inputs"]][["type_spec_res"]] <- spaces$meta$type_spec$res
+  data[["inputs"]][["type_spec_res"]] <- spaces_rds$meta$type_spec$res
   # extent
-  data[["inputs"]][["extent"]] <- spaces$meta$area$extent
+  data[["inputs"]][["extent"]] <- spaces_rds$meta$area$extent
   # geodynamc
-  data[["inputs"]][["geodynamic"]] <- spaces$meta$geodynamic
+  data[["inputs"]][["geodynamic"]] <- spaces_rds$meta$geodynamic
   
   return(list(config = config, data = data, vars = vars))
 }
@@ -83,7 +84,7 @@ setup_variables <- function(config, data, vars) {
     # user supplied numerical time-step
   }
 
-  # put in start time for create_landscape
+  # put in start time for create_space
   vars$ti <- config$gen3sis$general$start_time
 
   # flag
@@ -108,7 +109,7 @@ setup_variables <- function(config, data, vars) {
 init_attribute_ancestor_distribution <- function(config, data, vars) {
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
-  all_species <- config$gen3sis$initialization$create_ancestor_species(data$landscape, config)
+  all_species <- config$gen3sis$initialization$create_ancestor_species(data$space, config)
   for (i in 1:length(all_species)){
     force(i)
     all_species[[i]][["id"]] <- as.character(i)
@@ -119,20 +120,20 @@ init_attribute_ancestor_distribution <- function(config, data, vars) {
   # #plot starting_richness
   # grDevices::pdf(file=file.path(config$directories$output, "starting_richness.pdf"), width=10, height=6)
   # par(mfrow=c(1,1))
-  # plot_richness(all_species, data$landscape)
+  # plot_richness(all_species, data$space)
   # grDevices::dev.off()
   # 
   # #plot starting_ranges
   # grDevices::pdf(file=file.path(config$directories$output, "starting_ranges.pdf"), width=10, height=6)
   # par(mfrow=c(1,1))
-  # plot_ranges(all_species, data$landscape)
+  # plot_ranges(all_species, data$space)
   # grDevices::dev.off()
   
   
   
  # par(mfrow=c(1,2))
- # plot_richness(all_species, data$landscape)
- # plot_ranges(all_species, data$landscape)
+ # plot_richness(all_species, data$space)
+ # plot_ranges(all_species, data$space)
   
   # n_sp <- ncol(geo_sp_ti)
   n_sp <- length(data$all_species)
@@ -175,7 +176,7 @@ init_simulation <- function(config, data, vars) {
   colnames(geo_richness) <- c(colnames(data[["inputs"]][["coordinates"]]), steps)
   rownames(geo_richness) <- rownames(data[["inputs"]][["coordinates"]])
   #..... add the first species distribution at t0 (t_start)....
-  geo_richness[rownames(data[["landscape"]][["coordinates"]]), as.character(config$gen3sis$general$start_time)] <- get_geo_richness(data$all_species, data[["landscape"]])
+  geo_richness[rownames(data[["space"]][["coordinates"]]), as.character(config$gen3sis$general$start_time)] <- get_geo_richness(data$all_species, data[["space"]])
 
   data$geo_richness <- geo_richness
 
@@ -196,7 +197,7 @@ init_simulation <- function(config, data, vars) {
 ######## -> LOOP SETUP #######
 #-------------------------#
 
-#' Prepares the landscape for the current time step
+#' Prepares the space for the current time step
 #'
 #' @param config the current config
 #' @param data the current data
@@ -204,7 +205,8 @@ init_simulation <- function(config, data, vars) {
 #'
 #' @return the general vals(config, data, vars) list
 #' @noRd
-setup_landscape <- function(config, data, vars) {
+setup_space <- function(config, data, vars) {
+  #browser()
   n_total_steps <- length(data[["inputs"]][["timesteps"]])
   total_steps_zerobase <- (n_total_steps-1):0
   index <- which(total_steps_zerobase==vars$ti) #gen3sis v1 : vars$ti + 1
@@ -213,7 +215,7 @@ setup_landscape <- function(config, data, vars) {
   habitable_cells <- rownames(habitable_cells)
   envir <- do.call(cbind, lapply(data$inputs$environments, "[", habitable_cells, index, drop=FALSE))
   colnames(envir) <- names(data[["inputs"]][["environments"]])
-  landscape <- create_landscape(id = vars$ti,
+  space <- create_space(id = vars$ti,
                                 environment = envir,
                                 coordinates = data[["inputs"]][["coordinates"]][habitable_cells, ],
                                 timestep = data[["inputs"]][["timesteps"]][index],
@@ -222,7 +224,7 @@ setup_landscape <- function(config, data, vars) {
                                 type = data[["inputs"]][["type"]],
                                 type_spec_res=data[["inputs"]][["type_spec_res"]])
 
-  data[["landscape"]] <- landscape
+  data[["space"]] <- space
 
   return(list(config = config, data = data, vars = vars))
 }
@@ -238,10 +240,10 @@ setup_landscape <- function(config, data, vars) {
 #' @return the general vals(config, data, vars) list
 #' @noRd
 restrict_species <- function(config, data, vars) {
-  points_coordinates <- data[["landscape"]][["coordinates"]] # TODO replace loop to reduce code
+  points_coordinates <- data[["space"]][["coordinates"]] # TODO replace loop to reduce code
   if(is.vector(points_coordinates)){
     points_coordinates <- matrix(points_coordinates, nrow=1)
-    colnames(points_coordinates) <- names(data[["landscape"]][["coordinates"]])
+    colnames(points_coordinates) <- names(data[["space"]][["coordinates"]])
     rownames(points_coordinates) <- "1"
   }
   data$all_species <- lapply(data$all_species, limit_species_to_cells, rownames(points_coordinates))
@@ -264,7 +266,7 @@ loop_setup_geo_dist_m_ti <- function(config, data, vars) {
                                             "distance_matrices",
                                             paste0("geo_dist_m_ti_t_", vars$ti, ".rds")))
 
-  cell_names <- rownames(data$landscape[["coordinates"]])
+  cell_names <- rownames(data$space[["coordinates"]])
   rownames(geo_dist_m_ti) <- cell_names
   colnames(geo_dist_m_ti) <- cell_names
 
@@ -285,10 +287,10 @@ loop_setup_geo_dist_m_ti <- function(config, data, vars) {
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_distance_matrix <- function(config, data, vars) {
-  if (data$landscape$geodynamic){
+  if (data$space$geodynamic){
     tiis <- vars$ti
   } else {
-    # in case of static landscapes, the distance matrix is always the same
+    # in case of static spaces, the distance matrix is always the same
     tiis <- 0
   }
   matrix_file <- file.path(config$directories$input,
@@ -302,7 +304,7 @@ setup_distance_matrix <- function(config, data, vars) {
                             paste0("distances_local_", tiis, ".rds"))
     distance_neighbours <- readRDS(neighbour_file)
 
-    habitable_cells <- as.integer(rownames(data$landscape$coordinates))
+    habitable_cells <- as.integer(rownames(data$space$coordinates))
     num_cells <- nrow(distance_neighbours)
     distance_matrix <- get_distance_matrix(habitable_cells,
                                            num_cells,
@@ -339,7 +341,7 @@ update_extinction_times <- function(config, data, vars) {
   #data$turnover[toString(vars$ti),] <- c(vars$n_new_sp_ti, sum(data$phy$"Extinction.Time"==(vars$ti+1)), vars$n_sp_alive)
 
   # update geo_richness
-  #data$geo_richness[rownames(data[["landscape"]][["coordinates"]]), as.character(vars$ti)] <- get_geo_richness(data$all_species, data[["landscape"]])
+  #data$geo_richness[rownames(data[["space"]][["coordinates"]]), as.character(vars$ti)] <- get_geo_richness(data$all_species, data[["space"]])
   # data$geo_richness <- update.geo.richness(geo_sp_ti=data$geo_sp_ti, ti=vars$ti, geo_richness = data$geo_richness )
   #data[["eco_by_sp"]] <- get_eco_by_sp(data$all_species)
 }

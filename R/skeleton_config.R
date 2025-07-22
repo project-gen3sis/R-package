@@ -13,7 +13,7 @@ paste0(c('
 # Author:
 #', paste0("# Date: ", format(Sys.Date(), format="%d.%m.%Y")),                          
 '#
-# Landscape:
+# space:
 #
 # Publications:
 #
@@ -59,21 +59,21 @@ environmental_ranges = list( )
 # a place to inspect the internal state of the simulation and collect additional information if desired.
 end_of_timestep_observer = function(data, vars, config){
   # the list of all species can be found in data$all_species
-  # the current landscape can be found in data$landscape
+  # the current space can be found in data$space
   
   # saving functions example:
-    # save_landscape()
+    # save_space()
     # save_species()
   
   # plotting functions example:
     # plot environmental conditions
-    # plot_landscape(data$landscape)
+    # plot_space(data$space)
     # plot richness
-    # plot_richness(data$all_species, data$landscape)
+    # plot_richness(data$all_species, data$space)
     # plot a specific environmental condition
-    # plot_raster_single(data$landscape$environment[,"temp"], data$landscape, "temp", NA)
+    # plot_raster_single(data$space$environment[,"temp"], data$space, "temp", NA)
     # plot species 1 range
-    # plot_species_presence(data$all_species[[1]], data$landscape)
+    # plot_species_presence(data$all_species[[1]], data$space)
     # plot(0,type="n",axes=FALSE,ann=FALSE)
 
 }
@@ -87,8 +87,8 @@ end_of_timestep_observer = function(data, vars, config){
 # colonizing a site during the dispersal.
 initial_abundance = 1
 
-# place species in the landscape:
-create_ancestor_species <- function(landscape, config) {
+# place species in the space:
+create_ancestor_species <- function(space, config) {
  stop("create the initial species here")
 }
 
@@ -101,7 +101,7 @@ create_ancestor_species <- function(landscape, config) {
 max_dispersal <- Inf
 
 # returns n dispersal values.
-get_dispersal_values <- function(n, species, landscape, config) {
+get_dispersal_values <- function(n, species, space, config) {
   stop("calculate dispersal values here")
 }
 
@@ -115,7 +115,7 @@ divergence_threshold = NULL
 
 # factor by which the divergence is increased between geographically isolated population.
 # can also be a matrix between the different population clusters.
-get_divergence_factor <- function(species, cluster_indices, landscape, config) {
+get_divergence_factor <- function(species, cluster_indices, space, config) {
   stop("calculate divergence factor here")
 }
 
@@ -125,7 +125,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 #-----------------------#
 
 # mutate the traits of populations of each species and return the new traits matrix
-apply_evolution <- function(species, cluster_indices, landscape, config) {
+apply_evolution <- function(species, cluster_indices, space, config) {
   stop("mutate species traits here")
 }
 

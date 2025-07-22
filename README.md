@@ -5,7 +5,7 @@
 
 This is the repository for the R-package of the gen3sis engine [project-gen3sis git](https://github.com/project-gen3sis/R-package).
 
-gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modular implementation. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes.
+gen3sis is a spatially-explicit eco-evolutionary mechanistic model with a modular implementation. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal spaces.
 
 gen3sis is licensed under a [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html) deriving from ETHZ 2020 <doi.org/10.5905/ethz-1007-251> and has package authorship according to: http://epub.wu.ac.at/3269/1/Report114.pdf
 
@@ -36,14 +36,14 @@ MASTER [![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/work
 
 #### Run one simulation
 
-Load and run a simulation with the desired config and landscapes. Exemple data is provided with the package
+Load and run a simulation with the desired config and spaces. Exemple data is provided with the package
 ```{r}
 library("gen3sis")
 
 datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
 
 sim <- run_simulation(config = file.path(datapath, "config/config_worldcenter.R"), 
-               landscape = file.path(datapath, "landscape"),
+               space = file.path(datapath, "space"),
                output_directory = tempdir(),
                verbose=0)
 ```
