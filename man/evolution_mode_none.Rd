@@ -4,14 +4,14 @@
 \alias{evolution_mode_none}
 \title{No evolution considered}
 \usage{
-evolution_mode_none(species, cluster_indices, landscape, config)
+evolution_mode_none(species, cluster_indices, space, config)
 }
 \arguments{
 \item{species}{the current species}
 
 \item{cluster_indices}{indices to assign cells to geographic clusters}
 
-\item{landscape}{the current landscape}
+\item{space}{the current space}
 
 \item{config}{the general config}
 }

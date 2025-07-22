@@ -6,7 +6,7 @@
 \usage{
 run_simulation(
   config = NA,
-  landscape = NA,
+  space = NA,
   output_directory = NA,
   timestep_restart = NA,
   save_state = NA,
@@ -18,12 +18,12 @@ run_simulation(
 \arguments{
 \item{config}{configuration file for the simulation or configuration object derived from a config file}
 
-\item{landscape}{directory where the all_geo_hab and distance_matrices reside}
+\item{space}{directory where the all_geo_hab and distance_matrices reside}
 
 \item{output_directory}{directory for the simulation output}
 
 \item{timestep_restart}{set the start time time-step. 
-If timestep_restart=NA (default), start at the oldest available landscape. 
+If timestep_restart=NA (default), start at the oldest available space. 
 If timestep_restart="ti", start from the last available time-step. 
 If a number "x", start at time-step x (e.g. timestep_restartstart=6)}
 
@@ -54,7 +54,7 @@ a summary object containing a minimal summary on simulation and dynamics progres
 Run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder
 }
 \details{
-This function runs a simulation with defined landscape and config objects. 
+This function runs a simulation with defined space and config objects. 
 Possibly plot and save specified outputs as defined in the end_of_timestep_observer function inside the config object
 }
 \examples{
@@ -65,7 +65,7 @@ config_file <- system.file(file.path("extdata", "TestConfigs","TestConfig.R"), p
 # run simulation and store summary obejct to sim
 sim <- run_simulation(
   config = config_file, 
-  landscape = spaces,
+  space = spaces,
   output_directory = tempdir()
 )
 

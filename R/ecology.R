@@ -41,7 +41,7 @@ loop_ecology <- function(config, data, vars) {
     cat(paste("entering ecology module @ time", vars$ti, "\n"))
   }
 
-  all_cells <- rownames(data$landscape$environment)
+  all_cells <- rownames(data$space$environment)
   all_species_presence <- do.call( cbind, lapply(data$all_species, FUN = function(sp) {all_cells %in% names(sp$abundance)}))
   rownames(all_species_presence) <- all_cells
 
@@ -50,7 +50,7 @@ loop_ecology <- function(config, data, vars) {
   occupied_cells <- rownames(all_species_presence)[rowSums(all_species_presence)>0]
 
   for (cell in occupied_cells) { # strat loop over ids with at least one species...
-    local_environment = data$landscape[["environment"]][cell, , drop=FALSE]
+    local_environment = data$space[["environment"]][cell, , drop=FALSE]
 
     coo_sp <- which(all_species_presence[cell,])
     #create coocuring species traits for idi

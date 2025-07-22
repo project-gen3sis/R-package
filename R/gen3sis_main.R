@@ -2,7 +2,7 @@
 
 #' @title gen3sis2: General Engine for Eco-Evolutionary Simulations
 #' @name gen3sis2
-#' @description Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes on biodiversity patterns as a general term.
+#' @description Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal spaces on biodiversity patterns as a general term.
 #' @references O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2021). gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology
 #' @details Gen3sis2 is implemented in a mix of R and C++ code, and wrapped into an R-package. All high-level functions that the user may interact with are written in R, and are documented via the standard R / Roxygen help files for R-packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. Additionally, the package provides several convenience functions to generate input data, configuration files and plots, as well as tutorials in the form of vignettes that illustrate how to declare models and run simulations.
 #' @seealso \code{\link{create_input_config}}   \code{\link{create_spaces_raster}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
@@ -11,18 +11,18 @@
 #' @examples
 #' \dontrun{
 #' 
-#' # 1. Load gen3sis and all necessary input data is set (landscape and config).
+#' # 1. Load gen3sis and all necessary input data is set (space and config).
 #' 
 #' library(gen3sis)
 #' 
 #' # get path to example input inside package
 #' datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
 #' path_config <- file.path(datapath, "config/config_worldcenter.R")
-#' path_landscape <- file.path(datapath, "landscape")
+#' path_space <- file.path(datapath, "space")
 #' 
 #' # 2. Run simulation
 #' 
-#'sim <- run_simulation(config = path_config, landscape = path_landscape)
+#'sim <- run_simulation(config = path_config, space = path_space)
 #'
 #' # 3. Visualize the outputs
 #' 
@@ -31,11 +31,11 @@
 #' 
 #' # plot richness at a given time-step 
 #' # this only works if species is saved for this time-step
-#' landscape_t_150 <- readRDS(file.path(datapath, 
-#' "output", "config_worldcenter", "landscapes", "landscape_t_150.rds"))   
+#' space_t_150 <- readRDS(file.path(datapath, 
+#' "output", "config_worldcenter", "spaces", "space_t_150.rds"))   
 #' species_t_150 <- readRDS(file.path(datapath, 
 #' "output", "config_worldcenter", "species", "species_t_150.rds"))   
-#' plot_richness(species_t_150, landscape_t_150)   
+#' plot_richness(species_t_150, space_t_150)   
 #'
 #' }
 #' @useDynLib gen3sis2, .registration = TRUE
@@ -47,13 +47,13 @@ NULL
 
 #' Run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder 
 #' 
-#' @details This function runs a simulation with defined landscape and config objects. 
+#' @details This function runs a simulation with defined space and config objects. 
 #' Possibly plot and save specified outputs as defined in the end_of_timestep_observer function inside the config object
 #' @param config configuration file for the simulation or configuration object derived from a config file
-#' @param landscape directory where the all_geo_hab and distance_matrices reside
+#' @param space directory where the all_geo_hab and distance_matrices reside
 #' @param output_directory directory for the simulation output
 #' @param timestep_restart set the start time time-step. 
-#' If timestep_restart=NA (default), start at the oldest available landscape. 
+#' If timestep_restart=NA (default), start at the oldest available space. 
 #' If timestep_restart="ti", start from the last available time-step. 
 #' If a number "x", start at time-step x (e.g. timestep_restartstart=6)
 #' @param save_state save the internal state of the simulation for restarts.
@@ -81,7 +81,7 @@ NULL
 #' @seealso \code{\link{plot_summary}}   \code{\link{create_input_config}}   \code{\link{create_spaces_raster}} 
 #' @export
 run_simulation <- function(config = NA,
-                          landscape = NA,
+                          space = NA,
                           output_directory = NA, 
                           timestep_restart = NA,
                           save_state = NA,
@@ -106,7 +106,7 @@ run_simulation <- function(config = NA,
   #
   
   directories <- prepare_directories(config_file = config,
-                                     input_directory = landscape,
+                                     input_directory = space,
                                      output_directory = output_directory)
 
   # TODO rewrite this conditional to enable copying the config file if object is on RAM
@@ -139,15 +139,15 @@ run_simulation <- function(config = NA,
 
   #val$config$gen3sis$version <- "1.1"
   #val$config$gen3sis$nickname <- "Quintessenced"
-
+  #browser()
   # #---------------------------------------------------------#
   # ###### ATTRIBUTE ANCESTOR DISTRIBUTION (simulation.R) #####
   # #---------------------------------------------------------#
   val <- setup_inputs(val$config, val$data, val$vars)
   val <- setup_variables(val$config, val$data, val$vars)
-  val <- setup_landscape(val$config, val$data, val$vars)
+  val <- setup_space(val$config, val$data, val$vars)
   # conceptually the result of the initialization is the "end" of a previous timestep
-  val$data$landscape$id <- val$data$landscape$id + 1
+  val$data$space$id <- val$data$space$id + 1
   
   if (verbose >= 1) {
     cat("--- Initializing --- \n")
@@ -194,8 +194,8 @@ run_simulation <- function(config = NA,
   if (verbose >= 1) {
     cat("--- Running simulation --- \n")
   }
-  
-  if(!val$data$landscape$geodynamic){
+  #browser()
+  if(!val$data$space$geodynamic){
     val <- setup_distance_matrix(val$config, val$data, val$vars)
   }
   
@@ -212,11 +212,11 @@ run_simulation <- function(config = NA,
     if(verbose>=2){
       cat("loop setup \n")
     }
-    val <- setup_landscape(val$config, val$data, val$vars)
+    val <- setup_space(val$config, val$data, val$vars)
     val <- restrict_species(val$config, val$data, val$vars)
 
     #val <- loop_setup_geo_dist_m_ti(val$config, val$data, val$vars)
-    if(val$data$landscape$geodynamic){
+    if(val$data$space$geodynamic){
       val <- setup_distance_matrix(val$config, val$data, val$vars)
     }
     #val <- setup_distance_matrix(val$config, val$data, val$vars)

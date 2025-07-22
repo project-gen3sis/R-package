@@ -20,12 +20,12 @@
 #' 
 #' @param num_draws the number of dispersal values drawn
 #' @param species the species for which the values are to be produced
-#' @param landscape the landscape of the current time step
+#' @param space the space of the current time step
 #' @param config the config of the simulation
 #'
 #' @return a numerical vector of length num_draws with dispersal values
 #' @export
-get_dispersal_values <- function(num_draws, species, landscape, config) {
+get_dispersal_values <- function(num_draws, species, space, config) {
   stop("this function documents the user function interface only, do not use it")
 }
 
@@ -45,7 +45,7 @@ loop_dispersal <- function(config, data, vars){
     cat(paste("entering dispersal module \n"))
   }
 
-  data$all_species <- lapply(data$all_species, disperse, data$landscape, data$distance_matrix, config)
+  data$all_species <- lapply(data$all_species, disperse, data$space, data$distance_matrix, config)
 
   if(config$gen3sis$general$verbose>=3){
     cat(paste("exiting dispersal module \n"))
@@ -56,28 +56,28 @@ loop_dispersal <- function(config, data, vars){
 
 #' Disperses a given species
 #'
-#' @details This function selects all suitable sites from the landscape and checks whether the given
+#' @details This function selects all suitable sites from the space and checks whether the given
 #' species can reach and colonize any one of them
 #'
 #' @param species the species to apply dispersal to
-#' @param landscape the landscape of the current time-step
+#' @param space the space of the current time-step
 #' @param distance_matrix the distance matrix between sites to check the dispersal capabilities against
 #' @param config the config of the simulation
 #'
 #' @return the dispersed species object
 #' @noRd
-disperse <- function(species, landscape, distance_matrix, config){
+disperse <- function(species, space, distance_matrix, config){
   if ( !length(species[["abundance"]]) ) {
     return(species)
   }
 
   presence_spi_ti <- names(species[["abundance"]])
 
-  all_cells <- rownames(landscape$coordinates)
+  all_cells <- rownames(space$coordinates)
   free_cells <- all_cells[!(all_cells %in% presence_spi_ti)]
   num_draws <- length(free_cells) * length(presence_spi_ti)
 
-  r_disp <- config$gen3sis$dispersal$get_dispersal_values(num_draws, species, landscape, config)
+  r_disp <- config$gen3sis$dispersal$get_dispersal_values(num_draws, species, space, config)
 
   geo_disp <- distance_matrix[presence_spi_ti, free_cells, drop=FALSE] #lines mark where they are present, cols the possible suitable sites
   geo_disp <- geo_disp <= r_disp

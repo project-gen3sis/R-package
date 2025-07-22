@@ -20,17 +20,17 @@ select_habitable_hab <- function(what) {
 }
 
 
-#' calculate the richness of a list of species over a given landscape
+#' calculate the richness of a list of species over a given space
 #'
 #' @param species_list a list of species to include in the richness calculations
-#' @param landscape the landscape to calculate the richnness over
+#' @param space the space to calculate the richnness over
 #'
-#' @return a vector with the richness for every cell in the input landscape
+#' @return a vector with the richness for every cell in the input space
 #' @example inst/examples/get_geo_richness_help.R
 #' @seealso \code{\link{plot_richness}} 
 #' @export
-get_geo_richness <- function(species_list, landscape){
-  cell_names <- rownames(landscape[["coordinates"]])
+get_geo_richness <- function(species_list, space){
+  cell_names <- rownames(space[["coordinates"]])
   presences <- sapply(species_list,
                       function(sp, cell_names){ cell_names %in% names(sp[["abundance"]])},
                       cell_names)

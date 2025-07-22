@@ -2,15 +2,15 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_multiple.gen3sis_space_h3}
 \alias{plot_multiple.gen3sis_space_h3}
-\title{Plot a set of values onto a given landscape}
+\title{Plot a set of values onto a given space}
 \usage{
-\method{plot_multiple}{gen3sis_space_h3}(values, landscape, no_data = NA)
+\method{plot_multiple}{gen3sis_space_h3}(values, space, no_data = NA)
 }
 \arguments{
 \item{values}{a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
 this will result in ncol(values) raster plots.}
 
-\item{landscape}{a landscape to plot the values onto}
+\item{space}{a space to plot the values onto}
 
 \item{no_data}{what value should be used for missing data present in the values parameter}
 }
@@ -18,5 +18,5 @@ this will result in ncol(values) raster plots.}
 no return value, called for plot
 }
 \description{
-Plot a set of values onto a given landscape
+Plot a set of values onto a given space
 }

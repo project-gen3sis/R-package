@@ -1,49 +1,49 @@
 # Copyright (c) 2020, ETH Zurich
 
-#' Plot a species' presence on a given landscape
+#' Plot a species' presence on a given space
 #'
 #' @param species a single species object
-#' @param landscape a landscape object
+#' @param space a space object
 #' @example inst/examples/plot_species_presence_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_species_presence <- function(species, landscape) {
+plot_species_presence <- function(species, space) {
   #presence <- species[["abundance"]]
   #presence[] <- 1
   #get all locations
-  all_presence <- landscape[["coordinates"]][,1, drop=T]
+  all_presence <- space[["coordinates"]][,1, drop=T]
   all_presence[] <- 0
   all_presence[names(species[["abundance"]])] <- 1
-  rc <- set_color(all_presence, type=landscape$`type`)
+  rc <- set_color(all_presence, type=space$`type`)
   conditional_plot(paste0("species_presence_", species$id),
-                   landscape,
+                   space,
                    plot_single,
                    all_presence,
-                   landscape,
+                   space,
                    paste("Species", species[["id"]]),
                    col=rc)
 }
 
 
-#' Plot a species' abundance on a given landscape
+#' Plot a species' abundance on a given space
 #'
 #' @param species a single species object
-#' @param landscape a landscape object
+#' @param space a space object
 #' @example inst/examples/plot_species_abundance_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_species_abundance <- function(species, landscape) {
-  all_presence <- landscape[["coordinates"]][,1, drop=T]
+plot_species_abundance <- function(species, space) {
+  all_presence <- space[["coordinates"]][,1, drop=T]
   all_presence[] <- 0
   all_presence[names(species[["abundance"]])] <- species[["abundance"]]
-  rc <- set_color(all_presence, type=landscape$`type`)
+  rc <- set_color(all_presence, type=space$`type`)
   conditional_plot(paste0("species_abundance_", species$id),
-                   landscape,
+                   space,
                    plot_single,
                    all_presence,
-                   landscape,
+                   space,
                    paste("Abundance Species", species[["id"]]),
                    col=rc)
 }
@@ -51,43 +51,43 @@ plot_species_abundance <- function(species, landscape) {
 
 
 
-#' Plot the environment variable of a given landscape
+#' Plot the environment variable of a given space
 #'
-#' @param landscape the gen3sis_space to plot the environment from
+#' @param space the gen3sis_space to plot the environment from
 #' @return no return value, called for plot
 #'
 #' @export
-plot_landscape <- function(landscape) {
-  conditional_plot(title = "landscape",
-                   landscape = landscape,
+plot_space <- function(space) {
+  conditional_plot(title = "space",
+                   space = space,
                    plot_fun = plot_multiple,
-                   landscape[["environment"]],
-                   landscape)
+                   space[["environment"]],
+                   space)
 }
 
 
-#' Plot the outline of a given landscape over time
+#' Plot the outline of a given space over time
 #'
-#' @param landscape the input landscape to be plotted
+#' @param space the input space to be plotted
 #' @param slices the amount of slices though time between start and end (default value is 2).
 #' @param start_end_times the stating and ending times of the simulation (default is NULL, takes the oldest and most recent available)
 #' @return no return value, called for plot
 #'
 #' @export
-plot_landscape_overview <- function(landscape, slices=2, start_end_times=NULL) {
+plot_space_overview <- function(space, slices=2, start_end_times=NULL) {
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
-  landscape <- landscape[[1]] # takes only the first one
+  space <- space[[1]] # takes only the first one
   if (is.null(start_end_times)){ # takes last and first time-steps
-    start_end_times <- which(colnames(landscape)%in%colnames(landscape)[c(3,ncol(landscape))])
+    start_end_times <- which(colnames(space)%in%colnames(space)[c(3,ncol(space))])
   }
   
   times=rev(round(seq(from=start_end_times[1], to=start_end_times[2], length.out = slices+2  ),0))
   par(mfrow=c(1,length(times)))
   for (times_i in 1:length(times)){
     # times_i <- 1
-    plot(rasterFromXYZ(landscape[,c(1,2,times[times_i])]), col="black", 
-         axes=FALSE,legend=FALSE, tck = 0, main=colnames(landscape)[times[times_i]], line=-3)
+    plot(rasterFromXYZ(space[,c(1,2,times[times_i])]), col="black", 
+         axes=FALSE,legend=FALSE, tck = 0, main=colnames(space)[times[times_i]], line=-3)
   }
 }
 
@@ -223,23 +223,23 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
 
 
 
-#' Plot the richness of the given list of species on a landscape
+#' Plot the richness of the given list of species on a space
 #'
 #' @param species_list a list of species to use in the richness calculation
-#' @param landscape a corresponding landscape object
+#' @param space a corresponding space object
 #' @example inst/examples/plot_richness_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_richness <- function(species_list, landscape) {
-  richness <- get_geo_richness(species_list, landscape)
+plot_richness <- function(species_list, space) {
+  richness <- get_geo_richness(species_list, space)
   #attribute color
-  rc <- set_color(richness, type=landscape$`type`)
+  rc <- set_color(richness, type=space$`type`)
   conditional_plot("Richness",
-                   landscape,
+                   space,
                    plot_single,
                    richness,
-                   landscape,
+                   space,
                    "richness",
                    col=rc)
 }
@@ -275,28 +275,28 @@ set_color <- function(values, colfun=color_richness, zero_col="navajowhite3", ty
 }
 
 
-#' Plot species ranges of the given list of species on a landscape
+#' Plot species ranges of the given list of species on a space
 #'
 #' @param species_list a list of species to use in the richness calculation
-#' @param landscape a corresponding landscape object
+#' @param space a corresponding space object
 #' @param disturb value randomly added to shift each species symbol. Useful to enhance visualization in case of multiple species overlaps  
 #' @param max_sps maximum number of plotted species, not recommended above 20
 #' @example inst/examples/plot_ranges_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
+plot_ranges <- function(species_list, space, disturb=0, max_sps=10) {
   disturb=abs(disturb)
   max_sps <- abs(max_sps)
-  #plot landscape
+  #plot space
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
   layout( matrix(c(1,1,2),nrow=1, byrow =TRUE)  )
   #layout.show(2)
   #par(mar=c(4,3,3,7), oma=c(0.1,0.8,0.3,0.8))
   par(xpd = FALSE)
-  plot_single(1,landscape, title, no_data=0, col="navajowhite3", title="species ranges")
-  # plot_points_single(1, landscape, title, no_data = 0, col="navajowhite3", title="species ranges")
+  plot_single(1,space, title, no_data=0, col="navajowhite3", title="species ranges")
+  # plot_points_single(1, space, title, no_data = 0, col="navajowhite3", title="species ranges")
   # plot_points(, main="species ranges", col=, asp = 1))
   n_species <- length(species_list)
   alive <- unlist(lapply(species_list, function(x){length(x$abundance)}))
@@ -324,7 +324,7 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
   par(xpd = TRUE)
   for (i in 1:n_sps_max){
     sp_i <- (1:n_species)[alive][i]
-    img <- cbind(landscape[["coordinates"]][names(species_list[[sp_i]]$abundance),,drop=FALSE], species_list[[sp_i]]$id)
+    img <- cbind(space[["coordinates"]][names(species_list[[sp_i]]$abundance),,drop=FALSE], species_list[[sp_i]]$id)
     df <- as.data.frame(img)
     plot_diturbance <- sample(seq(-disturb, disturb, by=0.01), 1)
     points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
@@ -341,21 +341,21 @@ plot_ranges <- function(species_list, landscape, disturb=0, max_sps=10) {
 #' Save plots if called from within a simulation run, display as well if run interactively
 #'
 #' @param title folder and file name
-#' @param landscape current landscape
+#' @param space current space
 #' @param plot_fun plotting function to use (single or multiple)
 #' @param ... arguments for plot_fun
 #'
 #' @importFrom grDevices png
 #' @importFrom methods is
 #' @noRd
-conditional_plot <- function(title, landscape, plot_fun, ...){
+conditional_plot <- function(title, space, plot_fun, ...){
   fun_calls <- sys.calls()
   if (any(sapply(fun_calls, FUN = function(x){ is(x[[1]], "name") && "call_main_observer" == x[[1]]}))){
     # run during simulation save plot to file
     config <- dynGet("config")
     plot_folder <- file.path(config$directories$output, "plots", title)
     dir.create(plot_folder, showWarnings=FALSE, recursive=TRUE)
-    file_name <- file.path(plot_folder, paste0(title, "_t_", landscape$id, ".png"))
+    file_name <- file.path(plot_folder, paste0(title, "_t_", space$id, ".png"))
     png(file_name)
     plot_fun(...)
     dev.off()
@@ -377,11 +377,11 @@ plot_single <- function(x, ...) {
 }
 
 
-#' Plot a single set of values in a given landscape
+#' Plot a single set of values in a given space
 #'
-#' @param values a named list of values, the names must correspond to cells in the landscape
-#' @param landscape a landscape to plot the values onto
-#' @param title a title string for resulting plot, the time information will be taken and appended from the landscape id
+#' @param values a named list of values, the names must correspond to cells in the space
+#' @param space a space to plot the values onto
+#' @param title a title string for resulting plot, the time information will be taken and appended from the space id
 #' @param no_data what value should be used for missing values in values
 #' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
 #' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
@@ -389,21 +389,21 @@ plot_single <- function(x, ...) {
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_single.gen3sis_space_raster <- function(values, landscape, title, no_data = 0, col, legend=TRUE) {
-  img <- cbind(landscape[["coordinates"]], no_data)
+plot_single.gen3sis_space_raster <- function(values, space, title, no_data = 0, col, legend=TRUE) {
+  img <- cbind(space[["coordinates"]], no_data)
   img[names(values), 3] <- values
   ras <- terra::rast(img, type="xyz")
-  # extend raster to landscape extent in order to avoid flickering when animating
-  ras <- terra::extend(ras, terra::ext(landscape[["extent"]]), fill=NA)
-  terra::plot(ras, main=paste0(title, " ", landscape$timestep, " t_", landscape[["id"]]), col=col, legend=legend)
+  # extend raster to space extent in order to avoid flickering when animating
+  ras <- terra::extend(ras, terra::ext(space[["extent"]]), fill=NA)
+  terra::plot(ras, main=paste0(title, " ", space$timestep, " t_", space[["id"]]), col=col, legend=legend)
 }
 
 # TODO update documentation
-#' Plot a single set of values onto a given landscape
+#' Plot a single set of values onto a given space
 #'
-#' @param values a named list of values, the names must correspond to cells in the landscape
-#' @param landscape a landscape to plot the values onto
-#' @param title a title string for resulting plot, the time information will be taken and appended from the landscape id
+#' @param values a named list of values, the names must correspond to cells in the space
+#' @param space a space to plot the values onto
+#' @param title a title string for resulting plot, the time information will be taken and appended from the space id
 #' @param no_data what value should be used for missing values in values
 #' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
 #' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
@@ -411,20 +411,20 @@ plot_single.gen3sis_space_raster <- function(values, landscape, title, no_data =
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_single.gen3sis_space_points <- function(values, landscape, title="", no_data = 0, col, legend=TRUE) {
-  plot(landscape[["coordinates"]], 
-       main=paste0(title, " ", landscape$timestep, " t_", landscape[["id"]]),
-       xlim=landscape[["extent"]][c("xmin","xmax")],
-       ylim=landscape[["extent"]][c("ymin","ymax")],
+plot_single.gen3sis_space_points <- function(values, space, title="", no_data = 0, col, legend=TRUE) {
+  plot(space[["coordinates"]], 
+       main=paste0(title, " ", space$timestep, " t_", space[["id"]]),
+       xlim=space[["extent"]][c("xmin","xmax")],
+       ylim=space[["extent"]][c("ymin","ymax")],
        col=col, pch=20)
 }
 
 # TODO update documentation
-#' Plot a single set of values onto a given landscape
+#' Plot a single set of values onto a given space
 #'
-#' @param values a named list of values, the names must correspond to cells in the landscape
-#' @param landscape a landscape to plot the values onto
-#' @param title a title string for resulting plot, the time information will be taken and appended from the landscape id
+#' @param values a named list of values, the names must correspond to cells in the space
+#' @param space a space to plot the values onto
+#' @param title a title string for resulting plot, the time information will be taken and appended from the space id
 #' @param no_data what value should be used for missing values in values
 #' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
 #' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
@@ -432,14 +432,14 @@ plot_single.gen3sis_space_points <- function(values, landscape, title="", no_dat
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_single.gen3sis_space_h3 <- function(values, landscape, title="", no_data = 0, col, legend=TRUE) {
-  spatial_points <- sf::st_as_sf(as.data.frame(landscape$coordinates), coords = c("x", "y"), crs = 4326)
+plot_single.gen3sis_space_h3 <- function(values, space, title="", no_data = 0, col, legend=TRUE) {
+  spatial_points <- sf::st_as_sf(as.data.frame(space$coordinates), coords = c("x", "y"), crs = 4326)
   # TODO pass crs here, review and standardize crs handling and protocol
-  cells <- h3jsr::point_to_cell(spatial_points, landscape$type_spec_res)
+  cells <- h3jsr::point_to_cell(spatial_points, space$type_spec_res)
   polygons <- h3jsr::cell_to_polygon(cells)
-  #polygons <- h3jsr::cell_to_polygon(h3::geo_to_h3(landscape$coordinates, landscape$type_spec_res))
+  #polygons <- h3jsr::cell_to_polygon(h3::geo_to_h3(space$coordinates, space$type_spec_res))
   # if the extent is global, wrap the dateline
-  if (landscape$extent[["xmin"]] == -180 & landscape$extent[["xmax"]]==180){
+  if (space$extent[["xmin"]] == -180 & space$extent[["xmax"]]==180){
     # wrap dateline
     polygons <- sf::st_wrap_dateline(polygons, options= c('WRAPDATELINE=YES', 'DATELINEOFFSET=180'), quiet=TRUE)
   }
@@ -447,8 +447,8 @@ plot_single.gen3sis_space_h3 <- function(values, landscape, title="", no_data = 
   # polygons$values <- values  # Add the values as an attribute to polygons
   
   plot(polygons,
-       main=paste0(title, " ", landscape$timestep, " t_", landscape[["id"]]),
-       xlim=c(landscape$extent[1], landscape$extent[2]), ylim=c(landscape$extent[3], landscape$extent[4]), 
+       main=paste0(title, " ", space$timestep, " t_", space[["id"]]),
+       xlim=c(space$extent[1], space$extent[2]), ylim=c(space$extent[3], space$extent[4]), 
        xlab="", ylab="", col=col, border=NA)
   
 }
@@ -466,55 +466,55 @@ plot_multiple <- function(x, ...) {
 
 
 
-#' Plot a set of values onto a given landscape
+#' Plot a set of values onto a given space
 #'
 #' @param values a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
 #' this will result in ncol(values) raster plots.
-#' @param landscape a landscape to plot the values onto
+#' @param space a space to plot the values onto
 #' @param no_data what value should be used for missing data present in the values parameter
 #' @return no return value, called for plot
 #'
 #' @export
-plot_multiple.gen3sis_space_raster <- function(values, landscape, no_data = 0) {
+plot_multiple.gen3sis_space_raster <- function(values, space, no_data = 0) {
   img <- matrix(no_data,
-                nrow = nrow(landscape[["coordinates"]]),
+                nrow = nrow(space[["coordinates"]]),
                 ncol = ncol(values) + 2,
-                dimnames = list(rownames(landscape[["coordinates"]]),
-                                c(colnames(landscape[["coordinates"]]),
+                dimnames = list(rownames(space[["coordinates"]]),
+                                c(colnames(space[["coordinates"]]),
                                   colnames(values))))
-  img[, 1:2] <- landscape[["coordinates"]]
+  img[, 1:2] <- space[["coordinates"]]
   img[rownames(values), -c(1:2)] <- values
   
   ras <- terra::rast(img, type="xyz")
-  terra::ext(ras) <- landscape$extent
-  #terra::res(ras) <- landscape$type_spec_res
-  terra::plot(ras, main=paste0(colnames(values), " ", landscape$timestep, " ts ", landscape[["id"]]))
+  terra::ext(ras) <- space$extent
+  #terra::res(ras) <- space$type_spec_res
+  terra::plot(ras, main=paste0(colnames(values), " ", space$timestep, " ts ", space[["id"]]))
 }
 
-#' Plot a set of values onto a given landscape
+#' Plot a set of values onto a given space
 #'
 #' @param values a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
 #' this will result in ncol(values) raster plots.
-#' @param landscape a landscape to plot the values onto
+#' @param space a space to plot the values onto
 #' @param no_data what value should be used for missing data present in the values parameter
 #' @return no return value, called for plot
 #'
 #' @export
-plot_multiple.gen3sis_space_h3 <- function(values, landscape, no_data = NA) {
+plot_multiple.gen3sis_space_h3 <- function(values, space, no_data = NA) {
   # Creates a matrix with coordinates and values  
-  env_mtx <- cbind(landscape$coordinates, values)
+  env_mtx <- cbind(space$coordinates, values)
   
   # Convert to points
   env_points <- sf::st_as_sf(env_mtx |> as.data.frame(), coords = c("x", "y"), crs = 4326)
   
   # and extract the h3 cell indexes
-  env_cells <- h3jsr::point_to_cell(env_points,landscape$type_spec_res)
+  env_cells <- h3jsr::point_to_cell(env_points,space$type_spec_res)
   
   # Creates a base for the plot
   base_hexagons <- h3jsr::cell_to_polygon(env_cells) |>
     sf::st_union() |>
     sf::st_convex_hull() |>
-    h3jsr::polygon_to_cells(res = landscape$type_spec_res)
+    h3jsr::polygon_to_cells(res = space$type_spec_res)
   
   # Creates the polygons
   base_hexagons <- unlist(base_hexagons)[!unlist(base_hexagons)%in%env_cells] |>
@@ -541,36 +541,36 @@ plot_multiple.gen3sis_space_h3 <- function(values, landscape, no_data = NA) {
   combined_h3 <- sf::st_sf(full_values, geometry = full_hexagons)
   
   for (variable in colnames(values)) {
-    plot(combined_h3[variable], main = paste0(variable, " ", landscape$timestep, " ts ", landscape[["id"]]))
+    plot(combined_h3[variable], main = paste0(variable, " ", space$timestep, " ts ", space[["id"]]))
   }
 }
 
-#' Plot a set of values onto a given landscape
+#' Plot a set of values onto a given space
 #'
 #' @param values a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
 #' this will result in ncol(values) raster plots.
-#' @param landscape a landscape to plot the values onto
+#' @param space a space to plot the values onto
 #' @param no_data what value should be used for missing data present in the values parameter
 #' @return no return value, called for plot
 #'
 #' @export
-plot_multiple.gen3sis_space_points <- function(values, landscape, no_data = NA) {
+plot_multiple.gen3sis_space_points <- function(values, space, no_data = NA) {
   # Creates a matrix with coordinates and values  
-  env_mtx <- cbind(landscape$coordinates, values)
+  env_mtx <- cbind(space$coordinates, values)
   
   # Convert to points
   env_points <- sf::st_as_sf(env_mtx |> as.data.frame(), coords = c("x", "y"), crs = 4326)
   
-  x_cat <- landscape$extent[[2]] - landscape$extent[[1]]
-  y_cat <- landscape$extent[[4]] - landscape$extent[[3]]
+  x_cat <- space$extent[[2]] - space$extent[[1]]
+  y_cat <- space$extent[[4]] - space$extent[[3]]
   
   auto_cex <- round(sqrt((x_cat**2)+(y_cat**2))/nrow(values))+1
   
   for (variable in colnames(values)) {
     plot(env_points, 
-         main=paste0(variable, " ", landscape$timestep, " t_", landscape[["id"]]),
-         xlim=landscape[["extent"]][c("xmin","xmax")],
-         ylim=landscape[["extent"]][c("ymin","ymax")],
+         main=paste0(variable, " ", space$timestep, " t_", space[["id"]]),
+         xlim=space[["extent"]][c("xmin","xmax")],
+         ylim=space[["extent"]][c("ymin","ymax")],
          pch=20,
          key.pos = 4,
          cex = auto_cex)

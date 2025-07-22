@@ -6,7 +6,7 @@
 \alias{gen3sis2}
 \title{gen3sis2: General Engine for Eco-Evolutionary Simulations}
 \description{
-Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal landscapes on biodiversity patterns as a general term.
+Contains an engine for spatially-explicit eco-evolutionary mechanistic models with a modular implementation and several support functions. It allows exploring the consequences of ecological and macroevolutionary processes across realistic or theoretical spatio-temporal spaces on biodiversity patterns as a general term.
 }
 \details{
 Gen3sis2 is implemented in a mix of R and C++ code, and wrapped into an R-package. All high-level functions that the user may interact with are written in R, and are documented via the standard R / Roxygen help files for R-packages. Runtime-critical functions are implemented in C++ and coupled to R via the Rcpp framework. Additionally, the package provides several convenience functions to generate input data, configuration files and plots, as well as tutorials in the form of vignettes that illustrate how to declare models and run simulations.
@@ -14,18 +14,18 @@ Gen3sis2 is implemented in a mix of R and C++ code, and wrapped into an R-packag
 \examples{
 \dontrun{
 
-# 1. Load gen3sis and all necessary input data is set (landscape and config).
+# 1. Load gen3sis and all necessary input data is set (space and config).
 
 library(gen3sis)
 
 # get path to example input inside package
 datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
 path_config <- file.path(datapath, "config/config_worldcenter.R")
-path_landscape <- file.path(datapath, "landscape")
+path_space <- file.path(datapath, "space")
 
 # 2. Run simulation
 
-sim <- run_simulation(config = path_config, landscape = path_landscape)
+sim <- run_simulation(config = path_config, space = path_space)
 
 # 3. Visualize the outputs
 
@@ -34,11 +34,11 @@ plot_summary(sim)
 
 # plot richness at a given time-step 
 # this only works if species is saved for this time-step
-landscape_t_150 <- readRDS(file.path(datapath, 
-"output", "config_worldcenter", "landscapes", "landscape_t_150.rds"))   
+space_t_150 <- readRDS(file.path(datapath, 
+"output", "config_worldcenter", "spaces", "space_t_150.rds"))   
 species_t_150 <- readRDS(file.path(datapath, 
 "output", "config_worldcenter", "species", "species_t_150.rds"))   
-plot_richness(species_t_150, landscape_t_150)   
+plot_richness(species_t_150, space_t_150)   
 
 }
 }
@@ -49,23 +49,23 @@ O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L
 \code{\link{create_input_config}}   \code{\link{create_spaces_raster}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
 }
 \author{
-\strong{Maintainer}: Oskar Hagen \email{oskar@hagen.bio} (Landscape Ecology, WSL and ETH Zürich, Switzerland)
+\strong{Maintainer}: Oskar Hagen \email{oskar@hagen.bio} (space Ecology, WSL and ETH Zürich, Switzerland)
 
 Authors:
 \itemize{
-  \item Benjamin Flück \email{benjamin.flueck@alumni.ethz.ch} (Landscape Ecology, WSL and ETH Zürich, Switzerland)
-  \item Fabian Fopp \email{fabian.fopp@usys.ethz.ch} (Landscape Ecology, WSL and ETH Zürich, Switzerland)
+  \item Benjamin Flück \email{benjamin.flueck@alumni.ethz.ch} (space Ecology, WSL and ETH Zürich, Switzerland)
+  \item Fabian Fopp \email{fabian.fopp@usys.ethz.ch} (space Ecology, WSL and ETH Zürich, Switzerland)
   \item Juliano S. Cabral \email{juliano.sarmento_cabral@uni-wuerzburg.de} (Ecosystem Modeling, Center for Computational and Theoretical Biology, University of Würzburg, Würzburg, Germany)
   \item Florian Hartig \email{florian.hartig@biologie.uni-regensburg.de} (Theoretical Ecology, University of Regensburg, Regensburg, Germany)
   \item Mikael Pontarp \email{mikael.pontarp@biol.lu.se} (Department of Biology, Lund University, Lund, Sweden)
   \item Thiago F. Rangel \email{rangel.tf@gmail.com} (Department of Ecology, Universidade Federal de Goiás, Goiás, Brazil)
-  \item Loïc Pellissier \email{loic.pellissier@usys.ethz.ch} (Landscape Ecology, WSL and ETH Zürich, Switzerland) [thesis advisor]
+  \item Loïc Pellissier \email{loic.pellissier@usys.ethz.ch} (space Ecology, WSL and ETH Zürich, Switzerland) [thesis advisor]
 }
 
 Other contributors:
 \itemize{
   \item ETH Zürich [copyright holder]
-  \item Charles Novaes de Santana \email{charles.novaes@usys.ethz.ch} (Landscape Ecology, WSL and ETH Zürich, Switzerland) [contributor]
+  \item Charles Novaes de Santana \email{charles.novaes@usys.ethz.ch} (space Ecology, WSL and ETH Zürich, Switzerland) [contributor]
   \item Theo Gaboriau \email{theo.gaboriau@unil.ch} (Depatment of Computational Biology, Lausanne University, Switzerland) [contributor]
 }
 

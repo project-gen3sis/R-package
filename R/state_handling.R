@@ -45,7 +45,7 @@ save_val <- function(val, save_state = NA){
   }
 }
 
-#' Saves the current species and landscape objects
+#' Saves the current species and space objects
 #'
 #' @param val the current simulation state
 #' @noRd
@@ -61,9 +61,9 @@ save_ecogengeo <- function(val){
   saveRDS(object = species,
           file = file.path(val$config$directories$output_species, paste0("species_t_", val$vars$ti, ".rds")))
 
-  landscape <- val$data$landscape
-  saveRDS(object = landscape,
-          file = file.path(val$config$directories$output_landscapes, paste0("landscape_t_", val$vars$ti, ".rds")))
+  space <- val$data$space
+  saveRDS(object = space,
+          file = file.path(val$config$directories$output_spaces, paste0("space_t_", val$vars$ti, ".rds")))
 
 }
 

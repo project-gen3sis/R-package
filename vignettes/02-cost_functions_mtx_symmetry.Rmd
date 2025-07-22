@@ -1,10 +1,10 @@
 ---
-title: "2.1 Creating landscapes: cost functions and matrices symmetry"
+title: "2.1 Creating spaces: cost functions and matrices symmetry"
 subtitle: "all you need to know about how to write nice cost functions and how to make dispersal harder in specific directions"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{2.1 Creating landscapes: cost functions and matrices symmetry}
+  %\VignetteIndexEntry{2.1 Creating spaces: cost functions and matrices symmetry}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -178,7 +178,7 @@ air_humidiy = c(ah_1, ah_2)
 plot(air_humidiy)
 ```
 
-Nice. Now, we can create a input landscape using the *create_spaces_raster* function, just like in the previous vignette. We will use the *withr* package to save it in temporary directory, because we are only interested in the distance matrix. The cost function we will use is simple: the cost will be defined by the Euclidian distance between source and destination cells, multiplied by a predefined coeficient. Note how this imply symmetry, because the distance $d$ between cell $A$ and cell $B$ is equal the other way around; i.e., $d(AB)=d(BA)$. For the record, the Euclidian distance is defined as $$
+Nice. Now, we can create a input space using the *create_spaces_raster* function, just like in the previous vignette. We will use the *withr* package to save it in temporary directory, because we are only interested in the distance matrix. The cost function we will use is simple: the cost will be defined by the Euclidian distance between source and destination cells, multiplied by a predefined coeficient. Note how this imply symmetry, because the distance $d$ between cell $A$ and cell $B$ is equal the other way around; i.e., $d(AB)=d(BA)$. For the record, the Euclidian distance is defined as $$
 d = \sqrt{(x_A-x_B)²+(y_A-y_B)²}
 $$ where $x$ is the longitude (x coordinate) and $y$ is the latitude (y coordinate).
 
@@ -262,7 +262,7 @@ The matrix still have the same format, however the values changed. Note that goi
 
 ## Using external variables can make matrices more interesting
 
-As cited above, species dispersion is influenced by environmental factors. One common influential landscape aspect in this sense is the elevation, e.g., because is more costly to disperse to higher than to lower elevations. In *gen3sis2*, these contexts when an external factor is relevant to dispersal can be easily modeled by asymmetrical matrices.
+As cited above, species dispersion is influenced by environmental factors. One common influential space aspect in this sense is the elevation, e.g., because is more costly to disperse to higher than to lower elevations. In *gen3sis2*, these contexts when an external factor is relevant to dispersal can be easily modeled by asymmetrical matrices.
 
 Let's assume a context where elevation plays a major role in dispersal. In this, when species are moving up to higher places the resistance is greater than moving down, to lower places.
 
