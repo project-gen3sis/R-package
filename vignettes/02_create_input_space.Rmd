@@ -3,7 +3,7 @@ title: "2. Creating spaces: the basics (gen3sis2 input)"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{2. Creating spaces (gen3sis input)}
+  %\VignetteIndexEntry{2. Creating spaces: the basics (gen3sis2 input)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
