@@ -1,3 +1,8 @@
+\dontshow{
+  #TODO change this to a working example
+}
+
+\dontrun{
 # get path to output objects
 datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
 
@@ -12,3 +17,4 @@ plot_raster_single(landscape_t_25$environment[,"arid"], landscape_t_25, "Aridity
                    col=topo.colors(5))
 par(oldpar)
 # note that these values were scaled by the configuration object
+}

@@ -4,7 +4,7 @@
 \alias{plot_multiple.gen3sis_space_h3}
 \title{Plot a set of values onto a given landscape}
 \usage{
-\method{plot_multiple}{gen3sis_space_h3}(values, landscape, no_data = 0)
+\method{plot_multiple}{gen3sis_space_h3}(values, landscape, no_data = NA)
 }
 \arguments{
 \item{values}{a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,

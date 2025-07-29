@@ -37,3 +37,5 @@ tests/testthat/Rplots.pdf
 #----------------------------
 LICENSE
 ^\.github$
+^doc$
+^Meta$

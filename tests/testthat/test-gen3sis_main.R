@@ -10,7 +10,7 @@ test_that("run_simulation works with config loaded in RAM", {
   withr::with_tempdir({
     # geostatic
     ## raster
-    input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+    input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
     capture.output({
       s <- run_simulation(
         config = config,
@@ -25,7 +25,7 @@ test_that("run_simulation works with config loaded in RAM", {
     expect_true(all.equal(ref_s$summary, s$summary))
     
     ## h3
-    input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","h3") 
+    input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","h3") 
     capture.output({
       s <- run_simulation(
         config = config,
@@ -40,7 +40,7 @@ test_that("run_simulation works with config loaded in RAM", {
     expect_true(all.equal(ref_s$summary, s$summary))
     
     ## points
-    input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","points") 
+    input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","points") 
     capture.output({
       s <- run_simulation(
         config = config,
@@ -56,7 +56,7 @@ test_that("run_simulation works with config loaded in RAM", {
     
     # geodynamic
     ## raster
-    input_variables <- file.path(base_dir,"TestSpacescapes","geodynamic_spaces","raster") 
+    input_variables <- file.path(base_dir,"TestSpaces","geodynamic_spaces","raster") 
     capture.output({
       s <- run_simulation(
         config = config,
@@ -71,7 +71,7 @@ test_that("run_simulation works with config loaded in RAM", {
     expect_true(all.equal(ref_s$summary, s$summary))
     
     ## h3
-    input_variables <- file.path(base_dir,"TestSpacescapes","geodynamic_spaces","h3") 
+    input_variables <- file.path(base_dir,"TestSpaces","geodynamic_spaces","h3") 
     capture.output({
       s <- run_simulation(
         config = config,
@@ -86,7 +86,7 @@ test_that("run_simulation works with config loaded in RAM", {
     expect_true(all.equal(ref_s$summary, s$summary))
     
     ## points
-    input_variables <- file.path(base_dir,"TestSpacescapes","geodynamic_spaces","points") 
+    input_variables <- file.path(base_dir,"TestSpaces","geodynamic_spaces","points") 
     capture.output({
       s <- run_simulation(
         config = config,
@@ -108,7 +108,7 @@ test_that("run_simulation works with config loaded from file", {
   skip_on_cran()
   
   withr::with_tempdir({
-    input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+    input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
     
     capture.output({
       s <- run_simulation(
@@ -134,7 +134,7 @@ test_that("run_simulation saves correctly",{
   skip_on_cran()
   config <- create_input_config(file.path(base_dir,"TestConfigs/TestConfig.R"))
   
-  input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+  input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
   
   withr::with_tempdir({
     # For saving all
@@ -186,7 +186,7 @@ test_that("simulation restart properly",{
   skip_on_cran()
   config <- create_input_config(file.path(base_dir,"TestConfigs/TestConfig.R"))
   
-  input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+  input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
 
   withr::with_tempdir({
     # For saving all
@@ -240,7 +240,7 @@ test_that("wrong config usage",{
   skip_on_cran()
   config <- create_input_config(file.path(base_dir,"TestConfigs/TestConfig.R"))
   
-  input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+  input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
   
   withr::with_tempdir({
     # config = NA # TODO these wont work because the conditionals at the beginning of the function are redundant
@@ -283,7 +283,7 @@ test_that("wrong save_state usage",{
   skip_on_cran()
   config <- create_input_config(file.path(base_dir,"TestConfigs/TestConfig.R"))
   
-  input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+  input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
   
   withr::with_tempdir({
     expect_warning(
@@ -312,7 +312,7 @@ test_that("wrong save_state usage",{
 test_that("wrong timestep_restart usage",{
   skip_on_cran()
   config <- create_input_config(file.path(base_dir,"TestConfigs/TestConfig.R"))
-  input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+  input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
   
   withr::with_tempdir({
     suppressWarnings({
@@ -341,7 +341,7 @@ test_that("wrong timestep_restart usage",{
 test_that("run_simulation call_observer works",{
   skip_on_cran()
   config <- create_input_config(file.path(base_dir,"TestConfigs/TestConfig.R"))
-  input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+  input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
   
   withr::with_tempdir({
     observer_counter <- 0
@@ -404,7 +404,7 @@ test_that("simulation loop breaks if the species limits are reached",{
   config <- create_input_config(file.path(base_dir,"TestConfigs/TestConfig.R"))
   config$gen3sis$general$max_number_of_species <- 2
   
-  input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+  input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
   
   withr::with_tempdir({
       the_function_said <- capture.output({
@@ -423,7 +423,7 @@ test_that("simulation loop breaks if the species limits are reached",{
   config <- create_input_config(file.path(base_dir,"TestConfigs/TestConfig.R"))
   config$gen3sis$general$max_number_of_coexisting_species <- 2
   
-  input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+  input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
   
   withr::with_tempdir({
     the_function_said <- capture.output({
@@ -444,13 +444,13 @@ test_that("simulation loop breaks if the species limits are reached",{
 # test_that("run_simulation verbose works",{
 #   skip_on_cran() # TODO necessary?
 #   config <- create_input_config(file.path(base_dir,"TestConfigs/TestConfig.R"))
-#   input_variables <- file.path(base_dir,"TestSpacescapes","geostatic_spaces","raster") 
+#   input_variables <- file.path(base_dir,"TestSpaces","geostatic_spaces","raster") 
 #   
 #   withr::with_tempdir({
 #     # verbose = 0 
 #     expected_console <- c(
 #       "Config found: using config object "                                                                              
-#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpacescapes/geostatic_spaces/raster "
+#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
 #       ,paste0("Output directory is: ",getwd(),"/TestConfig ")                                                
 #       ,""                                                                                                                
 #       ,"Using config: TestConfig "                                                                                       
@@ -475,7 +475,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     # verbose = 1
 #     expected_console <- c(
 #       "Config found: using config object "                                                                              
-#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpacescapes/geostatic_spaces/raster "
+#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
 #       ,paste0("Output directory is: ",getwd(),"/TestConfig ")                                                
 #       ,""                                                                                                                
 #       ,"Using config: TestConfig "
@@ -507,7 +507,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     # verbose = 2
 #     expected_console <- c(
 #        "Config found: using config object "                                                                              
-#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpacescapes/geostatic_spaces/raster "
+#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
 #       ,paste0("Output directory is: ",getwd(),"/TestConfig ")                                                  
 #       ,""                                                                                                                
 #       ,"Using config: TestConfig "                                                                                       
@@ -567,7 +567,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     # verbose = 3
 #     expected_console <- c(
 #       "Config found: using config object "                                                                              
-#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpacescapes/geostatic_spaces/raster "
+#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
 #       ,paste0("Output directory is: ",getwd(),"/TestConfig ")                                                  
 #       ,""                                                                                                                
 #       ,"Using config: TestConfig "                                                                                       
