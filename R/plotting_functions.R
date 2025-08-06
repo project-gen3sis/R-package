@@ -316,6 +316,7 @@ plot_space_overview <- function(space, env_names = NULL, breaks = NULL) {
 #' 
 #' @export
 plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
+  browser()
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
   
@@ -554,6 +555,8 @@ plot_ranges <- function(species_list, space, disturb=0, max_sps=10) {
 #'
 #' @importFrom grDevices png
 #' @importFrom methods is
+#' @importFrom ggplot2 ggsave
+#' 
 #' @noRd
 conditional_plot <- function(title, space, plot_fun, ...){
   fun_calls <- sys.calls()
@@ -562,10 +565,27 @@ conditional_plot <- function(title, space, plot_fun, ...){
     config <- dynGet("config")
     plot_folder <- file.path(config$directories$output, "plots", title)
     dir.create(plot_folder, showWarnings=FALSE, recursive=TRUE)
-    file_name <- file.path(plot_folder, paste0(title, "_t_", space$id, ".png"))
-    png(file_name)
-    plot_fun(...)
-    dev.off()
+    file_name <- file.path(plot_folder, paste0(title, "_t_", space$id, ".svg"))
+    
+    # svg(file_name)
+    # p <- plot_fun(...)
+    # p
+    # dev.off()
+    
+    p <- plot_fun(...)
+    # ggplot2::ggsave(filename = file_name,
+    #                 plot = p,
+    #                 width = 1400,
+    #                 height = 1080,
+    #                 units = "px",
+    #                 dpi = 300)
+    ratio <- (space$extent[["ymax"]] - space$extent[["ymin"]]) / (space$extent[["xmax"]] - space$extent[["xmin"]]) 
+    ggplot2::ggsave(filename = file_name,
+                    plot = p,
+                    width = (1400/(ratio)),
+                    height = 1080,
+                    units = "px",
+                    dpi = 300)
   }
   plot_fun(...)
 }
