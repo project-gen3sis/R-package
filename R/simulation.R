@@ -13,7 +13,6 @@
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_inputs <- function(config, data, vars) {
-  # browser()
   data[["inputs"]] <- list()
   spaces_rds <- readRDS(file.path(config$directories$input, "spaces.rds"))
   spaces <- spaces_rds$env # TODO correct cascade of names... attention to s i.e. space is contained in spaces
@@ -206,7 +205,6 @@ init_simulation <- function(config, data, vars) {
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_space <- function(config, data, vars) {
-  #browser()
   n_total_steps <- length(data[["inputs"]][["timesteps"]])
   total_steps_zerobase <- (n_total_steps-1):0
   index <- which(total_steps_zerobase==vars$ti) #gen3sis v1 : vars$ti + 1

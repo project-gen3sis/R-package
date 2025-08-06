@@ -9,7 +9,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: false
 Depends: R (>= 3.5.0)
-Imports: Rcpp (>= 0.12.16), Matrix, methods, utils, raster, gdistance, stringr, tools, grDevices, terra, measurements
+Imports: Rcpp (>= 0.12.16), Matrix, methods, utils, raster, gdistance, stringr, tools, grDevices, terra, measurements, ggplot2, h3jsr, patchwork, scales, sf, tidyterra
 Suggests: 
     knitr,
     markdown,

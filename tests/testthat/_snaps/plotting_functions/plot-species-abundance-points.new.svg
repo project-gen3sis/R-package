@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' data-engine-version='2.0' width='720.00pt' height='576.00pt' viewBox='0 0 720.00 576.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA='>
+    <rect x='0.00' y='0.00' width='720.00' height='576.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
+</g>
+<defs>
+  <clipPath id='cpMi41Mnw3MTcuNDh8MC4wMHw1NzYuMDA='>
+    <rect x='2.52' y='0.00' width='714.97' height='576.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMi41Mnw3MTcuNDh8MC4wMHw1NzYuMDA=)'>
+<rect x='2.52' y='0.00' width='714.97' height='576.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
+</g>
+<defs>
+  <clipPath id='cpODguNzl8NTc5LjM4fDIyLjc4fDU1Ny43MQ=='>
+    <rect x='88.79' y='22.78' width='490.59' height='534.92' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpODguNzl8NTc5LjM4fDIyLjc4fDU1Ny43MQ==)'>
+<rect x='88.79' y='22.78' width='490.59' height='534.92' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<circle cx='579.38' cy='22.78' r='1.95' style='stroke-width: 0.71; stroke: #8B0000; stroke-linecap: butt; fill: #8B0000;' />
+<circle cx='89.40' cy='215.82' r='1.95' style='stroke-width: 0.71; stroke: #CDB38B; stroke-linecap: butt; fill: #CDB38B;' />
+<circle cx='427.72' cy='206.25' r='1.95' style='stroke-width: 0.71; stroke: #8B0000; stroke-linecap: butt; fill: #8B0000;' />
+<circle cx='88.79' cy='557.71' r='1.95' style='stroke-width: 0.71; stroke: #8B0000; stroke-linecap: butt; fill: #8B0000;' />
+<circle cx='429.87' cy='535.04' r='1.95' style='stroke-width: 0.71; stroke: #CDB38B; stroke-linecap: butt; fill: #CDB38B;' />
+<rect x='88.79' y='22.78' width='490.59' height='534.92' style='stroke-width: 1.07; stroke: #333333;' />
+</g>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
+<text x='83.86' y='488.10' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='75.86px' lengthAdjust='spacingAndGlyphs'>4.66666666666667</text>
+<text x='83.86' y='391.51' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='75.86px' lengthAdjust='spacingAndGlyphs'>9.33333333333333</text>
+<text x='83.86' y='294.93' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>14</text>
+<text x='83.86' y='198.35' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='75.86px' lengthAdjust='spacingAndGlyphs'>18.6666666666667</text>
+<text x='83.86' y='101.76' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='75.86px' lengthAdjust='spacingAndGlyphs'>23.3333333333333</text>
+<polyline points='86.05,485.07 88.79,485.07 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='86.05,388.49 88.79,388.49 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='86.05,291.90 88.79,291.90 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='86.05,195.32 88.79,195.32 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='86.05,98.73 88.79,98.73 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='131.65,560.45 131.65,557.71 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='228.23,560.45 228.23,557.71 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='324.81,560.45 324.81,557.71 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='421.40,560.45 421.40,557.71 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='517.98,560.45 517.98,557.71 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<text x='131.65' y='568.69' text-anchor='middle' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='75.86px' lengthAdjust='spacingAndGlyphs'>4.66666666666667</text>
+<text x='228.23' y='568.69' text-anchor='middle' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='75.86px' lengthAdjust='spacingAndGlyphs'>9.33333333333333</text>
+<text x='324.81' y='568.69' text-anchor='middle' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>14</text>
+<text x='421.40' y='568.69' text-anchor='middle' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='75.86px' lengthAdjust='spacingAndGlyphs'>18.6666666666667</text>
+<text x='517.98' y='568.69' text-anchor='middle' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='75.86px' lengthAdjust='spacingAndGlyphs'>23.3333333333333</text>
+<rect x='590.34' y='259.82' width='121.67' height='60.85' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<text x='595.82' y='274.01' style='font-size: 11.00px; font-family: sans;' textLength='110.71px' lengthAdjust='spacingAndGlyphs'>Abundance Species -1</text>
+<rect x='595.82' y='280.63' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<circle cx='604.46' cy='289.27' r='1.95' style='stroke-width: 0.71; stroke: #CDB38B; fill: #CDB38B;' />
+<rect x='595.82' y='297.91' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<circle cx='604.46' cy='306.55' r='1.95' style='stroke-width: 0.71; stroke: #8B0000; fill: #8B0000;' />
+<text x='618.57' y='292.30' style='font-size: 8.80px; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='618.57' y='309.58' style='font-size: 8.80px; font-family: sans;' textLength='9.79px' lengthAdjust='spacingAndGlyphs'>10</text>
+<text x='334.08' y='14.56' text-anchor='middle' style='font-size: 13.20px; font-family: sans;' textLength='198.90px' lengthAdjust='spacingAndGlyphs'>Abundance Species -1 200Ma t_4</text>
+</g>
+</svg>
