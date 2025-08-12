@@ -15,9 +15,9 @@ test_that("distance matrix creation works", {
   gdist_m <- costDistance(tr*co, coords, coords)
 
   # create dist matrix from neighbours
-  landscapes <- stack_landscapes(list("r1" = list(ras)), 1)
-  h_mask <- get_habitable_mask(NULL, landscapes, 1)
-  local_distance <- get_local_distances(landscapes, h_mask, function(src, h_src, dest, h_dest){src},8, NULL)
+  spaces <- stack_spaces(list("r1" = list(ras)), 1)
+  h_mask <- get_habitable_mask(NULL, spaces, 1)
+  local_distance <- get_local_distances(spaces, h_mask, function(src, h_src, dest, h_dest){src},8, NULL)
   dist_m <- get_distance_matrix(habitable_cells = 1:prod(dim(ras)),
                                 num_cells = prod(dim(ras)),
                                 dist_p = local_distance@p,

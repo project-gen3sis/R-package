@@ -1,9 +1,9 @@
 ---
-title: "2. Creating landscapes: the basics (gen3sis2 input)"
+title: "2. Creating spaces: the basics (gen3sis2 input)"
 date: "`r format(Sys.time(),  '%d.%m.%Y')`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{2. Creating landscapes (gen3sis input)}
+  %\VignetteIndexEntry{2. Creating spaces: the basics (gen3sis2 input)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,9 +22,9 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette shows how to create input landscape objects necessary to run *gen3sis2*. These objects are:
+This vignette shows how to create input space objects necessary to run *gen3sis2*. These objects are:
 
--   a spaces.rds file containing a landscape list of raster stacks for environmental variables;
+-   a spaces.rds file containing a space list of raster stacks for environmental variables;
 
 -   a series of rds files, one for each time-step, including distance matrices between sites.
 
@@ -34,7 +34,7 @@ To create these files, we use the function *create_spaces_raster* which requires
 
 -   a cost function defining how dispersal between particular types of sites is penalized (to be used for the calculation of the distance matrices).
 
-Below, we will generate the R objects required by the function *create_input_landscape* step by step. For this exercise, we will use the landscape of South America that we used in the [**introduction vignette**](introduction.html) and is a small piece of the global landscape used at the case study of the main package manuscript[^1]. The landscape data as well as the input rasters are available at the [simulation repository](https://github.com/project-gen3sis/Simulations). Download these and define the correct path to it in order to continue.
+Below, we will generate the R objects required by the function *create_input_space* step by step. For this exercise, we will use the space of South America that we used in the [**introduction vignette**](introduction.html) and is a small piece of the global space used at the case study of the main package manuscript[^1]. The space data as well as the input rasters are available at the [simulation repository](https://github.com/project-gen3sis/Simulations). Download these and define the correct path to it in order to continue.
 
 [^1]: O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). GENƎSIS: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in review)
 
@@ -67,16 +67,16 @@ aridity_raster <- rast('input_rasters/SouthAmerica/aridity_rasters.grd')
 area_raster <- rast('input_rasters/SouthAmerica/area_rasters.grd')
 ```
 
-If you want to see an example on how you can create a virtual dynamic landscape from scratch, please refer to the [**design_landscape vignette**](design_landscape.html).
+If you want to see an example on how you can create a virtual dynamic space from scratch, please refer to the [**design_space vignette**](design_space.html).
 
 ## Creating a list with the environmental raster bricks
 
-To create the input landscape for *gen3sis2*, all environmental variables have to be stored as raster files in a named list. It is important to add the name of the environmental variable you want to use in the list, which will be used when specifying the config file. Alternatively, you can also create a list which contains all of the raster file paths on your hard drive.
+To create the input space for *gen3sis2*, all environmental variables have to be stored as raster files in a named list. It is important to add the name of the environmental variable you want to use in the list, which will be used when specifying the config file. Alternatively, you can also create a list which contains all of the raster file paths on your hard drive.
 
 We will now create a list that contains all of the layers of our raster bricks for temperature, aridity and area.
 
 ```{r, eval=FALSE}
-landscapes_list <- list(
+spaces_list <- list(
   temp = temperature_raster,
   arid = aridity_raster,
   area = area_raster
@@ -87,7 +87,7 @@ landscapes_list <- list(
 
 Additionally, we need to define a *cost function* which defines the connection cost between sites. The species dispersal ability will determine if sites are reachable (i.e. if the dispersal event is higher than the connection cost).
 
-First, we will look at a very simple case, where no additional cost is added to the geographical distances, meaning that connections costs equal distance in grid cell units multiplied by the raster resolution. For landscapes with a coordinate system (*crs*) the cost is defined in meters, as defined by the coordinate system. By dividing the cost function by 1000 we get the cost of traveling for 1 km. We can define a simple cost function in which the dispersal is not penalized:
+First, we will look at a very simple case, where no additional cost is added to the geographical distances, meaning that connections costs equal distance in grid cell units multiplied by the raster resolution. For spaces with a coordinate system (*crs*) the cost is defined in meters, as defined by the coordinate system. By dividing the cost function by 1000 we get the cost of traveling for 1 km. We can define a simple cost function in which the dispersal is not penalized:
 
 ```{r, eval=FALSE}
 cost_function_null <- function(source, dest) {
@@ -96,11 +96,11 @@ cost_function_null <- function(source, dest) {
 ```
 
 ```{r, echo=FALSE, eval=FALSE}
-landscapes_list_t0 <- list(temp=NULL)
-landscapes_list_t0$temp <- temperature_raster[[1]]
+spaces_list_t0 <- list(temp=NULL)
+spaces_list_t0$temp <- temperature_raster[[1]]
 
-create_input_landscape(
-  raster_list = landscapes_list_t0,
+create_input_space(
+  raster_list = spaces_list_t0,
   cost_function = cost_function_null,
   output_directory = tempdir(), # a directory name to save the files in
   directions = 8, # all surrounding sites from a focus site
@@ -110,7 +110,7 @@ create_input_landscape(
 )
 
 create_spaces_raster(
-  raster_list = landscapes_list_t0,
+  raster_list = spaces_list_t0,
   cost_function = cost_function_null,
   output_directory = tempdir(), # a directory name to save the files in
   directions = 8, # all surrounding sites from a focus site
@@ -127,12 +127,12 @@ create_spaces_raster(
 knitr::include_graphics("../inst/extdata/SouthAmerica/images/const_cost.png")
 
 #dist_matrix_null_t0 <- readRDS(file.path(datapath, 'CostFunctionExamples/cost_function_null/distances_full/distances_full_0.rds'))
-#landscapes_null <- readRDS(file.path(datapath, 'CostFunctionExamples/cost_function_null/landscapes.rds'))
+#spaces_null <- readRDS(file.path(datapath, 'CostFunctionExamples/cost_function_null/spaces.rds'))
 
-#landscapes_null <- readRDS('inst/extdata/SouthAmerica/landscape/landscapes.rds')
-#landscapes_null_t0 <- na.omit(landscapes_null$temp[, c('x', 'y', '0')])
+#spaces_null <- readRDS('inst/extdata/SouthAmerica/space/spaces.rds')
+#spaces_null_t0 <- na.omit(spaces_null$temp[, c('x', 'y', '0')])
 
-#dist_null_t0_mat <- cbind(landscapes_null_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_null_t0[,1300]))
+#dist_null_t0_mat <- cbind(spaces_null_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_null_t0[,1300]))
 #dist_null_t0 <- rasterFromXYZ(dist_null_t0_mat)
 
 #maxcost <- 6200
@@ -171,7 +171,7 @@ cost_function_water <- function(source, dest) {
 
 ```{r, echo=FALSE, eval=FALSE}
 create_spaces_raster(
-  raster_list = landscapes_list_t0,
+  raster_list = spaces_list_t0,
   cost_function = cost_function_water,
   output_directory = tempdir(), # a directory name to save the files in
   directions = 8, # all surrounding sites from a focus site
@@ -186,11 +186,11 @@ create_spaces_raster(
 
 ```{r, eval=TRUE, echo=FALSE, fig.width=4, fig.height=7, fig.align='center', fig.cap='By using a cost function which penalises the crossing of water, the cost of travelling from our cell in the middle of South America to Antarctica increases to 5204.'}
 knitr::include_graphics("../inst/extdata/SouthAmerica/images/var_cost.png")
-# dist_matrix_water_t0 <- readRDS('inst/extdata/SouthAmerica/landscape/distances_full/cost_function_water/distances_full/distances_full_0.rds')
-# # C:\VITAL LOCAL\Meus Documentos\ETH PhD\Code\R\package\Gen3sis\inst\extdata\SouthAmerica\landscape\distances_full\cost_function_null\distances_full
-# landscapes_water <- readRDS('inst/extdata/SouthAmerica/landscape/andscapes.rds')
-# landscapes_water_t0 <- na.omit(landscapes_water$temp[, c('x', 'y', '0')])
-# dist_water_t0_mat <- cbind(landscapes_water_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_water_t0[,1300]))
+# dist_matrix_water_t0 <- readRDS('inst/extdata/SouthAmerica/space/distances_full/cost_function_water/distances_full/distances_full_0.rds')
+# # C:\VITAL LOCAL\Meus Documentos\ETH PhD\Code\R\package\Gen3sis\inst\extdata\SouthAmerica\space\distances_full\cost_function_null\distances_full
+# spaces_water <- readRDS('inst/extdata/SouthAmerica/space/andscapes.rds')
+# spaces_water_t0 <- na.omit(spaces_water$temp[, c('x', 'y', '0')])
+# dist_water_t0_mat <- cbind(spaces_water_t0[,c('x', 'y')], cost=as.numeric(dist_matrix_water_t0[,1300]))
 # dist_water_t0 <- rasterFromXYZ(dist_water_t0_mat)
 # 
 # maxcost <- 6200
@@ -219,23 +219,23 @@ Whether a specific site can be reached or not depends on the properties of the p
 
 ## Further useful arguments
 
-Besides the (i) landscape list, (ii) cost function and (iii) experiment folder, we can define further arguments such as: directions, time-steps and calculate_full_distance_matrices.
+Besides the (i) space list, (ii) cost function and (iii) experiment folder, we can define further arguments such as: directions, time-steps and calculate_full_distance_matrices.
 
 The argument 'directions' requires an integer providing the amount of directions used to calculate distances. It can take 4, 8 or 16 as values to consider the four, eighth or 16 neighboring sites.
 
-The argument 'duration' requires a named list with information about the start ("from"), end ("to"), step size ("by") and time unit ("unit") of the enviromental series.  Is also used to name the files and to name the timesteps in the *spaces.rds* landscape object created by the *create_spaces_raster* function. 
+The argument 'duration' requires a named list with information about the start ("from"), end ("to"), step size ("by") and time unit ("unit") of the enviromental series.  Is also used to name the files and to name the timesteps in the *spaces.rds* space object created by the *create_spaces_raster* function. 
 
 The argument 'full_dists' defines whether the *create_spaces_raster* function will create one large distance matrix for all suitable sites (calculate_full_distance_matrices=TRUE) or a list of small distance matrices for the neighboring sites specified in 'directions' around each suitable site (full_dists=FALSE). The full distance matrix confers faster computing speed for the model, but requires a larger storage. The local distance matrices cause a slower computing speed, but require smaller storage. The slower speed emerges form the fact that a full distance matrix is then reconstructed by concatenating local distances matrices each time-step during a simulation run.
 
-The real geographic coordinate system can be provided which allows for the global spherical distance correction. The reference system can be set by using the 'crs' argument of the *create_spaces_raster* function. Here we are using the world geodetic system (WGS84) but providing a projected coordinate reference system is also possible. If you want to ensure that all cells have the same area you might consider an equal-area projection, such as the Lambert azimuthal equal-area projection. For real landscapes with valid coordinate systems (e.g. *crs="+proj=longlat +datum=WGS84"*), the distance unit is in meters (m). If you would use hypothetical landscapes, such as in the [**design_landscape vignette**](design_landscape.html), geographic distance would be measured in units of sites multiplied by the grid cell resolution.
+The real geographic coordinate system can be provided which allows for the global spherical distance correction. The reference system can be set by using the 'crs' argument of the *create_spaces_raster* function. Here we are using the world geodetic system (WGS84) but providing a projected coordinate reference system is also possible. If you want to ensure that all cells have the same area you might consider an equal-area projection, such as the Lambert azimuthal equal-area projection. For real spaces with valid coordinate systems (e.g. *crs="+proj=longlat +datum=WGS84"*), the distance unit is in meters (m). If you would use hypothetical spaces, such as in the [**design_space vignette**](design_space.html), geographic distance would be measured in units of sites multiplied by the grid cell resolution.
 
 ## Create input files
 
-The *create_spaces_raster* function creates *.rds* files that will be used as input for *gen3sis2*. The file path where the landscapes and the distance matrices of all time steps should be stored can be specified within the function.
+The *create_spaces_raster* function creates *.rds* files that will be used as input for *gen3sis2*. The file path where the spaces and the distance matrices of all time steps should be stored can be specified within the function.
 
 ```{r, eval=FALSE}
 create_spaces_raster(
-  raster_list = landscapes_list,
+  raster_list = spaces_list,
   cost_function = cost_function_water,
   directions = 8,
   output_directory = file.path(tempdir(), "SouthAmerica"),
@@ -244,4 +244,4 @@ create_spaces_raster(
 )
 ```
 
-Finally, do not forget to specify the landscape metadata you just created. We recommend storing it in form of a METADATA.txt file within the landscape folder. A template is automatically created by the functions *create_input_landscape* at the correct location. Once the input landscape is ready, the *run_simulation* function can start the simulation using the path of the new landscape.
+Finally, do not forget to specify the space metadata you just created. We recommend storing it in form of a METADATA.txt file within the space folder. A template is automatically created by the functions *create_input_space* at the correct location. Once the input space is ready, the *run_simulation* function can start the simulation using the path of the new space.

@@ -7,7 +7,7 @@
 #
 # Date: 10.11.2020
 #
-# Landscape: SouthAmerica
+# space: SouthAmerica
 #
 # Publications: R-package gen3sis
 #
@@ -48,20 +48,20 @@ environmental_ranges = list("temp" = c(-45, 55), "area"=c(2361.5, 12923.4), "ari
 # a place to inspect the internal state of the simulation and collect additional information if desired
 end_of_timestep_observer = function(data, vars, config){
   save_species()
-  #plot_richness(data$all_species, data$landscape)
+  #plot_richness(data$all_species, data$space)
   # example 1 plot over simulation
     # par(mfrow=c(2,3))
-    # plot_raster_single(data$landscape$environment[,"temp"], data$landscape, "temp", NA)
-    # plot_raster_single(data$landscape$environment[,"arid"], data$landscape, "arid", NA)
-    # plot_raster_single(data$landscape$environment[,"area"], data$landscape, "area", NA)
-    # plot_richness(data$all_species, data$landscape)
-    # plot_species_presence(data$all_species[[1]], data$landscape)
+    # plot_raster_single(data$space$environment[,"temp"], data$space, "temp", NA)
+    # plot_raster_single(data$space$environment[,"arid"], data$space, "arid", NA)
+    # plot_raster_single(data$space$environment[,"area"], data$space, "area", NA)
+    # plot_richness(data$all_species, data$space)
+    # plot_species_presence(data$all_species[[1]], data$space)
     # plot(0,type='n',axes=FALSE,ann=FALSE)
     # mtext("STATUS",1)
   # example 2 plot over simulations saving plots
     #par(mfrow=c(1,2))
-    plot_richness(data$all_species, data$landscape)
-    plot_ranges(data$all_species, data$landscape, disturb=1, max_sps=10)
+    plot_richness(data$all_species, data$space)
+    plot_ranges(data$all_species, data$space, disturb=1, max_sps=10)
   
 }
 
@@ -75,9 +75,9 @@ initial_abundance = 1
 #defines the initial species traits and ranges
 #place species within rectangle, our case entire globe
 
-create_ancestor_species <- function(landscape, config) {
+create_ancestor_species <- function(space, config) {
   range <- c(-95, -24, -68, 13)
-  co <- landscape$coordinates
+  co <- space$coordinates
   selection <- co[, "x"] >= range[1] &
     co[, "x"] <= range[2] &
     co[, "y"] >= range[3] &
@@ -89,9 +89,9 @@ create_ancestor_species <- function(landscape, config) {
     initial_cells <- sample(initial_cells, 1)
     new_species[[i]] <- create_species(initial_cells, config)
     #set local adaptation to max optimal temp equals local temp
-    new_species[[i]]$traits[ , "temp"] <- landscape$environment[initial_cells,"temp"]
+    new_species[[i]]$traits[ , "temp"] <- space$environment[initial_cells,"temp"]
     new_species[[i]]$traits[ , "dispersal"] <- 1 
-    #plot_species_presence(landscape, species=new_species[[i]])
+    #plot_species_presence(space, species=new_species[[i]])
   }
   
   return(new_species)
@@ -104,7 +104,7 @@ create_ancestor_species <- function(landscape, config) {
 ######################################
 
 # returns n dispersal values
-get_dispersal_values <- function(n, species, landscape, config) {
+get_dispersal_values <- function(n, species, space, config) {
   values <- rweibull(n, shape = 1.5, scale = 133)
 
   return(values)
@@ -119,7 +119,7 @@ divergence_threshold = 2 #this is 1Myrs
 
 # factor by which the divergence is increased between geographically isolated population
 # can also be a matrix between the different population clusters
-get_divergence_factor <- function(species, cluster_indices, landscape, config) {
+get_divergence_factor <- function(species, cluster_indices, space, config) {
   
   return(1)
 }
@@ -130,7 +130,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 ######################################
 
 # mutate the traits of a species and return the new traits matrix
-apply_evolution <- function(species, cluster_indices, landscape, config) {
+apply_evolution <- function(species, cluster_indices, space, config) {
   
   trait_evolutionary_power <- 0.001
   traits <- species[["traits"]]
@@ -158,16 +158,16 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
 # returns a vector of abundances
 # set the abundance to 0 for every species supposed to die
 
-apply_ecology <- function(abundance, traits, landscape, config) {
+apply_ecology <- function(abundance, traits, space, config) {
   abundance_scale = 10
   abundance_threshold = 1
   #abundance threshold
   survive <- abundance>=abundance_threshold
   abundance[!survive] <- 0
-  abundance <- (( 1-abs( traits[, "temp"] - landscape[, "temp"]))*abundance_scale)*as.numeric(survive)
+  abundance <- (( 1-abs( traits[, "temp"] - space[, "temp"]))*abundance_scale)*as.numeric(survive)
   #abundance threshold
   abundance[abundance<abundance_threshold] <- 0
-  k <- ((landscape[,"area"]*(landscape[,"arid"]+0.1)*(landscape[,"temp"]+0.1))*abundance_scale^2)
+  k <- ((space[,"area"]*(space[,"arid"]+0.1)*(space[,"temp"]+0.1))*abundance_scale^2)
   total_ab <- sum(abundance)
   subtract <- total_ab-k
   if (subtract > 0) {

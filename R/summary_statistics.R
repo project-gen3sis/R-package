@@ -22,7 +22,7 @@ init_summary_statistics <- function(data, vars, config){
   
   data$summaries[["phylo_summary"]] <- phylo_summary
   
-  data$summaries[["occupancy"]] <- c("initial" = percentage_inhabited(data$all_species, data$landscape))
+  data$summaries[["occupancy"]] <- c("initial" = percentage_inhabited(data$all_species, data$space))
   
   return(list(data = data, vars = vars, config = config))
 }
@@ -53,7 +53,7 @@ update_summary_statistics <- function(data, vars, config) {
   
   # occupancy
   tmp <- c(names(data$summaries$occupancy), vars$ti)
-  occupancy <- c(data$summaries$occupancy, percentage_inhabited(data$all_species, data$landscape)) 
+  occupancy <- c(data$summaries$occupancy, percentage_inhabited(data$all_species, data$space)) 
   names(occupancy) <- tmp
   data$summaries$occupancy <- occupancy
   
@@ -82,7 +82,7 @@ make_summary <- function(config, data, vars, total_runtime, save_file=TRUE){
   #summary
   final_richness <- cbind(data[["inputs"]][["coordinates"]], rep(0, nrow(data[["inputs"]][["coordinates"]])))
   colnames(final_richness) <- append(colnames(data[["inputs"]][["coordinates"]]), toString(vars$ti))
-  richness <- get_geo_richness(data$all_species, data$landscape)
+  richness <- get_geo_richness(data$all_species, data$space)
   final_richness[names(richness), ncol(final_richness)] <- richness # removed *as.integer*(names(richness))
   sgen3sis$summary <- c(data$summaries, list("richness-final"= final_richness))
   
@@ -139,15 +139,15 @@ write_runtime_statisitics <- function( data, vars, config, total_runtime) {
 }
 
 
-#' Calcuates the ratio of occupied cells in a given landscape
+#' Calcuates the ratio of occupied cells in a given space
 #'
 #' @param species_list a list of species to consider 
-#' @param landscape the landscape to use
+#' @param space the space to use
 #'
 #' @return the ratio of inhabited cells
 #' @noRd
-percentage_inhabited <- function(species_list, landscape) {
-  richness <- get_geo_richness(species_list, landscape)
+percentage_inhabited <- function(species_list, space) {
+  richness <- get_geo_richness(species_list, space)
   inhabited <- sum(richness != 0)
   return(inhabited / length(richness))
 }

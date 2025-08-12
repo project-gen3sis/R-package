@@ -14,12 +14,12 @@ test_that("run_simulation works with config loaded in RAM", {
     capture.output({
       s <- run_simulation(
         config = config,
-        landscape = input_variables,
-        output_directory = getwd()
+        space = input_variables,
+        output_directory = "~/Documentos/projects/testing_gen3sis/dump"
       )
     }) |> suppressWarnings()
     
-    ref_s <- readRDS(file.path(base_dir, "TestReferences", "Outputs","raster_geostatic.rds"))
+    ref_s <- readRDS(file.path(base_dir, "TestReferences", "Outputs","raster_geostat.rds"))
     
     expect_true(all.equal(names(s), names(ref_s)))
     expect_true(all.equal(ref_s$summary, s$summary))
@@ -29,12 +29,12 @@ test_that("run_simulation works with config loaded in RAM", {
     capture.output({
       s <- run_simulation(
         config = config,
-        landscape = input_variables,
+        space = input_variables,
         output_directory = getwd()
       )
     }) |> suppressWarnings()
     
-    ref_s <- readRDS(file.path(base_dir, "TestReferences", "Outputs","h3_geostatic.rds"))
+    ref_s <- readRDS(file.path(base_dir, "TestReferences", "Outputs","h3_geostat.rds"))
     
     expect_true(all.equal(names(s), names(ref_s)))
     expect_true(all.equal(ref_s$summary, s$summary))
@@ -44,12 +44,12 @@ test_that("run_simulation works with config loaded in RAM", {
     capture.output({
       s <- run_simulation(
         config = config,
-        landscape = input_variables,
+        space = input_variables,
         output_directory = getwd()
       )
     }) |> suppressWarnings()
     
-    ref_s <- readRDS(file.path(base_dir, "TestReferences", "Outputs","points_geostatic.rds"))
+    ref_s <- readRDS(file.path(base_dir, "TestReferences", "Outputs","points_geostat.rds"))
     
     expect_true(all.equal(names(s), names(ref_s)))
     expect_true(all.equal(ref_s$summary, s$summary))
@@ -60,7 +60,7 @@ test_that("run_simulation works with config loaded in RAM", {
     capture.output({
       s <- run_simulation(
         config = config,
-        landscape = input_variables,
+        space = input_variables,
         output_directory = getwd()
       )
     }) |> suppressWarnings()
@@ -75,7 +75,7 @@ test_that("run_simulation works with config loaded in RAM", {
     capture.output({
       s <- run_simulation(
         config = config,
-        landscape = input_variables,
+        space = input_variables,
         output_directory = getwd()
       )
     }) |> suppressWarnings()
@@ -90,7 +90,7 @@ test_that("run_simulation works with config loaded in RAM", {
     capture.output({
       s <- run_simulation(
         config = config,
-        landscape = input_variables,
+        space = input_variables,
         output_directory = getwd()
       )
     }) |> suppressWarnings()
@@ -113,13 +113,13 @@ test_that("run_simulation works with config loaded from file", {
     capture.output({
       s <- run_simulation(
         config = file.path(base_dir, "TestConfigs/TestConfig.R"),
-        landscape = input_variables,
+        space = input_variables,
         output_directory = getwd()
       )
     }) |> suppressWarnings()
     
     
-    ref_s <- readRDS(file.path(base_dir, "TestReferences", "Outputs","raster_geostatic.rds"))
+    ref_s <- readRDS(file.path(base_dir, "TestReferences", "Outputs","raster_geostat.rds"))
     
     expect_true(all.equal(names(s), names(ref_s)))
     expect_true(all.equal(ref_s$summary, s$summary))
@@ -140,7 +140,7 @@ test_that("run_simulation saves correctly",{
     # For saving all
     capture.output({
       s <- run_simulation(config = config,
-                          landscape = input_variables, 
+                          space = input_variables, 
                           output_directory = getwd(),
                           save_state = "all")
     }) |> suppressWarnings()
@@ -154,7 +154,7 @@ test_that("run_simulation saves correctly",{
     # For saving some
     capture.output({
       s <- run_simulation(config = config,
-                          landscape = input_variables, 
+                          space = input_variables, 
                           output_directory = getwd(),
                           save_state = c(1,3))
     }) |> suppressWarnings()
@@ -168,7 +168,7 @@ test_that("run_simulation saves correctly",{
     # For saving last
     capture.output({
       s <- run_simulation(config = config,
-                          landscape = input_variables, 
+                          space = input_variables, 
                           output_directory = getwd(),
                           save_state = "last")
     }) |> suppressWarnings()
@@ -192,7 +192,7 @@ test_that("simulation restart properly",{
     # For saving all
     capture.output({
       s <- run_simulation(config = config,
-                          landscape = input_variables, 
+                          space = input_variables, 
                           output_directory = getwd(),
                           save_state = "all")
     }) |> suppressWarnings()
@@ -201,7 +201,7 @@ test_that("simulation restart properly",{
     expect_message(
       capture.output({
         run_simulation(config = config,
-                       landscape = input_variables, 
+                       space = input_variables, 
                        output_directory = getwd(),
                        save_state = NA,
                        timestep_restart = 3)
@@ -213,7 +213,7 @@ test_that("simulation restart properly",{
     expect_message(
       capture.output({
         run_simulation(config = config,
-                       landscape = input_variables, 
+                       space = input_variables, 
                        output_directory = getwd(),
                        save_state = NA,
                        timestep_restart = 2)
@@ -225,7 +225,7 @@ test_that("simulation restart properly",{
     expect_message(
       capture.output({
         run_simulation(config = config,
-                       landscape = input_variables, 
+                       space = input_variables, 
                        output_directory = getwd(),
                        save_state = NA,
                        timestep_restart = 1)
@@ -247,7 +247,7 @@ test_that("wrong config usage",{
     # expect_error({
     #   capture.output({
     #     run_simulation(config = NA,
-    #                    landscape = input_variables, 
+    #                    space = input_variables, 
     #                    output_directory = getwd(),
     #                    save_state = "all")
     #   }) |> suppressWarnings()
@@ -258,7 +258,7 @@ test_that("wrong config usage",{
     # expect_error({
     #   capture.output({
     #     run_simulation(config = 2,
-    #                    landscape = input_variables,
+    #                    space = input_variables,
     #                    output_directory = getwd(),
     #                    save_state = "all")
     #   }) |> suppressWarnings()
@@ -270,7 +270,7 @@ test_that("wrong config usage",{
     expect_error({
       capture.output({
         run_simulation(config = config,
-                       landscape = input_variables, 
+                       space = input_variables, 
                        output_directory = getwd(),
                        save_state = NA)
       }) |> suppressWarnings()
@@ -289,7 +289,7 @@ test_that("wrong save_state usage",{
     expect_warning(
       capture.output({
         run_simulation(config = config,
-                       landscape = input_variables, 
+                       space = input_variables, 
                        output_directory = getwd(),
                        save_state = "non-sense value")
       }),
@@ -299,7 +299,7 @@ test_that("wrong save_state usage",{
     expect_warning(
       capture.output({
         run_simulation(config = config,
-                       landscape = input_variables, 
+                       space = input_variables, 
                        output_directory = getwd(),
                        save_state = c(-1,3))
       }),
@@ -317,7 +317,7 @@ test_that("wrong timestep_restart usage",{
   withr::with_tempdir({
     suppressWarnings({
       s <- run_simulation(config = config,
-                          landscape = input_variables, 
+                          space = input_variables, 
                           output_directory = getwd(),
                           save_state = "all")
     }) |> capture.output()
@@ -325,7 +325,7 @@ test_that("wrong timestep_restart usage",{
     expect_message(
       suppressWarnings({
         run_simulation(config = config,
-                       landscape = input_variables, 
+                       space = input_variables, 
                        output_directory = getwd(),
                        save_state = NA,
                        timestep_restart = 0)
@@ -359,7 +359,7 @@ test_that("run_simulation call_observer works",{
     observer_counter <- 0
     suppressWarnings({
       s <- run_simulation(config = config,
-                          landscape = input_variables, 
+                          space = input_variables, 
                           output_directory = getwd(),
                           save_state = NA,
                           verbose=0,
@@ -372,7 +372,7 @@ test_that("run_simulation call_observer works",{
     observer_counter <- 0
     suppressWarnings({
       s <- run_simulation(config = config,
-                          landscape = input_variables, 
+                          space = input_variables, 
                           output_directory = getwd(),
                           save_state = NA,
                           verbose=0,
@@ -385,7 +385,7 @@ test_that("run_simulation call_observer works",{
     observer_counter <- 0
     suppressWarnings({
       s <- run_simulation(config = config,
-                          landscape = input_variables, 
+                          space = input_variables, 
                           output_directory = getwd(),
                           save_state = NA,
                           verbose=0,
@@ -409,7 +409,7 @@ test_that("simulation loop breaks if the species limits are reached",{
   withr::with_tempdir({
       the_function_said <- capture.output({
         s <- run_simulation(config = config,
-                       landscape = input_variables, 
+                       space = input_variables, 
                        output_directory = getwd(),
                        save_state = NA,
                        verbose=0,
@@ -428,7 +428,7 @@ test_that("simulation loop breaks if the species limits are reached",{
   withr::with_tempdir({
     the_function_said <- capture.output({
       s <- run_simulation(config = config,
-                          landscape = input_variables, 
+                          space = input_variables, 
                           output_directory = getwd(),
                           save_state = NA,
                           verbose=0,
@@ -450,7 +450,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     # verbose = 0 
 #     expected_console <- c(
 #       "Config found: using config object "                                                                              
-#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
+#       ,"space found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
 #       ,paste0("Output directory is: ",getwd(),"/TestConfig ")                                                
 #       ,""                                                                                                                
 #       ,"Using config: TestConfig "                                                                                       
@@ -464,7 +464,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     
 #     suppressWarnings({
 #       s <- run_simulation(config = config,
-#                           landscape = input_variables, 
+#                           space = input_variables, 
 #                           output_directory = getwd(),
 #                           save_state = NA,
 #                           verbose=0)
@@ -475,7 +475,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     # verbose = 1
 #     expected_console <- c(
 #       "Config found: using config object "                                                                              
-#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
+#       ,"space found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
 #       ,paste0("Output directory is: ",getwd(),"/TestConfig ")                                                
 #       ,""                                                                                                                
 #       ,"Using config: TestConfig "
@@ -495,7 +495,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     
 #     suppressWarnings({
 #       s <- run_simulation(config = config,
-#                           landscape = input_variables, 
+#                           space = input_variables, 
 #                           output_directory = getwd(),
 #                           save_state = NA,
 #                           verbose=1)
@@ -507,7 +507,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     # verbose = 2
 #     expected_console <- c(
 #        "Config found: using config object "                                                                              
-#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
+#       ,"space found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
 #       ,paste0("Output directory is: ",getwd(),"/TestConfig ")                                                  
 #       ,""                                                                                                                
 #       ,"Using config: TestConfig "                                                                                       
@@ -555,7 +555,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     
 #     suppressWarnings({
 #       s <- run_simulation(config = config,
-#                           landscape = input_variables, 
+#                           space = input_variables, 
 #                           output_directory = getwd(),
 #                           save_state = NA,
 #                           verbose=2)
@@ -567,7 +567,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     # verbose = 3
 #     expected_console <- c(
 #       "Config found: using config object "                                                                              
-#       ,"Landscape found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
+#       ,"space found: /home/yogh/Documentos/gitRepos/gen3sis_rf/inst/extdata/TestSpaces/geostatic_spaces/raster "
 #       ,paste0("Output directory is: ",getwd(),"/TestConfig ")                                                  
 #       ,""                                                                                                                
 #       ,"Using config: TestConfig "                                                                                       
@@ -648,7 +648,7 @@ test_that("simulation loop breaks if the species limits are reached",{
 #     
 #     suppressWarnings({
 #       s <- run_simulation(config = config,
-#                           landscape = input_variables, 
+#                           space = input_variables, 
 #                           output_directory = getwd(),
 #                           save_state = NA,
 #                           verbose=3)
@@ -673,12 +673,12 @@ test_that("simulation loop breaks if the species limits are reached",{
 #   tmp_output <- tempdir()
 #   
 #   # TODO find an alternative to use spaces.rds
-#   # spac3tools::landscape_to_space(dir_input = file.path(datapath,"landscape"),
+#   # spac3tools::space_to_space(dir_input = file.path(datapath,"space"),
 #   #                                duration = list(from = 139, to = 0, by = -1, unit = "Ma"))
 #   
 #   
 #   s <- run_simulation(config = config,
-#                       landscape = file.path(datapath,"landscape"), output_directory = tmp_output)
+#                       space = file.path(datapath,"space"), output_directory = tmp_output)
 #   ref_summary <- readRDS(file.path(datapath, "reference_saves", "sgen3sis_summary.rds"))
 #   expect_true(all.equal(ref_summary, s$summary))
 #   expect_true(tools::md5sum(file.path(s$parameters$directories$output, "phy.nex")) == tools::md5sum(file.path(datapath, "reference_saves", "phy.nex")))

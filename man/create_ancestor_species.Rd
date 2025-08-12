@@ -4,10 +4,10 @@
 \alias{create_ancestor_species}
 \title{Allows the user to populate the world at the beginning of a simulation}
 \usage{
-create_ancestor_species(landscape, config)
+create_ancestor_species(space, config)
 }
 \arguments{
-\item{landscape}{the landscape over which to create the species}
+\item{space}{the space over which to create the species}
 
 \item{config}{the configuration information}
 }
@@ -19,6 +19,6 @@ Allows the user to populate the world at the beginning of a simulation
 }
 \details{
 Using this function, any number of new species can be created. For every species, a number of
-habitable sites from the landscape are selected and call 'create_species'. In another step, the user must initialize 
+habitable sites from the space are selected and call 'create_species'. In another step, the user must initialize 
 the species[["traits"]] matrix with the desired initial traits values
 }

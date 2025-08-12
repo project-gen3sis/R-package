@@ -9,12 +9,12 @@
 #'
 #' @param species the target species object whose traits will be changed
 #' @param cluster_indices an index vector indicating the cluster every occupied site is part of
-#' @param landscape the current landscape which can co-determine the rate of trait changes
+#' @param space the current space which can co-determine the rate of trait changes
 #' @param config the current config
 #'
 #' @return the mutated species traits matrix
 #' @export
-apply_evolution <- function(species, cluster_indices, landscape, config){
+apply_evolution <- function(species, cluster_indices, space, config){
   stop("this function documents the user function interface only, do not use it")
 }
 
@@ -24,7 +24,7 @@ loop_evolution <- function(config, data, vars){
     cat(paste("entering mutation module \n"))
   }
 
-  data$all_species <- lapply(data$all_species, evolve, data$landscape, data$distance, config)
+  data$all_species <- lapply(data$all_species, evolve, data$space, data$distance, config)
 
   if(config$gen3sis$general$verbose>=3){
     cat(paste("exiting mutation module \n"))
@@ -33,20 +33,20 @@ loop_evolution <- function(config, data, vars){
 }
 
 
-evolve <- function(species, landscape, distance_matrix, config){
+evolve <- function(species, space, distance_matrix, config){
   if (!length(species[["abundance"]])) {
     return(species)
   }
   species_presence <- names(species[["abundance"]])
 
-  distances <- config$gen3sis$dispersal$get_dispersal_values(length(species_presence), species, landscape, config)
+  distances <- config$gen3sis$dispersal$get_dispersal_values(length(species_presence), species, space, config)
 
   permutation <- sample(1:length(species_presence), length(species_presence))
   cluster_indices <- Tdbscan_variable(distance_matrix[species_presence[permutation],species_presence[permutation],
                                                          drop=FALSE], distances, 1)
   cluster_indices <- cluster_indices[order(permutation)]
 
-  new_traits <- config$gen3sis$mutation$apply_evolution(species, cluster_indices, landscape, config)
+  new_traits <- config$gen3sis$mutation$apply_evolution(species, cluster_indices, space, config)
 
   species_traits <- colnames(species[["traits"]])
   species[["traits"]][ , species_traits] <- new_traits[, species_traits, drop=FALSE]
@@ -60,12 +60,12 @@ evolve <- function(species, landscape, distance_matrix, config){
 #'
 #' @param species the current species
 #' @param cluster_indices indices to assign cells to geographic clusters
-#' @param landscape the current landscape
+#' @param space the current space
 #' @param config the general config
 #' @return returns an invisible empty species traits when no evolution is considered
 #'
 #' @export
-evolution_mode_none <- function(species, cluster_indices, landscape, config){
+evolution_mode_none <- function(species, cluster_indices, space, config){
   return(invisible(species[["traits"]]))
 }
 

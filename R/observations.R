@@ -26,9 +26,9 @@ save_occupancy <- function() {
   config <- dynGet("config")
   data <- dynGet("data")
   vars <-  dynGet("vars")
-  save_landscape()
+  save_space()
   dir.create(file.path(config$directories$output, "occupancy"), showWarnings=FALSE, recursive=TRUE)
-  tmp <- get_geo_richness(data$all_species, data$landscape)
+  tmp <- get_geo_richness(data$all_species, data$space)
   tmp <- tmp > 0 
   saveRDS(object = tmp,
           file = file.path(config$directories$output, "occupancy", paste0("occupancy_t_", vars$ti, ".rds")))
@@ -45,9 +45,9 @@ save_richness <- function() {
   config <- dynGet("config")
   data <- dynGet("data")
   vars <-  dynGet("vars")
-  save_landscape()
+  save_space()
   dir.create(file.path(config$directories$output, "richness"), showWarnings=FALSE, recursive=TRUE)
-  richness <- get_geo_richness(data$all_species, data$landscape)
+  richness <- get_geo_richness(data$all_species, data$space)
   saveRDS(object = richness,
           file = file.path(config$directories$output, "richness", paste0("richness_t_", vars$ti, ".rds")))
 }
@@ -74,14 +74,14 @@ save_phylogeny <- function(){
 #' This function can be called within the observer function to save the full species list.
 #' @return no return value, called for side effects
 #' 
-#' @seealso \code{\link{save_landscape}}   
+#' @seealso \code{\link{save_space}}   
 #' @example inst/examples/save_species_help.R
 #' @export
 save_species <- function() {
   config <- dynGet("config")
   data <- dynGet("data")
   vars <-  dynGet("vars")
-  save_landscape()
+  save_space()
   dir.create(file.path(config$directories$output, "species"), showWarnings=FALSE, recursive=TRUE)
   species <- data$all_species
   saveRDS(object = species,
@@ -90,22 +90,22 @@ save_species <- function() {
 
 
 #' This function can be called within the observer function to save 
-#' the current landscape, can be called independently by the user and is called by 
-#' other observer functions relying on the landscape to be present (e.g. save_species)
+#' the current space, can be called independently by the user and is called by 
+#' other observer functions relying on the space to be present (e.g. save_species)
 #' @return no return value, called for side effects
 #' 
 #' @seealso \code{\link{save_species}}   
-#' @example inst/examples/save_landscape_help.R
+#' @example inst/examples/save_space_help.R
 #' @export
-save_landscape <- function() {
+save_space <- function() {
   config <- dynGet("config")
   data <- dynGet("data")
   vars <-  dynGet("vars")
-  landscape_file = file.path(config$directories$output, "landscapes", paste0("landscape_t_", vars$ti, ".rds"))
-  if( !file.exists(landscape_file)){
-    dir.create(file.path(config$directories$output, "landscapes"), showWarnings=FALSE, recursive=TRUE)
-    landscape <- data$landscape
-    saveRDS(object = landscape, file = landscape_file)
+  space_file = file.path(config$directories$output, "spaces", paste0("space_t_", vars$ti, ".rds"))
+  if( !file.exists(space_file)){
+    dir.create(file.path(config$directories$output, "spaces"), showWarnings=FALSE, recursive=TRUE)
+    space <- data$space
+    saveRDS(object = space, file = space_file)
   }
 }
 
@@ -150,7 +150,7 @@ save_extract <- function(element) {
   config <- dynGet("config")
   data <- dynGet("data")
   vars <-  dynGet("vars")
-  save_landscape()
+  save_space()
   dir.create(file.path(config$directories$output, element), showWarnings=FALSE, recursive=TRUE)
   tmp <- lapply(data$all_species, function(x){return(x[[element]])})
   names(tmp) <- sapply(data$all_species, function(x){x$id})

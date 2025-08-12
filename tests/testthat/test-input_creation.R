@@ -111,7 +111,7 @@ test_that("NA duration in create_spaces_raster",{
   })
 })
 
-## test if it recognizes geodynamic landscapes
+## test if it recognizes geodynamic spaces
 test_that("geodynamic is FALSE but environment says otherwise", {
   # create a 3 layers temp raster
   r <- rep(terra::rast(
@@ -162,25 +162,25 @@ test_that("geodynamic is FALSE but environment says otherwise", {
   })
 })
 
-## tests for landscape internal handling
-test_that("stack_landscapes from raster objects works", {
+## tests for space internal handling
+test_that("stack_spaces from raster objects works", {
   # create rasters
   v1t1 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
   v1t2 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
   v2t1 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
   v2t2 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
   
-  landscapes = list(v1 = c(v1t1, v1t2) , v2 = c(v2t1, v2t2))
+  spaces = list(v1 = c(v1t1, v1t2) , v2 = c(v2t1, v2t2))
   
   # check "time-step 1"
-  stacked <- stack_landscapes(landscapes, 1)
+  stacked <- stack_spaces(spaces, 1)
   
   expect_true(all(names(stacked) == c("v1", "v2")))
   expect_true(all(terra::values(v1t1) == terra::values(stacked[["v1"]])))
   expect_true(all(terra::values(v2t1) == terra::values(stacked[["v2"]])))
   
   # check "time-step 2"
-  stacked <- stack_landscapes(landscapes, 2)
+  stacked <- stack_spaces(spaces, 2)
   
   expect_true(all(names(stacked) == c("v1", "v2")))
   expect_true(all(terra::values(v1t2) == terra::values(stacked[["v1"]])))
@@ -196,41 +196,41 @@ test_that("habitability_mask works" , {
   r2[!h2] <- NA
   h <- terra::rast(nrows = 5, ncols = 5, vals = runif(25) < 0.2)
   
-  # get landscapes
-  landscapes = list(l1 = r1, l2 = r2)
-  landscape_stack <- stack_landscapes(landscapes , 1)
+  # get spaces
+  spaces = list(l1 = r1, l2 = r2)
+  space_stack <- stack_spaces(spaces , 1)
   
   # habitability mask
-  mask1 <- get_habitable_mask(list(h), landscape_stack, 1)
+  mask1 <- get_habitable_mask(list(h), space_stack, 1)
   expect_true(all.equal(mask1, h))
   
   # TODO calculate habitability mask
-  # mask2 <- get_habitable_mask(NULL, landscape_stack, 1)
+  # mask2 <- get_habitable_mask(NULL, space_stack, 1)
   # expect_true(all.equal(mask2[], h1 & h2))
 })
 
-test_that("compile_landscapes works", {  # create rasters
+test_that("compile_spaces works", {  # create rasters
   r11 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
   r12 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
   r21 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
   r22 <- terra::rast(nrows = 5, ncols = 5, vals = runif(25))
   
-  landscapes = list(l1 = c(r11, r12) , l2 = c(r21, r22))
+  spaces = list(l1 = c(r11, r12) , l2 = c(r21, r22))
   timesteps <- c(1,2)
   
-  compiled_landscapes <- compile_landscapes(landscapes = landscapes,
+  compiled_spaces <- compile_spaces(spaces = spaces,
                                             timesteps = timesteps,
                                             habitability_masks = NULL)
   
-  expect_true(all.equal(names(compiled_landscapes), c("l1", "l2")))
-  expect_true(all.equal(colnames(compiled_landscapes[["l1"]]), c("x", "y",  timesteps)))
-  expect_true(all.equal(colnames(compiled_landscapes[["l2"]]), c("x", "y",  timesteps)))
-  expect_true(all(terra::values(r11) == terra::values(terra::rast(compiled_landscapes[["l1"]][, c("x", "y", 1)], type="xyz"))))
-  expect_true(all(terra::values(r12) == terra::values(terra::rast(compiled_landscapes[["l1"]][, c("x", "y", 2)], type="xyz"))))
-  expect_true(all(terra::values(r21) == terra::values(terra::rast(compiled_landscapes[["l2"]][, c("x", "y", 1)], type="xyz"))))
-  expect_true(all(terra::values(r22) == terra::values(terra::rast(compiled_landscapes[["l2"]][, c("x", "y", 2)], type="xyz"))))
-  expect_true(all.equal(rownames(compiled_landscapes[["l1"]]),
-                        rownames(compiled_landscapes[["l2"]]),
+  expect_true(all.equal(names(compiled_spaces), c("l1", "l2")))
+  expect_true(all.equal(colnames(compiled_spaces[["l1"]]), c("x", "y",  timesteps)))
+  expect_true(all.equal(colnames(compiled_spaces[["l2"]]), c("x", "y",  timesteps)))
+  expect_true(all(terra::values(r11) == terra::values(terra::rast(compiled_spaces[["l1"]][, c("x", "y", 1)], type="xyz"))))
+  expect_true(all(terra::values(r12) == terra::values(terra::rast(compiled_spaces[["l1"]][, c("x", "y", 2)], type="xyz"))))
+  expect_true(all(terra::values(r21) == terra::values(terra::rast(compiled_spaces[["l2"]][, c("x", "y", 1)], type="xyz"))))
+  expect_true(all(terra::values(r22) == terra::values(terra::rast(compiled_spaces[["l2"]][, c("x", "y", 2)], type="xyz"))))
+  expect_true(all.equal(rownames(compiled_spaces[["l1"]]),
+                        rownames(compiled_spaces[["l2"]]),
                         as.character(1:25)))
 })
 
@@ -246,13 +246,13 @@ test_that("get_local_distances works", {
   r1 <- terra::rast(nrows = d, ncols = d, vals = runif(d*d))
   r2 <- terra::rast(nrows = d, ncols = d, vals = runif(d*d))
   
-  landscapes = list(l1 = c(r1) , l2 = c(r2))
+  spaces = list(l1 = c(r1) , l2 = c(r2))
   timesteps <- c(1)
   
-  landscape_stack <- stack_landscapes(landscapes, 1)
-  habitable_mask <- get_habitable_mask(habitability_masks = NULL, landscape_stack, 1)
+  space_stack <- stack_spaces(spaces, 1)
+  habitable_mask <- get_habitable_mask(habitability_masks = NULL, space_stack, 1)
   
-  distance_local <- get_local_distances(landscape_stack, habitable_mask, cost_function, directions, crs)
+  distance_local <- get_local_distances(space_stack, habitable_mask, cost_function, directions, crs)
   
   expect_true(all(c(25,25)==dim(distance_local)))
   expect_s4_class(distance_local,"dgCMatrix")

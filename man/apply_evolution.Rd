@@ -5,14 +5,14 @@
 \title{Allows defining the function that changes the values of traits of a given
 species at each time-step and in each site. If no operations are provided, traits are not changing}
 \usage{
-apply_evolution(species, cluster_indices, landscape, config)
+apply_evolution(species, cluster_indices, space, config)
 }
 \arguments{
 \item{species}{the target species object whose traits will be changed}
 
 \item{cluster_indices}{an index vector indicating the cluster every occupied site is part of}
 
-\item{landscape}{the current landscape which can co-determine the rate of trait changes}
+\item{space}{the current space which can co-determine the rate of trait changes}
 
 \item{config}{the current config}
 }

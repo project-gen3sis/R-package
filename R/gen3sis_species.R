@@ -4,15 +4,15 @@
 #' Allows the user to populate the world at the beginning of a simulation
 #'
 #' @details Using this function, any number of new species can be created. For every species, a number of
-#' habitable sites from the landscape are selected and call 'create_species'. In another step, the user must initialize 
+#' habitable sites from the space are selected and call 'create_species'. In another step, the user must initialize 
 #' the species[["traits"]] matrix with the desired initial traits values
 #'
-#' @param landscape the landscape over which to create the species
+#' @param space the space over which to create the species
 #' @param config the configuration information
 #'
 #' @return a list of species
 #' @export
-create_ancestor_species  <- function(landscape, config){
+create_ancestor_species  <- function(space, config){
   stop("this function documents the user function interface only, do not use it.")
 }
 

@@ -49,24 +49,24 @@ create_spaces_raster(
   # 
   # temperature_brick <- brick(file.path(datapath, "temp_rasters.grd"))
   # aridity_brick <-  brick(file.path(datapath, "arid_rasters.grd"))
-  # #landscapes_sub_list <- list(temp=temperature_brick, arid=aridity_brick)
+  # #spaces_sub_list <- list(temp=temperature_brick, arid=aridity_brick)
   # 
-  # landscapes_sub_list <- list(temp=NULL, arid=NULL)
+  # spaces_sub_list <- list(temp=NULL, arid=NULL)
   # for(i in 1:4){ #nlayers(envs_list[[1]])
-  #   landscapes_sub_list$temp <- c(landscapes_sub_list$temp, temperature_brick[[i]])
-  #   landscapes_sub_list$arid <- c(landscapes_sub_list$arid, aridity_brick[[i]])
+  #   spaces_sub_list$temp <- c(spaces_sub_list$temp, temperature_brick[[i]])
+  #   spaces_sub_list$arid <- c(spaces_sub_list$arid, aridity_brick[[i]])
   # }
   # 
   # 
   # #create sub-list of environmental variables for fast example
   # # (i.e. 4 time-steps)
-  # # landscapes_sub_list <- list(temp=NULL, arid=NULL)
+  # # spaces_sub_list <- list(temp=NULL, arid=NULL)
   # # for(i in 1:nlayers(envs_list[[1]])){
-  # #   landscapes_sub_list$temp <- c(landscapes_sub_list$temp, envs_list$temp[[i]])
-  # #   landscapes_sub_list$arid <- c(landscapes_sub_list$arid, envs_list$arid[[i]])
+  # #   spaces_sub_list$temp <- c(spaces_sub_list$temp, envs_list$temp[[i]])
+  # #   spaces_sub_list$arid <- c(spaces_sub_list$arid, envs_list$arid[[i]])
   # # }
   # 
-  # # landscapes <- landscapes_sub_list
+  # # spaces <- spaces_sub_list
   # 
   # 
   # # END WIP
@@ -82,10 +82,10 @@ create_spaces_raster(
   # }
   # 
   # \dontrun{
-  # # create input landscape ready for gen3sis from sub-list
+  # # create input space ready for gen3sis from sub-list
   # # (i.e. 10 time-steps) and only local-distances.
   # 
-  # create_spaces_raster(raster_list = landscapes_sub_list,
+  # create_spaces_raster(raster_list = spaces_sub_list,
   #                     cost_function = cost_function_water,
   #                     directions = 16, # surrounding sites for each site
   #                     output_directory = file.path("C:/temp/test_spaces", "spaceS2"),
@@ -102,7 +102,7 @@ create_spaces_raster(
   # Global temperature differences were calculated using entire koppen band to account for sea surface temperature
   # (Westerhold et al. 2020). For more details see (Hagen et al 2020/2021)."
   # 
-  # create_spaces_raster(raster_list= landscapes_sub_list, # old landscapes
+  # create_spaces_raster(raster_list= spaces_sub_list, # old spaces
   #                                 cost_function = cost_function_water,
   #                                 output_directory = file.path("C:/temp/test_spaces", "spaceS3"),
   #                                 full_dists = TRUE,
@@ -115,27 +115,27 @@ create_spaces_raster(
   #                                                    methods=my_description))
   # 
   # 
-  # create_space_raster(env = landscapes_sub_list,
+  # create_space_raster(env = spaces_sub_list,
   #   cost_function = cost_function_water,
-  #   output_directory = file.path(tempdir(), "landscape_sub"),
+  #   output_directory = file.path(tempdir(), "space_sub"),
   #   directions = 8, # surrounding sites for each site
   #   calculate_full_distance_matrices = FALSE) # full distance matrix
   # 
   # 
   # # create list of all environmental variables available
-  # landscapes_list <- list(temp=NULL, arid=NULL, area=NULL)
+  # spaces_list <- list(temp=NULL, arid=NULL, area=NULL)
   # for(i in 1:nlayers(temperature_brick)){
-  #   landscapes_list$temp <- c(landscapes_list$temp, temperature_brick[[i]])
-  #   landscapes_list$arid <- c(landscapes_list$arid, aridity_brick[[i]])
-  #   landscapes_list$area <- c(landscapes_list$area, area_brick[[i]])
+  #   spaces_list$temp <- c(spaces_list$temp, temperature_brick[[i]])
+  #   spaces_list$arid <- c(spaces_list$arid, aridity_brick[[i]])
+  #   spaces_list$area <- c(spaces_list$area, area_brick[[i]])
   # }
   # 
-  # # # create input landscape ready for gen3sis (~ 3min run-time)
+  # # # create input space ready for gen3sis (~ 3min run-time)
   # # # and full distance matrix
-  # # create_input_landscape(
-  # #   landscapes = landscapes_list,
+  # # create_input_space(
+  # #   spaces = spaces_list,
   # #   cost_function = cost_function_water,
-  # #   output_directory = file.path(tempdir(), "landscape_WorldCenter_5"),
+  # #   output_directory = file.path(tempdir(), "space_WorldCenter_5"),
   # #   directions = 8, # surrounding sites for each site
   # #   timesteps = paste0(round(150:100,2), "Ma"),
   # #   crs="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",

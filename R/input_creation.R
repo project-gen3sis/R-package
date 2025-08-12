@@ -16,31 +16,31 @@
 #' **src_habitable** (TRUE or FALSE) for habitable condition of the origin sites, 
 #' **dest** is a vector of environmental conditions for the destination site, dest_habitable  (TRUE or FALSE) for habitable condition of the destination cell
 #' @param directions 4, 8 or 16 neighbors, dictates the connection of cell neighbors on adjacency matrix (see gistance package)
-#' @param output_directory path for storing the gen3sis ready landscape (i.e. landscape.rds, metadata.txt and full- and/or local_distance folders) 
-#' @param timesteps vector of names for every time-step to represent the time-step at gen3sis ready landscape. 
+#' @param output_directory path for storing the gen3sis ready space (i.e. space.rds, metadata.txt and full- and/or local_distance folders) 
+#' @param timesteps vector of names for every time-step to represent the time-step at gen3sis ready space. 
 #' If timesteps=NULL (default), time-steps are sequentially numbered from 0 to the latest time-step.
 #' @param full_dists should a full distance matrix be calculated? TRUE or FALSE? Default is FALSE.
 #' If TRUE calculates the entire distance matrix for every time-step and between all habitable cells 
 #' (faster CPU time, higher storage required). 
-#' If FALSE (default), only local distances are calculated (slower CPU time when simulating but smaller gen3sis landscape size)
+#' If FALSE (default), only local distances are calculated (slower CPU time when simulating but smaller gen3sis space size)
 #' @param crs the coordinate reference system in crs format (see raster::crs). Default is defined by \code{\link{create_spaces}}
 #' @param overwrite_output TRUE or FALSE
 #' @param verbose print distance calculation progress (default: FALSE)
 #' @param duration list with from, to, by and unit. Default is from -latest time to zero by 1 Ma
-#' @param geodynamic True or False, if the landscape is dynamic (e.g. sea-level change) or static. Default is NULL, 
+#' @param geodynamic True or False, if the space is dynamic (e.g. sea-level change) or static. Default is NULL, 
 #' i.e. deciding final value based on the input data using \code{?is_geodynamic}.
 #' @param author author of the space, see \code{?create_spaces}
 #' @param source source of the space, see \code{?create_spaces}
 #' @param description list with env and methods, see \code{?create_spaces}
 #' @param ... additional arguments to be passed to the \code{\link{create_spaces}} function
-#' @return no return object. This function saves the landscape input files for gen3sis at the output_directory
+#' @return no return object. This function saves the space input files for gen3sis at the output_directory
 #' @importFrom gdistance transition costDistance
 #' @example inst/examples/create_spaces_raster_help.R
 #' @seealso \code{\link{run_simulation}} 
 #' @export
 
-# old create_input_landscape
-create_spaces_raster <- function(raster_list, # old landscapes
+# old create_input_space
+create_spaces_raster <- function(raster_list, # old spaces
                           cost_function,
                           directions=16,
                           output_directory,
@@ -81,7 +81,7 @@ create_spaces_raster <- function(raster_list, # old landscapes
   # }
 
   # prepare and save spaces
-  compiled_env <- compile_landscapes(raster_list,
+  compiled_env <- compile_spaces(raster_list,
                                             timesteps,
                                             habitability_masks)
   # get 1 col full of ones as example raster
@@ -124,8 +124,8 @@ create_spaces_raster <- function(raster_list, # old landscapes
   saveRDS(gs, file.path(output_directory, "spaces.rds"))
   
   
-  # save METADATA.txt a empty landscape template @skeleteon_landscape_metadata.R
-  # write.table(skeleton_landscape_metadata, file = file.path(output_directory, "METADATA.txt"), 
+  # save METADATA.txt a empty space template @skeleteon_space_metadata.R
+  # write.table(skeleton_space_metadata, file = file.path(output_directory, "METADATA.txt"), 
   #             sep="\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
 
   # create local distances
@@ -142,10 +142,10 @@ create_spaces_raster <- function(raster_list, # old landscapes
     if (verbose) {
       cat(paste("starting distance calculations for timestep", step, '\n'))
     }
-    landscape_stack <- stack_landscapes(raster_list, step)
-    habitable_mask <- get_habitable_mask(habitability_masks, landscape_stack, step)
+    space_stack <- stack_spaces(raster_list, step)
+    habitable_mask <- get_habitable_mask(habitability_masks, space_stack, step)
 
-    distance_local <- get_local_distances(landscape_stack, habitable_mask, cost_function, directions, crs=gs$meta$crs)
+    distance_local <- get_local_distances(space_stack, habitable_mask, cost_function, directions, crs=gs$meta$crs)
 
     file_name <- paste0("distances_local_", as.character(nts-step), ".rds")
     saveRDS(distance_local, file = file.path(output_directory, "distances_local", file_name))
@@ -171,53 +171,53 @@ create_spaces_raster <- function(raster_list, # old landscapes
 }
 
 
-#' compile the landscapes for storing. I.e. create a list of data.frames with 
+#' compile the spaces for storing. I.e. create a list of data.frames with 
 #' the coordinates and the environmental values over time-steps
 #'
-#' @param landscapes full list of landscape over all time-steps
+#' @param spaces full list of space over all time-steps
 #' @param timesteps given names / identifiers for time-steps
 #' @param habitabiliy_masks full list of habitability masks (if available)
 #'
-#' @return a list of compiled landscapes ready to be saved
+#' @return a list of compiled spaces ready to be saved
 #' @noRd
-compile_landscapes <-  function(landscapes, timesteps, habitability_masks) {
+compile_spaces <-  function(spaces, timesteps, habitability_masks) {
   compiled <- list()
-  landscape_stack <- stack_landscapes(landscapes, 1)
+  space_stack <- stack_spaces(spaces, 1)
 
   # setup coordinates
-  #coords <- terra::as.data.frame(landscape_stack, xy=TRUE, na.rm = FALSE)[,c("x", "y")]
-  coords <- terra::crds(landscape_stack, na.rm = FALSE)
+  #coords <- terra::as.data.frame(space_stack, xy=TRUE, na.rm = FALSE)[,c("x", "y")]
+  coords <- terra::crds(space_stack, na.rm = FALSE)
   rownames(coords) <- 1:nrow(coords)
-  for (name in names(landscapes)) {
-    # name <- names(landscapes)[1]
+  for (name in names(spaces)) {
+    # name <- names(spaces)[1]
     compiled <- append(compiled, list(coords))
   }
-  names(compiled) <- names(landscapes)
+  names(compiled) <- names(spaces)
 
   # collect environments for every time-step
   for (i in 1:length(timesteps)) {
-    # collect landscapes
-    landscape_stack <- stack_landscapes(landscapes, i)
-    landscape_df <- terra::as.data.frame(landscape_stack, na.rm = FALSE)
+    # collect spaces
+    space_stack <- stack_spaces(spaces, i)
+    space_df <- terra::as.data.frame(space_stack, na.rm = FALSE)
 
-    # remove inconsistencies between different landscapes
-    habitability <- get_habitable_mask(habitability_masks, landscape_stack, i) |> as.vector()
-    landscape_df[!habitability, ] <- NA
+    # remove inconsistencies between different spaces
+    habitability <- get_habitable_mask(habitability_masks, space_stack, i) |> as.vector()
+    space_df[!habitability, ] <- NA
 
-    for (name in colnames(landscape_df)) {
+    for (name in colnames(space_df)) {
       old_names <- colnames(compiled[[name]])
-      compiled[[name]] <- cbind(compiled[[name]], landscape_df[, name])
+      compiled[[name]] <- cbind(compiled[[name]], space_df[, name])
       colnames(compiled[[name]]) <- c(old_names, timesteps[i])
     }
   }
-  landscapes <- compiled
-  return(landscapes)
+  spaces <- compiled
+  return(spaces)
 }
 
 #' get_local_distances creates the cost adjecency matrix with
 #' the local cost calculated by the user provided cost_function
 #'
-#' @param landscape_stack a raster stack with the environments for the current step
+#' @param space_stack a raster stack with the environments for the current step
 #' @param cost_function the user provided cost function
 #' @param directions the number and layout of the direct local to consider, 4,8,16 or adj according to the gdistance package
 #'
@@ -225,21 +225,21 @@ compile_landscapes <-  function(landscapes, timesteps, habitability_masks) {
 #' @importFrom gdistance geoCorrection transition
 #' @importFrom methods as
 #' @noRd
-get_local_distances <- function(landscape_stack, habitable_mask, cost_function, directions, crs) {
-  # ext <- extent(landscape_stack)
-  # rs <- res(landscape_stack)
-  ext <- terra::ext(landscape_stack)
-  rs <- terra::res(landscape_stack)
+get_local_distances <- function(space_stack, habitable_mask, cost_function, directions, crs) {
+  # ext <- extent(space_stack)
+  # rs <- res(space_stack)
+  ext <- terra::ext(space_stack)
+  rs <- terra::res(space_stack)
 
   if(!is.null(crs)) {
-    terra::crs(landscape_stack) <- crs
+    terra::crs(space_stack) <- crs
   }
 
   # the reference raster is used to get all local relations, filling it with the cell ids can be used for debugging
   # -> important in case of asymmetrical distances
   
-  #ref_raster <- raster(ext = ext, resolution = rs, crs = crs(landscape_stack), vals = 1:prod(dim(landscape_stack)[1:2]))
-  ref_raster <- terra::rast(ext = ext, resolution = rs, crs = crs(landscape_stack), vals = 1:prod(dim(landscape_stack)[1:2]))
+  #ref_raster <- raster(ext = ext, resolution = rs, crs = crs(space_stack), vals = 1:prod(dim(space_stack)[1:2]))
+  ref_raster <- terra::rast(ext = ext, resolution = rs, crs = crs(space_stack), vals = 1:prod(dim(space_stack)[1:2]))
   
   # -> IMPORTANT NOTE FOR DEVELOPERS <-
   # As of June 2025, the code has been changed to remove the dependency on gdistance. 
@@ -275,10 +275,10 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
   tmp_cost <- numeric(nrow(transition_cells))
 
   habitable_mask <- as.logical(as.vector(habitable_mask))
-  landscape_raster <- landscape_stack
-  landscape_stack <- as.matrix(landscape_stack)
+  space_raster <- space_stack
+  space_stack <- as.matrix(space_stack)
 
-  raster_points <- terra::as.points(landscape_raster, na.rm = FALSE)
+  raster_points <- terra::as.points(space_raster, na.rm = FALSE)
   coords <- terra::geom(raster_points)[, c("x", "y")]
   colnames(coords) <- c("x", "y")
   # 
@@ -301,8 +301,8 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
     coords_i <- coords[ind_i,] # destination coordinates
     coords_j <- coords[ind_j,] # origin coordinates
     
-    cell_i <- landscape_stack[ind_i,] # destination values
-    cell_j <- landscape_stack[ind_j,] # origin values
+    cell_i <- space_stack[ind_i,] # destination values
+    cell_j <- space_stack[ind_j,] # origin values
 
     habitable_i <- habitable_mask[ind_i] # is the destination habitable?
     habitable_j <- habitable_mask[ind_j] # is the origin habitable?
@@ -337,26 +337,26 @@ get_local_distances <- function(landscape_stack, habitable_mask, cost_function, 
   #transition_matrix <- drop0(transition_matrix) * correction@transitionMatrix
   transition_matrix <- drop0(transition_matrix) * trans_matrices$correctionMatrix
 
-  rownames(transition_matrix) <- 1:dim(landscape_stack)[1]
-  colnames(transition_matrix) <- 1:dim(landscape_stack)[1]
+  rownames(transition_matrix) <- 1:dim(space_stack)[1]
+  colnames(transition_matrix) <- 1:dim(space_stack)[1]
   return(transition_matrix)
 }
 
 #' get_habitable_mask either extracts or computes the habitability mask.
 #'
-#' @details if no mask is given it will be calculated from the landscapes. Every cell that has at
+#' @details if no mask is given it will be calculated from the spaces. Every cell that has at
 #' least on environmental value missing (set to NA) will be considere uninhabitable
 #'
 #' @param habitability_masks null, or a list of rasters or paths to raster files
-#' @param landscape_stack the current stack of landscapes
+#' @param space_stack the current stack of spaces
 #' @param i index into the masks if needed
 #'
 #' @return returns a logical raster indicating which cells are habitable
 #' @noRd
-get_habitable_mask <- function(habitability_masks, landscape_stack, i) {
+get_habitable_mask <- function(habitability_masks, space_stack, i) {
   if(is.null(habitability_masks)) {
-    #habitable_mask <- calc(landscape_stack, fun = function(x, na.rm) { !any(is.na(x)) } )
-    habitable_mask <- !any(is.na(landscape_stack)) # TODO is this the best solution?
+    #habitable_mask <- calc(space_stack, fun = function(x, na.rm) { !any(is.na(x)) } )
+    habitable_mask <- !any(is.na(space_stack)) # TODO is this the best solution?
   } else if( is.character(habitability_masks[[i]])){
     #habitable_mask <- raster(habitability_masks[[i]])
     habitable_mask <- terra::rast(habitability_masks[[i]])
@@ -371,29 +371,29 @@ get_habitable_mask <- function(habitability_masks, landscape_stack, i) {
 }
 
 
-#' stack_landscapes creates the i-th stack of landscape rasters from the provided sources
+#' stack_spaces creates the i-th stack of space rasters from the provided sources
 #'
-#' @param landscapes the full landscapes, a named list of lists of raster files or rasters
-#' @param i the index into the landscapes parameter
+#' @param spaces the full spaces, a named list of lists of raster files or rasters
+#' @param i the index into the spaces parameter
 #'
-#' @return a raster stack containing the i-th landscapes
+#' @return a raster stack containing the i-th spaces
 #' @noRd
-stack_landscapes <- function(landscapes, i) {
-  all_names <- names(landscapes)
+stack_spaces <- function(spaces, i) {
+  all_names <- names(spaces)
   # new_stack <- stack()
   new_stack <- terra::rast()
-  for(landscape in landscapes){
-    # landscape <- landscapes[[1]]
-    if(is.character(landscape[i])) {
-      #ras <- raster(landscape[i])
-      ras <- terra::rast(landscape[i])
-    # } else if(is(landscape[[i]],"RasterLayer")) { # TODO remove when raster transition is done
-    #   ras <- landscape[i]
-    } else if(is(landscape[[i]],"SpatRaster")) {
-      #ras <- raster(terra::subset(landscape[[i]], 1))
-      ras <- landscape[[i]]
+  for(space in spaces){
+    # space <- spaces[[1]]
+    if(is.character(space[i])) {
+      #ras <- raster(space[i])
+      ras <- terra::rast(space[i])
+    # } else if(is(space[[i]],"RasterLayer")) { # TODO remove when raster transition is done
+    #   ras <- space[i]
+    } else if(is(space[[i]],"SpatRaster")) {
+      #ras <- raster(terra::subset(space[[i]], 1))
+      ras <- space[[i]]
     } else {
-      stop("Unknown landscape; it must be a named list of list of either rasters or raster files")
+      stop("Unknown space; it must be a named list of list of either rasters or raster files")
     }
     #new_stack <- addLayer(new_stack, ras)
     suppressWarnings(

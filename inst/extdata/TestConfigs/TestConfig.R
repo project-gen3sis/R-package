@@ -63,24 +63,31 @@ trait_names = c("dispersal", "t_opt", "t_range", "competition")
 #-------------------------#
 
 end_of_timestep_observer = function(data, vars, config){
+  plot_richness(data$all_species, data$space)
+  save_species()
+  save_abundance()
+  save_divergence()
+  save_occupancy()
+  save_phylogeny()
+  save_traits()
   # jpeg(paste0(config$directories$output_plots, "/ranges_t", vars$ti, ".jpeg"))
   # {
   #   par(mfrow=c(1,1))
-  #   plot_ranges(data$all_species[c(1:3)], data$landscape)
+  #   plot_ranges(data$all_species[c(1:3)], data$space)
   # }
   # dev.off()
   
-  #plot_richness(data$all_species, data$landscape)
-  #plot_richness( data$all_species, data$landscape)
+  #plot_richness(data$all_species, data$space)
+  #plot_richness( data$all_species, data$space)
   #abline(h=15)
   #abline(v=-20)
   
   # jpeg(paste0(config$directories$output_plots, "/ranges_t", vars$ti, ".jpeg"))
   #   par(mfrow=c(2,2), mai=c(0.2,0.5,0.3,0.5))
-  #   plot_richness(data$all_species, data$landscape)
-  # plot_species_abundance(data$all_species[[1]], data$landscape)
-  #   plot_species_abundance(data$all_species[[3]], data$landscape)
-  #   plot_species_abundance(data$all_species[[4]], data$landscape)
+  #   plot_richness(data$all_species, data$space)
+  # plot_species_abundance(data$all_species[[1]], data$space)
+  #   plot_species_abundance(data$all_species[[3]], data$space)
+  #   plot_species_abundance(data$all_species[[4]], data$space)
   # dev.off()
   # save_species()
   # save_abundance()
@@ -88,17 +95,17 @@ end_of_timestep_observer = function(data, vars, config){
   # save_occupancy()
   # save_phylogeny()
   # save_traits()
-  #plot_species_abundance(data$all_species[[1]], data$landscape)
+  #plot_species_abundance(data$all_species[[1]], data$space)
   # make p/a matrices if necessary
   # if(!file.exists(file.path(config$directories$output, "abs"))){dir.create(file.path(config$directories$output, "abs"))}
   # # site names
-  # all_sites <- rownames(data$landscape$coordinates)
+  # all_sites <- rownames(data$space$coordinates)
   # # get 0 for absence and 1 for presence in each grid site
   # all_species_abundance <- do.call( cbind, lapply(data$all_species, FUN = function(x) {ifelse(all_sites %in% names(x$abundance), x$abundance, NA)}))
   # # colnames are species names
   # colnames(all_species_abundance ) <- unlist(lapply(data$all_species, function(x){x$id}))
   # # column bind with x/y coordinates
-  # abundance_matrix <- cbind(data$landscape$coordinates, all_species_abundance)
+  # abundance_matrix <- cbind(data$space$coordinates, all_species_abundance)
   # abundance_matrix <- abundance_matrix[order(abundance_matrix[,"x"]),]
   # abundance_matrix <- abundance_matrix[abundance_matrix[, "x"]<=-20, ]
   # # Select rows where all values are NA
@@ -133,10 +140,10 @@ end_of_timestep_observer = function(data, vars, config){
 #### Initialization ####
 #----------------------#
 
-create_ancestor_species <- function(landscape, config) {
+create_ancestor_species <- function(space, config) {
   # make yls latitudinal lines for the 5 species: 2 at extremes, 2 inbetween and 1 at the equator
-  co <- landscape$coordinates
-  co <- co[rownames(co)%in%rownames(landscape$environment),]
+  co <- space$coordinates
+  co <- co[rownames(co)%in%rownames(space$environment),]
   # polar line y coordinate
   plyc <- min(abs(range(co[,"y"])))
   # temp line
@@ -154,9 +161,9 @@ create_ancestor_species <- function(landscape, config) {
     #set local adaptation to max optimal temp equals local temp
     new_species[[i]]$traits[ , "dispersal"] <- 1
     new_species[[i]]$traits[ , "competition"] <- 0.92
-    new_species[[i]]$traits[ , "t_opt"] <- landscape$environment[initial_sites,"temperature"]
+    new_species[[i]]$traits[ , "t_opt"] <- space$environment[initial_sites,"temperature"]
     new_species[[i]]$traits[ , "t_range"] <- 0.4
-    #plot_species_presence(new_species[[i]], landscape)
+    #plot_species_presence(new_species[[i]], space)
   }
   return(new_species)
 }
@@ -167,7 +174,7 @@ create_ancestor_species <- function(landscape, config) {
 #-----------------#
 
 # returns n dispersal values (proba distrib function)
-get_dispersal_values <- function(n, species, landscape, config) {
+get_dispersal_values <- function(n, species, space, config) {
   # mean_abd <- mean(species$abundance)
   # weight_abd <- species$abundance/mean_abd
   # # if shape =1 then it is an exponential distribution
@@ -185,7 +192,7 @@ get_dispersal_values <- function(n, species, landscape, config) {
 divergence_threshold = 1 # between 10 and 50 ? as 0.1 to 0.5 Myrs or 100 - 500 kyrs
 
 # adds a value of 1 to each geographic population cluster
-get_divergence_factor <- function(species, cluster_indices, landscape, config) {
+get_divergence_factor <- function(species, cluster_indices, space, config) {
   return(1)
 }
 
@@ -193,7 +200,7 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 #### Trait Evolution ####
 #-----------------------#
 
-apply_evolution <- function(species, cluster_indices, landscape, config) {
+apply_evolution <- function(species, cluster_indices, space, config) {
   trait_evolutionary_power <-comb_vector$t_evo
   pw_tr_hom <- 0.5 # percentage of movement of local trait towards weighted trait mean within each population cluster 
   # pw_tr_hom = ZERO means no change while a value of ONE means that traits are equal within each populations cluster)
@@ -246,19 +253,19 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
 #-------------------------------------------------#
 #### Environmental and Ecological Interactions ####
 #-------------------------------------------------#
-apply_ecology <- function(abundance, traits, landscape, config, abundance_scale = 10, abundance_threshold = 8) {
+apply_ecology <- function(abundance, traits, space, config, abundance_scale = 10, abundance_threshold = 8) {
   # #abundance threshold
   # abundance <- as.numeric(!abundance<abundance_threshold)
-  # abundance <- (( 1-abs( traits[, "t_opt"] - landscape[, "temperature"]))*abundance_scale)*abundance
+  # abundance <- (( 1-abs( traits[, "t_opt"] - space[, "temperature"]))*abundance_scale)*abundance
   # #abundance threshold
   # abundance[abundance<abundance_threshold] <- 10
   return(abundance)
 }
-# apply_ecology <- function(abundance, traits, landscape, config) {
+# apply_ecology <- function(abundance, traits, space, config) {
 #   ns <- length(abundance)
 #   #### get rf, here r_f is the per capita growth rate of biomass that depends on the local site conditions 
 #   # set env niche
-#   env_gs <- fg(x=landscape[,"temperature"], a=100, b=traits[, "t_opt"], c=traits[, "t_range"])
+#   env_gs <- fg(x=space[,"temperature"], a=100, b=traits[, "t_opt"], c=traits[, "t_range"])
 #   # set growth rate
 #   g <- .1
 #   # abundance_tii first is only what the env. determines to be the new abundances

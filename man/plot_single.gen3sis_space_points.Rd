@@ -2,16 +2,16 @@
 % Please edit documentation in R/plotting_functions.R
 \name{plot_single.gen3sis_space_points}
 \alias{plot_single.gen3sis_space_points}
-\title{Plot a single set of values onto a given landscape}
+\title{Plot a single set of values onto a given space}
 \usage{
-\method{plot_single}{gen3sis_space_points}(values, landscape, title = "", no_data = 0, col, legend = TRUE)
+\method{plot_single}{gen3sis_space_points}(values, space, title = "", no_data = 0, col, legend = TRUE)
 }
 \arguments{
-\item{values}{a named list of values, the names must correspond to cells in the landscape}
+\item{values}{a named list of values, the names must correspond to cells in the space}
 
-\item{landscape}{a landscape to plot the values onto}
+\item{space}{a space to plot the values onto}
 
-\item{title}{a title string for resulting plot, the time information will be taken and appended from the landscape id}
+\item{title}{a title string for resulting plot, the time information will be taken and appended from the space id}
 
 \item{no_data}{what value should be used for missing values in values}
 
@@ -23,7 +23,7 @@
 no return value, called for plot
 }
 \description{
-Plot a single set of values onto a given landscape
+Plot a single set of values onto a given space
 }
 \examples{
 \dontshow{
@@ -35,13 +35,13 @@ Plot a single set of values onto a given landscape
 datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
 
 # plot environmental variables at a given step
-landscape_t_25 <- readRDS(
-  file.path(datapath, "output", "config_worldcenter", "landscapes", "landscape_t_25.rds"))
+space_t_25 <- readRDS(
+  file.path(datapath, "output", "config_worldcenter", "spaces", "space_t_25.rds"))
 oldpar <- par(no.readonly = TRUE)
 par(mfrow=c(1,2))
-plot_raster_single(landscape_t_25$environment[,"temp"], landscape_t_25, "Temperature", NA)
+plot_raster_single(space_t_25$environment[,"temp"], space_t_25, "Temperature", NA)
 # use col to change the color
-plot_raster_single(landscape_t_25$environment[,"arid"], landscape_t_25, "Aridity", NA, 
+plot_raster_single(space_t_25$environment[,"arid"], space_t_25, "Aridity", NA, 
                    col=topo.colors(5))
 par(oldpar)
 # note that these values were scaled by the configuration object
