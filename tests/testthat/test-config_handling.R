@@ -27,7 +27,8 @@ test_that("prepare_directories: Error on non-existing input directory", {
 test_that("derive input/output directories from config path", {
   skip("skip for now")
   new_dirs <- list()
-  local_mock(dir.create = function(new_dir, ...){ new_dirs <<- append(new_dirs, new_dir)} )
+  testthat::local_mocked_bindings(dir.create = function(new_dir, ...){ new_dirs <<- append(new_dirs, new_dir)},
+                                  .env = baseenv())
   config_file <- "data/config/tests_config_handling_0d/tests_run/config_empty.R"
   dirs <- evaluate_promise(prepare_directories(config_file = config_file))
   expect_true(all(new_dirs %in% dirs$result))
@@ -37,7 +38,8 @@ test_that("derive input/output directories from config path", {
 test_that("prepare_directories: default config, input_directory given, output directory derived", {
   skip("skip until config handling settled")
   new_dirs <- list()
-  local_mock(dir.create = function(new_dir, ...){ new_dirs <<- append(new_dirs, new_dir)} )
+  testthat::local_mocked_bindings(dir.create = function(new_dir, ...){ new_dirs <<- append(new_dirs, new_dir)},
+                                  .env = baseenv())
   input_directory <- "data/input"
   dirs <- evaluate_promise(prepare_directories(input_directory = input_directory))
   expect_true(all(new_dirs %in% dirs$result))
@@ -48,7 +50,8 @@ test_that("prepare_directories: default config, input_directory given, output di
 test_that("prepare_directories: config, input-, and output- directory given", {
   skip("skip for now")
   new_dirs <- list()
-  local_mock(dir.create = function(new_dir, ...){ new_dirs <<- append(new_dirs, new_dir)} )
+  testthat::local_mocked_bindings(dir.create = function(new_dir, ...){ new_dirs <<- append(new_dirs, new_dir)},
+                                  .env = baseenv())
   config_file <- "data/config/tests_config_handling_0d/tests_run/config_empty.R"
   input_directory <- "data/input"
   output_directory <- "data/output"
@@ -62,7 +65,8 @@ test_that("prepare_directories: config, input-, and output- directory given", {
 
 test_that("no user config provided, using default config" , {
   skip("skip until devtools updated in docker image")
-  local_mock(dir.create = function(new_dir, ...) { } )
+  testthat::local_mocked_bindings(dir.create = function(new_dir, ...) { },
+                                  .env = baseenv())
   empty_config <- "data/config/tests_config_handling_0d/tests_run/config_empty.R"
   dirs <- evaluate_promise(prepare_directories(config_file = empty_config))
   expect_known_output(create_input_config(empty_config, dirs$result),
@@ -72,7 +76,8 @@ test_that("no user config provided, using default config" , {
 
 test_that("partial user config provided" , {
   skip("skip until devtools updated in docker image")
-  local_mock(dir.create = function(new_dir, ...) { } )
+  testthat::local_mocked_bindings(dir.create = function(new_dir, ...) { },
+                                  .env = baseenv())
   empty_config <- "data/config/tests_config_handling_0d/tests_run/config_partial.R"
   dirs <- evaluate_promise(prepare_directories(config_file = empty_config))
   expect_known_output(create_input_config(empty_config, dirs$result),
@@ -82,7 +87,8 @@ test_that("partial user config provided" , {
 
 test_that("full user config provided" , {
   skip("skip until devtools updated in docker image")
-  local_mock(dir.create = function(new_dir, ...) { } )
+  testthat::local_mocked_bindings(dir.create = function(new_dir, ...) { },
+                                  .env = baseenv())
   empty_config <- "data/config/tests_config_handling_0d/tests_run/config_complete.R"
   dirs <- evaluate_promise(prepare_directories(config_file = empty_config))
   expect_known_output(create_input_config(empty_config, dirs$result),
@@ -92,7 +98,8 @@ test_that("full user config provided" , {
 
 test_that("user config provided with extra values" , {
   skip("skip until devtools updated in docker image")
-  local_mock(dir.create = function(new_dir, ...) { } )
+  testthat::local_mocked_bindings(dir.create = function(new_dir, ...) { },
+                                  .env = baseenv())
   empty_config <- "data/config/tests_config_handling_0d/tests_run/config_additional_user_values.R"
   dirs <- evaluate_promise(prepare_directories(config_file = empty_config))
   expect_known_output(create_input_config(empty_config, dirs$result),
