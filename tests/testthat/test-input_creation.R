@@ -1,12 +1,22 @@
 test_that("create_directories overwrite protection works", {
-  skip("can't mock file.exists")
+  # remove temporary skip added due to mocking issue
+  # testthat::skip("can't mock file.exists")
   # mocking base functions is no longer feasible, overwrite is not tested as it calls "unlink"
   new_dirs <- list()
-  testthat::local_mocked_bindings(dir.create = function(new_dir, ...){ new_dirs <<- append(new_dirs, new_dir)},
-                                  .env = baseenv())
+  testthat::local_mocked_bindings(
+    dir.create = function(new_dir, ...) {
+      new_dirs <<- append(new_dirs, new_dir)
+    },
+    .env = base::.BaseNamespaceEnv
+  )
+
   # test overwrite protection
-  testthat::local_mocked_bindings(file.exists = function(...){ return(TRUE)},
-                                  .env = baseenv())
+  testthat::local_mocked_bindings(
+    file.exists = function(...) {
+      return(TRUE)
+    },
+    .env = base::.BaseNamespaceEnv
+  )
   expect_error(create_directories("test", overwrite = FALSE, full_matrices = FALSE),
                "output directory already exists", fixed = TRUE)
 })
@@ -15,8 +25,12 @@ test_that("create_directories overwrite protection works", {
 test_that("create_directories works", {
   # mocking base functions is no longer feasible, overwrite is not tested as it calls "unlink"
   new_dirs <- list()
-  testthat::local_mocked_bindings(dir.create = function(new_dir, ...){ new_dirs <<- append(new_dirs, new_dir)},
-                                  .env = baseenv())
+  testthat::local_mocked_bindings(
+    dir.create = function(new_dir, ...) {
+      new_dirs <<- append(new_dirs, new_dir)
+    },
+    .env = base::.BaseNamespaceEnv
+  )
 
   create_directories("test", overwrite = FALSE, full_matrices = FALSE)
   expect_true("test" %in% new_dirs)
