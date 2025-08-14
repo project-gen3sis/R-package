@@ -139,6 +139,7 @@ run_simulation <- function(config = NA,
 
   #val$config$gen3sis$version <- "1.1"
   #val$config$gen3sis$nickname <- "Quintessenced"
+
   # #---------------------------------------------------------#
   # ###### ATTRIBUTE ANCESTOR DISTRIBUTION (simulation.R) #####
   # #---------------------------------------------------------#
@@ -193,6 +194,7 @@ run_simulation <- function(config = NA,
   if (verbose >= 1) {
     cat("--- Running simulation --- \n")
   }
+
   if(!val$data$space$geodynamic){
     val <- setup_distance_matrix(val$config, val$data, val$vars)
   }

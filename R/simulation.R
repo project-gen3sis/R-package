@@ -13,6 +13,7 @@
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_inputs <- function(config, data, vars) {
+  # browser()
   data[["inputs"]] <- list()
   spaces_rds <- readRDS(file.path(config$directories$input, "spaces.rds"))
   spaces <- spaces_rds$env # TODO correct cascade of names... attention to s i.e. space is contained in spaces

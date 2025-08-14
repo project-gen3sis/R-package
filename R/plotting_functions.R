@@ -5,7 +5,6 @@
 #' @param species a single species object
 #' @param space a space object
 #' @param col a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL   
-#' 
 #' @example inst/examples/plot_species_presence_help.R
 #' @return no return value, called for plot
 #' 
@@ -73,7 +72,7 @@ plot_space <- function(space, col = NULL) {
   if(is.null(col)){
     col <- color_richness(20)
   }
-  
+
   conditional_plot(title = "space",
                    space = space,
                    plot_fun = plot_multiple,

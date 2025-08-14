@@ -15,30 +15,30 @@ gen3sis is licensed under a [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0
 
 ### How to install
 
-gen3sis is avabaile on [CRAN](https://CRAN.R-project.org/package=gen3sis). You can install the latest CRAN release via
+<!---gen3sis is avabaile on [CRAN](https://CRAN.R-project.org/package=gen3sis). You can install the latest CRAN release via
 
 ```{r}
 install.packages("gen3sis")
 ```
-
-you can also install the latest development release from GitHub via 
+--->
+you can install the latest development release from GitHub via 
 
 ```{r}
-devtools::install_github(repo = "project-gen3sis/R-package", 
+devtools::install_github(repo = "ohagen/gen3sis_rf", 
   dependencies = TRUE, build_vignettes = TRUE)
 ```
 Below the status of the automatic CI R-CMD-check tests
 
-DEVELOPMENT [![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=development)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
+DEVELOPMENT [![R-CMD-check](https://github.com/ohagen/gen3sis_rf/actions/workflows/R-CMD-check.yaml/badge.svg?branch=development)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
 
-MASTER [![R-CMD-check](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml/badge.svg?branch=master)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
+MASTER [![R-CMD-check](https://github.com/ohagen/gen3sis_rf/actions/workflows/R-CMD-check.yaml/badge.svg?branch=master)](https://github.com/project-gen3sis/R-package/actions/workflows/R-CMD-check.yaml)
 ### How to use
 
 #### Run one simulation
 
 Load and run a simulation with the desired config and spaces. Exemple data is provided with the package
 ```{r}
-library("gen3sis")
+library("gen3sis2")
 
 datapath <- system.file(file.path("extdata", "WorldCenter"), package = "gen3sis")
 
@@ -61,7 +61,7 @@ plot_summary(sim)
 Make sure you have the latest gen3sis version
 ```{r}
 #print package version
-paste("gen3sis version:", packageVersion("gen3sis"))
+paste("gen3sis2 version:", packageVersion("gen3sis2"))
 ```
 
 ### How to contribute
@@ -69,10 +69,10 @@ The main branches of the gen3sis repo are:
 *	master
 *	development
 
-The master branch should always reflect the state of the current release of gen3sis on CRAN. The development branch contains the working additions/changes to the code that are to be included in the next release.
+The master branch should always reflect the state of the current release of gen3sis on CRAN (hopping for the best). The development branch contains the working additions/changes to the code that are to be included in the next release.
 You should not work on either of these branches directly. Rather, to make changes or work on a new feature, you should create a separate branch off the development branch. While working on your branch, frequently merge changes from development to stay up to date. Once your work is ready, and before you merge your branch into development, make sure to merge any changes from development and verify the code is compiling and tests are passing. Once these checks have been done, create a pull request to merge your branch into development. You can request reviewers for your pull request directly via GitHub. After your pull request is approved, or if it has not been reviewed within 30 days, it will be merged into development. 
 The branch hotfix-development exists for small (one commit only) changes that are not worth creating a new branch for (for instance, small bugfixes, readme or help files edits, etc.). A pull request can then be created to merge those changes into development.
-New features should never be merged directly into master. Only hotfixes to the current release may be merged into master. For hotfixes, create a separate branch from master, make the fix and verify it, and then merge the hotfix branch into master and development. Similarly to above, the hotfix-master branch exists for small (one commit only) bugfixes to the current release. A pull request can then be created to merge those changes into master and development.
+New features should never be merged directly into master. Only hotfixes to the current release may be merged into development. For hotfixes, create a separate branch from development, make the fix and verify it, and then merge the hotfix branch into development. A pull request can then be created to merge the full changes from master changes into development before release. Only then code version should be updated.
 The gen3sis workflow is inspired by the RevBayes workflow: https://revbayes.github.io/developer
 
 
