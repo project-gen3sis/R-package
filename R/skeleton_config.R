@@ -2,10 +2,8 @@
 
 # DO NOT USE ' IN THIS CONFIG
 
-#' empty skeleton config
-#' 
-#' @return compiled string
-#' @noRd
+# empty skeleton config
+# internal helper: returns a single compiled string used by write_config_skeleton()
 
 skeleton_config <- function(){
 paste0(c('

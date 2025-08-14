@@ -38,11 +38,10 @@
 #' plot_richness(species_t_150, landscape_t_150)   
 #'
 #' }
-#' @docType package
 #' @useDynLib gen3sis, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @import Matrix
-NULL
+"_PACKAGE"
 
 
 #' Run a simulation in gen3sis and return a summary object possibly saving outputs and plots to the output folder 

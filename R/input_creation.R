@@ -277,9 +277,9 @@ stack_landscapes <- function(landscapes, i) {
 #' @noRd
 create_directories <- function(directory, overwrite, full_matrices) {
   # check directory
-  if(base::file.exists(directory) && !overwrite) {
+  if(file.exists(directory) && !overwrite) {
     stop("output directory already exists")
-  } else if(base::file.exists(directory) && overwrite) {
+  } else if(file.exists(directory) && overwrite) {
     unlink(directory, recursive=TRUE)
   }
   # create directories
