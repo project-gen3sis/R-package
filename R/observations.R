@@ -102,7 +102,7 @@ save_landscape <- function() {
   data <- dynGet("data")
   vars <-  dynGet("vars")
   landscape_file = file.path(config$directories$output, "landscapes", paste0("landscape_t_", vars$ti, ".rds"))
-  if( !file.exists(landscape_file)){
+  if( !base::file.exists(landscape_file)){
     dir.create(file.path(config$directories$output, "landscapes"), showWarnings=FALSE, recursive=TRUE)
     landscape <- data$landscape
     saveRDS(object = landscape, file = landscape_file)

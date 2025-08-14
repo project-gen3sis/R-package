@@ -2,6 +2,7 @@
 % Please edit documentation in R/gen3sis_main.R
 \docType{package}
 \name{gen3sis}
+\alias{gen3sis-package}
 \alias{gen3sis}
 \title{gen3sis: General Engine for Eco-Evolutionary Simulations}
 \description{
@@ -42,10 +43,32 @@ plot_richness(species_t_150, landscape_t_150)
 }
 }
 \references{
-O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2020). gen3sis: the GENeral Engine for Eco-Evolutionary SImulationS on the origins of biodiversity. (in prep)
+O. Hagen, B. Flück, F. Fopp, J.S. Cabral, F. Hartig, M. Pontarp, T.F. Rangel, L. Pellissier. (2021). gen3sis: A general engine for eco-evolutionary simulations of the processes that shape Earth’s biodiversity. PLoS biology
 }
 \seealso{
 \code{\link{create_input_config}}   \code{\link{create_input_landscape}}  \code{\link{run_simulation}}  \code{\link{plot_summary}}
+}
+\author{
+\strong{Maintainer}: Oskar Hagen \email{oskar@hagen.bio} (Landscape Ecology, WSL and ETH Zürich, Switzerland)
+
+Authors:
+\itemize{
+  \item Benjamin Flück \email{benjamin.flueck@alumni.ethz.ch} (Landscape Ecology, WSL and ETH Zürich, Switzerland)
+  \item Fabian Fopp \email{fabian.fopp@usys.ethz.ch} (Landscape Ecology, WSL and ETH Zürich, Switzerland)
+  \item Juliano S. Cabral \email{juliano.sarmento_cabral@uni-wuerzburg.de} (Ecosystem Modeling, Center for Computational and Theoretical Biology, University of Würzburg, Würzburg, Germany)
+  \item Florian Hartig \email{florian.hartig@biologie.uni-regensburg.de} (Theoretical Ecology, University of Regensburg, Regensburg, Germany)
+  \item Mikael Pontarp \email{mikael.pontarp@biol.lu.se} (Department of Biology, Lund University, Lund, Sweden)
+  \item Thiago F. Rangel \email{rangel.tf@gmail.com} (Department of Ecology, Universidade Federal de Goiás, Goiás, Brazil)
+  \item Loïc Pellissier \email{loic.pellissier@usys.ethz.ch} (Landscape Ecology, WSL and ETH Zürich, Switzerland) [thesis advisor]
+}
+
+Other contributors:
+\itemize{
+  \item ETH Zürich [copyright holder]
+  \item Charles Novaes de Santana \email{charles.novaes@usys.ethz.ch} (Landscape Ecology, WSL and ETH Zürich, Switzerland) [contributor]
+  \item Theo Gaboriau \email{theo.gaboriau@unil.ch} (Depatment of Computational Biology, Lausanne University, Switzerland) [contributor]
+}
+
 }
 \concept{gen3sis modeling eco-evolutionary macroevolution macroecology mechanisms}
 \keyword{IO}

@@ -21,7 +21,7 @@ prepare_directories <- function(config_file = NA,
     stop("no config file provided!")
   } else if (is(config_file,"gen3sis_config")){
     print("config found: using config object")
-  } else if(!file.exists(config_file)){
+  } else if(!base::file.exists(config_file)){
     stop("config file does not exist!")
   } else {
     print(paste("config found:", config_file))
@@ -95,7 +95,7 @@ create_input_config <- function(config_file = NA) {
   if(is.na(config_file)) {
     # return empty config
     return(invisible(new_config))
-  } else if( !file.exists(config_file)){
+  } else if( !base::file.exists(config_file)){
     # config file does not exist, abort
     stop(paste("config file:", config_file, "does not exist") )
   } else {
@@ -267,7 +267,7 @@ complete_config <- function(config) {
 #' @example inst/examples/write_config_skeleton_help.R
 #' @export
 write_config_skeleton <- function(file_path = "./config_skeleton.R", overwrite = FALSE) {
-  if( file.exists(file_path) & !overwrite) {
+  if( base::file.exists(file_path) & !overwrite) {
     warning(file_path, "exists, file not written")
     return(FALSE)
   } else {
