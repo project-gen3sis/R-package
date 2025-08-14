@@ -312,7 +312,7 @@ setup_distance_matrix <- function(config, data, vars) {
 update_extinction_times <- function(config, data, vars) {
   for (sp in data$all_species) {
     if(length(sp[["abundance"]])) {
-      data$phy$"Extinction.Time"[as.integer(sp[["id"]])] <- vars$ti
+      data$phy$"Extinction.Time"[as.integer(sp[["id"]])] <- vars$ti - 1
     }
   }
   return(list(config = config, data = data, vars = vars))

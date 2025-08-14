@@ -1,7 +1,7 @@
 Package: gen3sis
 Type: Package
 Title: General Engine for Eco-Evolutionary Simulations
-Version: 1.5.11
+Version: 1.5.14
 Date: 2023-11-21
 Authors@R: c(
   person("ETH Zürich", role=c("cph")),

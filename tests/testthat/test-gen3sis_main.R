@@ -17,4 +17,5 @@ test_that("run_simulation works", {
   ref_summary <- readRDS(file.path(datapath, "reference_saves", "sgen3sis_summary.rds"))
   expect_true(all.equal(ref_summary, s$summary))
   expect_true(tools::md5sum(file.path(s$parameters$directories$output, "phy.nex")) == tools::md5sum(file.path(datapath, "reference_saves", "phy.nex")))
+  expect_true(tools::md5sum(file.path(s$parameters$directories$output, "phy.txt")) == tools::md5sum(file.path(datapath, "reference_saves", "phy.txt")))
 })
