@@ -7,7 +7,6 @@ test_that("create_directories overwrite protection works", {
     dir.create = function(new_dir, ...) {
       new_dirs <<- append(new_dirs, new_dir)
     },
-    .env = base::.BaseNamespaceEnv
   )
 
   # test overwrite protection
@@ -15,7 +14,6 @@ test_that("create_directories overwrite protection works", {
     file.exists = function(...) {
       return(TRUE)
     },
-    .env = base::.BaseNamespaceEnv
   )
   expect_error(create_directories("test", overwrite = FALSE, full_matrices = FALSE),
                "output directory already exists", fixed = TRUE)

@@ -276,7 +276,7 @@ setup_distance_matrix <- function(config, data, vars) {
   matrix_file <- file.path(config$directories$input,
                           "distances_full",
                           paste0("distances_full_", vars$ti, ".rds"))
-  if(file.exists(matrix_file)) {
+  if(base::file.exists(matrix_file)) {
     distance_matrix <- readRDS(file = matrix_file)
   } else {
     neighbour_file <- file.path(config$directories$input,
