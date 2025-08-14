@@ -330,7 +330,6 @@ plot_space_overview.points <- function(env_names, env_vars, breaks, x_breaks, y_
 #' 
 #' @export
 plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
-  browser()
   oldpar <- par(no.readonly = TRUE)
   on.exit(par(oldpar))
   
@@ -703,7 +702,7 @@ plot_single.gen3sis_space_raster <- function(values, space, title, no_data = 0, 
         name = title,
         na.translate = F
       ) +
-      raster_plot_aesthetics(space, col, title = paste0(title, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetic
+      raster_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(title, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetic
   } else {
     # continuous, ggplot2 deals with the NA
     ggplot2::ggplot() +
@@ -712,7 +711,7 @@ plot_single.gen3sis_space_raster <- function(values, space, title, no_data = 0, 
         colors = color_richness(20),
         na.value = "transparent",
         name = title) +
-      raster_plot_aesthetics(space, col, title = paste0(title, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetic
+      raster_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(title, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetic
   } 
 }
 
