@@ -4,12 +4,14 @@
 \alias{plot_species_presence}
 \title{Plot a species' presence on a given space}
 \usage{
-plot_species_presence(species, space)
+plot_species_presence(species, space, col = NULL)
 }
 \arguments{
 \item{species}{a single species object}
 
 \item{space}{a space object}
+
+\item{col}{a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL}
 }
 \value{
 no return value, called for plot

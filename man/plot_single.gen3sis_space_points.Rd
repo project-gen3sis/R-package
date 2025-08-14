@@ -15,7 +15,7 @@
 
 \item{no_data}{what value should be used for missing values in values}
 
-\item{col}{corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot}
+\item{col}{a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL}
 
 \item{legend}{corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot}
 }

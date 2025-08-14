@@ -13,6 +13,8 @@ this will result in ncol(values) raster plots.}
 \item{space}{a space to plot the values onto}
 
 \item{no_data}{what value should be used for missing data present in the values parameter}
+
+\item{col}{a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL}
 }
 \value{
 no return value, called for plot

@@ -4,12 +4,14 @@
 \alias{plot_richness}
 \title{Plot the richness of the given list of species on a space}
 \usage{
-plot_richness(species_list, space)
+plot_richness(species_list, space, col = NULL)
 }
 \arguments{
 \item{species_list}{a list of species to use in the richness calculation}
 
 \item{space}{a corresponding space object}
+
+\item{col}{a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL}
 }
 \value{
 no return value, called for plot

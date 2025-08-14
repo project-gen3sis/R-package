@@ -4,13 +4,15 @@
 \alias{plot_multiple.gen3sis_space_raster}
 \title{Plot a set of values onto a given space}
 \usage{
-\method{plot_multiple}{gen3sis_space_raster}(values, space, no_data = 0)
+\method{plot_multiple}{gen3sis_space_raster}(values, space, col, no_data = 0)
 }
 \arguments{
 \item{values}{a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
 this will result in ncol(values) raster plots.}
 
 \item{space}{a space to plot the values onto}
+
+\item{col}{a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL}
 
 \item{no_data}{what value should be used for missing data present in the values parameter}
 }
