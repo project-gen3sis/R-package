@@ -65,15 +65,11 @@ paste("gen3sis2 version:", packageVersion("gen3sis2"))
 ```
 
 ### How to contribute
-The main branches of the gen3sis repo are:
-*	master
-*	development
 
-The master branch should always reflect the state of the current release of gen3sis on CRAN (hopping for the best). The development branch contains the working additions/changes to the code that are to be included in the next release.
-You should not work on either of these branches directly. Rather, to make changes or work on a new feature, you should create a separate branch off the development branch. While working on your branch, frequently merge changes from development to stay up to date. Once your work is ready, and before you merge your branch into development, make sure to merge any changes from development and verify the code is compiling and tests are passing. Once these checks have been done, create a pull request to merge your branch into development. You can request reviewers for your pull request directly via GitHub. After your pull request is approved, or if it has not been reviewed within 30 days, it will be merged into development. 
-The branch hotfix-development exists for small (one commit only) changes that are not worth creating a new branch for (for instance, small bugfixes, readme or help files edits, etc.). A pull request can then be created to merge those changes into development.
-New features should never be merged directly into master. Only hotfixes to the current release may be merged into development. For hotfixes, create a separate branch from development, make the fix and verify it, and then merge the hotfix branch into development. A pull request can then be created to merge the full changes from master changes into development before release. Only then code version should be updated.
-The gen3sis workflow is inspired by the RevBayes workflow: https://revbayes.github.io/developer
+Great that you are considering contributing! We welcome contributions from the community, whether they are bug fixes, new features, documentation improvements, or anything else that can help improve the package. Feel free to also reach out over e-mail to discuss ideas.
+For guidelines on contributing to this project, please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file. In short, the main branches of this repo are:
+* **master** – reflects the current CRAN release (if at all). Only hotfixes or release-ready changes are merged here, typically just before CRAN submission.
+* **development** – serves as the main working branch. All new features, improvements, and fixes should be merged here from separate feature or bugfix branches.
 
 
 ### Credits
