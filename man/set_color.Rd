@@ -7,7 +7,7 @@
 set_color(
   values,
   colfun = color_richness,
-  zero_col = "navajowhite3",
+  zero_col = "navajowhite",
   type = "raster"
 )
 }
@@ -19,7 +19,7 @@ consider using color_richness_CVDCBP for color-blind safe colors}
 
 \item{zero_col}{a color to use for zero values, default is "navajowhite3"}
 
-\item{type}{a string, see \code{\link{check_spaces}} for options or use \code{check_spaces()$type}}
+\item{type}{a string, see \code{\link{check_spaces}} for options or use \code{check_spaces()$type} # TODO deprecated}
 }
 \value{
 if type is "raster" the function returns a color scale, if type is "points" the function returns a vector of colors

@@ -206,7 +206,6 @@ init_simulation <- function(config, data, vars) {
 #' @return the general vals(config, data, vars) list
 #' @noRd
 setup_space <- function(config, data, vars) {
-  #browser()
   n_total_steps <- length(data[["inputs"]][["timesteps"]])
   total_steps_zerobase <- (n_total_steps-1):0
   index <- which(total_steps_zerobase==vars$ti) #gen3sis v1 : vars$ti + 1

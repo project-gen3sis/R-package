@@ -4,25 +4,30 @@
 #'
 #' @param species a single species object
 #' @param space a space object
+#' @param col a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL   
 #' @example inst/examples/plot_species_presence_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_species_presence <- function(species, space) {
+plot_species_presence <- function(species, space, col=NULL) {
   #presence <- species[["abundance"]]
   #presence[] <- 1
   #get all locations
   all_presence <- space[["coordinates"]][,1, drop=T]
   all_presence[] <- 0
   all_presence[names(species[["abundance"]])] <- 1
-  rc <- set_color(all_presence, type=space$`type`)
+  
+  if(is.null(col)){
+    col <- set_color(all_presence, type=space$`type`)
+  }
+  
   conditional_plot(paste0("species_presence_", species$id),
                    space,
                    plot_single,
                    all_presence,
                    space,
                    paste("Species", species[["id"]]),
-                   col=rc)
+                   col=col)
 }
 
 
@@ -30,67 +35,284 @@ plot_species_presence <- function(species, space) {
 #'
 #' @param species a single species object
 #' @param space a space object
+#' @param col a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL
+#' 
 #' @example inst/examples/plot_species_abundance_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_species_abundance <- function(species, space) {
+plot_species_abundance <- function(species, space, col = NULL) {
   all_presence <- space[["coordinates"]][,1, drop=T]
   all_presence[] <- 0
   all_presence[names(species[["abundance"]])] <- species[["abundance"]]
-  rc <- set_color(all_presence, type=space$`type`)
+  
+  if(is.null(col)){
+    col <- set_color(all_presence, type=space$`type`)
+  }
+  
   conditional_plot(paste0("species_abundance_", species$id),
                    space,
                    plot_single,
                    all_presence,
                    space,
                    paste("Abundance Species", species[["id"]]),
-                   col=rc)
+                   col=col)
 }
-
-
-
 
 #' Plot the environment variable of a given space
 #'
 #' @param space the gen3sis_space to plot the environment from
+#' @param col a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL
+#' 
 #' @return no return value, called for plot
 #'
 #' @export
-plot_space <- function(space) {
+plot_space <- function(space, col = NULL) {
+  
+  if(is.null(col)){
+    col <- color_richness(20)
+  }
+
   conditional_plot(title = "space",
                    space = space,
                    plot_fun = plot_multiple,
                    space[["environment"]],
-                   space)
+                   space,
+                   col)
 }
 
 
 #' Plot the outline of a given space over time
 #'
+#' @param breaks numeric. A vector containing time slices to plot. If NULL, the older and the most recent time-steps will be used. Default is NULL
 #' @param space the input space to be plotted
-#' @param slices the amount of slices though time between start and end (default value is 2).
-#' @param start_end_times the stating and ending times of the simulation (default is NULL, takes the oldest and most recent available)
+#' @param env_names character. A vector containing variable names to plot
+#'
+#' @importFrom ggplot2 ggplot scale_fill_gradientn scale_x_continuous scale_y_continuous theme_bw theme element_text element_line labs geom_sf aes element_blank scale_color_gradientn
+#' @importFrom h3jsr point_to_cell cell_to_polygon
+#' @importFrom patchwork wrap_plots plot_annotation wrap_elements
+#' @importFrom scales alpha
+#' @importFrom sf st_as_sf st_sf st_geometry
+#' @importFrom terra rast
+#' @importFrom tidyterra geom_spatraster
+#' 
 #' @return no return value, called for plot
 #'
 #' @export
-plot_space_overview <- function(space, slices=2, start_end_times=NULL) {
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
-  space <- space[[1]] # takes only the first one
-  if (is.null(start_end_times)){ # takes last and first time-steps
-    start_end_times <- which(colnames(space)%in%colnames(space)[c(3,ncol(space))])
+plot_space_overview <- function(space, env_names = NULL, breaks = NULL) {
+  # get the slices
+  if(is.null(breaks)) {
+    start_time <- space$meta$duration$from
+    end_time <- space$meta$duration$to
+    breaks <- c(start_time, end_time)
+  } 
+  
+  # get the time unit
+  unit <- space$meta$duration$unit
+  
+  # construct the breaks
+  breaks <- paste0(breaks,unit)
+    
+  # breaks for x and y axis
+  x_breaks <- seq(space$meta$area$extent[["xmin"]],space$meta$area$extent[["xmax"]], length.out = 7)
+  y_breaks <- seq(space$meta$area$extent[["ymin"]],space$meta$area$extent[["ymax"]], length.out = 7)
+  
+  # gets the spaces type and environmental variables
+  space_type <- space$meta$type
+  env_vars <- space$env
+  
+  # if no variable was defined, take all of them
+  if(is.null(env_names)) {
+    env_names <- names(env_vars)
   }
   
-  times=rev(round(seq(from=start_end_times[1], to=start_end_times[2], length.out = slices+2  ),0))
-  par(mfrow=c(1,length(times)))
-  for (times_i in 1:length(times)){
-    # times_i <- 1
-    plot(rasterFromXYZ(space[,c(1,2,times[times_i])]), col="black", 
-         axes=FALSE,legend=FALSE, tck = 0, main=colnames(space)[times[times_i]], line=-3)
+  if (space_type == "raster") {
+    plot_space_overview.raster(env_names, env_vars, breaks, x_breaks, y_breaks)
+  } else if (space_type == "h3") {
+    plot_space_overview.h3(env_names, env_vars, breaks, x_breaks, y_breaks)
+  } else if (space_type == "points") {
+    plot_space_overview.points(env_names, env_vars, breaks, x_breaks, y_breaks)
   }
 }
 
+#' Method-like function of plot_space_overview for raster spaces
+#'
+#' @param env_names character. A vector with variable names to include in plot.
+#' @param env_vars matrix. A matrix containing the variables to plot.
+#' @param breaks numeric. A vector containing time slices to plot. If NULL, the older and the most recent time-steps will be used. Default is NULL
+#' @param x_breaks numeric. Break points of the x axis. Aesthetic only. 
+#' @param y_breaks numeric. Break points of the y axis. Aesthetic only.
+#'
+#' @returns no return value, called for plot
+#' @noRd
+plot_space_overview.raster <- function(env_names, env_vars, breaks, x_breaks, y_breaks){
+  # construct a plot for each timestep and variable
+  plot_list <- lapply(env_names, function(vari){
+    
+    # Creates a matrix with coordinates and values
+    vari_mtx <- env_vars[[vari]][,c("x","y",breaks)]
+    temp_ras <- terra::rast(vari_mtx, type="xyz")
+    
+    # plot for each timestep
+    plots <- lapply(names(temp_ras), function(v) {
+      ggplot2::ggplot() +
+        tidyterra::geom_spatraster(data = temp_ras[[v]]) +
+        ggplot2::scale_fill_gradientn(
+          colors = color_richness(20),
+          name = NULL,
+          na.value = "transparent") +
+        raster_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(v))
+    })
+    
+    # wrap the each timestep plot and name them
+    plot_group <- patchwork::wrap_plots(plots) +
+      patchwork::plot_annotation(
+        title = vari,
+        theme = ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)))
+    
+    # unite the plots in a single block
+    patchwork::wrap_elements(full = plot_group)
+  })
+  
+  # construct the final plot
+  patchwork::wrap_plots(plot_list, ncol = 1)
+}
+
+#' Method-like function of plot_space_overview for h3 spaces
+#'
+#' @param env_names character. A vector with variable names to include in plot.
+#' @param env_vars matrix. A matrix containing the variables to plot.
+#' @param breaks numeric. A vector containing time slices to plot. If NULL, the older and the most recent time-steps will be used. Default is NULL
+#' @param x_breaks numeric. Break points of the x axis. Aesthetic only. 
+#' @param y_breaks numeric. Break points of the y axis. Aesthetic only.
+#'
+#' @returns no return value, called for plot
+#' @noRd
+plot_space_overview.h3 <- function(env_names, env_vars, breaks, x_breaks, y_breaks){
+  # construct a plot for each timestep and variable
+  plot_list <- lapply(env_names, function(vari){
+    # Creates a matrix with coordinates and values
+    vari_mtx <- env_vars[[vari]]
+    coords <- vari_mtx[,c("x","y")]
+    env_vars_values <- vari_mtx[,breaks]
+    
+    # Convert to points
+    env_points <- sf::st_as_sf(as.data.frame(coords), coords = c("x", "y"), crs = 4326)
+    
+    # and extract the h3 cell indexes
+    env_cells <- h3jsr::point_to_cell(env_points, space$meta$type_spec$res)
+    polygons <- h3jsr::cell_to_polygon(env_cells)
+    
+    # a polygon with geometry and values
+    polygons_sf <- sf::st_sf(
+      value = env_vars_values,
+      geometry = polygons
+    )
+    
+    names(polygons_sf) <- gsub("value\\.","",names(polygons_sf))
+    
+    # convert to long format
+    long_poly <- lapply(colnames(env_vars_values), function(time_step){
+      temp_poly <- polygons_sf
+      temp_poly$time_step <- time_step
+      temp_poly$value <- temp_poly[[time_step]]
+      temp_poly
+    }) 
+    
+    long_poly <- do.call(rbind, long_poly)
+    long_poly <- long_poly[,c("time_step","value")]
+    
+    # plot for each timestep
+    plots <- lapply(unique(long_poly$time_step), function(v) {
+      temp_polygons <- long_poly[long_poly$time_step == v, ] |> na.omit()
+      
+      ggplot2::ggplot(temp_polygons) +
+        ggplot2::geom_sf(ggplot2::aes(fill = value), color = NA) +
+        ggplot2::scale_fill_gradientn(
+          colors = color_richness(20),
+          name = NULL) +
+        sf_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(v))
+    })
+    
+    # wrap the plots and name them
+    plot_group <- patchwork::wrap_plots(plots) +
+      patchwork::plot_annotation(
+        title = vari,
+        theme = ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)))
+    
+    # creates a block of plot elements
+    patchwork::wrap_elements(full = plot_group)
+  })
+  
+  # construct the final plot
+  patchwork::wrap_plots(plot_list, ncol = 1)
+}
+
+#' Method-like function of plot_space_overview for points spaces
+#'
+#' @param env_names character. A vector with variable names to include in plot.
+#' @param env_vars matrix. A matrix containing the variables to plot.
+#' @param breaks numeric. A vector containing time slices to plot. If NULL, the older and the most recent time-steps will be used. Default is NULL
+#' @param x_breaks numeric. Break points of the x axis. Aesthetic only. 
+#' @param y_breaks numeric. Break points of the y axis. Aesthetic only.
+#'
+#' @returns no return value, called for plot
+#' @noRd
+plot_space_overview.points <- function(env_names, env_vars, breaks, x_breaks, y_breaks){
+  # construct a plot for each timestep and variable
+  plot_list <- lapply(env_names, function(vari){
+    # Creates a matrix with coordinates and values
+    vari_mtx <- env_vars[[vari]]
+    coords <- vari_mtx[,c("x","y")]
+    env_vars_values <- vari_mtx[,breaks]
+    
+    # Convert to points
+    env_points <- sf::st_as_sf(as.data.frame(coords), coords = c("x", "y"), crs = 4326)
+    
+    # creates a sf with point geometry
+    points_sf <- sf::st_sf(
+      value = env_vars_values,
+      geometry = sf::st_geometry(env_points)
+    )
+    
+    names(points_sf) <- gsub("value\\.","",names(points_sf))
+    
+    # convert to long format
+    long_point <- lapply(colnames(env_vars_values), function(time_step){
+      long_point <- points_sf
+      long_point$time_step <- time_step
+      long_point$value <- long_point[[time_step]]
+      long_point
+    }) 
+    
+    long_point <- do.call(rbind, long_point)
+    long_point <- long_point[,c("time_step","value")]
+    
+    # plots for each timestep
+    plots <- lapply(unique(long_point$time_step), function(v) {
+      temp_points <- long_point[long_point$time_step == v, ] |> na.omit()
+      
+      ggplot2::ggplot(temp_points) +
+        ggplot2::geom_sf(ggplot2::aes(color = value)) +
+        ggplot2::scale_color_gradientn(
+          colors = color_richness(20),
+          name = NULL) +
+        sf_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(v))
+    })
+    
+    # wrap and name
+    plot_group <- patchwork::wrap_plots(plots) +
+      patchwork::plot_annotation(
+        title = vari,
+        theme = ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)))
+    
+    # creates a block of plot elements
+    patchwork::wrap_elements(full = plot_group)
+  })
+  
+  # construct the final plot
+  patchwork::wrap_plots(plot_list, ncol = 1)
+}
 
 #' Plot simulation default summary object
 #'
@@ -220,28 +442,30 @@ plot_summary <- function(output, summary_title=NULL, summary_legend=NULL) {
   }
 }
 
-
-
-
 #' Plot the richness of the given list of species on a space
 #'
 #' @param species_list a list of species to use in the richness calculation
 #' @param space a corresponding space object
+#' @param col a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL
 #' @example inst/examples/plot_richness_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
-plot_richness <- function(species_list, space) {
+plot_richness <- function(species_list, space, col = NULL) {
   richness <- get_geo_richness(species_list, space)
   #attribute color
-  rc <- set_color(richness, type=space$`type`)
+
+  if(is.null(col)){
+    col <- set_color(richness, type=space$`type`)
+  }
+  
   conditional_plot("Richness",
                    space,
                    plot_single,
                    richness,
                    space,
                    "richness",
-                   col=rc)
+                   col=col)
 }
 
 
@@ -250,11 +474,11 @@ plot_richness <- function(species_list, space) {
 #' @param colfun a color function to use, default is color_richness, 
 #' consider using color_richness_CVDCBP for color-blind safe colors
 #' @param zero_col a color to use for zero values, default is "navajowhite3"
-#' @param type a string, see \code{\link{check_spaces}} for options or use \code{check_spaces()$type}
+#' @param type a string, see \code{\link{check_spaces}} for options or use \code{check_spaces()$type} # TODO deprecated
 #' @return if type is "raster" the function returns a color scale, if type is "points" the function returns a vector of colors
 #' @export
 #' @example inst/examples/set_color_help.R
-set_color <- function(values, colfun=color_richness, zero_col="navajowhite3", type="raster"){
+set_color <- function(values, colfun=color_richness, zero_col="navajowhite", type="raster"){
   max_val <- max(values, na.rm=TRUE)
   min_val <- min(values, na.rm=TRUE)
   if (max_val==0){
@@ -265,13 +489,15 @@ set_color <- function(values, colfun=color_richness, zero_col="navajowhite3", ty
       rc <- c(zero_col, rc)
     }
   }
-  if (type%in%c("raster")){
-    return(rc)
-  } else {
-    cols_cut <- cut(values,length(rc))
-    colors <- rc[cols_cut]
-    return(colors)
-  }
+  
+  return(rc)
+  # if (type%in%c("raster")){
+  #   return(rc)
+  # } else {
+  #   cols_cut <- cut(values,length(rc))
+  #   colors <- rc[cols_cut]
+  #   return(colors)
+  # }
 }
 
 
@@ -288,53 +514,57 @@ set_color <- function(values, colfun=color_richness, zero_col="navajowhite3", ty
 plot_ranges <- function(species_list, space, disturb=0, max_sps=10) {
   disturb=abs(disturb)
   max_sps <- abs(max_sps)
-  #plot space
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
-  layout( matrix(c(1,1,2),nrow=1, byrow =TRUE)  )
-  #layout.show(2)
-  #par(mar=c(4,3,3,7), oma=c(0.1,0.8,0.3,0.8))
-  par(xpd = FALSE)
-  plot_single(1,space, title, no_data=0, col="navajowhite3", title="species ranges")
-  # plot_points_single(1, space, title, no_data = 0, col="navajowhite3", title="species ranges")
-  # plot_points(, main="species ranges", col=, asp = 1))
+
+  # Gets the plot base/background
+  base_plot <- plot_single(1, space, title, no_data=0, col="navajowhite", title="species ranges")
+  
+  # compute the species to plot
   n_species <- length(species_list)
   alive <- unlist(lapply(species_list, function(x){length(x$abundance)}))
   alive <- alive>0
-  #visual combinations
-  sp_cols <- c("#FF0000", "#FF4D00", "#FFE500", 
-               "#CCFF00", "#80FF00", "#33FF00", 
-               "#00FF19", "#00FF66", "#00FFB2", 
-               "#00FFFF", "#00B3FF", "#0066FF", 
-               "#001AFF", "#3300FF", "#7F00FF", 
-               "#CC00FF", "#FF00E6", "#FF0099", 
-               "#FF004D") #FIX
-  sp_pchs <- 1:6 #FIX
   
-  #limit plot
   omitted <- 0
   n_sps_max <- sum(alive)
   if (n_sps_max>max_sps){
     omitted <- n_sps_max-max_sps
     n_sps_max <- max_sps
   }
-  # set to case
-  cols <- rep(sp_cols, length.out=n_species)
-  pchs <- rep(sp_pchs, length.out=n_species)
-  par(xpd = TRUE)
-  for (i in 1:n_sps_max){
-    sp_i <- (1:n_species)[alive][i]
-    img <- cbind(space[["coordinates"]][names(species_list[[sp_i]]$abundance),,drop=FALSE], species_list[[sp_i]]$id)
-    df <- as.data.frame(img)
-    plot_diturbance <- sample(seq(-disturb, disturb, by=0.01), 1)
-    points(x=as.numeric(df$x)+plot_diturbance, y=as.numeric(df$y)+plot_diturbance, pch=pchs[sp_i], col=cols[sp_i])
-  }
-  # legend plotted species
-  # empty plot
-  plot(1, type="n", xlab="", ylab="", xlim=c(0, 10), ylim=c(0, 10), axes=FALSE, ann=FALSE)
-  # legend
-  par(xpd=TRUE)
-  legend("top", inset=c(-0.15,0), title=paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]')), legend=(1:n_species)[alive][1:n_sps_max], pch=pchs[alive][1:n_sps_max], col=cols[alive][1:n_sps_max], bty="n")
+  
+  # construct the legend
+  legend_title <- paste(n_sps_max, "species", paste0("\n[", omitted, ' omitted]'))
+  
+  # get species coordinates
+  spp_list <- lapply(1:n_sps_max, function(i){
+    sp_coords <- space[["coordinates"]][names(species_list[[i]][["abundance"]]),]
+    sp_coords <- cbind(sp_coords, rep(i, nrow(sp_coords)))
+    colnames(sp_coords) <- c("x","y","shape")
+    sp_coords <- as.data.frame(sp_coords)
+    sp_coords$shape <- as.character(sp_coords$shape)
+    sp_coords
+  })
+  spp_list <- do.call(rbind, spp_list)
+  
+  # get the colors and names
+  shape_colors <- color_richness(n_sps_max)
+  names(shape_colors) <- unique(spp_list$shape)
+  
+  # plot
+  base_plot + # background
+  ggplot2::geom_jitter( # the species symbols (shape and color)
+    data = spp_list,
+    mapping = ggplot2::aes(x = x, y = y, shape = shape, color = shape),
+    size = 3,
+    width = disturb,
+    height = disturb
+  ) +
+  ggplot2::scale_color_manual(values = shape_colors) + # the color legend
+  ggplot2::guides(fill = "none") + # clean previous legend
+  ggplot2::labs( # set labels
+    shape = legend_title, ## legend
+    color = legend_title, ## legend
+    x = ggplot2::element_blank(), ## nothing in x axis
+    y = ggplot2::element_blank() ## nothing in y axis 
+  )
 }
 
 
@@ -347,6 +577,8 @@ plot_ranges <- function(species_list, space, disturb=0, max_sps=10) {
 #'
 #' @importFrom grDevices png
 #' @importFrom methods is
+#' @importFrom ggplot2 ggsave
+#' 
 #' @noRd
 conditional_plot <- function(title, space, plot_fun, ...){
   fun_calls <- sys.calls()
@@ -355,15 +587,30 @@ conditional_plot <- function(title, space, plot_fun, ...){
     config <- dynGet("config")
     plot_folder <- file.path(config$directories$output, "plots", title)
     dir.create(plot_folder, showWarnings=FALSE, recursive=TRUE)
-    file_name <- file.path(plot_folder, paste0(title, "_t_", space$id, ".png"))
-    png(file_name)
-    plot_fun(...)
-    dev.off()
+    file_name <- file.path(plot_folder, paste0(title, "_t_", space$id, ".svg"))
+    
+    # svg(file_name)
+    # p <- plot_fun(...)
+    # p
+    # dev.off()
+    
+    p <- plot_fun(...)
+    # ggplot2::ggsave(filename = file_name,
+    #                 plot = p,
+    #                 width = 1400,
+    #                 height = 1080,
+    #                 units = "px",
+    #                 dpi = 300)
+    ratio <- (space$extent[["ymax"]] - space$extent[["ymin"]]) / (space$extent[["xmax"]] - space$extent[["xmin"]]) 
+    ggplot2::ggsave(filename = file_name,
+                    plot = p,
+                    width = (1400/(ratio)),
+                    height = 1080,
+                    units = "px",
+                    dpi = 300)
   }
   plot_fun(...)
 }
-
-
 
 # Generic plot single function
 plot_single <- function(x, ...) {
@@ -383,40 +630,157 @@ plot_single <- function(x, ...) {
 #' @param space a space to plot the values onto
 #' @param title a title string for resulting plot, the time information will be taken and appended from the space id
 #' @param no_data what value should be used for missing values in values
-#' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
+#' @param col a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL
 #' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
+#' 
+#' @importFrom ggplot2 ggplot scale_fill_manual scale_x_continuous scale_y_continuous theme_bw theme element_text element_line labs scale_fill_gradientn
+#' @importFrom scales alpha
+#' @importFrom terra rast extend ext values
+#' @importFrom tidyterra geom_spatraster
+#' 
 #' @example inst/examples/plot_single_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
 plot_single.gen3sis_space_raster <- function(values, space, title, no_data = 0, col, legend=TRUE) {
+  # creates a temporary raster with original extent
+  temp_ras <- terra::rast(xmin=space$extent[["xmin"]], 
+                          xmax=space$extent[["xmax"]],
+                          ymin=space$extent[["ymin"]],
+                          ymax=space$extent[["ymax"]],
+                          resolution = space$type_spec_res)
+  values(temp_ras) <- no_data
+
   img <- cbind(space[["coordinates"]], no_data)
   img[names(values), 3] <- values
-  ras <- terra::rast(img, type="xyz")
+  
+  temp_df <- merge(as.data.frame(temp_ras, xy=T), img, all.x=T)
+  temp_df <- temp_df[,-which(colnames(temp_df)==names(temp_ras)[1])]
+  
+  #ras <- terra::rast(img, type="xyz", resolution = space$type_spec_res)
+  # Release temporary raster object and free memory
+  rm(temp_ras) 
+  gc()
+  
+  # creates the final raster
+  ras <- terra::rast(temp_df)
+  
   # extend raster to space extent in order to avoid flickering when animating
   ras <- terra::extend(ras, terra::ext(space[["extent"]]), fill=NA)
-  terra::plot(ras, main=paste0(title, " ", space$timestep, " t_", space[["id"]]), col=col, legend=legend)
+  
+  # get the axis break points
+  x_breaks <- seq(space$extent[["xmin"]],space$extent[["xmax"]], length.out = 7)
+  y_breaks <- seq(space$extent[["ymin"]],space$extent[["ymax"]], length.out = 7)
+  
+  # test data nature
+  if (length(unique(values)) <= 10) {
+    # discrete, must be converted to factor and treat low values to deal with NA values
+    values_vec <- terra::values(ras) 
+    if ((max(values_vec, na.rm = T) - min(values_vec, na.rm = T)) < 1 &&
+        (max(values_vec, na.rm = T) != min(values_vec, na.rm = T))) {
+      while ((max(values_vec, na.rm = T) - min(values_vec, na.rm = T)) < 1) {
+        values_vec <- values_vec * 10
+      }
+    }
+    terra::values(ras) <- values_vec  
+    
+    # converting to factor
+    ras <- as.factor(ras)
+    lvl <- levels(ras)[[1]]
+    lvl$no_data <- c(unique(values) |> sort() |> as.character())
+    levels(ras) <- lvl
+    
+    col <- unique(col)
+    names(col) <- unique(values)
+
+    # the plot
+    ggplot2::ggplot() +
+      tidyterra::geom_spatraster(data = ras) + # to plot the raster
+      ggplot2::scale_fill_manual( # to construct the legend
+        values = col,
+        name = title,
+        na.translate = F
+      ) +
+      raster_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(title, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetic
+  } else {
+    # continuous, ggplot2 deals with the NA
+    ggplot2::ggplot() +
+      tidyterra::geom_spatraster(data = ras) + # to plot the raster
+      ggplot2::scale_fill_gradientn( # to construct the legend
+        colors = color_richness(20),
+        na.value = "transparent",
+        name = title) +
+      raster_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(title, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetic
+  } 
 }
 
-# TODO update documentation
 #' Plot a single set of values onto a given space
 #'
 #' @param values a named list of values, the names must correspond to cells in the space
 #' @param space a space to plot the values onto
 #' @param title a title string for resulting plot, the time information will be taken and appended from the space id
 #' @param no_data what value should be used for missing values in values
-#' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
+#' @param col a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL
 #' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
+#' 
+#' @importFrom ggplot2 ggplot geom_sf aes scale_fill_manual scale_x_continuous scale_y_continuous theme_bw theme element_text element_blank labs scale_fill_gradientn
+#' @importFrom h3jsr point_to_cell cell_to_polygon
+#' @importFrom sf st_as_sf st_wrap_dateline st_sf
+#' 
 #' @example inst/examples/plot_single_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
 plot_single.gen3sis_space_points <- function(values, space, title="", no_data = 0, col, legend=TRUE) {
-  plot(space[["coordinates"]], 
-       main=paste0(title, " ", space$timestep, " t_", space[["id"]]),
-       xlim=space[["extent"]][c("xmin","xmax")],
-       ylim=space[["extent"]][c("ymin","ymax")],
-       col=col, pch=20)
+  # construct the sf to plot
+  spatial_points <- sf::st_as_sf(as.data.frame(space$coordinates), coords = c("x", "y"))
+  
+  # get axis breaks
+  x_breaks <- seq(space$extent[["xmin"]],space$extent[["xmax"]], length.out = 7)
+  y_breaks <- seq(space$extent[["ymin"]],space$extent[["ymax"]], length.out = 7)
+  
+  # test data nature
+  if (length(unique(values)) <= 10) {
+    # discrete
+    # creates the sf
+    polygons_sf <- sf::st_sf(
+      value = as.factor(values), # converts to factor
+      geometry = sf::st_geometry(spatial_points)
+    )
+    
+    col <- unique(col)
+    names(col) <- unique(values)
+  
+    ggplot2::ggplot() +
+      ggplot2::geom_sf(data = polygons_sf, ggplot2::aes(color = value)) + # to plot the points
+      ggplot2::scale_color_manual( # to construct the legend
+        values = col,
+        name = title
+      ) +
+      sf_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(title, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetics
+  } else {
+    # continuous
+    # creates the sf
+    polygons_sf <- sf::st_sf(
+      value = values,
+      geometry = sf::st_geometry(spatial_points)
+    )
+    
+    ggplot2::ggplot() +
+      ggplot2::geom_sf(data = polygons_sf, ggplot2::aes(color = value)) + # to plot the points
+      ggplot2::scale_color_gradientn( # to construct the legend
+        colors = col,
+        name = ifelse(grepl("Abundance", title), "Individuals", title)
+      ) +
+      sf_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(title, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetics
+  } 
+  
+  ####
+  # plot(space[["coordinates"]], 
+  #      main=paste0(title, " ", space$timestep, " t_", space[["id"]]),
+  #      xlim=space[["extent"]][c("xmin","xmax")],
+  #      ylim=space[["extent"]][c("ymin","ymax")],
+  #      col=col, pch=20)
 }
 
 # TODO update documentation
@@ -428,15 +792,23 @@ plot_single.gen3sis_space_points <- function(values, space, title="", no_data = 
 #' @param no_data what value should be used for missing values in values
 #' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
 #' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
+#' 
+#' @importFrom ggplot2 ggplot geom_sf aes scale_color_manual scale_x_continuous scale_y_continuous theme_bw theme element_text element_blank labs scale_color_gradientn
+#' @importFrom sf st_as_sf st_sf st_geometry
+#' 
 #' @example inst/examples/plot_single_help.R
 #' @return no return value, called for plot
 #' 
 #' @export
 plot_single.gen3sis_space_h3 <- function(values, space, title="", no_data = 0, col, legend=TRUE) {
+  # get the points
   spatial_points <- sf::st_as_sf(as.data.frame(space$coordinates), coords = c("x", "y"), crs = 4326)
+  
+  # get the cells and polygons
   # TODO pass crs here, review and standardize crs handling and protocol
   cells <- h3jsr::point_to_cell(spatial_points, space$type_spec_res)
   polygons <- h3jsr::cell_to_polygon(cells)
+  
   #polygons <- h3jsr::cell_to_polygon(h3::geo_to_h3(space$coordinates, space$type_spec_res))
   # if the extent is global, wrap the dateline
   if (space$extent[["xmin"]] == -180 & space$extent[["xmax"]]==180){
@@ -445,12 +817,54 @@ plot_single.gen3sis_space_h3 <- function(values, space, title="", no_data = 0, c
   }
   # Add the values to the polygons for plotting
   # polygons$values <- values  # Add the values as an attribute to polygons
+
+  # plot(polygons_sf,
+  #      main=paste0(title, " ", space$timestep, " t_", space[["id"]]),
+  #      xlim=c(space$extent[1], space$extent[2]), ylim=c(space$extent[3], space$extent[4]), 
+  #      xlab="", ylab="", col=col, border=NA)
   
-  plot(polygons,
-       main=paste0(title, " ", space$timestep, " t_", space[["id"]]),
-       xlim=c(space$extent[1], space$extent[2]), ylim=c(space$extent[3], space$extent[4]), 
-       xlab="", ylab="", col=col, border=NA)
+  # background_grid <- h3jsr::cell_to_polygon(unique(unlist(h3jsr::get_children(h3jsr::get_res0(), space$type_spec_res))))
   
+  # get axis breaks
+  x_breaks <- seq(space$extent[["xmin"]],space$extent[["xmax"]], length.out = 7)
+  y_breaks <- seq(space$extent[["ymin"]],space$extent[["ymax"]], length.out = 7)
+  
+  # test data nature
+  if (length(unique(values)) <= 10) {
+    # discrete
+    # construct the polygons
+    polygons_sf <- sf::st_sf(
+      value = as.factor(values), # converts to factor
+      geometry = polygons
+    )
+  
+    names(col) <- unique(values)
+    col <- col[1:length(unique(values))]
+    
+    # plot
+    ggplot2::ggplot() +
+      ggplot2::geom_sf(data = polygons_sf, ggplot2::aes(fill = value)) + # to plot the polygons
+      ggplot2::scale_fill_manual( # to construct the legends
+        values = col,
+        name = title
+      ) +
+      sf_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(title, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetics
+  } else {
+    # continuous
+    # construct the sf
+    polygons_sf <- sf::st_sf(
+      value = values,
+      geometry = polygons
+    )
+    
+    # plot
+    ggplot2::ggplot() +
+      ggplot2::geom_sf(data = polygons_sf, ggplot2::aes(fill = value)) + # to plot the polygons
+      ggplot2::scale_fill_gradientn( # to construct the legend 
+        colors = col,
+        name = ifelse(grepl("Abundance", title), "Individuals", title)) +
+      sf_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(title, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetics
+  } 
 }
 
 # Generic plot multiple function 
@@ -471,11 +885,20 @@ plot_multiple <- function(x, ...) {
 #' @param values a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
 #' this will result in ncol(values) raster plots.
 #' @param space a space to plot the values onto
+#' @param col a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL
 #' @param no_data what value should be used for missing data present in the values parameter
+#' 
+#' @importFrom ggplot2 ggplot scale_fill_gradientn scale_x_continuous scale_y_continuous theme_bw theme element_text element_line labs
+#' @importFrom patchwork wrap_plots
+#' @importFrom scales alpha
+#' @importFrom terra rast ext
+#' @importFrom tidyterra geom_spatraster
+#' 
 #' @return no return value, called for plot
 #'
 #' @export
-plot_multiple.gen3sis_space_raster <- function(values, space, no_data = 0) {
+plot_multiple.gen3sis_space_raster <- function(values, space, col, no_data = 0) {
+  # reconstruct the raster
   img <- matrix(no_data,
                 nrow = nrow(space[["coordinates"]]),
                 ncol = ncol(values) + 2,
@@ -488,7 +911,24 @@ plot_multiple.gen3sis_space_raster <- function(values, space, no_data = 0) {
   ras <- terra::rast(img, type="xyz")
   terra::ext(ras) <- space$extent
   #terra::res(ras) <- space$type_spec_res
-  terra::plot(ras, main=paste0(colnames(values), " ", space$timestep, " ts ", space[["id"]]))
+  #terra::plot(ras, main=paste0(colnames(values), " ", space$timestep, " ts ", space[["id"]]))
+  
+  # get axis breaks
+  x_breaks <- seq(space$extent[["xmin"]],space$extent[["xmax"]], length.out = 7)
+  y_breaks <- seq(space$extent[["ymin"]],space$extent[["ymax"]], length.out = 7)
+  
+  # plot each variable at a time to maintain the legend and stores in a list
+  plots <- lapply(names(ras), function(v) {
+    ggplot2::ggplot() +
+      tidyterra::geom_spatraster(data = ras[[v]]) + # to plot the raster
+      ggplot2::scale_fill_gradientn( # to construct the legend
+        colors = color_richness(20),
+        na.value = "transparent",
+        name = v) +
+      sf_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(v, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetics
+  })
+  
+  patchwork::wrap_plots(plots) # wrap everything up and plot it 
 }
 
 #' Plot a set of values onto a given space
@@ -496,53 +936,61 @@ plot_multiple.gen3sis_space_raster <- function(values, space, no_data = 0) {
 #' @param values a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
 #' this will result in ncol(values) raster plots.
 #' @param space a space to plot the values onto
+#' @param col a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL
 #' @param no_data what value should be used for missing data present in the values parameter
+#' 
+#' @importFrom ggplot2 ggplot geom_sf aes scale_fill_gradientn scale_x_continuous scale_y_continuous theme_bw theme element_text element_blank labs
+#' @importFrom h3jsr point_to_cell cell_to_polygon
+#' @importFrom patchwork wrap_plots
+#' @importFrom sf st_as_sf st_sf
+#' 
 #' @return no return value, called for plot
 #'
 #' @export
-plot_multiple.gen3sis_space_h3 <- function(values, space, no_data = NA) {
+plot_multiple.gen3sis_space_h3 <- function(values, space, col, no_data = NA) {
   # Creates a matrix with coordinates and values  
   env_mtx <- cbind(space$coordinates, values)
   
+  # Get axis breaks
+  x_breaks <- seq(space$extent[["xmin"]],space$extent[["xmax"]], length.out = 7)
+  y_breaks <- seq(space$extent[["ymin"]],space$extent[["ymax"]], length.out = 7)
+  
   # Convert to points
-  env_points <- sf::st_as_sf(env_mtx |> as.data.frame(), coords = c("x", "y"), crs = 4326)
+  env_points <- sf::st_as_sf(as.data.frame(env_mtx), coords = c("x", "y"), crs = 4326)
   
   # and extract the h3 cell indexes
   env_cells <- h3jsr::point_to_cell(env_points,space$type_spec_res)
+  polygons <- h3jsr::cell_to_polygon(env_cells)
   
-  # Creates a base for the plot
-  base_hexagons <- h3jsr::cell_to_polygon(env_cells) |>
-    sf::st_union() |>
-    sf::st_convex_hull() |>
-    h3jsr::polygon_to_cells(res = space$type_spec_res)
-  
-  # Creates the polygons
-  base_hexagons <- unlist(base_hexagons)[!unlist(base_hexagons)%in%env_cells] |>
-    h3jsr::cell_to_polygon()
-  
-  env_hexagons <- h3jsr::cell_to_polygon(env_cells)
-  
-  envar_name <- colnames(values)
-  
-  # unite values and polygons
-  full_hexagons <- c(env_hexagons, base_hexagons)
-  
-  base_values <- matrix(
-    data = no_data,
-    nrow = length(base_hexagons),
-    ncol = ncol(values)
+  # construct the sf
+  polygons_sf <- sf::st_sf(
+    value = values,
+    geometry = polygons
   )
   
-  colnames(base_values) <- colnames(values)
+  names(polygons_sf) <- gsub("value\\.","",names(polygons_sf))
   
-  full_values <- rbind(values, base_values)
+  # organize the polygons and variables in a long format
+  long_poly <- lapply(colnames(values), function(variable){
+    temp_poly <- polygons_sf
+    temp_poly$variable <- variable
+    temp_poly$value <- temp_poly[[variable]]
+    temp_poly
+  }) 
+  
+  long_poly <- do.call(rbind, long_poly)
 
-  # creates the final h3 and plot
-  combined_h3 <- sf::st_sf(full_values, geometry = full_hexagons)
+  # plot each variable at a time to maintain the legend and stores in a list
+  plots <- lapply(unique(long_poly$variable), function(v) {
+    ggplot2::ggplot(long_poly[long_poly$variable == v, ]) +
+      ggplot2::geom_sf(ggplot2::aes(fill = value), color = NA) + # to plot the polygons
+      ggplot2::scale_fill_gradientn( # to construct the legend
+        colors = col,
+        name = v) +
+      sf_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(v, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetics
+  })
   
-  for (variable in colnames(values)) {
-    plot(combined_h3[variable], main = paste0(variable, " ", space$timestep, " ts ", space[["id"]]))
-  }
+  patchwork::wrap_plots(plots) # wrap everything up and plot it 
 }
 
 #' Plot a set of values onto a given space
@@ -550,31 +998,59 @@ plot_multiple.gen3sis_space_h3 <- function(values, space, no_data = NA) {
 #' @param values a matrix of values with columns corresponding to sets of values, and rows corresponding to grid cells,
 #' this will result in ncol(values) raster plots.
 #' @param space a space to plot the values onto
+#' @param col a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL
 #' @param no_data what value should be used for missing data present in the values parameter
+#' 
+#' @importFrom ggplot2 ggplot geom_sf aes scale_color_gradientn scale_x_continuous scale_y_continuous theme_bw theme element_text element_blank labs
+#' @importFrom patchwork wrap_plots
+#' @importFrom sf st_as_sf st_sf st_geometry
+#' 
 #' @return no return value, called for plot
 #'
 #' @export
 plot_multiple.gen3sis_space_points <- function(values, space, no_data = NA) {
-  # Creates a matrix with coordinates and values  
-  env_mtx <- cbind(space$coordinates, values)
+  # Gets the points
+  spatial_points <- sf::st_as_sf(as.data.frame(space$coordinates), coords = c("x", "y"))
   
-  # Convert to points
-  env_points <- sf::st_as_sf(env_mtx |> as.data.frame(), coords = c("x", "y"), crs = 4326)
+  # Get axis breaks
+  x_breaks <- seq(space$extent[["xmin"]],space$extent[["xmax"]], length.out = 7)
+  y_breaks <- seq(space$extent[["ymin"]],space$extent[["ymax"]], length.out = 7)
   
+  # Construct the sf...
+  points_sf <- sf::st_sf(
+    value = values,
+    geometry = sf::st_geometry(spatial_points)
+  )
+  
+  names(points_sf) <- gsub("value\\.","",names(points_sf))
+  
+  # ... and organize it in a long format 
+  long_point <- lapply(colnames(values), function(variable){
+    long_point <- points_sf
+    long_point$variable <- variable
+    long_point$value <- long_point[[variable]]
+    long_point
+  }) 
+  
+  long_point <- do.call(rbind, long_point)
+  long_point <- long_point[,c("variable","value")]
+  
+  # Calculate a optimal point size
   x_cat <- space$extent[[2]] - space$extent[[1]]
   y_cat <- space$extent[[4]] - space$extent[[3]]
-  
   auto_cex <- round(sqrt((x_cat**2)+(y_cat**2))/nrow(values))+1
   
-  for (variable in colnames(values)) {
-    plot(env_points, 
-         main=paste0(variable, " ", space$timestep, " t_", space[["id"]]),
-         xlim=space[["extent"]][c("xmin","xmax")],
-         ylim=space[["extent"]][c("ymin","ymax")],
-         pch=20,
-         key.pos = 4,
-         cex = auto_cex)
-  }
+  # plot each variable at a time to maintain the legend and stores in a list
+  plots <- lapply(unique(long_point$variable), function(v) {
+    ggplot2::ggplot(long_point[long_point$variable == v, ]) +
+      ggplot2::geom_sf(ggplot2::aes(color = value), size = auto_cex) + # to plot the points
+      ggplot2::scale_color_gradientn( # to construct the legend
+        colors = color_richness(20),
+        name = v) +
+      sf_plot_aesthetics(space, col, x_breaks, y_breaks, title = paste0(v, " ", space$timestep, " t_", space[["id"]])) # gen3sis2 standard aesthetics
+  })
+  
+  patchwork::wrap_plots(plots) # wrap everything up and plot it 
 }
 
 #' Ensure there is at least one additional argument provided after 'x'
@@ -608,3 +1084,71 @@ color_richness <- colorRampPalette(
   c("#440154FF", "#482878FF", "#3E4A89FF", "#31688EFF", "#26828EFF", "#1F9E89FF", "#35B779FF",
     "#6DCD59FF", "#B4DE2CFF", "#FDE725FF", "#FFA500",   "#FF2900",   "#C40000",   "#8B0000", "#8B0000")
 )
+
+#' Standard gen3sis2 plot aesthetics for raster spaces
+#'
+#' @param space a space to plot the values onto
+#' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
+#' @param x_breaks numeric. Break points of the x axis. Aesthetic only. 
+#' @param y_breaks numeric. Break points of the y axis. Aesthetic only.
+#' @param title a string with plot title
+#'
+#' @returns no return value, called for plot
+#' @export
+raster_plot_aesthetics <- function(space, col, x_breaks, y_breaks, title) {
+  list(
+    ggplot2::scale_x_continuous(
+      expand = c(0, 0),
+      breaks = x_breaks
+    ),
+    ggplot2::scale_y_continuous(
+        expand = c(0, 0),
+        breaks = y_breaks
+      ),
+    ggplot2::theme_bw(),
+    ggplot2::theme(
+        plot.title = ggplot2::element_text(hjust = 0.5),
+        panel.grid.major = ggplot2::element_line(color = scales::alpha("darkgray", 0.5), linewidth = 0.2),
+        panel.grid.minor = ggplot2::element_line(color = scales::alpha("darkgray", 0.4), linewidth = 0.1)
+      ),
+    ggplot2::labs(
+        title = title
+      )
+  )
+}
+
+#' Standard gen3sis2 plot aesthetics for H3 and points spaces
+#'
+#' @param space a space to plot the values onto
+#' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
+#' @param x_breaks numeric. Break points of the x axis. Aesthetic only. 
+#' @param y_breaks numeric. Break points of the y axis. Aesthetic only.
+#' @param title a string with plot title
+#'
+#' @returns no return value, called for plot
+#' @export
+sf_plot_aesthetics <- function(space, col, x_breaks, y_breaks, title) {
+  list(
+    ggplot2::scale_x_continuous(
+      expand = c(0, 0),
+      breaks = x_breaks,
+      labels = function(x) x
+    ),
+    ggplot2::scale_y_continuous(
+      expand = c(0, 0),
+      breaks = y_breaks,
+      labels = function(x) x
+    ),
+    ggplot2::theme_bw(),
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(hjust = 0.5),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank()
+    ),
+    ggplot2::labs(
+      title = title
+    )
+  )
+}
+
+

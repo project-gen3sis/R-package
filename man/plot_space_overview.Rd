@@ -4,14 +4,14 @@
 \alias{plot_space_overview}
 \title{Plot the outline of a given space over time}
 \usage{
-plot_space_overview(space, slices = 2, start_end_times = NULL)
+plot_space_overview(space, env_names = NULL, breaks = NULL)
 }
 \arguments{
 \item{space}{the input space to be plotted}
 
-\item{slices}{the amount of slices though time between start and end (default value is 2).}
+\item{env_names}{character. A vector containing variable names to plot}
 
-\item{start_end_times}{the stating and ending times of the simulation (default is NULL, takes the oldest and most recent available)}
+\item{breaks}{numeric. A vector containing time slices to plot. If NULL, the older and the most recent time-steps will be used. Default is NULL}
 }
 \value{
 no return value, called for plot

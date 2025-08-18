@@ -4,10 +4,12 @@
 \alias{plot_space}
 \title{Plot the environment variable of a given space}
 \usage{
-plot_space(space)
+plot_space(space, col = NULL)
 }
 \arguments{
 \item{space}{the gen3sis_space to plot the environment from}
+
+\item{col}{a vector containing a color palette. For discrete values, the first element in the vector will be assigned to zero values. If NULL, gen3sis2 internal palette will be used. Default is NULL}
 }
 \value{
 no return value, called for plot
