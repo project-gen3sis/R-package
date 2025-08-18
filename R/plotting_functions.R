@@ -658,7 +658,7 @@ plot_single.gen3sis_space_raster <- function(values, space, title, no_data = 0, 
   temp_df <- temp_df[,-which(colnames(temp_df)==names(temp_ras)[1])]
   
   #ras <- terra::rast(img, type="xyz", resolution = space$type_spec_res)
-  # clean the RAM
+  # Release temporary raster object and free memory
   rm(temp_ras) 
   gc()
   
