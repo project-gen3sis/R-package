@@ -37,3 +37,7 @@ tests/testthat/Rplots.pdf
 #----------------------------
 LICENSE
 ^\.github$
+#----------------------------
+# NOTES on contributions
+#----------------------------
+^CONTRIBUTING.md$
