@@ -1,5 +1,10 @@
 # dev
 
+# v.1.6.0 release 09.2025
+  - fix indexing extinct species
+  - fix restart functionality
+  - fix deprecated packages list (updated dependencies and removed deprecated packages)
+
 # v.1.5.11 release 11.2023
   - fix comb phylogeny
   - color deficient, blind and B&W safe colours
