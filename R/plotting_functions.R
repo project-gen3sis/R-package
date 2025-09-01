@@ -333,8 +333,8 @@ conditional_plot <- function(title, landscape, plot_fun, ...){
 #' @param landscape a landscape to plot the values onto
 #' @param title a title string for resulting plot, the time information will be taken and appended from the landscape id
 #' @param no_data what value should be used for missing values in values
-#' @param col corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot  
-#' @param legend corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot
+#' @param col corresponds to the col plot parameter. This can be omitted and colors are handled by raster::plot  
+#' @param legend corresponds to the legend plot parameter. This can be omitted and legend is handled by raster::plot
 #' @example inst/examples/plot_raster_single_help.R
 #' @return no return value, called for plot
 #' 

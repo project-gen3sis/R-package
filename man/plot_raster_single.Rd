@@ -15,9 +15,9 @@ plot_raster_single(values, landscape, title, no_data = 0, col, legend = TRUE)
 
 \item{no_data}{what value should be used for missing values in values}
 
-\item{col}{corresponds to the \link{raster} col plot parameter. This can be omitted and colors are handled by raster::plot}
+\item{col}{corresponds to the col plot parameter. This can be omitted and colors are handled by raster::plot}
 
-\item{legend}{corresponds to the \link{raster} legend plot parameter. This can be omitted and legend is handled by raster::plot}
+\item{legend}{corresponds to the legend plot parameter. This can be omitted and legend is handled by raster::plot}
 }
 \value{
 no return value, called for plot
