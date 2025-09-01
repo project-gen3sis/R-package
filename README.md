@@ -70,7 +70,7 @@ In short, the main branches of the gen3sis repo are:
 * **master** – reflects the current CRAN release. Only hotfixes or release-ready changes are merged here, typically just before CRAN submission.
 * **development** – serves as the main working branch. All new features, improvements, and fixes should be merged here from separate feature or bugfix branches.
 
-Great that you are contributing! For guidelines on contributing to this project, please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
+Great that you are contributing! For guidelines on contributing to this project, please refer to the CONTRIBUTING.md file on github.
 
 ### Credits
 We thank the developers of the following methods and dependencies:
